@@ -7,8 +7,6 @@ import 'home_page.dart';
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
-//  final String title;
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -68,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: 30,
           ),
-//SizedBox(width:200, ),
           Align(
             alignment: Alignment.centerRight,
             child: Padding(
@@ -133,19 +130,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
 
-// Row(children: [
-//  SignInButton(
-//   Buttons.Google,
-//   onPressed: () {},
-// ),
-//SizedBox(width:50,),
-
-//  SignInButton(
-//   Buttons.Facebook,
-//   onPressed: () {},
-// ),
-
-//],),
         ],
       ),
     );
