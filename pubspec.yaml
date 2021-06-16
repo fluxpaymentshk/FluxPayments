@@ -1,4 +1,4 @@
-name: fintech
+name: flux_payments
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -24,7 +24,16 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_signin_button: ^2.0.0  
+  flutter_signin_button: ^2.0.0
+
+  flutter_bloc: ^7.0.1
+  equatable: ^2.0.2
+  http: ^0.13.3
+  amplify_core: ^0.1.5
+  amplify_flutter: ^0.1.5
+  amplify_auth_cognito: ^0.1.5
+  otp_text_field: ^1.1.1
+  pin_code_fields: ^7.2.0
 
 
   # The following adds the Cupertino Icons font to your application.

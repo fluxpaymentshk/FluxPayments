@@ -1,6 +1,6 @@
 {
-    "name": "fintech",
-    "short_name": "fintech",
+    "name": "flux_payments",
+    "short_name": "flux_payments",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

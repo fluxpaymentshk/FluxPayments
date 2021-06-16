@@ -1,37 +1,156 @@
-import 'package:fintech/screens/home_page.dart';
-import 'package:fintech/screens/password_reset.dart';
-import 'package:fintech/screens/register_page.dart';
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:developer';
 
-import 'screens/login_page.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flux_payments/amplifyconfiguration.dart';
+import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
+import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
+import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/repository/login_repository.dart';
+import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/home_page.dart';
+import 'package:flux_payments/screens/login_page.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  LoginRepository _loginRepository = new LoginRepository();
+  UserConfigRepository _userConfigRepository = new UserConfigRepository();
+  bool _amplifyConfigured = false;
+  bool isSignedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _configureAmplify();
+  }
+
+  void _configureAmplify() async {
+    if (!mounted) return;
+    AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
+    Amplify.addPlugins([authPlugin]);
+
+    try {
+      await Amplify.configure(amplifyconfig);
+      setState(() {
+        _amplifyConfigured = true;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Map<String, String> userDetails = {};
+  Future<void> checkUserDetail() async {
+    try {
+      var res = await Amplify.Auth.fetchUserAttributes();
+      res.forEach((element) {
+        userDetails[element.userAttributeKey] = element.value;
+        String email = "";
+        // l?.forEach((element) {
+        if (element.userAttributeKey == "email") {
+          print("--------${element.value}");
+          email = element.value;
+        }
+      });
+    } on AuthException catch (e) {
+      print(e.message);
+    }
+  }
+
+  Future<bool> currentUser(context) async {
+    var emailLoginBloc = BlocProvider.of<AuthBloc>(context);
+    isSignedIn = await emailLoginBloc.currentUser;
+
+    return isSignedIn;
+  }
+
+  var authBloc;
+  var userBloc;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Flux Payments',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      //home: MyHomePage(title: 'Flutter Demo Home Page'),
-      //home:RegisterPage(title: 'hellllllll'),
-      home:LoginPage(),
-    //  home:PasswordRest(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AuthBloc(_loginRepository),
+          ),
+          BlocProvider(
+            create: (_) => UserBloc(_userConfigRepository),
+          ),
+        ],
+        child: BlocBuilder<AuthBloc, AuthState>(
+          buildWhen: (prevSt, newSt) {
+            return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
+          },
+          builder: (ctx, st) {
+            log(_amplifyConfigured.toString());
+            log("Sign?:$isSignedIn");
+            return (!_amplifyConfigured)
+                ? Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : FutureBuilder<bool>(
+                    future: currentUser(ctx),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Scaffold(
+                          body: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      if (snapshot.hasData &&
+                          snapshot.data != null &&
+                          snapshot.data == false)
+                        return LoginPage(
+                          loginRepo: _loginRepository,
+                          userConfigRepository: _userConfigRepository,
+                        );
+                      return HomePage(
+                          userRepository: _userConfigRepository,
+                          email: userDetails["email"] ?? "");
+                    });
+          },
+        ),
+      ),
+      routes: {
+        LoginPage.routeName: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider<AuthBloc>(
+                  create: (_) => AuthBloc(_loginRepository),
+                ),
+                BlocProvider(create: (_) => UserBloc(_userConfigRepository)),
+              ],
+              child: LoginPage(
+                loginRepo: _loginRepository,
+                userConfigRepository: _userConfigRepository,
+              ),
+            ),
+        HomePage.routeName: (_) => BlocProvider<UserBloc>(
+              create: (_) => UserBloc(_userConfigRepository),
+              child: HomePage(
+                  userRepository: _userConfigRepository,
+                  email: userDetails["email"] ?? ""),
+            ),
+      },
     );
   }
 }
