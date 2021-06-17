@@ -21,10 +21,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield (AuthInitial());
     if (event is EmailSignUpUser) {
       try {
+        yield AuthStateLoading();
         if (event.resend == true) {
-          await _loginRepository.resendConfirmationCode(event.email??"");
-        }
-        else if (event.code != "") {
+          await _loginRepository.resendConfirmationCode(event.email ?? "");
+        } else if (event.code != "") {
           try {
             bool getCode = await _loginRepository.confirmUser(
                 event.email ?? "", event.code);
@@ -56,6 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         bool userSignedIn = await currentUser;
         log("83883---->$userSignedIn");
+        yield AuthStateLoading();
         if (!userSignedIn)
           request = await _loginRepository.signIn(event.email, event.password);
         yield (UserSignedInAuthState());
@@ -69,6 +70,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
     if (event is SocialSignInUser) {
       try {
+        yield AuthStateLoading();
         await _loginRepository.socialSignIn(event.authProvider);
         yield UserSignedInAuthState();
       } on AuthException catch (e) {
@@ -78,6 +80,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     if (event is LogOutUser) {
       try {
+        yield AuthStateLoading();
         await _loginRepository.signOut();
         yield (AuthInitial());
       } catch (e) {

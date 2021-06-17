@@ -9,7 +9,8 @@ abstract class UserConfigBaseRepository {
   Future<void> changePassword(String oldPassword, String newPassword);
   Future<List<AuthUserAttribute>> getUserCredentials();
   Future<void> resetPassword(String email);
-  Future<bool> confirmUserResetPassword(String email, String password, String code);
+  Future<bool> confirmUserResetPassword(
+      String email, String password, String code);
   String? validateEmailFormField(String email);
   String? validatePasswordFormField(String password);
   String? validateConfirmPasswordFormField(
@@ -84,5 +85,4 @@ class UserConfigRepository extends UserConfigBaseRepository {
   String? validatePasswordFormField(String password) {
     return _formValidator.validatePassword(password);
   }
-
 }

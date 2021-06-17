@@ -23,10 +23,11 @@ class UserDetailsServices {
     log("Pss->   .= $oldPassword");
     log("NePss->    .=$newPassword");
     try {
-      await Amplify.Auth.updatePassword(
+      var r = await Amplify.Auth.updatePassword(
         newPassword: newPassword,
         oldPassword: oldPassword,
       );
+      log("done");
     } on LimitExceededException catch (e) {
       throw LimitExceededException("Limit Exceeded");
     } on AuthError catch (e) {
@@ -45,8 +46,7 @@ class UserDetailsServices {
   Future<bool> confirmUserResetPassword(
       String email, String password, String code) async {
     try {
-
-   await Amplify.Auth.confirmPassword(
+      await Amplify.Auth.confirmPassword(
         username: email,
         newPassword: password,
         confirmationCode: code,
@@ -60,10 +60,14 @@ class UserDetailsServices {
 
   Future<void> resetPassword(String email) async {
     try {
+      log("-----------------------------------------------ReSet---------------------------");
       ResetPasswordResult res = await Amplify.Auth.resetPassword(
         username: email,
       );
-    
+      log("=====${res.nextStep.updateStep}");
+      if (res.nextStep.updateStep == "CONFIRM_RESET_PASSWORD_WITH_CODE") {
+        log("huryr");
+      }
     } on AuthError catch (e) {
       print(e);
     }
