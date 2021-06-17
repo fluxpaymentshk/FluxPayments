@@ -9,6 +9,7 @@ import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/profile_page.dart';
 import 'package:flux_payments/screens/register_page.dart';
 import 'package:flux_payments/services/form_validator.dart';
 import 'package:flux_payments/widgets/error_snackBar.dart';
@@ -72,9 +73,11 @@ class _LoginPageState extends State<LoginPage> {
                 MaterialPageRoute(
                   builder: (context) => BlocProvider.value(
                     value: userBloc,
-                    child: HomePage(
-                      userRepository: widget.userConfigRepository,
-                    ),
+                    // child: HomePage(
+                    //   userRepository: widget.userConfigRepository,
+                    // ),
+                    child:ProfilePage(),
+
                   ),
                 ),
               );
@@ -242,5 +245,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  
   }
 }

@@ -3,13 +3,20 @@ import 'dart:developer';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
+import 'package:flux_payments/models/user_model.dart';
 
 class UserDetailsServices {
-  Future<List<AuthUserAttribute>> getUserCredentials() async {
+  Future<List<AuthUserAttribute>> getUserCredentials(UserModel user) async {
+  //  UserModel user = new UserModel();
     try {
       List<AuthUserAttribute> res = await Amplify.Auth.fetchUserAttributes();
+      print('hhhhhhhhhhhhhhhhhhhhhhhhhhh');
+      print(res);
       res.forEach((element) {
-        log('-----key: ${element.userAttributeKey}; value: ${element.value}');
+        print('-----key: ${element.userAttributeKey}; value: ${element.value}');
+        if (element.userAttributeKey == 'email') user.email = element.value;
+         if (element.userAttributeKey == 'custom:username') user.username = element.value;
+
       });
       return res;
     } on AuthException catch (e) {
