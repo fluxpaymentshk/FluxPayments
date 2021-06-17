@@ -3,6 +3,9 @@ class FormValidator {
     if (val.length <= 8) {
       return "Please enter password of length greater than 8";
     }
+    if (val.length > 24) {
+      return "Please enter password of length less than 24";
+    }
     String pattern =
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regExp = new RegExp(pattern);

@@ -4,6 +4,8 @@ import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/widgets/error_snackBar.dart';
+import 'package:flux_payments/widgets/success_snackBar.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ResetPasswordOtpScreen extends StatefulWidget {
@@ -34,6 +36,25 @@ class _ResetPasswordOtpScreenState extends State<ResetPasswordOtpScreen> {
     return SingleChildScrollView(
       child: BlocListener<UserBloc, UserState>(
         listener: (ctx, state) {
+          if (state is UserServiceError) {
+            Navigator.of(ctx).pop();
+            ScaffoldMessenger.of(ctx)
+                .showSnackBar(errorSnackBar(state.message));
+          }
+          if (state is UserResetPasswordDone) {
+            Navigator.of(ctx).pop();
+            ScaffoldMessenger.of(ctx).showSnackBar(successSnackBar("Success!"));
+          }
+          if (state is UserServiceLoading) {
+            showDialog(
+                context: ctx,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                });
+          }
         },
         child: Column(
           children: [
@@ -175,8 +196,7 @@ class _ResetPasswordOtpScreenState extends State<ResetPasswordOtpScreen> {
                           style: TextStyle(color: Colors.black54, fontSize: 15),
                         ),
                         TextButton(
-                            onPressed: () {
-                            },
+                            onPressed: () {},
                             child: Text(
                               "RESEND",
                               style: TextStyle(
@@ -198,8 +218,10 @@ class _ResetPasswordOtpScreenState extends State<ResetPasswordOtpScreen> {
                           onPressed: () {
                             _otpFormKey.currentState!.validate();
                             print(textEditingController.value.text);
-                              userBloc.add(
-                                  UserResetPasswordEvent(email: widget.email,code: textEditingController.value.text,newPassword: _passwordController.value.text));
+                            userBloc.add(UserResetPasswordEvent(
+                                email: widget.email,
+                                code: textEditingController.value.text,
+                                newPassword: _passwordController.value.text));
                             // userBloc.add();
                           },
                           child: Center(

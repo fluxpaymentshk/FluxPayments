@@ -83,9 +83,10 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => BlocProvider(
-                          create: (_) => UserBloc(
-                              widget.userRepository ?? _userConfigRepository),
+                        builder: (_) => BlocProvider.value(value: 
+                        userBloc,
+                          // create: (_) => UserBloc(
+                          //     widget.userRepository ?? _userConfigRepository),
                           child: ChangePassword(),
                         ),
                       ),
@@ -108,7 +109,8 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.blue, borderRadius: BorderRadius.circular(1)),
               child: TextButton(
                 onPressed: () {
-                  userBloc.add(UserResetPasswordEvent(email: widget.email));
+                  userBloc.add(
+                      UserResetPasswordEvent(email: widget.email, code: ""));
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -117,7 +119,6 @@ class _HomePageState extends State<HomePage> {
                             widget.userRepository ?? _userConfigRepository),
                         child: PasswordReset(
                           userConfigRepository: widget.userRepository,
-                          
                         ),
                       ),
                     ),

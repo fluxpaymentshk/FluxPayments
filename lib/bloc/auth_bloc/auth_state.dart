@@ -6,6 +6,10 @@ class AuthInitial extends AuthState {
   const AuthInitial();
 }
 
+class AuthStateLoading extends AuthState {
+  const AuthStateLoading();
+}
+
 class UserSignedInAuthState extends AuthState {
   const UserSignedInAuthState();
 }

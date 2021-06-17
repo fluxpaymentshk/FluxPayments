@@ -11,6 +11,7 @@ import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/register_page.dart';
 import 'package:flux_payments/services/form_validator.dart';
+import 'package:flux_payments/widgets/error_snackBar.dart';
 
 import 'home_page.dart';
 
@@ -18,7 +19,9 @@ class LoginPage extends StatefulWidget {
   static const routeName = "/login";
   final LoginRepository? loginRepo;
   final UserConfigRepository? userConfigRepository;
-  LoginPage({Key? key, @required this.loginRepo,@required this.userConfigRepository}) : super(key: key);
+  LoginPage(
+      {Key? key, @required this.loginRepo, @required this.userConfigRepository})
+      : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -32,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     var authBloc = BlocProvider.of<AuthBloc>(context);
-    var userBloc=BlocProvider.of<UserBloc>(context);
+    var userBloc = BlocProvider.of<UserBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('LoginPage'),
@@ -44,29 +47,34 @@ class _LoginPageState extends State<LoginPage> {
             print("Submitted:            $isSubmitted");
             if (state is AuthError) {
               print("-------------------------AUTH ERROR===${state.message}");
-              ScaffoldMessenger.of(ctx).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    state.message,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.red,
-                  behavior: SnackBarBehavior.floating,
-                  duration: Duration(seconds: 5),
-                ),
-              );
+              Navigator.of(ctx).pop();
+              ScaffoldMessenger.of(ctx)
+                  .showSnackBar(errorSnackBar(state.message));
+            }
+            if (state is AuthStateLoading) {
+              showDialog(
+                  context: ctx,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  });
             }
             if (state is AuthInitial) {
               print("-++++AUTH INITIAL");
             }
             if (state is UserSignedInAuthState) {
+              Navigator.of(ctx).pop();
               print("===++++++++++++++++++++++________________USer signed in");
 
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => BlocProvider.value(
                     value: userBloc,
-                    child: HomePage(userRepository: widget.userConfigRepository,),
+                    child: HomePage(
+                      userRepository: widget.userConfigRepository,
+                    ),
                   ),
                 ),
               );
@@ -214,7 +222,8 @@ class _LoginPageState extends State<LoginPage> {
                               builder: (_) => BlocProvider.value(
                                 value: authBloc,
                                 child: RegisterPage(
-                                  userConfigRepository: widget.userConfigRepository,
+                                  userConfigRepository:
+                                      widget.userConfigRepository,
                                   loginRepository: widget.loginRepo,
                                 ),
                               ),

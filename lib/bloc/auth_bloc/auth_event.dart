@@ -14,7 +14,11 @@ class EmailSignUpUser extends AuthEvent {
   final String? email, password;
   final String code;
   final bool resend;
-  const EmailSignUpUser({@required this.email,@required this.password,this.resend=false, this.code = ""});
+  const EmailSignUpUser(
+      {@required this.email,
+      @required this.password,
+      this.resend = false,
+      this.code = ""});
 }
 
 class LogOutUser extends AuthEvent {
