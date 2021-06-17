@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "fluxpayments4f50e62b": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

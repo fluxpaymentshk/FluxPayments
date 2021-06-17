@@ -1,4 +1,4 @@
-# fintech
+# Flux Payments
 
 A new Flutter project.
 

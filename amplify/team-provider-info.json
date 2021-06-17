@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fluxpayments-staging-122415-authRole",
+      "UnauthRoleArn": "arn:aws:iam::277253331545:role/amplify-fluxpayments-staging-122415-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::277253331545:role/amplify-fluxpayments-staging-122415-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-fluxpayments-staging-122415-deployment",
+      "UnauthRoleName": "amplify-fluxpayments-staging-122415-unauthRole",
+      "StackName": "amplify-fluxpayments-staging-122415",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:277253331545:stack/amplify-fluxpayments-staging-122415/99a0dfb0-cdd4-11eb-baf7-0a0c63784dde",
+      "AmplifyAppId": "d3f9ec1eu50d4x"
+    },
+    "categories": {
+      "auth": {
+        "fluxpayments4f50e62b": {}
+      }
+    }
+  }
+}
