@@ -5,11 +5,13 @@ import 'package:flux_payments/services/login_req.dart';
 abstract class LoginBaseRepository {
   Future<bool> socialSignIn(AuthProvider authProvider);
   Future<String> signIn(String email, String password);
-  Future<String> signUp(String email, String password);
+  Future<String> signUp(
+      String email, String password, String phnNumber, String name);
   Future<bool> confirmUser(String email, String code);
   Future<void> signOut();
   Future<bool> isUserSignedIn();
   Future<void> resendConfirmationCode(String email);
+  String? validateField(String s);
   String? validateEmailFormField(String email);
   String? validatePasswordFormField(String password);
   String? validateConfirmPasswordFormField(
@@ -39,9 +41,11 @@ class LoginRepository implements LoginBaseRepository {
   }
 
   @override
-  Future<String> signUp(String email, String password) async {
+  Future<String> signUp(
+      String email, String password, String phnNumber, String name) async {
     try {
-      return await _amplifyLoginreq.emailSignUpUser(email, password);
+      return await _amplifyLoginreq.emailSignUpUser(
+          email, password, phnNumber, name);
     } catch (e) {
       rethrow;
     }
@@ -83,6 +87,16 @@ class LoginRepository implements LoginBaseRepository {
 
   @override
   Future<void> resendConfirmationCode(String email) async {
-    await _amplifyLoginreq.resendVerificationCode(email);
+    try {
+      await _amplifyLoginreq.resendVerificationCode(email);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  @override
+  String? validateField(String s) {
+    return _formValidator.validateField(s);
   }
 }

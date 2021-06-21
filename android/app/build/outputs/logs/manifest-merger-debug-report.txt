@@ -8,6 +8,8 @@ MERGED from /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/android/app/src/m
 MERGED from [:amplify_auth_cognito] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/amplify_auth_cognito/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:amplify_flutter] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/amplify_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:amplify_core] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/amplify_core/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
+MERGED from [:libphonenumber_plugin] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/libphonenumber_plugin/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
+MERGED from [:libphonenumber] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/libphonenumber/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [com.amplifyframework:aws-auth-cognito:1.17.4] /home/monik/.gradle/caches/transforms-2/files-2.1/5bf9897dbca2b0429eed6e6416bcd064/jetified-aws-auth-cognito-1.17.4/AndroidManifest.xml:16:1-24:12
 MERGED from [com.amplifyframework:core:1.17.4] /home/monik/.gradle/caches/transforms-2/files-2.1/9d76a191a224fb8086a25d5db93023c2/jetified-core-1.17.4/AndroidManifest.xml:16:1-32:12
 MERGED from [com.amazonaws:aws-android-sdk-cognitoauth:2.23.0] /home/monik/.gradle/caches/transforms-2/files-2.1/96d91f243c52a2a71804061ca40c12bd/jetified-aws-android-sdk-cognitoauth-2.23.0/AndroidManifest.xml:2:1-19:12
@@ -182,6 +184,10 @@ MERGED from [:amplify_flutter] /home/monik/Desktop/ORGS/FluxPayments/FluxPayment
 MERGED from [:amplify_flutter] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/amplify_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:amplify_core] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/amplify_core/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:amplify_core] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/amplify_core/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:libphonenumber_plugin] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/libphonenumber_plugin/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:libphonenumber_plugin] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/libphonenumber_plugin/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:libphonenumber] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/libphonenumber/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:libphonenumber] /home/monik/Desktop/ORGS/FluxPayments/FluxPayments/build/libphonenumber/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [com.amplifyframework:aws-auth-cognito:1.17.4] /home/monik/.gradle/caches/transforms-2/files-2.1/5bf9897dbca2b0429eed6e6416bcd064/jetified-aws-auth-cognito-1.17.4/AndroidManifest.xml:20:5-22:41
 MERGED from [com.amplifyframework:aws-auth-cognito:1.17.4] /home/monik/.gradle/caches/transforms-2/files-2.1/5bf9897dbca2b0429eed6e6416bcd064/jetified-aws-auth-cognito-1.17.4/AndroidManifest.xml:20:5-22:41
 MERGED from [com.amplifyframework:core:1.17.4] /home/monik/.gradle/caches/transforms-2/files-2.1/9d76a191a224fb8086a25d5db93023c2/jetified-core-1.17.4/AndroidManifest.xml:20:5-22:41

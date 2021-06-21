@@ -40,6 +40,7 @@ class _ResetPasswordOtpScreenState extends State<ResetPasswordOtpScreen> {
             Navigator.of(ctx).pop();
             ScaffoldMessenger.of(ctx)
                 .showSnackBar(errorSnackBar(state.message));
+            Navigator.of(context).maybePop();
           }
           if (state is UserResetPasswordDone) {
             Navigator.of(ctx).pop();
