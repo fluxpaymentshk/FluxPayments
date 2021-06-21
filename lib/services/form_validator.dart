@@ -35,4 +35,11 @@ class FormValidator {
     }
     return null;
   }
+
+   String? validateField(String s) {
+    if (s.length == 0) {
+      return "Please enter some value";
+    }
+    return null;
+  }
 }

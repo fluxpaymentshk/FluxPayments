@@ -23,7 +23,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         yield AuthStateLoading();
         if (event.resend == true) {
-          await _loginRepository.resendConfirmationCode(event.email ?? "");
+          try {
+            await _loginRepository.resendConfirmationCode(event.email ?? "");
+          } catch (e) {
+            log(e.toString());
+          }
         } else if (event.code != "") {
           try {
             bool getCode = await _loginRepository.confirmUser(
@@ -39,13 +43,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           }
         } else {
           request = await _loginRepository.signUp(
-              event.email ?? "", event.password ?? "");
+            event.email ?? "",
+            event.password ?? "",
+            event.phnNumber ?? "",
+            event.name ?? "",
+          );
           yield UserSignedUpAuthState();
         }
+      } on LimitExceededException catch (e) {
+        yield AuthError("limit exceeded");
       } on UsernameExistsException catch (e) {
         yield AuthError(e.message);
       } catch (e) {
-        print(e);
+        log(e.toString());
         if (e.toString().contains("There is already a user  signed in")) {
           yield UserSignedInAuthState();
         } else
@@ -53,15 +63,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     }
     if (event is EmailLogInUser) {
-      try {
         bool userSignedIn = await currentUser;
         log("83883---->$userSignedIn");
         yield AuthStateLoading();
+      try {
         if (!userSignedIn)
           request = await _loginRepository.signIn(event.email, event.password);
         yield (UserSignedInAuthState());
+      } on LimitExceededException catch (e) {
+        log(e.message);
+        yield AuthError("limit exceeded");
+      } on UserNotConfirmedException catch (e) {
+        yield (AuthError("User not confirmed"));
+        try {
+          await _loginRepository.resendConfirmationCode(event.email);
+        } on LimitExceededException catch (e) {
+          log(e.toString());
+          yield AuthError(e.message);
+        }
       } on NotAuthorizedException catch (e) {
-        print(e);
+        log(e.toString());
         yield (AuthError("Wrong Email or password"));
       } on Exception catch (e) {
         print("Exception: $e");
