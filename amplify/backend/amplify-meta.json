@@ -19,7 +19,7 @@
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
-      "lastPushTimeStamp": "2021-06-16T12:36:25.479Z",
+      "lastPushTimeStamp": "2021-06-22T09:54:25.316Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/auth/fluxpayments4f50e62b-cloudformation-template.yml",
         "logicalId": "authfluxpayments4f50e62b"
