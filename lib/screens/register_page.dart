@@ -9,6 +9,7 @@ import 'package:flux_payments/bloc/auth_bloc/auth_event.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/profile_page.dart';
 import 'package:flux_payments/screens/signUp_otp_screen.dart';
 import 'package:flux_payments/screens/login_page.dart';
 import 'package:flux_payments/services/form_validator.dart';
@@ -16,6 +17,7 @@ import 'package:flux_payments/widgets/error_snackBar.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
+import '../bloc/auth_bloc/auth_state.dart';
 import 'home_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -210,6 +212,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: HomePage(
                               userRepository: widget.userConfigRepository,
                             ),
+                          //  child:ProfilePage(),
+
                           ),
                         ),
                       );

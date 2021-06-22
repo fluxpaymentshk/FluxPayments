@@ -4,6 +4,7 @@ import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/routes/modal_routes.dart';
 import 'package:flux_payments/widgets/error_snackBar.dart';
 import 'package:flux_payments/widgets/success_snackBar.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -44,6 +45,7 @@ class _ResetPasswordOtpScreenState extends State<ResetPasswordOtpScreen> {
           }
           if (state is UserResetPasswordDone) {
             Navigator.of(ctx).pop();
+           //  Navigator.popUntil(context, ModalRoute.withName('/login'));
             ScaffoldMessenger.of(ctx).showSnackBar(successSnackBar("Success!"));
           }
           if (state is UserServiceLoading) {

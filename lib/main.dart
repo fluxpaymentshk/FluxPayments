@@ -13,6 +13,7 @@ import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/login_page.dart';
+import 'package:flux_payments/routes/modal_routes.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,6 +27,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   LoginRepository _loginRepository = new LoginRepository();
   UserConfigRepository _userConfigRepository = new UserConfigRepository();
+
   bool _amplifyConfigured = false;
   bool isSignedIn = false;
 
@@ -33,6 +35,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _configureAmplify();
+    ModalRoutes.loginRepo = _loginRepository;
+    ModalRoutes.userConfigRepository = _userConfigRepository;
   }
 
   void _configureAmplify() async {
@@ -85,6 +89,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+    //  onGenerateRoute: ModalRoutes.generateroute,
       home: MultiBlocProvider(
         providers: [
           BlocProvider(
