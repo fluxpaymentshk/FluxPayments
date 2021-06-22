@@ -15,7 +15,7 @@ class UserDetailsServices {
       res.forEach((element) {
         print('-----key: ${element.userAttributeKey}; value: ${element.value}');
         if (element.userAttributeKey == 'email') user.email = element.value;
-         if (element.userAttributeKey == 'custom:username') user.username = element.value;
+        //  if (element.userAttributeKey == 'custom:username') user.username = element.value;
 
       });
       return res;

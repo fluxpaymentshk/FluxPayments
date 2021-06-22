@@ -76,18 +76,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(
                       height: 15,
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'userName : \n' + (user.username ?? 'username'),
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
+                    // Align(
+                    //   alignment: Alignment.centerLeft,
+                    //   child: Text(
+                    //     'userName : \n' + (user.username ?? 'username'),
+                    //     style: TextStyle(
+                    //       fontSize: 20,
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 15,
+                    // ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -103,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'DOB : \n' + (user.dOB ?? 'Not Mentioned'),
+                        'DOB : \n' + (user.dateOfBirth ?? 'Not Mentioned'),
                         style: TextStyle(
                           fontSize: 20,
                         ),
