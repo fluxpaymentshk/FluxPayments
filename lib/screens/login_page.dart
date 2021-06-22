@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,9 @@ import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
 import 'package:flux_payments/screens/profile_page.dart';
+import 'package:flux_payments/screens/forgot_password_screen.dart';
 import 'package:flux_payments/screens/register_page.dart';
+import 'package:flux_payments/screens/signUp_otp_screen.dart';
 import 'package:flux_payments/services/form_validator.dart';
 import 'package:flux_payments/widgets/error_snackBar.dart';
 
@@ -49,9 +53,27 @@ class _LoginPageState extends State<LoginPage> {
             print("Submitted:            $isSubmitted");
             if (state is AuthError) {
               print("-------------------------AUTH ERROR===${state.message}");
-              Navigator.of(ctx).pop();
-              ScaffoldMessenger.of(ctx)
-                  .showSnackBar(errorSnackBar(state.message));
+              if (state.message == "User not confirmed") {
+                log("hi");
+                Navigator.of(ctx).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider.value(
+                      value: authBloc,
+                      child: Scaffold(
+                        body: SignUpOTPScreen(
+                          email: _emailController.value.text.trim(),
+                          password: _passwordController.value.text,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              } else {
+                Navigator.of(ctx).pop();
+                ScaffoldMessenger.of(ctx)
+                    .showSnackBar(errorSnackBar(state.message));
+              }
             }
             if (state is AuthStateLoading) {
               showDialog(
@@ -110,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _emailController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'User Name',
+                          labelText: 'Email ID',
                           hintText: 'abc@xyz.com',
                         ),
                         validator: (s) =>
@@ -133,10 +155,23 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                     ),
-                    SizedBox(
-                      height: 30,
-                    ),
                   ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  child: Text("Forget Password"),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider.value(
+                          value: userBloc,
+                          child: ForgetPasswordScreen(userConfigRepository:widget.userConfigRepository,loginRepository:widget.loginRepo),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               Align(
@@ -209,38 +244,39 @@ class _LoginPageState extends State<LoginPage> {
                 height: 10,
               ),
               Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Container(
-                      height: 35,
-                      width: 220,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(1)),
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BlocProvider.value(
-                                value: authBloc,
-                                child: RegisterPage(
-                                  userConfigRepository:
-                                      widget.userConfigRepository,
-                                  loginRepository: widget.loginRepo,
-                                ),
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Container(
+                    height: 35,
+                    width: 220,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(1)),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider.value(
+                              value: authBloc,
+                              child: RegisterPage(
+                                userConfigRepository:
+                                    widget.userConfigRepository,
+                                loginRepository: widget.loginRepo,
                               ),
                             ),
-                          );
-                        },
-                        child: Text(
-                          'Register',
-                          style: TextStyle(color: Colors.white, fontSize: 17),
-                        ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Register',
+                        style: TextStyle(color: Colors.white, fontSize: 17),
                       ),
                     ),
-                  )),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

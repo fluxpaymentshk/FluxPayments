@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +15,7 @@ import 'package:flux_payments/screens/login_page.dart';
 import 'package:flux_payments/services/form_validator.dart';
 import 'package:flux_payments/widgets/error_snackBar.dart';
 import 'package:otp_text_field/otp_field.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../bloc/auth_bloc/auth_state.dart';
 import 'home_page.dart';
@@ -32,10 +35,13 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _registerFormKey = GlobalKey<FormState>();
+  String? phnNumber = "";
   final TextEditingController _emailController = new TextEditingController();
+  final TextEditingController _nameController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
   final TextEditingController _confirmPasswordController =
       new TextEditingController();
+  final TextEditingController _phnController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     var authBloc = BlocProvider.of<AuthBloc>(context);
@@ -71,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _emailController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'User Name',
+                        labelText: 'Email Id',
                         hintText: 'abc@xyz.com',
                       ),
                       validator: (s) => widget.loginRepository
@@ -108,6 +114,52 @@ class _RegisterPageState extends State<RegisterPage> {
                               _passwordController.value.text),
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Name',
+                      ),
+                      validator: (s) =>
+                          widget.loginRepository?.validateField(s ?? ""),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: InternationalPhoneNumberInput(
+                      validator: (s) =>
+                          widget.loginRepository?.validateField(s ?? ""),
+                      onInputChanged: (PhoneNumber number) {
+                        print(number.phoneNumber);
+                        setState(() {
+                          phnNumber = number.phoneNumber;
+                        });
+                        log(phnNumber.toString());
+                      },
+                      onInputValidated: (bool value) {
+                        print(value);
+                        log(phnNumber.toString());
+                      },
+                      selectorConfig: SelectorConfig(
+                        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                      ),
+                      ignoreBlank: false,
+                      autoValidateMode: AutovalidateMode.disabled,
+                      selectorTextStyle: TextStyle(color: Colors.black),
+                      textFieldController: _phnController,
+                      formatInput: false,
+                      keyboardType: TextInputType.numberWithOptions(
+                        signed: true,
+                        decimal: true,
+                      ),
+                      inputBorder: OutlineInputBorder(),
+                      onSaved: (PhoneNumber number) {
+                        print('On Saved: $number');
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -139,7 +191,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   if (state is AuthInitial) {
                     print("-++++AUTH INITIAL");
                   }
-                  if (state is UserSignedUpAuthState) {Navigator.of(ctx).pop();
+                  if (state is UserSignedUpAuthState) {
+                    Navigator.of(ctx).pop();
                     print("===++++________________USer signed in");
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => BlocProvider.value(
@@ -184,6 +237,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             EmailSignUpUser(
                               email: _emailController.value.text.trim(),
                               password: _passwordController.value.text,
+                              phnNumber: phnNumber,
+                              name: _nameController.value.text,
                             ),
                           );
                         }

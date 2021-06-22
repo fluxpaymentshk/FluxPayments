@@ -48,8 +48,9 @@ class UserConfigRepository extends UserConfigBaseRepository {
       UserModel user = new UserModel();
       return await _userDetailsServices.getUserCredentials(user);
     } catch (e) {
-      print(e);
-      throw Exception(e);
+      log(e.toString());
+      // throw Exception(e);
+      rethrow;
     }
   }
 

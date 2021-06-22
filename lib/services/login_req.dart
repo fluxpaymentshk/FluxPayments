@@ -28,13 +28,18 @@ class AmplifyLogin {
     }
   }
 
-  Future<String> emailSignUpUser(String email, String password) async {
+  Future<String> emailSignUpUser(
+      String email, String password, String phoneNumber, String name) async {
     try {
+      log(phoneNumber);
       SignUpResult res = await Amplify.Auth.signUp(
           username: email,
           password: password,
-          options: CognitoSignUpOptions(
-              userAttributes: {"email": email, "username": "Test"}));
+          options: CognitoSignUpOptions(userAttributes: {
+            "email": email,
+            'phone_number': phoneNumber,
+            "name": name
+          }));
       print("Sign up: " + (res.isSignUpComplete ? "Complete" : "Not Complete"));
       return "";
     } on UsernameExistsException catch (e) {
@@ -54,6 +59,9 @@ class AmplifyLogin {
       );
       print(res.isSignedIn ? "signed in" : "no");
       return "";
+    } on UserNotConfirmedException catch (e) {
+      log(e.message);
+      throw UserNotConfirmedException(e.message);
     } on NotAuthorizedException catch (e) {
       log("28288282---->$e");
       throw NotAuthorizedException(e.underlyingException);
@@ -78,6 +86,8 @@ class AmplifyLogin {
   Future<void> resendVerificationCode(String email) async {
     try {
       await Amplify.Auth.resendSignUpCode(username: email);
+    } on LimitExceededException catch (e) {
+      throw LimitExceededException(e.message);
     } catch (e) {
       throw e;
     }

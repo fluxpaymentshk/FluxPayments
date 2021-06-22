@@ -34,9 +34,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
     if (event is UserResetPasswordEvent) {
       try {
-        yield UserServiceLoading();
+        log("1");
         if (event.code == "") {
           await _userConfigRepository.resetPassword(event.email ?? "");
+          yield UserServiceDone();
         } else {
           bool r = await _userConfigRepository.confirmUserResetPassword(
               event.email ?? "", event.newPassword, event.code);
@@ -48,7 +49,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           }
         }
         yield UserServiceDone();
-      } on AuthError catch (e) {
+      }on LimitExceededException catch (e) {
+        log("$e");
+        yield UserServiceError(e.message);
+      }  on AuthError catch (e) {
         yield UserServiceError("Errror");
       } on NotAuthorizedException catch (er) {
         yield UserServiceError(er.message);
