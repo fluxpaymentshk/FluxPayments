@@ -1,0 +1,756 @@
+type ServiceTransaction @aws_iam @aws_api_key {
+  id: ID!
+  dueDate: AWSDate
+  paidOn: AWSDate
+  rewardPoints: Int
+  billproviderID: ID
+  userID: ID
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  ServiceTransactionToRewardTransaction: RewardTransaction @aws_iam @aws_api_key
+}
+
+type Service @aws_iam @aws_api_key {
+  id: ID!
+  category: String
+  accountID: String
+  dueDate: AWSDate
+  billproviderID: ID
+  userID: ID
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  ServiceToServiceTransaction: ServiceTransaction @aws_iam @aws_api_key
+}
+
+type BillProvider @aws_iam @aws_api_key {
+  id: ID!
+  name: String
+  image: AWSURL
+  shortDescription: String
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  BillProviderToServiceTransactions(filter: ModelServiceTransactionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelServiceTransactionConnection @aws_iam @aws_api_key
+  Services(filter: ModelServiceFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelServiceConnection @aws_iam @aws_api_key
+}
+
+type RewardTransaction @aws_iam @aws_api_key {
+  id: ID!
+  amount: Float
+  timestamp: AWSDateTime
+  userID: ID
+  rewardpartnerID: ID
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Shop @aws_iam @aws_api_key {
+  id: ID!
+  address: String!
+  name: String!
+  mapLink: AWSURL
+  image: AWSURL
+  rewardpartnerID: ID!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  ShopToRewardTransaction: RewardTransaction @aws_iam @aws_api_key
+  rewardshops(filter: ModelRewardFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRewardConnection @aws_iam @aws_api_key
+}
+
+type Reward @aws_iam @aws_api_key {
+  id: ID!
+  name: String!
+  category: String!
+  shortDescription: String!
+  longDescription: String
+  amount: Float
+  image: AWSURL
+  rewardpartnerID: ID
+  shopID: ID
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  RewardtoRewardTransaction: RewardTransaction @aws_iam @aws_api_key
+}
+
+type RewardPartner @aws_iam @aws_api_key {
+  id: ID!
+  name: String!
+  image: AWSURL
+  shortDescription: String!
+  size: Int
+  banner: AWSURL
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  RewardPartnerToRewardTransactions(filter: ModelRewardTransactionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRewardTransactionConnection @aws_iam @aws_api_key
+  franchises(filter: ModelShopFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelShopConnection @aws_iam @aws_api_key
+  Rewards(filter: ModelRewardFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRewardConnection @aws_iam @aws_api_key
+}
+
+type User @aws_iam @aws_api_key {
+  id: ID!
+  firstName: String!
+  lastName: String
+  dateOfBirth: AWSDate
+  idCardNumber: String
+  uniqueID: String!
+  mobileNumber: String
+  email: AWSEmail
+  fluxPoints: Int
+  favorites: [String]
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  UserToServiceTransactions(filter: ModelServiceTransactionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelServiceTransactionConnection @aws_iam @aws_api_key
+  UserToServices(filter: ModelServiceFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelServiceConnection @aws_iam @aws_api_key
+  UserToRewardTransactions(filter: ModelRewardTransactionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRewardTransactionConnection @aws_iam @aws_api_key
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelServiceTransactionConnection @aws_api_key @aws_iam {
+  items: [ServiceTransaction]
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelServiceTransactionFilterInput {
+  id: ModelIDInput
+  dueDate: ModelStringInput
+  paidOn: ModelStringInput
+  rewardPoints: ModelIntInput
+  billproviderID: ModelIDInput
+  userID: ModelIDInput
+  and: [ModelServiceTransactionFilterInput]
+  or: [ModelServiceTransactionFilterInput]
+  not: ModelServiceTransactionFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  getServiceTransaction(id: ID!): ServiceTransaction @aws_api_key @aws_iam
+  listServiceTransactions(filter: ModelServiceTransactionFilterInput, limit: Int, nextToken: String): ModelServiceTransactionConnection @aws_api_key @aws_iam
+  syncServiceTransactions(filter: ModelServiceTransactionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelServiceTransactionConnection @aws_api_key @aws_iam
+  getService(id: ID!): Service @aws_api_key @aws_iam
+  listServices(filter: ModelServiceFilterInput, limit: Int, nextToken: String): ModelServiceConnection @aws_api_key @aws_iam
+  syncServices(filter: ModelServiceFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelServiceConnection @aws_api_key @aws_iam
+  getBillProvider(id: ID!): BillProvider @aws_api_key @aws_iam
+  listBillProviders(filter: ModelBillProviderFilterInput, limit: Int, nextToken: String): ModelBillProviderConnection @aws_api_key @aws_iam
+  syncBillProviders(filter: ModelBillProviderFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelBillProviderConnection @aws_api_key @aws_iam
+  getRewardTransaction(id: ID!): RewardTransaction @aws_api_key @aws_iam
+  listRewardTransactions(filter: ModelRewardTransactionFilterInput, limit: Int, nextToken: String): ModelRewardTransactionConnection @aws_api_key @aws_iam
+  syncRewardTransactions(filter: ModelRewardTransactionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRewardTransactionConnection @aws_api_key @aws_iam
+  getShop(id: ID!): Shop @aws_api_key @aws_iam
+  listShops(filter: ModelShopFilterInput, limit: Int, nextToken: String): ModelShopConnection @aws_api_key @aws_iam
+  syncShops(filter: ModelShopFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelShopConnection @aws_api_key @aws_iam
+  getReward(id: ID!): Reward @aws_api_key @aws_iam
+  listRewards(filter: ModelRewardFilterInput, limit: Int, nextToken: String): ModelRewardConnection @aws_api_key @aws_iam
+  syncRewards(filter: ModelRewardFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRewardConnection @aws_api_key @aws_iam
+  getRewardPartner(id: ID!): RewardPartner @aws_api_key @aws_iam
+  listRewardPartners(filter: ModelRewardPartnerFilterInput, limit: Int, nextToken: String): ModelRewardPartnerConnection @aws_api_key @aws_iam
+  syncRewardPartners(filter: ModelRewardPartnerFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRewardPartnerConnection @aws_api_key @aws_iam
+  getUser(id: ID!): User @aws_api_key @aws_iam
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_api_key @aws_iam
+  syncUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserConnection @aws_api_key @aws_iam
+}
+
+input CreateServiceTransactionInput {
+  id: ID
+  dueDate: AWSDate
+  paidOn: AWSDate
+  rewardPoints: Int
+  billproviderID: ID
+  userID: ID
+  _version: Int
+  serviceTransactionServiceTransactionToRewardTransactionId: ID
+}
+
+input UpdateServiceTransactionInput {
+  id: ID!
+  dueDate: AWSDate
+  paidOn: AWSDate
+  rewardPoints: Int
+  billproviderID: ID
+  userID: ID
+  _version: Int
+  serviceTransactionServiceTransactionToRewardTransactionId: ID
+}
+
+input DeleteServiceTransactionInput {
+  id: ID!
+  _version: Int
+}
+
+type Mutation {
+  createServiceTransaction(input: CreateServiceTransactionInput!, condition: ModelServiceTransactionConditionInput): ServiceTransaction @aws_api_key @aws_iam
+  updateServiceTransaction(input: UpdateServiceTransactionInput!, condition: ModelServiceTransactionConditionInput): ServiceTransaction @aws_api_key @aws_iam
+  deleteServiceTransaction(input: DeleteServiceTransactionInput!, condition: ModelServiceTransactionConditionInput): ServiceTransaction @aws_api_key @aws_iam
+  createService(input: CreateServiceInput!, condition: ModelServiceConditionInput): Service @aws_api_key @aws_iam
+  updateService(input: UpdateServiceInput!, condition: ModelServiceConditionInput): Service @aws_api_key @aws_iam
+  deleteService(input: DeleteServiceInput!, condition: ModelServiceConditionInput): Service @aws_api_key @aws_iam
+  createBillProvider(input: CreateBillProviderInput!, condition: ModelBillProviderConditionInput): BillProvider @aws_api_key @aws_iam
+  updateBillProvider(input: UpdateBillProviderInput!, condition: ModelBillProviderConditionInput): BillProvider @aws_api_key @aws_iam
+  deleteBillProvider(input: DeleteBillProviderInput!, condition: ModelBillProviderConditionInput): BillProvider @aws_api_key @aws_iam
+  createRewardTransaction(input: CreateRewardTransactionInput!, condition: ModelRewardTransactionConditionInput): RewardTransaction @aws_api_key @aws_iam
+  updateRewardTransaction(input: UpdateRewardTransactionInput!, condition: ModelRewardTransactionConditionInput): RewardTransaction @aws_api_key @aws_iam
+  deleteRewardTransaction(input: DeleteRewardTransactionInput!, condition: ModelRewardTransactionConditionInput): RewardTransaction @aws_api_key @aws_iam
+  createShop(input: CreateShopInput!, condition: ModelShopConditionInput): Shop @aws_api_key @aws_iam
+  updateShop(input: UpdateShopInput!, condition: ModelShopConditionInput): Shop @aws_api_key @aws_iam
+  deleteShop(input: DeleteShopInput!, condition: ModelShopConditionInput): Shop @aws_api_key @aws_iam
+  createReward(input: CreateRewardInput!, condition: ModelRewardConditionInput): Reward @aws_api_key @aws_iam
+  updateReward(input: UpdateRewardInput!, condition: ModelRewardConditionInput): Reward @aws_api_key @aws_iam
+  deleteReward(input: DeleteRewardInput!, condition: ModelRewardConditionInput): Reward @aws_api_key @aws_iam
+  createRewardPartner(input: CreateRewardPartnerInput!, condition: ModelRewardPartnerConditionInput): RewardPartner @aws_api_key @aws_iam
+  updateRewardPartner(input: UpdateRewardPartnerInput!, condition: ModelRewardPartnerConditionInput): RewardPartner @aws_api_key @aws_iam
+  deleteRewardPartner(input: DeleteRewardPartnerInput!, condition: ModelRewardPartnerConditionInput): RewardPartner @aws_api_key @aws_iam
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_iam
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_iam
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_iam
+}
+
+input ModelServiceTransactionConditionInput {
+  dueDate: ModelStringInput
+  paidOn: ModelStringInput
+  rewardPoints: ModelIntInput
+  billproviderID: ModelIDInput
+  userID: ModelIDInput
+  and: [ModelServiceTransactionConditionInput]
+  or: [ModelServiceTransactionConditionInput]
+  not: ModelServiceTransactionConditionInput
+}
+
+type Subscription {
+  onCreateServiceTransaction: ServiceTransaction @aws_subscribe(mutations: ["createServiceTransaction"]) @aws_api_key @aws_iam
+  onUpdateServiceTransaction: ServiceTransaction @aws_subscribe(mutations: ["updateServiceTransaction"]) @aws_api_key @aws_iam
+  onDeleteServiceTransaction: ServiceTransaction @aws_subscribe(mutations: ["deleteServiceTransaction"]) @aws_api_key @aws_iam
+  onCreateService: Service @aws_subscribe(mutations: ["createService"]) @aws_api_key @aws_iam
+  onUpdateService: Service @aws_subscribe(mutations: ["updateService"]) @aws_api_key @aws_iam
+  onDeleteService: Service @aws_subscribe(mutations: ["deleteService"]) @aws_api_key @aws_iam
+  onCreateBillProvider: BillProvider @aws_subscribe(mutations: ["createBillProvider"]) @aws_api_key @aws_iam
+  onUpdateBillProvider: BillProvider @aws_subscribe(mutations: ["updateBillProvider"]) @aws_api_key @aws_iam
+  onDeleteBillProvider: BillProvider @aws_subscribe(mutations: ["deleteBillProvider"]) @aws_api_key @aws_iam
+  onCreateRewardTransaction: RewardTransaction @aws_subscribe(mutations: ["createRewardTransaction"]) @aws_api_key @aws_iam
+  onUpdateRewardTransaction: RewardTransaction @aws_subscribe(mutations: ["updateRewardTransaction"]) @aws_api_key @aws_iam
+  onDeleteRewardTransaction: RewardTransaction @aws_subscribe(mutations: ["deleteRewardTransaction"]) @aws_api_key @aws_iam
+  onCreateShop: Shop @aws_subscribe(mutations: ["createShop"]) @aws_api_key @aws_iam
+  onUpdateShop: Shop @aws_subscribe(mutations: ["updateShop"]) @aws_api_key @aws_iam
+  onDeleteShop: Shop @aws_subscribe(mutations: ["deleteShop"]) @aws_api_key @aws_iam
+  onCreateReward: Reward @aws_subscribe(mutations: ["createReward"]) @aws_api_key @aws_iam
+  onUpdateReward: Reward @aws_subscribe(mutations: ["updateReward"]) @aws_api_key @aws_iam
+  onDeleteReward: Reward @aws_subscribe(mutations: ["deleteReward"]) @aws_api_key @aws_iam
+  onCreateRewardPartner: RewardPartner @aws_subscribe(mutations: ["createRewardPartner"]) @aws_api_key @aws_iam
+  onUpdateRewardPartner: RewardPartner @aws_subscribe(mutations: ["updateRewardPartner"]) @aws_api_key @aws_iam
+  onDeleteRewardPartner: RewardPartner @aws_subscribe(mutations: ["deleteRewardPartner"]) @aws_api_key @aws_iam
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_api_key @aws_iam
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_api_key @aws_iam
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_api_key @aws_iam
+}
+
+type ModelServiceConnection @aws_api_key @aws_iam {
+  items: [Service]
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelServiceFilterInput {
+  id: ModelIDInput
+  category: ModelStringInput
+  accountID: ModelStringInput
+  dueDate: ModelStringInput
+  billproviderID: ModelIDInput
+  userID: ModelIDInput
+  and: [ModelServiceFilterInput]
+  or: [ModelServiceFilterInput]
+  not: ModelServiceFilterInput
+}
+
+input CreateServiceInput {
+  id: ID
+  category: String
+  accountID: String
+  dueDate: AWSDate
+  billproviderID: ID
+  userID: ID
+  _version: Int
+  serviceServiceToServiceTransactionId: ID
+}
+
+input UpdateServiceInput {
+  id: ID!
+  category: String
+  accountID: String
+  dueDate: AWSDate
+  billproviderID: ID
+  userID: ID
+  _version: Int
+  serviceServiceToServiceTransactionId: ID
+}
+
+input DeleteServiceInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelServiceConditionInput {
+  category: ModelStringInput
+  accountID: ModelStringInput
+  dueDate: ModelStringInput
+  billproviderID: ModelIDInput
+  userID: ModelIDInput
+  and: [ModelServiceConditionInput]
+  or: [ModelServiceConditionInput]
+  not: ModelServiceConditionInput
+}
+
+type ModelBillProviderConnection @aws_api_key @aws_iam {
+  items: [BillProvider]
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelBillProviderFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  image: ModelStringInput
+  shortDescription: ModelStringInput
+  and: [ModelBillProviderFilterInput]
+  or: [ModelBillProviderFilterInput]
+  not: ModelBillProviderFilterInput
+}
+
+input CreateBillProviderInput {
+  id: ID
+  name: String
+  image: AWSURL
+  shortDescription: String
+  _version: Int
+}
+
+input UpdateBillProviderInput {
+  id: ID!
+  name: String
+  image: AWSURL
+  shortDescription: String
+  _version: Int
+}
+
+input DeleteBillProviderInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelBillProviderConditionInput {
+  name: ModelStringInput
+  image: ModelStringInput
+  shortDescription: ModelStringInput
+  and: [ModelBillProviderConditionInput]
+  or: [ModelBillProviderConditionInput]
+  not: ModelBillProviderConditionInput
+}
+
+type ModelRewardTransactionConnection @aws_api_key @aws_iam {
+  items: [RewardTransaction]
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelRewardTransactionFilterInput {
+  id: ModelIDInput
+  amount: ModelFloatInput
+  timestamp: ModelStringInput
+  userID: ModelIDInput
+  rewardpartnerID: ModelIDInput
+  and: [ModelRewardTransactionFilterInput]
+  or: [ModelRewardTransactionFilterInput]
+  not: ModelRewardTransactionFilterInput
+}
+
+input CreateRewardTransactionInput {
+  id: ID
+  amount: Float
+  timestamp: AWSDateTime
+  userID: ID
+  rewardpartnerID: ID
+  _version: Int
+}
+
+input UpdateRewardTransactionInput {
+  id: ID!
+  amount: Float
+  timestamp: AWSDateTime
+  userID: ID
+  rewardpartnerID: ID
+  _version: Int
+}
+
+input DeleteRewardTransactionInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelRewardTransactionConditionInput {
+  amount: ModelFloatInput
+  timestamp: ModelStringInput
+  userID: ModelIDInput
+  rewardpartnerID: ModelIDInput
+  and: [ModelRewardTransactionConditionInput]
+  or: [ModelRewardTransactionConditionInput]
+  not: ModelRewardTransactionConditionInput
+}
+
+type ModelShopConnection @aws_api_key @aws_iam {
+  items: [Shop]
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelShopFilterInput {
+  id: ModelIDInput
+  address: ModelStringInput
+  name: ModelStringInput
+  mapLink: ModelStringInput
+  image: ModelStringInput
+  rewardpartnerID: ModelIDInput
+  and: [ModelShopFilterInput]
+  or: [ModelShopFilterInput]
+  not: ModelShopFilterInput
+}
+
+input CreateShopInput {
+  id: ID
+  address: String!
+  name: String!
+  mapLink: AWSURL
+  image: AWSURL
+  rewardpartnerID: ID!
+  _version: Int
+  shopShopToRewardTransactionId: ID
+}
+
+input UpdateShopInput {
+  id: ID!
+  address: String
+  name: String
+  mapLink: AWSURL
+  image: AWSURL
+  rewardpartnerID: ID
+  _version: Int
+  shopShopToRewardTransactionId: ID
+}
+
+input DeleteShopInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelShopConditionInput {
+  address: ModelStringInput
+  name: ModelStringInput
+  mapLink: ModelStringInput
+  image: ModelStringInput
+  rewardpartnerID: ModelIDInput
+  and: [ModelShopConditionInput]
+  or: [ModelShopConditionInput]
+  not: ModelShopConditionInput
+}
+
+type ModelRewardConnection @aws_api_key @aws_iam {
+  items: [Reward]
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelRewardFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  category: ModelStringInput
+  shortDescription: ModelStringInput
+  longDescription: ModelStringInput
+  amount: ModelFloatInput
+  image: ModelStringInput
+  rewardpartnerID: ModelIDInput
+  shopID: ModelIDInput
+  and: [ModelRewardFilterInput]
+  or: [ModelRewardFilterInput]
+  not: ModelRewardFilterInput
+}
+
+input CreateRewardInput {
+  id: ID
+  name: String!
+  category: String!
+  shortDescription: String!
+  longDescription: String
+  amount: Float
+  image: AWSURL
+  rewardpartnerID: ID
+  shopID: ID
+  _version: Int
+  rewardRewardtoRewardTransactionId: ID
+}
+
+input UpdateRewardInput {
+  id: ID!
+  name: String
+  category: String
+  shortDescription: String
+  longDescription: String
+  amount: Float
+  image: AWSURL
+  rewardpartnerID: ID
+  shopID: ID
+  _version: Int
+  rewardRewardtoRewardTransactionId: ID
+}
+
+input DeleteRewardInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelRewardConditionInput {
+  name: ModelStringInput
+  category: ModelStringInput
+  shortDescription: ModelStringInput
+  longDescription: ModelStringInput
+  amount: ModelFloatInput
+  image: ModelStringInput
+  rewardpartnerID: ModelIDInput
+  shopID: ModelIDInput
+  and: [ModelRewardConditionInput]
+  or: [ModelRewardConditionInput]
+  not: ModelRewardConditionInput
+}
+
+type ModelRewardPartnerConnection @aws_api_key @aws_iam {
+  items: [RewardPartner]
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelRewardPartnerFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  image: ModelStringInput
+  shortDescription: ModelStringInput
+  size: ModelIntInput
+  banner: ModelStringInput
+  and: [ModelRewardPartnerFilterInput]
+  or: [ModelRewardPartnerFilterInput]
+  not: ModelRewardPartnerFilterInput
+}
+
+input CreateRewardPartnerInput {
+  id: ID
+  name: String!
+  image: AWSURL
+  shortDescription: String!
+  size: Int
+  banner: AWSURL
+  _version: Int
+}
+
+input UpdateRewardPartnerInput {
+  id: ID!
+  name: String
+  image: AWSURL
+  shortDescription: String
+  size: Int
+  banner: AWSURL
+  _version: Int
+}
+
+input DeleteRewardPartnerInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelRewardPartnerConditionInput {
+  name: ModelStringInput
+  image: ModelStringInput
+  shortDescription: ModelStringInput
+  size: ModelIntInput
+  banner: ModelStringInput
+  and: [ModelRewardPartnerConditionInput]
+  or: [ModelRewardPartnerConditionInput]
+  not: ModelRewardPartnerConditionInput
+}
+
+type ModelUserConnection @aws_api_key @aws_iam {
+  items: [User]
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  firstName: ModelStringInput
+  lastName: ModelStringInput
+  dateOfBirth: ModelStringInput
+  idCardNumber: ModelStringInput
+  uniqueID: ModelStringInput
+  mobileNumber: ModelStringInput
+  email: ModelStringInput
+  fluxPoints: ModelIntInput
+  favorites: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  id: ID
+  firstName: String!
+  lastName: String
+  dateOfBirth: AWSDate
+  idCardNumber: String
+  uniqueID: String!
+  mobileNumber: String
+  email: AWSEmail
+  fluxPoints: Int
+  favorites: [String]
+  _version: Int
+}
+
+input UpdateUserInput {
+  id: ID!
+  firstName: String
+  lastName: String
+  dateOfBirth: AWSDate
+  idCardNumber: String
+  uniqueID: String
+  mobileNumber: String
+  email: AWSEmail
+  fluxPoints: Int
+  favorites: [String]
+  _version: Int
+}
+
+input DeleteUserInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelUserConditionInput {
+  firstName: ModelStringInput
+  lastName: ModelStringInput
+  dateOfBirth: ModelStringInput
+  idCardNumber: ModelStringInput
+  uniqueID: ModelStringInput
+  mobileNumber: ModelStringInput
+  email: ModelStringInput
+  fluxPoints: ModelIntInput
+  favorites: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+}

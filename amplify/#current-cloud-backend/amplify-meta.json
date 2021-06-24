@@ -19,23 +19,53 @@
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
-      "lastPushTimeStamp": "2021-06-15T19:44:00.303Z",
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/auth/fluxpayments4f50e62b-cloudformation-template.yml",
-        "logicalId": "authfluxpayments4f50e62b"
-      },
       "output": {
         "UserPoolId": "ap-southeast-1_8BuaAodDq",
         "AppClientIDWeb": "1o0urbm0369ohq3e8viqts4oik",
         "AppClientID": "26jbttrbggtphbmh9pttfh0aa5",
+        "HostedUIDomain": "fluxpayments-staging",
         "IdentityPoolId": "ap-southeast-1:5ba0e7c3-a382-4455-9fb7-44b0631c26c0",
         "UserPoolArn": "arn:aws:cognito-idp:ap-southeast-1:277253331545:userpool/ap-southeast-1_8BuaAodDq",
         "IdentityPoolName": "fluxpayments4f50e62b_identitypool_4f50e62b__staging",
-        "UserPoolName": "fluxpayments4f50e62b_userpool_4f50e62b",
-        "HostedUIDomain": "fluxpayments-staging",
-        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"fluxapp://\"],\"LogoutURLs\":[\"fluxapp://\"]}"
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"fluxapp://\"],\"LogoutURLs\":[\"fluxapp://\"]}",
+        "UserPoolName": "fluxpayments4f50e62b_userpool_4f50e62b"
       },
-      "lastPushDirHash": "UtDcFBxBB4rEu5vSWsAHTkD/4Y0="
+      "lastPushTimeStamp": "2021-06-23T11:31:28.516Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/auth/fluxpayments4f50e62b-cloudformation-template.yml",
+        "logicalId": "authfluxpayments4f50e62b"
+      }
+    }
+  },
+  "api": {
+    "FluxPayments": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "yowfehfnfzcbznklv4ranuqm4a",
+        "GraphQLAPIEndpointOutput": "https://d567q7lppfag7hcdafokav5pge.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-qkpqd5n4hjdwtfhsnysxngvloq"
+      },
+      "lastPushTimeStamp": "2021-06-23T11:31:28.526Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiFluxPayments"
+      },
+      "lastPushDirHash": "9u9KWGyI81pEwTkox0gIZGp45fo="
     }
   }
 }
