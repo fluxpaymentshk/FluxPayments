@@ -1,3 +1,4 @@
+// @dart=2.9
 /*
 * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
@@ -47,12 +48,12 @@ class User extends Model {
   }
 
   const User._internal(
-      {required this.id,
-      required this.firstName,
+      {@required this.id,
+      @required this.firstName,
       this.lastName,
       this.dateOfBirth,
       this.idCardNumber,
-      required this.uniqueID,
+      @required this.uniqueID,
       this.mobileNumber,
       this.email,
       this.fluxPoints,

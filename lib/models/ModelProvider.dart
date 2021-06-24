@@ -1,3 +1,4 @@
+// @dart=2.9
 /*
 * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
@@ -16,23 +17,23 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
-import 'BillProvider.dart';
-import 'Reward.dart';
-import 'RewardPartner.dart';
-import 'RewardTransaction.dart';
+import 'bill_provider.dart';
+import 'reward.dart';
+import 'reward_partner.dart';
+import 'reward_transaction.dart';
 import 'Service.dart';
-import 'ServiceTransaction.dart';
-import 'Shop.dart';
-import 'User.dart';
+import 'service_transaction.dart';
+import 'shop.dart';
+import 'user.dart';
 
-export 'BillProvider.dart';
-export 'Reward.dart';
-export 'RewardPartner.dart';
-export 'RewardTransaction.dart';
+export 'bill_provider.dart';
+export 'reward.dart';
+export 'reward_partner.dart';
+export 'reward_transaction.dart';
 export 'Service.dart';
-export 'ServiceTransaction.dart';
-export 'Shop.dart';
-export 'User.dart';
+export 'service_transaction.dart';
+export 'shop.dart';
+export 'user.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
