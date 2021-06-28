@@ -1,0 +1,170 @@
+type UserWallet @model @auth(rules: [{allow: public}]) @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  name: String
+  upi: String
+  userID: ID
+}
+
+type Bank @model @auth(rules: [{allow: public}]) @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  accNumber: Int
+  bankName: String
+  ifscCode: String
+  name: String
+  userID: ID
+}
+
+type DebitCard @model @auth(rules: [{allow: public}]) @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  debitCardNumber: Int
+  expiryDate: AWSDate
+  bankName: String
+  cvv: Int
+  name: String
+  userID: ID
+}
+
+type CreditCard @model @auth(rules: [{allow: public}]) @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  creditCardNumber: Int
+  expiryDate: AWSDate
+  bankName: String
+  cvv: Int
+  name: String
+  userID: ID
+}
+
+type RewardCategory @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  icon: String
+  description: String
+  categorizes: [Reward] @connection(keyName: "byRewardCategory", fields: ["id"])
+}
+
+type UserService @model @auth(rules: [{allow: public}]) @key(name: "byUserBillProvider", fields: ["userbillproviderID"]) {
+  id: ID!
+  accountID: String
+  dueDate: AWSDate
+  userbillproviderID: ID
+  ServicetoServiceTransaction: ServiceTransaction @connection
+}
+
+type Service @model @auth(rules: [{allow: public}]) @key(name: "byBillProvider", fields: ["billproviderID"]) {
+  id: ID!
+  category: String
+  billproviderID: ID
+}
+
+type BillProvider @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  shortDescription: String
+  logo: AWSURL
+  ProvidesUserBill: [UserBillProvider] @connection(keyName: "byBillProvider", fields: ["id"])
+  hasServices: [Service] @connection(keyName: "byBillProvider", fields: ["id"])
+}
+
+type InternalAdvertisers @model @auth(rules: [{allow: public}]) @key(name: "byRewardPartner", fields: ["rewardpartnerID"]) {
+  id: ID!
+  category: String
+  score: Int
+  rewardpartnerID: ID
+}
+
+type ExternalAdvertisers @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  log: AWSURL
+  banner: AWSURL
+  shortDescription: String
+  longDescriptio: String
+  productName: String!
+  category: String
+  score: Int
+  productPic: AWSURL
+}
+
+type ServiceTransaction @model @auth(rules: [{allow: public}]) @key(name: "byUserBillProvider", fields: ["billproviderID"]) @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  dueDate: AWSDate
+  paidOn: AWSDate
+  rewardPoints: Int
+  billproviderID: ID
+  userID: ID
+}
+
+type UserBillProvider @model @auth(rules: [{allow: public}]) @key(name: "byBillProvider", fields: ["billproviderID"]) {
+  id: ID!
+  BillProviderToServiceTransactions: [ServiceTransaction] @connection(keyName: "byUserBillProvider", fields: ["id"])
+  billproviderID: ID
+  ProvideUserServices: [UserService] @connection(keyName: "byUserBillProvider", fields: ["id"])
+}
+
+type RewardTransaction @model @auth(rules: [{allow: public}]) @key(name: "byUser", fields: ["userID"]) @key(name: "byRewardPartner", fields: ["rewardpartnerID"]) {
+  id: ID!
+  amount: Float
+  timestamp: AWSDateTime
+  userID: ID
+  rewardpartnerID: ID
+}
+
+type Shop @model @auth(rules: [{allow: public}]) @key(name: "byRewardPartner", fields: ["rewardpartnerID"]) {
+  id: ID!
+  address: String!
+  name: String!
+  mapLink: AWSURL
+  image: AWSURL
+  rewardpartnerID: ID!
+  rewardshops: [Reward] @connection(keyName: "byShop", fields: ["id"])
+  ShopToRewardTransaction: RewardTransaction @connection
+}
+
+type Reward @model @auth(rules: [{allow: public}]) @key(name: "byRewardPartner", fields: ["rewardpartnerID"]) @key(name: "byShop", fields: ["shopID"]) @key(name: "byRewardCategory", fields: ["rewardcategoryID"]) {
+  id: ID!
+  name: String!
+  category: String!
+  shortDescription: String!
+  longDescription: String
+  amount: Float
+  image: AWSURL
+  rewardpartnerID: ID
+  RewardtoRewardTransaction: RewardTransaction @connection
+  shopID: ID
+  rewardcategoryID: ID
+}
+
+type RewardPartner @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  image: AWSURL
+  shortDescription: String!
+  size: Int
+  banner: AWSURL
+  franchises: [Shop] @connection(keyName: "byRewardPartner", fields: ["id"])
+  Rewards: [Reward] @connection(keyName: "byRewardPartner", fields: ["id"])
+  RewardPartnerToRewardTransactions: [RewardTransaction] @connection(keyName: "byRewardPartner", fields: ["id"])
+  Advertises: [InternalAdvertisers] @connection(keyName: "byRewardPartner", fields: ["id"])
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  firstName: String!
+  lastName: String
+  dateOfBirth: AWSDate
+  idCardNumber: String
+  uniqueID: String!
+  mobileNumber: String
+  email: AWSEmail
+  fluxPoints: Int
+  UserToRewardTransactions: [RewardTransaction] @connection(keyName: "byUser", fields: ["id"])
+  favorites: [String]
+  UserToServiceTransactions: [ServiceTransaction] @connection(keyName: "byUser", fields: ["id"])
+  hasBankAccounts: [Bank] @connection(keyName: "byUser", fields: ["id"])
+  hasDebitCards: [DebitCard] @connection(keyName: "byUser", fields: ["id"])
+  hasCreditCard: [CreditCard] @connection(keyName: "byUser", fields: ["id"])
+  hasWallets: [UserWallet] @connection(keyName: "byUser", fields: ["id"])
+  refreeID: String!
+  referredTo: [String]
+}
+ 

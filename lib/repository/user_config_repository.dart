@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
+import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/user_model.dart';
 import 'package:flux_payments/services/form_validator.dart';
 import 'package:flux_payments/services/user_details_services.dart';
@@ -45,8 +46,8 @@ class UserConfigRepository extends UserConfigBaseRepository {
   @override
   Future<List<AuthUserAttribute>> getUserCredentials() async {
     try {
-      UserModel user = new UserModel();
-      return await _userDetailsServices.getUserCredentials(user);
+      User user = new User(firstName: '', uniqueID: '');
+      return await _userDetailsServices.getUserCredentials();
     } catch (e) {
       log(e.toString());
       // throw Exception(e);

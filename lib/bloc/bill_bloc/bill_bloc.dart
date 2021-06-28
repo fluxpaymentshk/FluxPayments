@@ -11,11 +11,11 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
     try {
      
       if (event is LoadBills) {
-        List<Bills> bills=[];
+       // List<Bills> bills=[];
        
-        Data().getBillData(bills);
+      //  Data().getBillData(bills);
 
-        yield (LoadedBills(bills: bills));
+        yield (LoadedBills());//dummy
       }
     } catch (e) {
       yield ErrorState();
