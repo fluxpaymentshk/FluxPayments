@@ -37,7 +37,12 @@ class User extends Model {
   final List<RewardTransaction> UserToRewardTransactions;
   final List<String> favorites;
   final List<ServiceTransaction> UserToServiceTransactions;
-  final List<Service> UserToServices;
+  final List<Bank> hasBankAccounts;
+  final List<DebitCard> hasDebitCards;
+  final List<CreditCard> hasCreditCard;
+  final List<UserWallet> hasWallets;
+  final String refreeID;
+  final List<String> referredTo;
 
   @override
   getInstanceType() => classType;
@@ -60,7 +65,12 @@ class User extends Model {
       this.UserToRewardTransactions,
       this.favorites,
       this.UserToServiceTransactions,
-      this.UserToServices});
+      this.hasBankAccounts,
+      this.hasDebitCards,
+      this.hasCreditCard,
+      this.hasWallets,
+      @required this.refreeID,
+      this.referredTo});
 
   factory User(
       {String id,
@@ -75,7 +85,12 @@ class User extends Model {
       List<RewardTransaction> UserToRewardTransactions,
       List<String> favorites,
       List<ServiceTransaction> UserToServiceTransactions,
-      List<Service> UserToServices}) {
+      List<Bank> hasBankAccounts,
+      List<DebitCard> hasDebitCards,
+      List<CreditCard> hasCreditCard,
+      List<UserWallet> hasWallets,
+      @required String refreeID,
+      List<String> referredTo}) {
     return User._internal(
         id: id == null ? UUID.getUUID() : id,
         firstName: firstName,
@@ -93,9 +108,20 @@ class User extends Model {
         UserToServiceTransactions: UserToServiceTransactions != null
             ? List.unmodifiable(UserToServiceTransactions)
             : UserToServiceTransactions,
-        UserToServices: UserToServices != null
-            ? List.unmodifiable(UserToServices)
-            : UserToServices);
+        hasBankAccounts: hasBankAccounts != null
+            ? List.unmodifiable(hasBankAccounts)
+            : hasBankAccounts,
+        hasDebitCards: hasDebitCards != null
+            ? List.unmodifiable(hasDebitCards)
+            : hasDebitCards,
+        hasCreditCard: hasCreditCard != null
+            ? List.unmodifiable(hasCreditCard)
+            : hasCreditCard,
+        hasWallets:
+            hasWallets != null ? List.unmodifiable(hasWallets) : hasWallets,
+        refreeID: refreeID,
+        referredTo:
+            referredTo != null ? List.unmodifiable(referredTo) : referredTo);
   }
 
   bool equals(Object other) {
@@ -120,7 +146,13 @@ class User extends Model {
         DeepCollectionEquality().equals(favorites, other.favorites) &&
         DeepCollectionEquality().equals(
             UserToServiceTransactions, other.UserToServiceTransactions) &&
-        DeepCollectionEquality().equals(UserToServices, other.UserToServices);
+        DeepCollectionEquality()
+            .equals(hasBankAccounts, other.hasBankAccounts) &&
+        DeepCollectionEquality().equals(hasDebitCards, other.hasDebitCards) &&
+        DeepCollectionEquality().equals(hasCreditCard, other.hasCreditCard) &&
+        DeepCollectionEquality().equals(hasWallets, other.hasWallets) &&
+        refreeID == other.refreeID &&
+        DeepCollectionEquality().equals(referredTo, other.referredTo);
   }
 
   @override
@@ -144,8 +176,12 @@ class User extends Model {
     buffer.write("fluxPoints=" +
         (fluxPoints != null ? fluxPoints.toString() : "null") +
         ", ");
+    buffer.write("favorites=" +
+        (favorites != null ? favorites.toString() : "null") +
+        ", ");
+    buffer.write("refreeID=" + "$refreeID" + ", ");
     buffer.write(
-        "favorites=" + (favorites != null ? favorites.toString() : "null"));
+        "referredTo=" + (referredTo != null ? referredTo.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -164,7 +200,12 @@ class User extends Model {
       List<RewardTransaction> UserToRewardTransactions,
       List<String> favorites,
       List<ServiceTransaction> UserToServiceTransactions,
-      List<Service> UserToServices}) {
+      List<Bank> hasBankAccounts,
+      List<DebitCard> hasDebitCards,
+      List<CreditCard> hasCreditCard,
+      List<UserWallet> hasWallets,
+      String refreeID,
+      List<String> referredTo}) {
     return User(
         id: id ?? this.id,
         firstName: firstName ?? this.firstName,
@@ -180,7 +221,12 @@ class User extends Model {
         favorites: favorites ?? this.favorites,
         UserToServiceTransactions:
             UserToServiceTransactions ?? this.UserToServiceTransactions,
-        UserToServices: UserToServices ?? this.UserToServices);
+        hasBankAccounts: hasBankAccounts ?? this.hasBankAccounts,
+        hasDebitCards: hasDebitCards ?? this.hasDebitCards,
+        hasCreditCard: hasCreditCard ?? this.hasCreditCard,
+        hasWallets: hasWallets ?? this.hasWallets,
+        refreeID: refreeID ?? this.refreeID,
+        referredTo: referredTo ?? this.referredTo);
   }
 
   User.fromJson(Map<String, dynamic> json)
@@ -208,11 +254,31 @@ class User extends Model {
                     new Map<String, dynamic>.from(e)))
                 .toList()
             : null,
-        UserToServices = json['UserToServices'] is List
-            ? (json['UserToServices'] as List)
-                .map((e) => Service.fromJson(new Map<String, dynamic>.from(e)))
+        hasBankAccounts = json['hasBankAccounts'] is List
+            ? (json['hasBankAccounts'] as List)
+                .map((e) => Bank.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
-            : null;
+            : null,
+        hasDebitCards = json['hasDebitCards'] is List
+            ? (json['hasDebitCards'] as List)
+                .map(
+                    (e) => DebitCard.fromJson(new Map<String, dynamic>.from(e)))
+                .toList()
+            : null,
+        hasCreditCard = json['hasCreditCard'] is List
+            ? (json['hasCreditCard'] as List)
+                .map((e) =>
+                    CreditCard.fromJson(new Map<String, dynamic>.from(e)))
+                .toList()
+            : null,
+        hasWallets = json['hasWallets'] is List
+            ? (json['hasWallets'] as List)
+                .map((e) =>
+                    UserWallet.fromJson(new Map<String, dynamic>.from(e)))
+                .toList()
+            : null,
+        refreeID = json['refreeID'],
+        referredTo = json['referredTo']?.cast<String>();
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -229,7 +295,12 @@ class User extends Model {
         'favorites': favorites,
         'UserToServiceTransactions':
             UserToServiceTransactions?.map((e) => e?.toJson())?.toList(),
-        'UserToServices': UserToServices?.map((e) => e?.toJson())?.toList()
+        'hasBankAccounts': hasBankAccounts?.map((e) => e?.toJson())?.toList(),
+        'hasDebitCards': hasDebitCards?.map((e) => e?.toJson())?.toList(),
+        'hasCreditCard': hasCreditCard?.map((e) => e?.toJson())?.toList(),
+        'hasWallets': hasWallets?.map((e) => e?.toJson())?.toList(),
+        'refreeID': refreeID,
+        'referredTo': referredTo
       };
 
   static final QueryField ID = QueryField(fieldName: "user.id");
@@ -250,10 +321,24 @@ class User extends Model {
       fieldName: "UserToServiceTransactions",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (ServiceTransaction).toString()));
-  static final QueryField USERTOSERVICES = QueryField(
-      fieldName: "UserToServices",
+  static final QueryField HASBANKACCOUNTS = QueryField(
+      fieldName: "hasBankAccounts",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (Service).toString()));
+          ofModelName: (Bank).toString()));
+  static final QueryField HASDEBITCARDS = QueryField(
+      fieldName: "hasDebitCards",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (DebitCard).toString()));
+  static final QueryField HASCREDITCARD = QueryField(
+      fieldName: "hasCreditCard",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (CreditCard).toString()));
+  static final QueryField HASWALLETS = QueryField(
+      fieldName: "hasWallets",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (UserWallet).toString()));
+  static final QueryField REFREEID = QueryField(fieldName: "refreeID");
+  static final QueryField REFERREDTO = QueryField(fieldName: "referredTo");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "User";
@@ -330,10 +415,40 @@ class User extends Model {
         associatedKey: ServiceTransaction.USERID));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.USERTOSERVICES,
+        key: User.HASBANKACCOUNTS,
         isRequired: false,
-        ofModelName: (Service).toString(),
-        associatedKey: Service.USERID));
+        ofModelName: (Bank).toString(),
+        associatedKey: Bank.USERID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+        key: User.HASDEBITCARDS,
+        isRequired: false,
+        ofModelName: (DebitCard).toString(),
+        associatedKey: DebitCard.USERID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+        key: User.HASCREDITCARD,
+        isRequired: false,
+        ofModelName: (CreditCard).toString(),
+        associatedKey: CreditCard.USERID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+        key: User.HASWALLETS,
+        isRequired: false,
+        ofModelName: (UserWallet).toString(),
+        associatedKey: UserWallet.USERID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: User.REFREEID,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: User.REFERREDTO,
+        isRequired: false,
+        isArray: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.collection,
+            ofModelName: describeEnum(ModelFieldTypeEnum.string))));
   });
 }
 
