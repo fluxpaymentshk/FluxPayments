@@ -2,6 +2,7 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/bill_bloc/bill_bloc.dart';
+import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/user_model.dart';
 import 'package:flux_payments/screens/pay_bills.dart';
 import 'package:flux_payments/services/user_details_services.dart';
@@ -24,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
     // UserDetailsServices().getUserCredentials(user);
   }
 
-  UserModel user = UserModel();
+  User user = User(firstName: '', uniqueID: '');
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Icon(Icons.logout),
       ),
       body: FutureBuilder(
-          future: UserDetailsServices().getUserCredentials(user),
+          future: UserDetailsServices().getUserCredentials(),//to change
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return SingleChildScrollView(
@@ -103,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'DOB : \n' + (user.dateOfBirth ?? 'Not Mentioned'),
+                        'DOB : \n' + (user.dateOfBirth.toString()??'N/A'),
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -158,7 +159,9 @@ class _ProfilePageState extends State<ProfilePage> {
    MaterialPageRoute(
       builder:(context)=>BlocProvider<BillsBloc>(
           create: (context) => BillsBloc(),
-          child:PayBills(),
+          child:
+          Center(),//dummy
+         // PayBills(),
            // child: context=>PayBills(),  
         ), 
       

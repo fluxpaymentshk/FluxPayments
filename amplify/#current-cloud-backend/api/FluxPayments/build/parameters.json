@@ -1,0 +1,8 @@
+{
+    "CreateAPIKey": 1,
+    "AppSyncApiName": "FluxPayments",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-fluxpayments-staging-122415-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/e8f186a4aa7b32a8523203a10f643180b997260a"
+}
