@@ -71,7 +71,11 @@ class _HomePageState extends State<HomePage> {
         children: [
           FloatingActionButton(
             onPressed: () async {
-              _databaseLambdaService.test();
+              Map<String, dynamic> r = await _databaseLambdaService
+                  .getPaymentHistoryProviderWiseDetails(userID: "Flux-Monik");
+              r.forEach((key, value) {
+                if (key == "records") print(key + "--->" + value.toString());
+              });
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text("Called the lambda function"),
