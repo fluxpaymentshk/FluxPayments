@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/gift_page.dart';
+import 'package:flux_payments/screens/reward_partners.dart';
 import 'package:tuple/tuple.dart';
 
-import 'pay_bills.dart';
 import 'home_page.dart';
+import 'pay_bills.dart';
 import 'profile_page.dart';
 
 class NavigatorPage extends StatefulWidget {
@@ -27,9 +28,11 @@ class _NavigatorPageState extends State<NavigatorPage> {
       Tuple2('payment', HomePage(userRepository: widget.userRepository)),
       // Tuple2('payment', PayBills()),
       Tuple2('home', ProfilePage()),
-      Tuple2('gift', giftPage()),
+      // Tuple2('gift', giftPage()),
+      Tuple2("Rewards", RewardPartnerScreen())
     ];
   }
+
 
   // final List<Tuple2>
   int _selectedPage = 0;

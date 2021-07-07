@@ -17,31 +17,26 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
- 
-
   @override
   void initState() {
     super.initState();
     // UserDetailsServices().getUserCredentials(user);
   }
 
-  User user = User(firstName: '', uniqueID: '');
+  User user = User(firstName: '', uniqueID: '',refreeID: "ll");
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: 
-            Text('Profile Page'),
-      
-        leading:  Padding(
-      padding:  EdgeInsets.all(8.0),
-      child: Material(
-          shape:  CircleBorder(),
-      ),),
-        
-    ),
-      
+        title: Text('Profile Page'),
+        leading: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Material(
+            shape: CircleBorder(),
+          ),
+        ),
+      ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -51,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Icon(Icons.logout),
       ),
       body: FutureBuilder(
-          future: UserDetailsServices().getUserCredentials(),//to change
+          future: UserDetailsServices().getUserCredentials(), //to change
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return SingleChildScrollView(
@@ -98,19 +93,19 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                     SizedBox(
+                    SizedBox(
                       height: 15,
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'DOB : \n' + (user.dateOfBirth.toString()??'N/A'),
+                        'DOB : \n' + (user.dateOfBirth.toString()),
                         style: TextStyle(
                           fontSize: 20,
                         ),
                       ),
                     ),
-                     SizedBox(
+                    SizedBox(
                       height: 15,
                     ),
                     Align(
@@ -122,19 +117,20 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                     SizedBox(
+                    SizedBox(
                       height: 15,
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'mobile number : \n' + (user.mobileNumber ?? '123456789'),
+                        'mobile number : \n' +
+                            (user.mobileNumber ?? '123456789'),
                         style: TextStyle(
                           fontSize: 20,
                         ),
                       ),
                     ),
-                     SizedBox(
+                    SizedBox(
                       height: 15,
                     ),
                     Align(
@@ -146,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-              
+
                     SizedBox(
                       height: 20,
                     ),
@@ -154,29 +150,28 @@ class _ProfilePageState extends State<ProfilePage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
-                        onPressed: () { 
-                         Navigator.push(context,
-   MaterialPageRoute(
-      builder:(context)=>BlocProvider<BillsBloc>(
-          create: (context) => BillsBloc(),
-          child:
-          Center(),//dummy
-         // PayBills(),
-           // child: context=>PayBills(),  
-        ), 
-      
-      //(BuildContext context) => const PayBills(),
-      
-    ),
-  );
-                         },
-                        child:Text(
-                        'My Bills',
-                        style: TextStyle(
-                          fontSize: 20,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BlocProvider<BillsBloc>(
+                                create: (context) => BillsBloc(),
+                                child: Center(), //dummy
+                                // PayBills(),
+                                // child: context=>PayBills(),
+                              ),
+
+                              //(BuildContext context) => const PayBills(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'My Bills',
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
-                        
-                      ),),
+                      ),
                     ),
                   ],
                 ),

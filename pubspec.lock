@@ -7,56 +7,56 @@ packages:
       name: amplify_analytics_plugin_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   amplify_api_plugin_interface:
     dependency: transitive
     description:
       name: amplify_api_plugin_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   amplify_auth_cognito:
     dependency: "direct main"
     description:
       name: amplify_auth_cognito
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   amplify_auth_plugin_interface:
     dependency: transitive
     description:
       name: amplify_auth_plugin_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   amplify_core:
     dependency: "direct main"
     description:
       name: amplify_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   amplify_datastore_plugin_interface:
     dependency: transitive
     description:
       name: amplify_datastore_plugin_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   amplify_flutter:
     dependency: "direct main"
     description:
       name: amplify_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   amplify_storage_plugin_interface:
     dependency: transitive
     description:
       name: amplify_storage_plugin_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   async:
     dependency: transitive
     description:
@@ -64,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.1"
+  aws_lambda:
+    dependency: "direct main"
+    description:
+      name: aws_lambda
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   bloc:
     dependency: transitive
     description:
@@ -183,14 +190,14 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.3"
+    version: "0.12.2"
   http_parser:
     dependency: transitive
     description:
       name: http_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "3.1.4"
   intl_phone_number_input:
     dependency: "direct main"
     description:

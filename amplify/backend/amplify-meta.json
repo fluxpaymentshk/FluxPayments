@@ -30,7 +30,7 @@
         "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"fluxapp://\"],\"LogoutURLs\":[\"fluxapp://\"]}",
         "UserPoolName": "fluxpayments4f50e62b_userpool_4f50e62b"
       },
-      "lastPushTimeStamp": "2021-06-28T09:51:40.718Z",
+      "lastPushTimeStamp": "2021-06-28T10:02:47.102Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/auth/fluxpayments4f50e62b-cloudformation-template.yml",
         "logicalId": "authfluxpayments4f50e62b"
@@ -60,7 +60,7 @@
         "GraphQLAPIEndpointOutput": "https://d567q7lppfag7hcdafokav5pge.appsync-api.ap-southeast-1.amazonaws.com/graphql",
         "GraphQLAPIKeyOutput": "da2-qkpqd5n4hjdwtfhsnysxngvloq"
       },
-      "lastPushTimeStamp": "2021-06-28T09:51:40.725Z",
+      "lastPushTimeStamp": "2021-06-28T10:02:47.119Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiFluxPayments"

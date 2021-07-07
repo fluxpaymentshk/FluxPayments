@@ -28,10 +28,16 @@ dependencies:
 
   flutter_bloc: ^7.0.1
   equatable: ^2.0.2
-  http: ^0.13.3
+  http: ^0.12.1
+  
   amplify_core: ^0.1.5
   amplify_flutter: ^0.1.5
   amplify_auth_cognito: ^0.1.5
+  # dart_mssql: ^1.0.1
+  # amplify_api: ^0.2.0
+  # aws_rds_api: ^0.1.1
+  aws_lambda: ^0.0.2
+
   otp_text_field: ^1.1.1
   pin_code_fields: ^7.2.0
   tuple: ^2.0.0
