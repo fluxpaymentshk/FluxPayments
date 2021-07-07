@@ -1,3 +1,4 @@
+//@dart=2.9
 import 'dart:async';
 import 'dart:developer';
 
@@ -14,8 +15,10 @@ import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/login_page.dart';
 import 'package:flux_payments/routes/modal_routes.dart';
+import 'package:flux_payments/screens/navigator_page.dart';
+// import 'package:dart_mssql/dart_mssql.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 
@@ -89,7 +92,6 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-    //  onGenerateRoute: ModalRoutes.generateroute,
       home: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -129,9 +131,8 @@ class _MyAppState extends State<MyApp> {
                           loginRepo: _loginRepository,
                           userConfigRepository: _userConfigRepository,
                         );
-                      return HomePage(
-                          userRepository: _userConfigRepository,
-                          email: userDetails["email"] ?? "");
+                      return NavigatorPage(
+                          userRepository: _userConfigRepository);
                     });
           },
         ),
