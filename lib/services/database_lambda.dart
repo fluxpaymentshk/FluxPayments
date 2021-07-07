@@ -27,4 +27,21 @@ class DatabaseLambdaService {
     }
     return result;
   }
+
+  Future<Map<String, dynamic>> CouponToTransaction() async {
+    result = {};
+    try {
+      result = await lambda.callLambda('CouponAurora', <String, dynamic>{
+        "shopID": "shop1",
+        "rewardID": "reward1",
+        "myCouponsID": "coupon1",
+      });
+      print(
+          "---------------------------------------------------------------------------------$result");
+    } catch (e) {
+      print("ERROR !!!!!!");
+      print(e);
+    }
+    return result;
+  }
 }

@@ -6,6 +6,7 @@ import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/user_model.dart';
 import 'package:flux_payments/screens/pay_bills.dart';
 import 'package:flux_payments/services/user_details_services.dart';
+import 'package:flux_payments/services/database_lambda.dart';
 
 import 'login_page.dart';
 
@@ -24,6 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   User user = User(firstName: '', uniqueID: '',refreeID: "ll");
+  DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +40,30 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Amplify.Auth.signOut();
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-        },
-        child: Icon(Icons.logout),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              _databaseLambdaService.CouponToTransaction();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Transferred coupon to transaction"),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+            child: Icon(Icons.transform, size: 40),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () async {
+              await Amplify.Auth.signOut();
+              Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+            },
+            child: Icon(Icons.logout),
+          ),
+        ],
       ),
       body: FutureBuilder(
           future: UserDetailsServices().getUserCredentials(), //to change
