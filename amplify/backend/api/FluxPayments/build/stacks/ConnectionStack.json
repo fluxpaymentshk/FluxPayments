@@ -86,7 +86,7 @@
         }
     },
     "Resources": {
-        "ServiceTransactionServiceTransactionToRewardTransactionResolver": {
+        "RewardCategorycategorizesResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -101,14 +101,14 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "RewardTransactionDataSource",
+                                "RewardDataSource",
                                 "Name"
                             ]
                         ]
                     }
                 },
-                "FieldName": "ServiceTransactionToRewardTransaction",
-                "TypeName": "ServiceTransaction",
+                "FieldName": "categorizes",
+                "TypeName": "RewardCategory",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
                         "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
@@ -123,8 +123,8 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "ServiceTransaction",
-                                        "ServiceTransactionToRewardTransaction",
+                                        "RewardCategory",
+                                        "categorizes",
                                         "req",
                                         "vtl"
                                     ]
@@ -147,8 +147,8 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "ServiceTransaction",
-                                        "ServiceTransactionToRewardTransaction",
+                                        "RewardCategory",
+                                        "categorizes",
                                         "res",
                                         "vtl"
                                     ]
@@ -159,7 +159,7 @@
                 }
             }
         },
-        "ServiceServiceToServiceTransactionResolver": {
+        "UserServiceServicetoServiceTransactionResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -180,8 +180,8 @@
                         ]
                     }
                 },
-                "FieldName": "ServiceToServiceTransaction",
-                "TypeName": "Service",
+                "FieldName": "ServicetoServiceTransaction",
+                "TypeName": "UserService",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
                         "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
@@ -196,8 +196,8 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "Service",
-                                        "ServiceToServiceTransaction",
+                                        "UserService",
+                                        "ServicetoServiceTransaction",
                                         "req",
                                         "vtl"
                                     ]
@@ -220,8 +220,8 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "Service",
-                                        "ServiceToServiceTransaction",
+                                        "UserService",
+                                        "ServicetoServiceTransaction",
                                         "res",
                                         "vtl"
                                     ]
@@ -232,7 +232,80 @@
                 }
             }
         },
-        "BillProviderServicesResolver": {
+        "BillProviderProvidesUserBillResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "GetAttGraphQLAPIApiId"
+                },
+                "DataSourceName": {
+                    "Fn::ImportValue": {
+                        "Fn::Join": [
+                            ":",
+                            [
+                                {
+                                    "Ref": "AppSyncApiId"
+                                },
+                                "GetAtt",
+                                "UserBillProviderDataSource",
+                                "Name"
+                            ]
+                        ]
+                    }
+                },
+                "FieldName": "ProvidesUserBill",
+                "TypeName": "BillProvider",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "BillProvider",
+                                        "ProvidesUserBill",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "BillProvider",
+                                        "ProvidesUserBill",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "BillProviderhasServicesResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -253,7 +326,7 @@
                         ]
                     }
                 },
-                "FieldName": "Services",
+                "FieldName": "hasServices",
                 "TypeName": "BillProvider",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
@@ -270,7 +343,7 @@
                                     ".",
                                     [
                                         "BillProvider",
-                                        "Services",
+                                        "hasServices",
                                         "req",
                                         "vtl"
                                     ]
@@ -294,7 +367,7 @@
                                     ".",
                                     [
                                         "BillProvider",
-                                        "Services",
+                                        "hasServices",
                                         "res",
                                         "vtl"
                                     ]
@@ -305,7 +378,7 @@
                 }
             }
         },
-        "BillProviderBillProviderToServiceTransactionsResolver": {
+        "UserBillProviderBillProviderToServiceTransactionsResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -327,7 +400,7 @@
                     }
                 },
                 "FieldName": "BillProviderToServiceTransactions",
-                "TypeName": "BillProvider",
+                "TypeName": "UserBillProvider",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
                         "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
@@ -342,7 +415,7 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "BillProvider",
+                                        "UserBillProvider",
                                         "BillProviderToServiceTransactions",
                                         "req",
                                         "vtl"
@@ -366,8 +439,81 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "BillProvider",
+                                        "UserBillProvider",
                                         "BillProviderToServiceTransactions",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "UserBillProviderProvideUserServicesResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "GetAttGraphQLAPIApiId"
+                },
+                "DataSourceName": {
+                    "Fn::ImportValue": {
+                        "Fn::Join": [
+                            ":",
+                            [
+                                {
+                                    "Ref": "AppSyncApiId"
+                                },
+                                "GetAtt",
+                                "UserServiceDataSource",
+                                "Name"
+                            ]
+                        ]
+                    }
+                },
+                "FieldName": "ProvideUserServices",
+                "TypeName": "UserBillProvider",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "UserBillProvider",
+                                        "ProvideUserServices",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "UserBillProvider",
+                                        "ProvideUserServices",
                                         "res",
                                         "vtl"
                                     ]
@@ -816,6 +962,79 @@
                 }
             }
         },
+        "RewardPartnerAdvertisesResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "GetAttGraphQLAPIApiId"
+                },
+                "DataSourceName": {
+                    "Fn::ImportValue": {
+                        "Fn::Join": [
+                            ":",
+                            [
+                                {
+                                    "Ref": "AppSyncApiId"
+                                },
+                                "GetAtt",
+                                "InternalAdvertisersDataSource",
+                                "Name"
+                            ]
+                        ]
+                    }
+                },
+                "FieldName": "Advertises",
+                "TypeName": "RewardPartner",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "RewardPartner",
+                                        "Advertises",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "RewardPartner",
+                                        "Advertises",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
         "UserUserToRewardTransactionsResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
@@ -962,7 +1181,7 @@
                 }
             }
         },
-        "UserUserToServicesResolver": {
+        "UserhasBankAccountsResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -977,13 +1196,13 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "ServiceDataSource",
+                                "BankDataSource",
                                 "Name"
                             ]
                         ]
                     }
                 },
-                "FieldName": "UserToServices",
+                "FieldName": "hasBankAccounts",
                 "TypeName": "User",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
@@ -1000,7 +1219,7 @@
                                     ".",
                                     [
                                         "User",
-                                        "UserToServices",
+                                        "hasBankAccounts",
                                         "req",
                                         "vtl"
                                     ]
@@ -1024,7 +1243,226 @@
                                     ".",
                                     [
                                         "User",
-                                        "UserToServices",
+                                        "hasBankAccounts",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "UserhasDebitCardsResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "GetAttGraphQLAPIApiId"
+                },
+                "DataSourceName": {
+                    "Fn::ImportValue": {
+                        "Fn::Join": [
+                            ":",
+                            [
+                                {
+                                    "Ref": "AppSyncApiId"
+                                },
+                                "GetAtt",
+                                "DebitCardDataSource",
+                                "Name"
+                            ]
+                        ]
+                    }
+                },
+                "FieldName": "hasDebitCards",
+                "TypeName": "User",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "User",
+                                        "hasDebitCards",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "User",
+                                        "hasDebitCards",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "UserhasCreditCardResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "GetAttGraphQLAPIApiId"
+                },
+                "DataSourceName": {
+                    "Fn::ImportValue": {
+                        "Fn::Join": [
+                            ":",
+                            [
+                                {
+                                    "Ref": "AppSyncApiId"
+                                },
+                                "GetAtt",
+                                "CreditCardDataSource",
+                                "Name"
+                            ]
+                        ]
+                    }
+                },
+                "FieldName": "hasCreditCard",
+                "TypeName": "User",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "User",
+                                        "hasCreditCard",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "User",
+                                        "hasCreditCard",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "UserhasWalletsResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "GetAttGraphQLAPIApiId"
+                },
+                "DataSourceName": {
+                    "Fn::ImportValue": {
+                        "Fn::Join": [
+                            ":",
+                            [
+                                {
+                                    "Ref": "AppSyncApiId"
+                                },
+                                "GetAtt",
+                                "UserWalletDataSource",
+                                "Name"
+                            ]
+                        ]
+                    }
+                },
+                "FieldName": "hasWallets",
+                "TypeName": "User",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "User",
+                                        "hasWallets",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "User",
+                                        "hasWallets",
                                         "res",
                                         "vtl"
                                     ]

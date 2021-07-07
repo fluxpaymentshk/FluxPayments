@@ -34,6 +34,7 @@ class Reward extends Model {
   final String rewardpartnerID;
   final RewardTransaction RewardtoRewardTransaction;
   final String shopID;
+  final String rewardcategoryID;
 
   @override
   getInstanceType() => classType;
@@ -53,7 +54,8 @@ class Reward extends Model {
       this.image,
       this.rewardpartnerID,
       this.RewardtoRewardTransaction,
-      this.shopID});
+      this.shopID,
+      this.rewardcategoryID});
 
   factory Reward(
       {String id,
@@ -65,7 +67,8 @@ class Reward extends Model {
       String image,
       String rewardpartnerID,
       RewardTransaction RewardtoRewardTransaction,
-      String shopID}) {
+      String shopID,
+      String rewardcategoryID}) {
     return Reward._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
@@ -76,7 +79,8 @@ class Reward extends Model {
         image: image,
         rewardpartnerID: rewardpartnerID,
         RewardtoRewardTransaction: RewardtoRewardTransaction,
-        shopID: shopID);
+        shopID: shopID,
+        rewardcategoryID: rewardcategoryID);
   }
 
   bool equals(Object other) {
@@ -96,7 +100,8 @@ class Reward extends Model {
         image == other.image &&
         rewardpartnerID == other.rewardpartnerID &&
         RewardtoRewardTransaction == other.RewardtoRewardTransaction &&
-        shopID == other.shopID;
+        shopID == other.shopID &&
+        rewardcategoryID == other.rewardcategoryID;
   }
 
   @override
@@ -121,7 +126,8 @@ class Reward extends Model {
             ? RewardtoRewardTransaction.toString()
             : "null") +
         ", ");
-    buffer.write("shopID=" + "$shopID");
+    buffer.write("shopID=" + "$shopID" + ", ");
+    buffer.write("rewardcategoryID=" + "$rewardcategoryID");
     buffer.write("}");
 
     return buffer.toString();
@@ -137,7 +143,8 @@ class Reward extends Model {
       String image,
       String rewardpartnerID,
       RewardTransaction RewardtoRewardTransaction,
-      String shopID}) {
+      String shopID,
+      String rewardcategoryID}) {
     return Reward(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -149,7 +156,8 @@ class Reward extends Model {
         rewardpartnerID: rewardpartnerID ?? this.rewardpartnerID,
         RewardtoRewardTransaction:
             RewardtoRewardTransaction ?? this.RewardtoRewardTransaction,
-        shopID: shopID ?? this.shopID);
+        shopID: shopID ?? this.shopID,
+        rewardcategoryID: rewardcategoryID ?? this.rewardcategoryID);
   }
 
   Reward.fromJson(Map<String, dynamic> json)
@@ -165,7 +173,8 @@ class Reward extends Model {
             ? RewardTransaction.fromJson(new Map<String, dynamic>.from(
                 json['RewardtoRewardTransaction']))
             : null,
-        shopID = json['shopID'];
+        shopID = json['shopID'],
+        rewardcategoryID = json['rewardcategoryID'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -177,7 +186,8 @@ class Reward extends Model {
         'image': image,
         'rewardpartnerID': rewardpartnerID,
         'RewardtoRewardTransaction': RewardtoRewardTransaction?.toJson(),
-        'shopID': shopID
+        'shopID': shopID,
+        'rewardcategoryID': rewardcategoryID
       };
 
   static final QueryField ID = QueryField(fieldName: "reward.id");
@@ -196,6 +206,8 @@ class Reward extends Model {
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (RewardTransaction).toString()));
   static final QueryField SHOPID = QueryField(fieldName: "shopID");
+  static final QueryField REWARDCATEGORYID =
+      QueryField(fieldName: "rewardcategoryID");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Reward";
@@ -255,6 +267,11 @@ class Reward extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Reward.SHOPID,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Reward.REWARDCATEGORYID,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });

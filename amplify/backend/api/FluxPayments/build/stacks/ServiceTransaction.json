@@ -193,7 +193,7 @@
                 },
                 "GlobalSecondaryIndexes": [
                     {
-                        "IndexName": "byBillProvider",
+                        "IndexName": "byUserBillProvider",
                         "KeySchema": [
                             {
                                 "AttributeName": "billproviderID",

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:amplify_flutter/amplify.dart';
+import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/change_password.dart';
 import 'package:flux_payments/screens/login_page.dart';
 import 'package:flux_payments/screens/password_reset.dart';
+import 'package:flux_payments/services/database_lambda.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -24,7 +26,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   UserConfigRepository _userConfigRepository = new UserConfigRepository();
-//  @override
+
+  DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -57,12 +66,30 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('BottomNavigationBar Sample'),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Amplify.Auth.signOut();
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-        },
-        child: Icon(Icons.logout),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              _databaseLambdaService.test();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Called the lambda function"),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+            child: Icon(Icons.run_circle_outlined, size: 40),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () async {
+              await Amplify.Auth.signOut();
+              Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+            },
+            child: Icon(Icons.logout),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -83,8 +110,8 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(value: 
-                        userBloc,
+                        builder: (_) => BlocProvider.value(
+                          value: userBloc,
                           // create: (_) => UserBloc(
                           //     widget.userRepository ?? _userConfigRepository),
                           child: ChangePassword(),
@@ -133,7 +160,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-    
     );
   }
 }

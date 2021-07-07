@@ -133,10 +133,6 @@
                     {
                         "AttributeName": "billproviderID",
                         "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "userID",
-                        "AttributeType": "S"
                     }
                 ],
                 "StreamSpecification": {
@@ -197,34 +193,6 @@
                         "KeySchema": [
                             {
                                 "AttributeName": "billproviderID",
-                                "KeyType": "HASH"
-                            }
-                        ],
-                        "Projection": {
-                            "ProjectionType": "ALL"
-                        },
-                        "ProvisionedThroughput": {
-                            "Fn::If": [
-                                "ShouldUsePayPerRequestBilling",
-                                {
-                                    "Ref": "AWS::NoValue"
-                                },
-                                {
-                                    "ReadCapacityUnits": {
-                                        "Ref": "DynamoDBModelTableReadIOPS"
-                                    },
-                                    "WriteCapacityUnits": {
-                                        "Ref": "DynamoDBModelTableWriteIOPS"
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "IndexName": "byUser",
-                        "KeySchema": [
-                            {
-                                "AttributeName": "userID",
                                 "KeyType": "HASH"
                             }
                         ],

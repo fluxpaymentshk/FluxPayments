@@ -137,6 +137,10 @@
                     {
                         "AttributeName": "shopID",
                         "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "rewardcategoryID",
+                        "AttributeType": "S"
                     }
                 ],
                 "StreamSpecification": {
@@ -225,6 +229,34 @@
                         "KeySchema": [
                             {
                                 "AttributeName": "shopID",
+                                "KeyType": "HASH"
+                            }
+                        ],
+                        "Projection": {
+                            "ProjectionType": "ALL"
+                        },
+                        "ProvisionedThroughput": {
+                            "Fn::If": [
+                                "ShouldUsePayPerRequestBilling",
+                                {
+                                    "Ref": "AWS::NoValue"
+                                },
+                                {
+                                    "ReadCapacityUnits": {
+                                        "Ref": "DynamoDBModelTableReadIOPS"
+                                    },
+                                    "WriteCapacityUnits": {
+                                        "Ref": "DynamoDBModelTableWriteIOPS"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IndexName": "byRewardCategory",
+                        "KeySchema": [
+                            {
+                                "AttributeName": "rewardcategoryID",
                                 "KeyType": "HASH"
                             }
                         ],

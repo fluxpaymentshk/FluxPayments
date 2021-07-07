@@ -17,37 +17,64 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
-import 'bill_provider.dart';
-import 'reward.dart';
-import 'reward_partner.dart';
-import 'reward_transaction.dart';
+import 'Bank.dart';
+import 'BillProvider.dart';
+import 'CreditCard.dart';
+import 'DebitCard.dart';
+import 'ExternalAdvertisers.dart';
+import 'InternalAdvertisers.dart';
+import 'Reward.dart';
+import 'RewardCategory.dart';
+import 'RewardPartner.dart';
+import 'RewardTransaction.dart';
 import 'Service.dart';
-import 'service_transaction.dart';
-import 'shop.dart';
-import 'user.dart';
+import 'ServiceTransaction.dart';
+import 'Shop.dart';
+import 'User.dart';
+import 'UserBillProvider.dart';
+import 'UserService.dart';
+import 'UserWallet.dart';
 
-export 'bill_provider.dart';
-export 'reward.dart';
-export 'reward_partner.dart';
-export 'reward_transaction.dart';
+export 'Bank.dart';
+export 'BillProvider.dart';
+export 'CreditCard.dart';
+export 'DebitCard.dart';
+export 'ExternalAdvertisers.dart';
+export 'InternalAdvertisers.dart';
+export 'Reward.dart';
+export 'RewardCategory.dart';
+export 'RewardPartner.dart';
+export 'RewardTransaction.dart';
 export 'Service.dart';
-export 'service_transaction.dart';
-export 'shop.dart';
-export 'user.dart';
+export 'ServiceTransaction.dart';
+export 'Shop.dart';
+export 'User.dart';
+export 'UserBillProvider.dart';
+export 'UserService.dart';
+export 'UserWallet.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "ae36c60e18620748d3293e6176e82e4e";
+  String version = "a30c7c0f1349ff4e0d56b33a24ede353";
   @override
   List<ModelSchema> modelSchemas = [
+    Bank.schema,
     BillProvider.schema,
+    CreditCard.schema,
+    DebitCard.schema,
+    ExternalAdvertisers.schema,
+    InternalAdvertisers.schema,
     Reward.schema,
+    RewardCategory.schema,
     RewardPartner.schema,
     RewardTransaction.schema,
     Service.schema,
     ServiceTransaction.schema,
     Shop.schema,
-    User.schema
+    User.schema,
+    UserBillProvider.schema,
+    UserService.schema,
+    UserWallet.schema
   ];
   static final ModelProvider _instance = ModelProvider();
 
@@ -55,14 +82,44 @@ class ModelProvider implements ModelProviderInterface {
 
   ModelType getModelTypeByModelName(String modelName) {
     switch (modelName) {
+      case "Bank":
+        {
+          return Bank.classType;
+        }
+        break;
       case "BillProvider":
         {
           return BillProvider.classType;
         }
         break;
+      case "CreditCard":
+        {
+          return CreditCard.classType;
+        }
+        break;
+      case "DebitCard":
+        {
+          return DebitCard.classType;
+        }
+        break;
+      case "ExternalAdvertisers":
+        {
+          return ExternalAdvertisers.classType;
+        }
+        break;
+      case "InternalAdvertisers":
+        {
+          return InternalAdvertisers.classType;
+        }
+        break;
       case "Reward":
         {
           return Reward.classType;
+        }
+        break;
+      case "RewardCategory":
+        {
+          return RewardCategory.classType;
         }
         break;
       case "RewardPartner":
@@ -93,6 +150,21 @@ class ModelProvider implements ModelProviderInterface {
       case "User":
         {
           return User.classType;
+        }
+        break;
+      case "UserBillProvider":
+        {
+          return UserBillProvider.classType;
+        }
+        break;
+      case "UserService":
+        {
+          return UserService.classType;
+        }
+        break;
+      case "UserWallet":
+        {
+          return UserWallet.classType;
         }
         break;
       default:
