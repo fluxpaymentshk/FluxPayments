@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
           FloatingActionButton(
             onPressed: () async {
               Map<String, dynamic> r = await _databaseLambdaService
-                  .getUserRewardDetails(userID: "Flux-Monik");
+                  .getPaymentHistoryProviderWiseDetails(userID: "Flux-Monik");
               r.forEach((key, value) {
                 if (key == "records") print(key + "--->" + value.toString());
               });

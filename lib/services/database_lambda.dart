@@ -16,7 +16,10 @@ class DatabaseLambdaService {
         });
   }
 
-  Future<Map<String, dynamic>> updateFluxPoints({@required String? userID,@required String? appEvent,@required int? servicePoints}) async {
+  Future<Map<String, dynamic>> updateFluxPoints(
+      {@required String? userID,
+      @required String? appEvent,
+      @required int? servicePoints}) async {
     result = {};
     try {
       result = await lambda.callLambda(
@@ -36,7 +39,8 @@ class DatabaseLambdaService {
     return result;
   }
 
-  Future<Map<String, dynamic>> getUserBillProviderDetails({@required String? userID}) async {
+  Future<Map<String, dynamic>> getUserBillProviderDetails(
+      {@required String? userID}) async {
     result = {};
     try {
       result = await lambda.callLambda(
@@ -51,7 +55,8 @@ class DatabaseLambdaService {
     return result;
   }
 
-  Future<Map<String, dynamic>> getUserRewardDetails({@required String? userID}) async {
+  Future<Map<String, dynamic>> getUserRewardDetails(
+      {@required String? userID}) async {
     result = {};
     try {
       result = await lambda.callLambda(
@@ -65,17 +70,68 @@ class DatabaseLambdaService {
     }
     return result;
   }
-  
-  Future<Map<String, dynamic>> getSingleTransactionDetails({@required String? userID,@required String? serviceTransactionID}) async {
+
+  Future<Map<String, dynamic>> getSingleTransactionDetails(
+      {@required String? userID,
+      @required String? serviceTransactionID}) async {
     result = {};
     try {
       result = await lambda.callLambda(
-          'aurora-serverless-function-SingleTransactionDetail', <String, dynamic>{
-        "userID": userID,
-        "serviceTransactionID":serviceTransactionID
-      });
+          'aurora-serverless-function-SingleTransactionDetail',
+          <String, dynamic>{
+            "userID": userID,
+            "serviceTransactionID": serviceTransactionID
+          });
       print(
           "---------------------------------------------------------------------------------$result");
+    } catch (e) {
+      print(e);
+    }
+    return result;
+  }
+
+  Future<Map<String, dynamic>> getPaymentHistoryProviderWiseDetails(
+      {@required String? userID}) async {
+    result = {};
+    try {
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-function-PaymentHistory', <String, dynamic>{
+        "userID": userID,
+      });
+      result = re;
+      List<String> schemaName = [];
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+      Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+
+      Set<String> nameOfCompanies = {};
+      res.forEach((element) {
+        nameOfCompanies.add(element["name"]);
+      });
+
+      nameOfCompanies.forEach((element) {
+        companyWiseData[element] = [];
+      });
+      res.forEach((element) {
+        companyWiseData[element["name"]]?.add(element);
+      });
+      result = companyWiseData;
+      log("$result");
     } catch (e) {
       print(e);
     }
