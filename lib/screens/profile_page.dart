@@ -45,10 +45,26 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           FloatingActionButton(
             onPressed: () async {
-              _databaseLambdaService.CouponToTransaction();
+             // _databaseLambdaService.CouponToTransaction();
+              // Map<String, dynamic> c = await _databaseLambdaService.fetchCreditCardInfo(userID: "fluxsam1");
+              // c.forEach((key, value) {
+              //   if (key == "records") print(key + "--->" + value.toString());
+              // });
+              // Map<String, dynamic> d = await _databaseLambdaService.fetchDebitCardInfo(userID: "fluxsam1");
+              // d.forEach((key, value) {
+              //   if (key == "records") print(key + "--->" + value.toString());
+              // });
+              // Map<String, dynamic> d = await _databaseLambdaService.fetchbankInfo(userID: "fluxsam1");
+              // d.forEach((key, value) {
+              //   if (key == "records") print(key + "--->" + value.toString());
+              // });
+              Map<String, dynamic> d = await _databaseLambdaService.fetchUserWalletInfo(userID: "fluxsam1");
+              d.forEach((key, value) {
+                if (key == "records") print(key + "--->" + value.toString());
+              });
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text("Transferred coupon to transaction"),
+                  content: Text("Fetched Records"),
                   behavior: SnackBarBehavior.floating,
                 ),
               );

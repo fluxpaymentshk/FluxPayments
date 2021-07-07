@@ -1,4 +1,5 @@
 import 'package:aws_lambda/aws_lambda.dart';
+import 'package:flutter/cupertino.dart';
 
 class DatabaseLambdaService {
   Map<String, dynamic> result = {};
@@ -44,4 +45,61 @@ class DatabaseLambdaService {
     }
     return result;
   }
+
+  Future<Map<String, dynamic>> fetchCreditCardInfo({@required userID}) async {
+    result = {};
+    try {
+      result = await lambda.callLambda('aurora-serverless-function-creditCard', <String, dynamic>{
+        "userID": userID
+      });
+      //print("${result['records']}");
+    } catch (e) {
+      print("ERROR !!!!!!");
+      print(e);
+    }
+    return result;
+  }
+
+  Future<Map<String, dynamic>> fetchDebitCardInfo({@required userID}) async {
+    result = {};
+    try {
+      result = await lambda.callLambda('aurora-serverless-function-debitCard', <String, dynamic>{
+        "userID": userID
+      });
+      //print("${result['records']}");
+    } catch (e) {
+      print("ERROR !!!!!!");
+      print(e);
+    }
+    return result;
+  }
+
+  Future<Map<String, dynamic>> fetchbankInfo({@required userID}) async {
+    result = {};
+    try {
+      result = await lambda.callLambda('aurora-serverless-function-bank', <String, dynamic>{
+        "userID": userID
+      });
+      //print("${result['records']}");
+    } catch (e) {
+      print("ERROR !!!!!!");
+      print(e);
+    }
+    return result;
+  }
+
+  Future<Map<String, dynamic>> fetchUserWalletInfo({@required userID}) async {
+    result = {};
+    try {
+      result = await lambda.callLambda('aurora-serverless-function-userWallet', <String, dynamic>{
+        "userID": userID
+      });
+      //print("${result['records']}");
+    } catch (e) {
+      print("ERROR !!!!!!");
+      print(e);
+    }
+    return result;
+  }
+
 }
