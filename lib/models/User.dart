@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -102,26 +101,30 @@ class User extends Model {
         email: email,
         fluxPoints: fluxPoints,
         UserToRewardTransactions: UserToRewardTransactions != null
-            ? List.unmodifiable(UserToRewardTransactions)
+            ? List<RewardTransaction>.unmodifiable(UserToRewardTransactions)
             : UserToRewardTransactions,
-        favorites: favorites != null ? List.unmodifiable(favorites) : favorites,
+        favorites: favorites != null
+            ? List<String>.unmodifiable(favorites)
+            : favorites,
         UserToServiceTransactions: UserToServiceTransactions != null
-            ? List.unmodifiable(UserToServiceTransactions)
+            ? List<ServiceTransaction>.unmodifiable(UserToServiceTransactions)
             : UserToServiceTransactions,
         hasBankAccounts: hasBankAccounts != null
-            ? List.unmodifiable(hasBankAccounts)
+            ? List<Bank>.unmodifiable(hasBankAccounts)
             : hasBankAccounts,
         hasDebitCards: hasDebitCards != null
-            ? List.unmodifiable(hasDebitCards)
+            ? List<DebitCard>.unmodifiable(hasDebitCards)
             : hasDebitCards,
         hasCreditCard: hasCreditCard != null
-            ? List.unmodifiable(hasCreditCard)
+            ? List<CreditCard>.unmodifiable(hasCreditCard)
             : hasCreditCard,
-        hasWallets:
-            hasWallets != null ? List.unmodifiable(hasWallets) : hasWallets,
+        hasWallets: hasWallets != null
+            ? List<UserWallet>.unmodifiable(hasWallets)
+            : hasWallets,
         refreeID: refreeID,
-        referredTo:
-            referredTo != null ? List.unmodifiable(referredTo) : referredTo);
+        referredTo: referredTo != null
+            ? List<String>.unmodifiable(referredTo)
+            : referredTo);
   }
 
   bool equals(Object other) {

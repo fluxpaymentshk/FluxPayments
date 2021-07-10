@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -53,11 +52,12 @@ class UserBillProvider extends Model {
         id: id == null ? UUID.getUUID() : id,
         BillProviderToServiceTransactions:
             BillProviderToServiceTransactions != null
-                ? List.unmodifiable(BillProviderToServiceTransactions)
+                ? List<ServiceTransaction>.unmodifiable(
+                    BillProviderToServiceTransactions)
                 : BillProviderToServiceTransactions,
         billproviderID: billproviderID,
         ProvideUserServices: ProvideUserServices != null
-            ? List.unmodifiable(ProvideUserServices)
+            ? List<UserService>.unmodifiable(ProvideUserServices)
             : ProvideUserServices);
   }
 

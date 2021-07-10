@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -68,8 +67,9 @@ class Shop extends Model {
         mapLink: mapLink,
         image: image,
         rewardpartnerID: rewardpartnerID,
-        rewardshops:
-            rewardshops != null ? List.unmodifiable(rewardshops) : rewardshops,
+        rewardshops: rewardshops != null
+            ? List<Reward>.unmodifiable(rewardshops)
+            : rewardshops,
         ShopToRewardTransaction: ShopToRewardTransaction);
   }
 

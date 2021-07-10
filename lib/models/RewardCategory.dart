@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -57,8 +56,9 @@ class RewardCategory extends Model {
         name: name,
         icon: icon,
         description: description,
-        categorizes:
-            categorizes != null ? List.unmodifiable(categorizes) : categorizes);
+        categorizes: categorizes != null
+            ? List<Reward>.unmodifiable(categorizes)
+            : categorizes);
   }
 
   bool equals(Object other) {

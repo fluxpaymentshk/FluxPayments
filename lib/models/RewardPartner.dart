@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -74,15 +73,18 @@ class RewardPartner extends Model {
         shortDescription: shortDescription,
         size: size,
         banner: banner,
-        franchises:
-            franchises != null ? List.unmodifiable(franchises) : franchises,
-        Rewards: Rewards != null ? List.unmodifiable(Rewards) : Rewards,
+        franchises: franchises != null
+            ? List<Shop>.unmodifiable(franchises)
+            : franchises,
+        Rewards: Rewards != null ? List<Reward>.unmodifiable(Rewards) : Rewards,
         RewardPartnerToRewardTransactions:
             RewardPartnerToRewardTransactions != null
-                ? List.unmodifiable(RewardPartnerToRewardTransactions)
+                ? List<RewardTransaction>.unmodifiable(
+                    RewardPartnerToRewardTransactions)
                 : RewardPartnerToRewardTransactions,
-        Advertises:
-            Advertises != null ? List.unmodifiable(Advertises) : Advertises);
+        Advertises: Advertises != null
+            ? List<InternalAdvertisers>.unmodifiable(Advertises)
+            : Advertises);
   }
 
   bool equals(Object other) {

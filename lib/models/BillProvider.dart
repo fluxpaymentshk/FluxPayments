@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -61,10 +60,11 @@ class BillProvider extends Model {
         shortDescription: shortDescription,
         logo: logo,
         ProvidesUserBill: ProvidesUserBill != null
-            ? List.unmodifiable(ProvidesUserBill)
+            ? List<UserBillProvider>.unmodifiable(ProvidesUserBill)
             : ProvidesUserBill,
-        hasServices:
-            hasServices != null ? List.unmodifiable(hasServices) : hasServices);
+        hasServices: hasServices != null
+            ? List<Service>.unmodifiable(hasServices)
+            : hasServices);
   }
 
   bool equals(Object other) {
