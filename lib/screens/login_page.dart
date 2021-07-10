@@ -11,6 +11,7 @@ import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/analytics_test_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
 import 'package:flux_payments/screens/profile_page.dart';
 import 'package:flux_payments/screens/forgot_password_screen.dart';
@@ -100,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                     //   userRepository: widget.userConfigRepository,
                     // ),
                     //child:ProfilePage(),
-                    child:NavigatorPage(userRepository: widget.userConfigRepository,),
+                    child: AnalyticsPage(),  //NavigatorPage(userRepository: widget.userConfigRepository,),
                   ),
                 ),
               );

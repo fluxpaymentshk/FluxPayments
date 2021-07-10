@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/analytics_test_page.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/login_page.dart';
 import 'package:flux_payments/routes/modal_routes.dart';
@@ -45,7 +47,8 @@ class _MyAppState extends State<MyApp> {
   void _configureAmplify() async {
     if (!mounted) return;
     AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
-    Amplify.addPlugins([authPlugin]);
+     AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
+    Amplify.addPlugins([authPlugin,analyticsPlugin]);
 
     try {
       await Amplify.configure(amplifyconfig);
@@ -92,7 +95,9 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MultiBlocProvider(
+      home: 
+      // AnalyticsPage()
+      MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (_) => AuthBloc(_loginRepository),

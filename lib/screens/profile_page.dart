@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Name : ' +
-                            (user.firstName ?? 'firstName') +
+                            (user.firstName ) +
                             ' ' +
                             (user.lastName ?? 'lastName'),
                         style: TextStyle(
@@ -136,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'uniqueID : \n' + (user.uniqueID ?? 'xxxx-xxx-xxx'),
+                        'uniqueID : \n' + (user.uniqueID ),
                         style: TextStyle(
                           fontSize: 20,
                         ),

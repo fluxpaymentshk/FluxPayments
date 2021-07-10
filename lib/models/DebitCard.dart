@@ -18,192 +18,190 @@
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:flutter/foundation.dart';
 
+
 /** This is an auto generated class representing the DebitCard type in your schema. */
 @immutable
 class DebitCard extends Model {
   static const classType = const _DebitCardModelType();
   final String id;
-  final int debitCardNumber;
-  final TemporalDate expiryDate;
-  final String bankName;
-  final int cvv;
-  final String name;
-  final String userID;
+  final int? _debitCardNumber;
+  final TemporalDate? _expiryDate;
+  final String? _bankName;
+  final int? _cvv;
+  final String? _name;
+  final String? _userID;
 
   @override
   getInstanceType() => classType;
-
+  
   @override
   String getId() {
     return id;
   }
-
-  const DebitCard._internal(
-      {@required this.id,
-      this.debitCardNumber,
-      this.expiryDate,
-      this.bankName,
-      this.cvv,
-      this.name,
-      this.userID});
-
-  factory DebitCard(
-      {String id,
-      int debitCardNumber,
-      TemporalDate expiryDate,
-      String bankName,
-      int cvv,
-      String name,
-      String userID}) {
-    return DebitCard._internal(
-        id: id == null ? UUID.getUUID() : id,
-        debitCardNumber: debitCardNumber,
-        expiryDate: expiryDate,
-        bankName: bankName,
-        cvv: cvv,
-        name: name,
-        userID: userID);
+  
+  int? get debitCardNumber {
+    return _debitCardNumber;
   }
-
+  
+  TemporalDate? get expiryDate {
+    return _expiryDate;
+  }
+  
+  String? get bankName {
+    return _bankName;
+  }
+  
+  int? get cvv {
+    return _cvv;
+  }
+  
+  String? get name {
+    return _name;
+  }
+  
+  String? get userID {
+    return _userID;
+  }
+  
+  const DebitCard._internal({required this.id, debitCardNumber, expiryDate, bankName, cvv, name, userID}): _debitCardNumber = debitCardNumber, _expiryDate = expiryDate, _bankName = bankName, _cvv = cvv, _name = name, _userID = userID;
+  
+  factory DebitCard({String? id, int? debitCardNumber, TemporalDate? expiryDate, String? bankName, int? cvv, String? name, String? userID}) {
+    return DebitCard._internal(
+      id: id == null ? UUID.getUUID() : id,
+      debitCardNumber: debitCardNumber,
+      expiryDate: expiryDate,
+      bankName: bankName,
+      cvv: cvv,
+      name: name,
+      userID: userID);
+  }
+  
   bool equals(Object other) {
     return this == other;
   }
-
+  
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is DebitCard &&
-        id == other.id &&
-        debitCardNumber == other.debitCardNumber &&
-        expiryDate == other.expiryDate &&
-        bankName == other.bankName &&
-        cvv == other.cvv &&
-        name == other.name &&
-        userID == other.userID;
+      id == other.id &&
+      _debitCardNumber == other._debitCardNumber &&
+      _expiryDate == other._expiryDate &&
+      _bankName == other._bankName &&
+      _cvv == other._cvv &&
+      _name == other._name &&
+      _userID == other._userID;
   }
-
+  
   @override
   int get hashCode => toString().hashCode;
-
+  
   @override
   String toString() {
     var buffer = new StringBuffer();
-
+    
     buffer.write("DebitCard {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("debitCardNumber=" +
-        (debitCardNumber != null ? debitCardNumber.toString() : "null") +
-        ", ");
-    buffer.write("expiryDate=" +
-        (expiryDate != null ? expiryDate.format() : "null") +
-        ", ");
-    buffer.write("bankName=" + "$bankName" + ", ");
-    buffer.write("cvv=" + (cvv != null ? cvv.toString() : "null") + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write("userID=" + "$userID");
+    buffer.write("debitCardNumber=" + (_debitCardNumber != null ? _debitCardNumber!.toString() : "null") + ", ");
+    buffer.write("expiryDate=" + (_expiryDate != null ? _expiryDate!.format() : "null") + ", ");
+    buffer.write("bankName=" + "$_bankName" + ", ");
+    buffer.write("cvv=" + (_cvv != null ? _cvv!.toString() : "null") + ", ");
+    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("userID=" + "$_userID");
     buffer.write("}");
-
+    
     return buffer.toString();
   }
-
-  DebitCard copyWith(
-      {String id,
-      int debitCardNumber,
-      TemporalDate expiryDate,
-      String bankName,
-      int cvv,
-      String name,
-      String userID}) {
+  
+  DebitCard copyWith({String? id, int? debitCardNumber, TemporalDate? expiryDate, String? bankName, int? cvv, String? name, String? userID}) {
     return DebitCard(
-        id: id ?? this.id,
-        debitCardNumber: debitCardNumber ?? this.debitCardNumber,
-        expiryDate: expiryDate ?? this.expiryDate,
-        bankName: bankName ?? this.bankName,
-        cvv: cvv ?? this.cvv,
-        name: name ?? this.name,
-        userID: userID ?? this.userID);
+      id: id ?? this.id,
+      debitCardNumber: debitCardNumber ?? this.debitCardNumber,
+      expiryDate: expiryDate ?? this.expiryDate,
+      bankName: bankName ?? this.bankName,
+      cvv: cvv ?? this.cvv,
+      name: name ?? this.name,
+      userID: userID ?? this.userID);
   }
-
-  DebitCard.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        debitCardNumber = json['debitCardNumber'],
-        expiryDate = json['expiryDate'] != null
-            ? TemporalDate.fromString(json['expiryDate'])
-            : null,
-        bankName = json['bankName'],
-        cvv = json['cvv'],
-        name = json['name'],
-        userID = json['userID'];
-
+  
+  DebitCard.fromJson(Map<String, dynamic> json)  
+    : id = json['id'],
+      _debitCardNumber = json['debitCardNumber'],
+      _expiryDate = json['expiryDate'] != null ? TemporalDate.fromString(json['expiryDate']) : null,
+      _bankName = json['bankName'],
+      _cvv = json['cvv'],
+      _name = json['name'],
+      _userID = json['userID'];
+  
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'debitCardNumber': debitCardNumber,
-        'expiryDate': expiryDate?.format(),
-        'bankName': bankName,
-        'cvv': cvv,
-        'name': name,
-        'userID': userID
-      };
+    'id': id, 'debitCardNumber': _debitCardNumber, 'expiryDate': _expiryDate?.format(), 'bankName': _bankName, 'cvv': _cvv, 'name': _name, 'userID': _userID
+  };
 
   static final QueryField ID = QueryField(fieldName: "debitCard.id");
-  static final QueryField DEBITCARDNUMBER =
-      QueryField(fieldName: "debitCardNumber");
+  static final QueryField DEBITCARDNUMBER = QueryField(fieldName: "debitCardNumber");
   static final QueryField EXPIRYDATE = QueryField(fieldName: "expiryDate");
   static final QueryField BANKNAME = QueryField(fieldName: "bankName");
   static final QueryField CVV = QueryField(fieldName: "cvv");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField USERID = QueryField(fieldName: "userID");
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "DebitCard";
     modelSchemaDefinition.pluralName = "DebitCards";
-
+    
     modelSchemaDefinition.authRules = [
-      AuthRule(authStrategy: AuthStrategy.PUBLIC, operations: [
-        ModelOperation.CREATE,
-        ModelOperation.UPDATE,
-        ModelOperation.DELETE,
-        ModelOperation.READ
-      ])
+      AuthRule(
+        authStrategy: AuthStrategy.PUBLIC,
+        operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
+          ModelOperation.READ
+        ])
     ];
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: DebitCard.DEBITCARDNUMBER,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-
+      key: DebitCard.DEBITCARDNUMBER,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: DebitCard.EXPIRYDATE,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.date)));
-
+      key: DebitCard.EXPIRYDATE,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.date)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: DebitCard.BANKNAME,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      key: DebitCard.BANKNAME,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: DebitCard.CVV,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
-
+      key: DebitCard.CVV,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: DebitCard.NAME,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      key: DebitCard.NAME,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: DebitCard.USERID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+      key: DebitCard.USERID,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
   });
 }
 
 class _DebitCardModelType extends ModelType<DebitCard> {
   const _DebitCardModelType();
-
+  
   @override
   DebitCard fromJson(Map<String, dynamic> jsonData) {
     return DebitCard.fromJson(jsonData);
