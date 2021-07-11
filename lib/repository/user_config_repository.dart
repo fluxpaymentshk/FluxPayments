@@ -46,7 +46,7 @@ class UserConfigRepository extends UserConfigBaseRepository {
   @override
   Future<List<AuthUserAttribute>> getUserCredentials() async {
     try {
-      User user = new User(firstName: '', uniqueID: '',refreeID:"ll");
+      User user = new User(firstName: '', uniqueID: '', refreeID: "ll");
       return await _userDetailsServices.getUserCredentials();
     } catch (e) {
       log(e.toString());

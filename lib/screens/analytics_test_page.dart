@@ -14,7 +14,6 @@ class AnalyticsPage extends StatefulWidget {
 }
 
 class _AnalyticsPageState extends State<AnalyticsPage> {
-  
   // bool _amplifyConfigured = false;
 
   String _uniqueId = "default";

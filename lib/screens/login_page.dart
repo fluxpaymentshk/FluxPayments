@@ -101,7 +101,8 @@ class _LoginPageState extends State<LoginPage> {
                     //   userRepository: widget.userConfigRepository,
                     // ),
                     //child:ProfilePage(),
-                    child: AnalyticsPage(),  //NavigatorPage(userRepository: widget.userConfigRepository,),
+                    child:
+                        AnalyticsPage(), //NavigatorPage(userRepository: widget.userConfigRepository,),
                   ),
                 ),
               );
@@ -168,7 +169,9 @@ class _LoginPageState extends State<LoginPage> {
                       MaterialPageRoute(
                         builder: (context) => BlocProvider.value(
                           value: userBloc,
-                          child: ForgetPasswordScreen(userConfigRepository:widget.userConfigRepository,loginRepository:widget.loginRepo),
+                          child: ForgetPasswordScreen(
+                              userConfigRepository: widget.userConfigRepository,
+                              loginRepository: widget.loginRepo),
                         ),
                       ),
                     );
@@ -283,6 +286,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  
   }
 }

@@ -1,4 +1,4 @@
-package com.example.flux_payments
+package com.example.fluxpayments
 
 import io.flutter.embedding.android.FlutterActivity
 

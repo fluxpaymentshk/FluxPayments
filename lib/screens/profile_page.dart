@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
     // UserDetailsServices().getUserCredentials(user);
   }
 
-  User user = User(firstName: '', uniqueID: '',refreeID: "ll");
+  User user = User(firstName: '', uniqueID: '', refreeID: "ll");
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Name : ' +
-                            (user.firstName ) +
+                            (user.firstName) +
                             ' ' +
                             (user.lastName ?? 'lastName'),
                         style: TextStyle(
@@ -136,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'uniqueID : \n' + (user.uniqueID ),
+                        'uniqueID : \n' + (user.uniqueID),
                         style: TextStyle(
                           fontSize: 20,
                         ),

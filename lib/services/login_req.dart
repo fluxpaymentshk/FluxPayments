@@ -64,7 +64,7 @@ class AmplifyLogin {
       throw UserNotConfirmedException(e.message);
     } on NotAuthorizedException catch (e) {
       log("28288282---->$e");
-      throw NotAuthorizedException(e.underlyingException??"");
+      throw NotAuthorizedException(e.underlyingException ?? "");
     } on AuthException catch (er) {
       log("2#####-$er");
       throw Exception(er.underlyingException);
@@ -79,7 +79,7 @@ class AmplifyLogin {
           username: email, confirmationCode: code);
       return res.isSignUpComplete;
     } on CodeMismatchException catch (e) {
-      throw CodeMismatchException(e.recoverySuggestion??"");
+      throw CodeMismatchException(e.recoverySuggestion ?? "");
     }
   }
 

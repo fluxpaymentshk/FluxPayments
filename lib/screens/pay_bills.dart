@@ -10,7 +10,7 @@
 // import 'bill_tile.dart';
 
 // class PayBills extends StatelessWidget {
- 
+
 //   const PayBills({Key? key}) : super(key: key);
 //   final String route = 'PayBills';
 
@@ -46,7 +46,7 @@
 //                 builder: (context, state) {
 //                   if (state is LoadedBills) {
 //                     List<Bills> bills = state.bills;
-                    
+
 //                     return
 
 //                         //     SizedBox(

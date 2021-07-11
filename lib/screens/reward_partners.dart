@@ -13,30 +13,40 @@ class RewardPartnerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Reward Parnters"),),
+      appBar: AppBar(
+        title: Text("Reward Parnters"),
+      ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height*0.9,
+          height: MediaQuery.of(context).size.height * 0.9,
           child: ListView.builder(
-            itemCount: 5,
-            itemBuilder: (context, index) {
-            return Card(
-              child: ListTile(
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ShowRewardScreen(listOfRewards:rewardPartner.Rewards,),),);
-                },
-                leading: CircleAvatar(child: Text("Logo"),),
-                subtitle: Text(
-                  rewardPartner.id ?? "ID of Reward",
-                  
-                ),
-                title:Text(rewardPartner.name??"PartnerName"),
-                // isThreeLine: true,
-                trailing: Text(rewardPartner.size==null?"size":rewardPartner.size.toString()),
-                ),
-            );
-            
-          }),
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ShowRewardScreen(
+                            listOfRewards: rewardPartner.Rewards,
+                          ),
+                        ),
+                      );
+                    },
+                    leading: CircleAvatar(
+                      child: Text("Logo"),
+                    ),
+                    subtitle: Text(
+                      rewardPartner.id ?? "ID of Reward",
+                    ),
+                    title: Text(rewardPartner.name ?? "PartnerName"),
+                    // isThreeLine: true,
+                    trailing: Text(rewardPartner.size == null
+                        ? "size"
+                        : rewardPartner.size.toString()),
+                  ),
+                );
+              }),
         ),
       ),
     );

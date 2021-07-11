@@ -49,10 +49,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           }
         }
         yield UserServiceDone();
-      }on LimitExceededException catch (e) {
+      } on LimitExceededException catch (e) {
         log("$e");
         yield UserServiceError(e.message);
-      }  on AuthError catch (e) {
+      } on AuthError catch (e) {
         yield UserServiceError("Errror");
       } on NotAuthorizedException catch (er) {
         yield UserServiceError(er.message);
