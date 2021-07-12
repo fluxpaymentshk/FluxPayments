@@ -190,7 +190,7 @@ class RewardPartner extends Model {
         : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'image': _image, 'shortDescription': _shortDescription, 'size': _size, 'banner': _banner, 'franchises': _franchises?.map((e) => e?.toJson())?.toList(), 'Rewards': _Rewards?.map((e) => e?.toJson())?.toList(), 'RewardPartnerToRewardTransactions': _RewardPartnerToRewardTransactions?.map((e) => e?.toJson())?.toList(), 'Advertises': _Advertises?.map((e) => e?.toJson())?.toList()
+    'id': id, 'name': _name, 'image': _image, 'shortDescription': _shortDescription, 'size': _size, 'banner': _banner, 'franchises': _franchises?.map((e) => e.toJson()).toList(), 'Rewards': _Rewards?.map((e) => e.toJson()).toList(), 'RewardPartnerToRewardTransactions': _RewardPartnerToRewardTransactions?.map((e) => e.toJson()).toList(), 'Advertises': _Advertises?.map((e) => e.toJson()).toList()
   };
 
   static final QueryField ID = QueryField(fieldName: "rewardPartner.id");

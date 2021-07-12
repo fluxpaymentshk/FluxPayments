@@ -114,7 +114,7 @@ class UserBillProvider extends Model {
         : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'BillProviderToServiceTransactions': _BillProviderToServiceTransactions?.map((e) => e?.toJson())?.toList(), 'billproviderID': _billproviderID, 'ProvideUserServices': _ProvideUserServices?.map((e) => e?.toJson())?.toList()
+    'id': id, 'BillProviderToServiceTransactions': _BillProviderToServiceTransactions?.map((e) => e.toJson()).toList(), 'billproviderID': _billproviderID, 'ProvideUserServices': _ProvideUserServices?.map((e) => e.toJson()).toList()
   };
 
   static final QueryField ID = QueryField(fieldName: "userBillProvider.id");

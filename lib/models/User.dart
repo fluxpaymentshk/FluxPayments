@@ -247,7 +247,7 @@ class User extends Model {
           .map((e) => RewardTransaction.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
-      _favorites = json['favorites']?.cast<String>(),
+      _favorites = json['favorites'].cast<String>(),
       _UserToServiceTransactions = json['UserToServiceTransactions'] is List
         ? (json['UserToServiceTransactions'] as List)
           .where((e) => e?['serializedData'] != null)
@@ -279,10 +279,10 @@ class User extends Model {
           .toList()
         : null,
       _refreeID = json['refreeID'],
-      _referredTo = json['referredTo']?.cast<String>();
+      _referredTo = json['referredTo'].cast<String>();
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'firstName': _firstName, 'lastName': _lastName, 'dateOfBirth': _dateOfBirth?.format(), 'idCardNumber': _idCardNumber, 'uniqueID': _uniqueID, 'mobileNumber': _mobileNumber, 'email': _email, 'fluxPoints': _fluxPoints, 'UserToRewardTransactions': _UserToRewardTransactions?.map((e) => e?.toJson())?.toList(), 'favorites': _favorites, 'UserToServiceTransactions': _UserToServiceTransactions?.map((e) => e?.toJson())?.toList(), 'hasBankAccounts': _hasBankAccounts?.map((e) => e?.toJson())?.toList(), 'hasDebitCards': _hasDebitCards?.map((e) => e?.toJson())?.toList(), 'hasCreditCard': _hasCreditCard?.map((e) => e?.toJson())?.toList(), 'hasWallets': _hasWallets?.map((e) => e?.toJson())?.toList(), 'refreeID': _refreeID, 'referredTo': _referredTo
+    'id': id, 'firstName': _firstName, 'lastName': _lastName, 'dateOfBirth': _dateOfBirth?.format(), 'idCardNumber': _idCardNumber, 'uniqueID': _uniqueID, 'mobileNumber': _mobileNumber, 'email': _email, 'fluxPoints': _fluxPoints, 'UserToRewardTransactions': _UserToRewardTransactions?.map((e) => e.toJson()).toList(), 'favorites': _favorites, 'UserToServiceTransactions': _UserToServiceTransactions?.map((e) => e.toJson()).toList(), 'hasBankAccounts': _hasBankAccounts?.map((e) => e.toJson()).toList(), 'hasDebitCards': _hasDebitCards?.map((e) => e.toJson()).toList(), 'hasCreditCard': _hasCreditCard?.map((e) => e.toJson()).toList(), 'hasWallets': _hasWallets?.map((e) => e.toJson()).toList(), 'refreeID': _refreeID, 'referredTo': _referredTo
   };
 
   static final QueryField ID = QueryField(fieldName: "user.id");

@@ -164,7 +164,7 @@ class Shop extends Model {
         : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'address': _address, 'name': _name, 'mapLink': _mapLink, 'image': _image, 'rewardpartnerID': _rewardpartnerID, 'rewardshops': _rewardshops?.map((e) => e?.toJson())?.toList(), 'ShopToRewardTransaction': _ShopToRewardTransaction?.toJson()
+    'id': id, 'address': _address, 'name': _name, 'mapLink': _mapLink, 'image': _image, 'rewardpartnerID': _rewardpartnerID, 'rewardshops': _rewardshops?.map((e) => e.toJson()).toList(), 'ShopToRewardTransaction': _ShopToRewardTransaction?.toJson()
   };
 
   static final QueryField ID = QueryField(fieldName: "shop.id");

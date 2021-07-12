@@ -120,7 +120,7 @@ class RewardCategory extends Model {
         : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'icon': _icon, 'description': _description, 'categorizes': _categorizes?.map((e) => e?.toJson())?.toList()
+    'id': id, 'name': _name, 'icon': _icon, 'description': _description, 'categorizes': _categorizes?.map((e) => e.toJson()).toList()
   };
 
   static final QueryField ID = QueryField(fieldName: "rewardCategory.id");

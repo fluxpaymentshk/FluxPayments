@@ -1,20 +1,15 @@
 import 'dart:developer';
 
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_event.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-import 'package:flux_payments/screens/profile_page.dart';
-import 'package:flux_payments/screens/signUp_otp_screen.dart';
 import 'package:flux_payments/screens/auth_Screens/login_page.dart';
-import 'package:flux_payments/services/form_validator.dart';
+import 'package:flux_payments/screens/auth_Screens/signUp_otp_screen.dart';
 import 'package:flux_payments/widgets/error_snackBar.dart';
-import 'package:otp_text_field/otp_field.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../bloc/auth_bloc/auth_state.dart';
