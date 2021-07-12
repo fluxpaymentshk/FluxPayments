@@ -14,13 +14,13 @@ import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/analytics_test_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
 import 'package:flux_payments/screens/profile_page.dart';
-import 'package:flux_payments/screens/forgot_password_screen.dart';
-import 'package:flux_payments/screens/register_page.dart';
+import 'package:flux_payments/screens/auth_Screens/forgot_password_screen.dart';
+import 'package:flux_payments/screens/auth_Screens/register_page.dart';
 import 'package:flux_payments/screens/signUp_otp_screen.dart';
 import 'package:flux_payments/services/form_validator.dart';
 import 'package:flux_payments/widgets/error_snackBar.dart';
 
-import 'home_page.dart';
+import '../home_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login";

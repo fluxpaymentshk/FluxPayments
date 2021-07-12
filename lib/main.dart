@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,11 +13,12 @@ import 'package:flux_payments/amplifyconfiguration.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/bot.dart';
 import 'package:flux_payments/notification_handler.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/home_page.dart';
-import 'package:flux_payments/screens/login_page.dart';
+import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
 
 Future<void> main() async {
@@ -63,7 +65,8 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
     AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
     AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
-    Amplify.addPlugins([authPlugin, analyticsPlugin]);
+    AmplifyAPI amplifyAPI = AmplifyAPI();
+    Amplify.addPlugins([authPlugin,amplifyAPI, analyticsPlugin]);
 
     try {
       await Amplify.configure(amplifyconfig);
@@ -105,78 +108,78 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flux Payments',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home:
-          // AnalyticsPage()
-          MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => AuthBloc(_loginRepository),
-          ),
-          BlocProvider(
-            create: (_) => UserBloc(_userConfigRepository),
-          ),
-        ],
-        child: BlocBuilder<AuthBloc, AuthState>(
-          buildWhen: (prevSt, newSt) {
-            return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
-          },
-          builder: (ctx, st) {
-            log(_amplifyConfigured.toString());
-            log("Sign?:$isSignedIn");
-            return (!_amplifyConfigured)
-                ? Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : FutureBuilder<bool>(
-                    future: currentUser(ctx),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Scaffold(
-                          body: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      if (snapshot.hasData &&
-                          snapshot.data != null &&
-                          snapshot.data == false)
-                        return LoginPage(
-                          loginRepo: _loginRepository,
-                          userConfigRepository: _userConfigRepository,
-                        );
-                      return NavigatorPage(
-                          userRepository: _userConfigRepository);
-                    });
-          },
+        debugShowCheckedModeBanner: false,
+        title: 'Flux Payments',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
-      ),
-      routes: {
-        LoginPage.routeName: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider<AuthBloc>(
-                  create: (_) => AuthBloc(_loginRepository),
-                ),
-                BlocProvider(create: (_) => UserBloc(_userConfigRepository)),
-              ],
-              child: LoginPage(
-                loginRepo: _loginRepository,
-                userConfigRepository: _userConfigRepository,
-              ),
-            ),
-        HomePage.routeName: (_) => BlocProvider<UserBloc>(
-              create: (_) => UserBloc(_userConfigRepository),
-              child: HomePage(
-                  userRepository: _userConfigRepository,
-                  email: userDetails["email"] ?? ""),
-            ),
-      },
-    );
+        home: Bot()
+        // AnalyticsPage()
+        //     MultiBlocProvider(
+        //   providers: [
+        //     BlocProvider(
+        //       create: (_) => AuthBloc(_loginRepository),
+        //     ),
+        //     BlocProvider(
+        //       create: (_) => UserBloc(_userConfigRepository),
+        //     ),
+        //   ],
+        //   child: BlocBuilder<AuthBloc, AuthState>(
+        //     buildWhen: (prevSt, newSt) {
+        //       return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
+        //     },
+        //     builder: (ctx, st) {
+        //       log(_amplifyConfigured.toString());
+        //       log("Sign?:$isSignedIn");
+        //       return (!_amplifyConfigured)
+        //           ? Scaffold(
+        //               body: Center(
+        //                 child: CircularProgressIndicator(),
+        //               ),
+        //             )
+        //           : FutureBuilder<bool>(
+        //               future: currentUser(ctx),
+        //               builder: (context, snapshot) {
+        //                 if (!snapshot.hasData) {
+        //                   return Scaffold(
+        //                     body: Center(
+        //                       child: CircularProgressIndicator(),
+        //                     ),
+        //                   );
+        //                 }
+        //                 if (snapshot.hasData &&
+        //                     snapshot.data != null &&
+        //                     snapshot.data == false)
+        //                   return LoginPage(
+        //                     loginRepo: _loginRepository,
+        //                     userConfigRepository: _userConfigRepository,
+        //                   );
+        //                 return NavigatorPage(
+        //                     userRepository: _userConfigRepository);
+        //               });
+        //     },
+        //   ),
+        // ),
+        // routes: {
+        //   LoginPage.routeName: (_) => MultiBlocProvider(
+        //         providers: [
+        //           BlocProvider<AuthBloc>(
+        //             create: (_) => AuthBloc(_loginRepository),
+        //           ),
+        //           BlocProvider(create: (_) => UserBloc(_userConfigRepository)),
+        //         ],
+        //         child: LoginPage(
+        //           loginRepo: _loginRepository,
+        //           userConfigRepository: _userConfigRepository,
+        //         ),
+        //       ),
+        //   HomePage.routeName: (_) => BlocProvider<UserBloc>(
+        //         create: (_) => UserBloc(_userConfigRepository),
+        //         child: HomePage(
+        //             userRepository: _userConfigRepository,
+        //             email: userDetails["email"] ?? ""),
+        //       ),
+        // },
+        );
   }
 }

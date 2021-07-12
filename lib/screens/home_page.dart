@@ -8,10 +8,11 @@ import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-import 'package:flux_payments/screens/change_password.dart';
-import 'package:flux_payments/screens/login_page.dart';
-import 'package:flux_payments/screens/password_reset.dart';
+import 'package:flux_payments/screens/auth_Screens/change_password.dart';
+import 'package:flux_payments/screens/auth_Screens/login_page.dart';
+import 'package:flux_payments/screens/auth_Screens/password_reset.dart';
 import 'package:flux_payments/services/database_lambda.dart';
+import 'package:flux_payments/bot.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -92,6 +93,17 @@ class _HomePageState extends State<HomePage> {
               Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
             },
             child: Icon(Icons.logout),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () async {
+              await Amplify.Auth.signOut();
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => Bot()));
+            },
+            child: Icon(
+              Icons.help,
+            ),
           ),
         ],
       ),

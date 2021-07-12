@@ -18,6 +18,7 @@
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:flutter/foundation.dart';
 
+
 /** This is an auto generated class representing the Service type in your schema. */
 @immutable
 class Service extends Model {
@@ -28,110 +29,111 @@ class Service extends Model {
 
   @override
   getInstanceType() => classType;
-
+  
   @override
   String getId() {
     return id;
   }
-
+  
   String? get category {
     return _category;
   }
-
+  
   String? get billproviderID {
     return _billproviderID;
   }
-
-  const Service._internal({required this.id, category, billproviderID})
-      : _category = category,
-        _billproviderID = billproviderID;
-
+  
+  const Service._internal({required this.id, category, billproviderID}): _category = category, _billproviderID = billproviderID;
+  
   factory Service({String? id, String? category, String? billproviderID}) {
     return Service._internal(
-        id: id == null ? UUID.getUUID() : id,
-        category: category,
-        billproviderID: billproviderID);
+      id: id == null ? UUID.getUUID() : id,
+      category: category,
+      billproviderID: billproviderID);
   }
-
+  
   bool equals(Object other) {
     return this == other;
   }
-
+  
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Service &&
-        id == other.id &&
-        _category == other._category &&
-        _billproviderID == other._billproviderID;
+      id == other.id &&
+      _category == other._category &&
+      _billproviderID == other._billproviderID;
   }
-
+  
   @override
   int get hashCode => toString().hashCode;
-
+  
   @override
   String toString() {
     var buffer = new StringBuffer();
-
+    
     buffer.write("Service {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("category=" + "$_category" + ", ");
     buffer.write("billproviderID=" + "$_billproviderID");
     buffer.write("}");
-
+    
     return buffer.toString();
   }
-
+  
   Service copyWith({String? id, String? category, String? billproviderID}) {
     return Service(
-        id: id ?? this.id,
-        category: category ?? this.category,
-        billproviderID: billproviderID ?? this.billproviderID);
+      id: id ?? this.id,
+      category: category ?? this.category,
+      billproviderID: billproviderID ?? this.billproviderID);
   }
-
-  Service.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        _category = json['category'],
-        _billproviderID = json['billproviderID'];
-
-  Map<String, dynamic> toJson() =>
-      {'id': id, 'category': _category, 'billproviderID': _billproviderID};
+  
+  Service.fromJson(Map<String, dynamic> json)  
+    : id = json['id'],
+      _category = json['category'],
+      _billproviderID = json['billproviderID'];
+  
+  Map<String, dynamic> toJson() => {
+    'id': id, 'category': _category, 'billproviderID': _billproviderID
+  };
 
   static final QueryField ID = QueryField(fieldName: "service.id");
   static final QueryField CATEGORY = QueryField(fieldName: "category");
-  static final QueryField BILLPROVIDERID =
-      QueryField(fieldName: "billproviderID");
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static final QueryField BILLPROVIDERID = QueryField(fieldName: "billproviderID");
+  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Service";
     modelSchemaDefinition.pluralName = "Services";
-
+    
     modelSchemaDefinition.authRules = [
-      AuthRule(authStrategy: AuthStrategy.PUBLIC, operations: [
-        ModelOperation.CREATE,
-        ModelOperation.UPDATE,
-        ModelOperation.DELETE,
-        ModelOperation.READ
-      ])
+      AuthRule(
+        authStrategy: AuthStrategy.PUBLIC,
+        operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
+          ModelOperation.READ
+        ])
     ];
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Service.CATEGORY,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      key: Service.CATEGORY,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Service.BILLPROVIDERID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+      key: Service.BILLPROVIDERID,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
   });
 }
 
 class _ServiceModelType extends ModelType<Service> {
   const _ServiceModelType();
-
+  
   @override
   Service fromJson(Map<String, dynamic> jsonData) {
     return Service.fromJson(jsonData);

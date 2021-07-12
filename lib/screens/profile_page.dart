@@ -7,7 +7,7 @@ import 'package:flux_payments/models/user_model.dart';
 import 'package:flux_payments/screens/pay_bills.dart';
 import 'package:flux_payments/services/user_details_services.dart';
 
-import 'login_page.dart';
+import 'auth_Screens/login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key? key}) : super(key: key);
