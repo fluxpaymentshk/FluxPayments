@@ -10,10 +10,10 @@ import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-import 'package:flux_payments/screens/analytics_test_page.dart';
 import 'package:flux_payments/screens/auth_Screens/forgot_password_screen.dart';
 import 'package:flux_payments/screens/auth_Screens/register_page.dart';
 import 'package:flux_payments/screens/auth_Screens/signUp_otp_screen.dart';
+import 'package:flux_payments/screens/navigator_page.dart';
 import 'package:flux_payments/widgets/error_snackBar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -94,9 +94,8 @@ class _LoginPageState extends State<LoginPage> {
                     // child: HomePage(
                     //   userRepository: widget.userConfigRepository,
                     // ),
-                    //child:ProfilePage(),
-                    child:
-                        AnalyticsPage(), //NavigatorPage(userRepository: widget.userConfigRepository,),
+                    // child:ProfilePage(),
+                    child:NavigatorPage(userRepository: widget.userConfigRepository,),
                   ),
                 ),
               );

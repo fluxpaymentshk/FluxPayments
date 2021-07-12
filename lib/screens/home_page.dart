@@ -11,8 +11,9 @@ import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/change_password.dart';
 import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/auth_Screens/password_reset.dart';
+import 'package:flux_payments/screens/support_bot_screen.dart';
 import 'package:flux_payments/services/database_lambda.dart';
-import 'package:flux_payments/bot.dart';
+import 'package:flux_payments/services/bot.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -67,45 +68,12 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('BottomNavigationBar Sample'),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () async {
-              Map<String, dynamic> r = await _databaseLambdaService
-                  .getPaymentHistoryProviderWiseDetails(userID: "Flux-Monik");
-              r.forEach((key, value) {
-                if (key == "records") print(key + "--->" + value.toString());
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Called the lambda function"),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
-            child: Icon(Icons.run_circle_outlined, size: 40),
-          ),
-          SizedBox(height: 10),
-          FloatingActionButton(
-            onPressed: () async {
-              await Amplify.Auth.signOut();
-              Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-            },
-            child: Icon(Icons.logout),
-          ),
-          SizedBox(height: 10),
-          FloatingActionButton(
-            onPressed: () async {
-              await Amplify.Auth.signOut();
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => Bot()));
-            },
-            child: Icon(
-              Icons.help,
-            ),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Amplify.Auth.signOut();
+          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+        },
+        child: Icon(Icons.logout),
       ),
       body: Column(
         children: [
@@ -171,6 +139,23 @@ class _HomePageState extends State<HomePage> {
                   'Reset Password',
                   style: TextStyle(color: Colors.white, fontSize: 17),
                 ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>SupportBotScreen()
+                  ),
+                );
+              },
+              child: Text(
+                'Talk to Mimi',
+                style: TextStyle(color: Colors.blue, fontSize: 17),
               ),
             ),
           ),
