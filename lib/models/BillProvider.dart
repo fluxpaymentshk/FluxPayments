@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -26,11 +25,11 @@ import 'package:flutter/foundation.dart';
 class BillProvider extends Model {
   static const classType = const _BillProviderModelType();
   final String id;
-  final String name;
-  final String shortDescription;
-  final String logo;
-  final List<UserBillProvider> ProvidesUserBill;
-  final List<Service> hasServices;
+  final String? _name;
+  final String? _shortDescription;
+  final String? _logo;
+  final List<UserBillProvider>? _ProvidesUserBill;
+  final List<Service>? _hasServices;
 
   @override
   getInstanceType() => classType;
@@ -40,31 +39,57 @@ class BillProvider extends Model {
     return id;
   }
 
+  String? get name {
+    return _name;
+  }
+
+  String? get shortDescription {
+    return _shortDescription;
+  }
+
+  String? get logo {
+    return _logo;
+  }
+
+  List<UserBillProvider>? get ProvidesUserBill {
+    return _ProvidesUserBill;
+  }
+
+  List<Service>? get hasServices {
+    return _hasServices;
+  }
+
   const BillProvider._internal(
-      {@required this.id,
-      this.name,
-      this.shortDescription,
-      this.logo,
-      this.ProvidesUserBill,
-      this.hasServices});
+      {required this.id,
+      name,
+      shortDescription,
+      logo,
+      ProvidesUserBill,
+      hasServices})
+      : _name = name,
+        _shortDescription = shortDescription,
+        _logo = logo,
+        _ProvidesUserBill = ProvidesUserBill,
+        _hasServices = hasServices;
 
   factory BillProvider(
-      {String id,
-      String name,
-      String shortDescription,
-      String logo,
-      List<UserBillProvider> ProvidesUserBill,
-      List<Service> hasServices}) {
+      {String? id,
+      String? name,
+      String? shortDescription,
+      String? logo,
+      List<UserBillProvider>? ProvidesUserBill,
+      List<Service>? hasServices}) {
     return BillProvider._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
         shortDescription: shortDescription,
         logo: logo,
         ProvidesUserBill: ProvidesUserBill != null
-            ? List.unmodifiable(ProvidesUserBill)
+            ? List<UserBillProvider>.unmodifiable(ProvidesUserBill)
             : ProvidesUserBill,
-        hasServices:
-            hasServices != null ? List.unmodifiable(hasServices) : hasServices);
+        hasServices: hasServices != null
+            ? List<Service>.unmodifiable(hasServices)
+            : hasServices);
   }
 
   bool equals(Object other) {
@@ -76,12 +101,12 @@ class BillProvider extends Model {
     if (identical(other, this)) return true;
     return other is BillProvider &&
         id == other.id &&
-        name == other.name &&
-        shortDescription == other.shortDescription &&
-        logo == other.logo &&
+        _name == other._name &&
+        _shortDescription == other._shortDescription &&
+        _logo == other._logo &&
         DeepCollectionEquality()
-            .equals(ProvidesUserBill, other.ProvidesUserBill) &&
-        DeepCollectionEquality().equals(hasServices, other.hasServices);
+            .equals(_ProvidesUserBill, other._ProvidesUserBill) &&
+        DeepCollectionEquality().equals(_hasServices, other._hasServices);
   }
 
   @override
@@ -93,21 +118,21 @@ class BillProvider extends Model {
 
     buffer.write("BillProvider {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write("shortDescription=" + "$shortDescription" + ", ");
-    buffer.write("logo=" + "$logo");
+    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("shortDescription=" + "$_shortDescription" + ", ");
+    buffer.write("logo=" + "$_logo");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   BillProvider copyWith(
-      {String id,
-      String name,
-      String shortDescription,
-      String logo,
-      List<UserBillProvider> ProvidesUserBill,
-      List<Service> hasServices}) {
+      {String? id,
+      String? name,
+      String? shortDescription,
+      String? logo,
+      List<UserBillProvider>? ProvidesUserBill,
+      List<Service>? hasServices}) {
     return BillProvider(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -119,28 +144,31 @@ class BillProvider extends Model {
 
   BillProvider.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        name = json['name'],
-        shortDescription = json['shortDescription'],
-        logo = json['logo'],
-        ProvidesUserBill = json['ProvidesUserBill'] is List
+        _name = json['name'],
+        _shortDescription = json['shortDescription'],
+        _logo = json['logo'],
+        _ProvidesUserBill = json['ProvidesUserBill'] is List
             ? (json['ProvidesUserBill'] as List)
-                .map((e) =>
-                    UserBillProvider.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => UserBillProvider.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
-        hasServices = json['hasServices'] is List
+        _hasServices = json['hasServices'] is List
             ? (json['hasServices'] as List)
-                .map((e) => Service.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => Service.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
-        'shortDescription': shortDescription,
-        'logo': logo,
-        'ProvidesUserBill': ProvidesUserBill?.map((e) => e?.toJson())?.toList(),
-        'hasServices': hasServices?.map((e) => e?.toJson())?.toList()
+        'name': _name,
+        'shortDescription': _shortDescription,
+        'logo': _logo,
+        'ProvidesUserBill': _ProvidesUserBill?.map((e) => e.toJson()).toList(),
+        'hasServices': _hasServices?.map((e) => e.toJson()).toList()
       };
 
   static final QueryField ID = QueryField(fieldName: "billProvider.id");

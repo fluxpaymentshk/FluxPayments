@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -24,10 +23,10 @@ import 'package:flutter/foundation.dart';
 class RewardTransaction extends Model {
   static const classType = const _RewardTransactionModelType();
   final String id;
-  final double amount;
-  final TemporalDateTime timestamp;
-  final String userID;
-  final String rewardpartnerID;
+  final double? _amount;
+  final TemporalDateTime? _timestamp;
+  final String? _userID;
+  final String? _rewardpartnerID;
 
   @override
   getInstanceType() => classType;
@@ -37,19 +36,35 @@ class RewardTransaction extends Model {
     return id;
   }
 
+  double? get amount {
+    return _amount;
+  }
+
+  TemporalDateTime? get timestamp {
+    return _timestamp;
+  }
+
+  String? get userID {
+    return _userID;
+  }
+
+  String? get rewardpartnerID {
+    return _rewardpartnerID;
+  }
+
   const RewardTransaction._internal(
-      {@required this.id,
-      this.amount,
-      this.timestamp,
-      this.userID,
-      this.rewardpartnerID});
+      {required this.id, amount, timestamp, userID, rewardpartnerID})
+      : _amount = amount,
+        _timestamp = timestamp,
+        _userID = userID,
+        _rewardpartnerID = rewardpartnerID;
 
   factory RewardTransaction(
-      {String id,
-      double amount,
-      TemporalDateTime timestamp,
-      String userID,
-      String rewardpartnerID}) {
+      {String? id,
+      double? amount,
+      TemporalDateTime? timestamp,
+      String? userID,
+      String? rewardpartnerID}) {
     return RewardTransaction._internal(
         id: id == null ? UUID.getUUID() : id,
         amount: amount,
@@ -67,10 +82,10 @@ class RewardTransaction extends Model {
     if (identical(other, this)) return true;
     return other is RewardTransaction &&
         id == other.id &&
-        amount == other.amount &&
-        timestamp == other.timestamp &&
-        userID == other.userID &&
-        rewardpartnerID == other.rewardpartnerID;
+        _amount == other._amount &&
+        _timestamp == other._timestamp &&
+        _userID == other._userID &&
+        _rewardpartnerID == other._rewardpartnerID;
   }
 
   @override
@@ -83,23 +98,23 @@ class RewardTransaction extends Model {
     buffer.write("RewardTransaction {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write(
-        "amount=" + (amount != null ? amount.toString() : "null") + ", ");
+        "amount=" + (_amount != null ? _amount!.toString() : "null") + ", ");
     buffer.write("timestamp=" +
-        (timestamp != null ? timestamp.format() : "null") +
+        (_timestamp != null ? _timestamp!.format() : "null") +
         ", ");
-    buffer.write("userID=" + "$userID" + ", ");
-    buffer.write("rewardpartnerID=" + "$rewardpartnerID");
+    buffer.write("userID=" + "$_userID" + ", ");
+    buffer.write("rewardpartnerID=" + "$_rewardpartnerID");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   RewardTransaction copyWith(
-      {String id,
-      double amount,
-      TemporalDateTime timestamp,
-      String userID,
-      String rewardpartnerID}) {
+      {String? id,
+      double? amount,
+      TemporalDateTime? timestamp,
+      String? userID,
+      String? rewardpartnerID}) {
     return RewardTransaction(
         id: id ?? this.id,
         amount: amount ?? this.amount,
@@ -110,19 +125,19 @@ class RewardTransaction extends Model {
 
   RewardTransaction.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        amount = json['amount'],
-        timestamp = json['timestamp'] != null
+        _amount = json['amount'],
+        _timestamp = json['timestamp'] != null
             ? TemporalDateTime.fromString(json['timestamp'])
             : null,
-        userID = json['userID'],
-        rewardpartnerID = json['rewardpartnerID'];
+        _userID = json['userID'],
+        _rewardpartnerID = json['rewardpartnerID'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'amount': amount,
-        'timestamp': timestamp?.format(),
-        'userID': userID,
-        'rewardpartnerID': rewardpartnerID
+        'amount': _amount,
+        'timestamp': _timestamp?.format(),
+        'userID': _userID,
+        'rewardpartnerID': _rewardpartnerID
       };
 
   static final QueryField ID = QueryField(fieldName: "rewardTransaction.id");

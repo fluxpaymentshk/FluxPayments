@@ -212,8 +212,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: HomePage(
                               userRepository: widget.userConfigRepository,
                             ),
-                          //  child:ProfilePage(),
-
+                            //  child:ProfilePage(),
                           ),
                         ),
                       );

@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -24,8 +23,8 @@ import 'package:flutter/foundation.dart';
 class Service extends Model {
   static const classType = const _ServiceModelType();
   final String id;
-  final String category;
-  final String billproviderID;
+  final String? _category;
+  final String? _billproviderID;
 
   @override
   getInstanceType() => classType;
@@ -35,10 +34,19 @@ class Service extends Model {
     return id;
   }
 
-  const Service._internal(
-      {@required this.id, this.category, this.billproviderID});
+  String? get category {
+    return _category;
+  }
 
-  factory Service({String id, String category, String billproviderID}) {
+  String? get billproviderID {
+    return _billproviderID;
+  }
+
+  const Service._internal({required this.id, category, billproviderID})
+      : _category = category,
+        _billproviderID = billproviderID;
+
+  factory Service({String? id, String? category, String? billproviderID}) {
     return Service._internal(
         id: id == null ? UUID.getUUID() : id,
         category: category,
@@ -54,8 +62,8 @@ class Service extends Model {
     if (identical(other, this)) return true;
     return other is Service &&
         id == other.id &&
-        category == other.category &&
-        billproviderID == other.billproviderID;
+        _category == other._category &&
+        _billproviderID == other._billproviderID;
   }
 
   @override
@@ -67,14 +75,14 @@ class Service extends Model {
 
     buffer.write("Service {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("category=" + "$category" + ", ");
-    buffer.write("billproviderID=" + "$billproviderID");
+    buffer.write("category=" + "$_category" + ", ");
+    buffer.write("billproviderID=" + "$_billproviderID");
     buffer.write("}");
 
     return buffer.toString();
   }
 
-  Service copyWith({String id, String category, String billproviderID}) {
+  Service copyWith({String? id, String? category, String? billproviderID}) {
     return Service(
         id: id ?? this.id,
         category: category ?? this.category,
@@ -83,11 +91,11 @@ class Service extends Model {
 
   Service.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        category = json['category'],
-        billproviderID = json['billproviderID'];
+        _category = json['category'],
+        _billproviderID = json['billproviderID'];
 
   Map<String, dynamic> toJson() =>
-      {'id': id, 'category': category, 'billproviderID': billproviderID};
+      {'id': id, 'category': _category, 'billproviderID': _billproviderID};
 
   static final QueryField ID = QueryField(fieldName: "service.id");
   static final QueryField CATEGORY = QueryField(fieldName: "category");

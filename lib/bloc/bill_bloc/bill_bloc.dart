@@ -9,13 +9,12 @@ class BillsBloc extends Bloc<BillsEvent, BillsState> {
   @override
   Stream<BillsState> mapEventToState(BillsEvent event) async* {
     try {
-     
       if (event is LoadBills) {
-       // List<Bills> bills=[];
-       
-      //  Data().getBillData(bills);
+        // List<Bills> bills=[];
 
-        yield (LoadedBills());//dummy
+        //  Data().getBillData(bills);
+
+        yield (LoadedBills()); //dummy
       }
     } catch (e) {
       yield ErrorState();

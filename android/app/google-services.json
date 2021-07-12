@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "159873257142",
+    "project_id": "flux-payments-mobile",
+    "storage_bucket": "flux-payments-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159873257142:android:c9718255fce833e37c6017",
+        "android_client_info": {
+          "package_name": "com.example.fluxpayments"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159873257142-7suh1uplqpcudm11gn29131slhbk7mmf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fluxpayments",
+            "certificate_hash": "3c56268fce3564974667374e7ffc35059200eb19"
+          }
+        },
+        {
+          "client_id": "159873257142-cv3nmmas14jklkki4ln2i9u8uk4c61i4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBzWBIKzt-l-RNSe_M_6V9NvxhdA04Tbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159873257142-cv3nmmas14jklkki4ln2i9u8uk4c61i4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "159873257142-2ub2hv19l29h1ae3j8ira1l0if637q7r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fluxpayments"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

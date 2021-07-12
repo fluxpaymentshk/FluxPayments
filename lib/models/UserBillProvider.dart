@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -26,9 +25,9 @@ import 'package:flutter/foundation.dart';
 class UserBillProvider extends Model {
   static const classType = const _UserBillProviderModelType();
   final String id;
-  final List<ServiceTransaction> BillProviderToServiceTransactions;
-  final String billproviderID;
-  final List<UserService> ProvideUserServices;
+  final List<ServiceTransaction>? _BillProviderToServiceTransactions;
+  final String? _billproviderID;
+  final List<UserService>? _ProvideUserServices;
 
   @override
   getInstanceType() => classType;
@@ -38,26 +37,42 @@ class UserBillProvider extends Model {
     return id;
   }
 
+  List<ServiceTransaction>? get BillProviderToServiceTransactions {
+    return _BillProviderToServiceTransactions;
+  }
+
+  String? get billproviderID {
+    return _billproviderID;
+  }
+
+  List<UserService>? get ProvideUserServices {
+    return _ProvideUserServices;
+  }
+
   const UserBillProvider._internal(
-      {@required this.id,
-      this.BillProviderToServiceTransactions,
-      this.billproviderID,
-      this.ProvideUserServices});
+      {required this.id,
+      BillProviderToServiceTransactions,
+      billproviderID,
+      ProvideUserServices})
+      : _BillProviderToServiceTransactions = BillProviderToServiceTransactions,
+        _billproviderID = billproviderID,
+        _ProvideUserServices = ProvideUserServices;
 
   factory UserBillProvider(
-      {String id,
-      List<ServiceTransaction> BillProviderToServiceTransactions,
-      String billproviderID,
-      List<UserService> ProvideUserServices}) {
+      {String? id,
+      List<ServiceTransaction>? BillProviderToServiceTransactions,
+      String? billproviderID,
+      List<UserService>? ProvideUserServices}) {
     return UserBillProvider._internal(
         id: id == null ? UUID.getUUID() : id,
         BillProviderToServiceTransactions:
             BillProviderToServiceTransactions != null
-                ? List.unmodifiable(BillProviderToServiceTransactions)
+                ? List<ServiceTransaction>.unmodifiable(
+                    BillProviderToServiceTransactions)
                 : BillProviderToServiceTransactions,
         billproviderID: billproviderID,
         ProvideUserServices: ProvideUserServices != null
-            ? List.unmodifiable(ProvideUserServices)
+            ? List<UserService>.unmodifiable(ProvideUserServices)
             : ProvideUserServices);
   }
 
@@ -70,11 +85,11 @@ class UserBillProvider extends Model {
     if (identical(other, this)) return true;
     return other is UserBillProvider &&
         id == other.id &&
-        DeepCollectionEquality().equals(BillProviderToServiceTransactions,
-            other.BillProviderToServiceTransactions) &&
-        billproviderID == other.billproviderID &&
+        DeepCollectionEquality().equals(_BillProviderToServiceTransactions,
+            other._BillProviderToServiceTransactions) &&
+        _billproviderID == other._billproviderID &&
         DeepCollectionEquality()
-            .equals(ProvideUserServices, other.ProvideUserServices);
+            .equals(_ProvideUserServices, other._ProvideUserServices);
   }
 
   @override
@@ -86,17 +101,17 @@ class UserBillProvider extends Model {
 
     buffer.write("UserBillProvider {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("billproviderID=" + "$billproviderID");
+    buffer.write("billproviderID=" + "$_billproviderID");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   UserBillProvider copyWith(
-      {String id,
-      List<ServiceTransaction> BillProviderToServiceTransactions,
-      String billproviderID,
-      List<UserService> ProvideUserServices}) {
+      {String? id,
+      List<ServiceTransaction>? BillProviderToServiceTransactions,
+      String? billproviderID,
+      List<UserService>? ProvideUserServices}) {
     return UserBillProvider(
         id: id ?? this.id,
         BillProviderToServiceTransactions: BillProviderToServiceTransactions ??
@@ -107,29 +122,30 @@ class UserBillProvider extends Model {
 
   UserBillProvider.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        BillProviderToServiceTransactions =
+        _BillProviderToServiceTransactions =
             json['BillProviderToServiceTransactions'] is List
                 ? (json['BillProviderToServiceTransactions'] as List)
+                    .where((e) => e?['serializedData'] != null)
                     .map((e) => ServiceTransaction.fromJson(
-                        new Map<String, dynamic>.from(e)))
+                        new Map<String, dynamic>.from(e['serializedData'])))
                     .toList()
                 : null,
-        billproviderID = json['billproviderID'],
-        ProvideUserServices = json['ProvideUserServices'] is List
+        _billproviderID = json['billproviderID'],
+        _ProvideUserServices = json['ProvideUserServices'] is List
             ? (json['ProvideUserServices'] as List)
-                .map((e) =>
-                    UserService.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => UserService.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'BillProviderToServiceTransactions':
-            BillProviderToServiceTransactions?.map((e) => e?.toJson())
-                ?.toList(),
-        'billproviderID': billproviderID,
+            _BillProviderToServiceTransactions?.map((e) => e.toJson()).toList(),
+        'billproviderID': _billproviderID,
         'ProvideUserServices':
-            ProvideUserServices?.map((e) => e?.toJson())?.toList()
+            _ProvideUserServices?.map((e) => e.toJson()).toList()
       };
 
   static final QueryField ID = QueryField(fieldName: "userBillProvider.id");

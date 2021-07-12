@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -26,15 +25,15 @@ import 'package:flutter/foundation.dart';
 class RewardPartner extends Model {
   static const classType = const _RewardPartnerModelType();
   final String id;
-  final String name;
-  final String image;
-  final String shortDescription;
-  final int size;
-  final String banner;
-  final List<Shop> franchises;
-  final List<Reward> Rewards;
-  final List<RewardTransaction> RewardPartnerToRewardTransactions;
-  final List<InternalAdvertisers> Advertises;
+  final String? _name;
+  final String? _image;
+  final String? _shortDescription;
+  final int? _size;
+  final String? _banner;
+  final List<Shop>? _franchises;
+  final List<Reward>? _Rewards;
+  final List<RewardTransaction>? _RewardPartnerToRewardTransactions;
+  final List<InternalAdvertisers>? _Advertises;
 
   @override
   getInstanceType() => classType;
@@ -44,29 +43,92 @@ class RewardPartner extends Model {
     return id;
   }
 
+  String get name {
+    try {
+      return _name!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String? get image {
+    return _image;
+  }
+
+  String get shortDescription {
+    try {
+      return _shortDescription!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  int? get size {
+    return _size;
+  }
+
+  String? get banner {
+    return _banner;
+  }
+
+  List<Shop>? get franchises {
+    return _franchises;
+  }
+
+  List<Reward>? get Rewards {
+    return _Rewards;
+  }
+
+  List<RewardTransaction>? get RewardPartnerToRewardTransactions {
+    return _RewardPartnerToRewardTransactions;
+  }
+
+  List<InternalAdvertisers>? get Advertises {
+    return _Advertises;
+  }
+
   const RewardPartner._internal(
-      {@required this.id,
-      @required this.name,
-      this.image,
-      @required this.shortDescription,
-      this.size,
-      this.banner,
-      this.franchises,
-      this.Rewards,
-      this.RewardPartnerToRewardTransactions,
-      this.Advertises});
+      {required this.id,
+      required name,
+      image,
+      required shortDescription,
+      size,
+      banner,
+      franchises,
+      Rewards,
+      RewardPartnerToRewardTransactions,
+      Advertises})
+      : _name = name,
+        _image = image,
+        _shortDescription = shortDescription,
+        _size = size,
+        _banner = banner,
+        _franchises = franchises,
+        _Rewards = Rewards,
+        _RewardPartnerToRewardTransactions = RewardPartnerToRewardTransactions,
+        _Advertises = Advertises;
 
   factory RewardPartner(
-      {String id,
-      @required String name,
-      String image,
-      @required String shortDescription,
-      int size,
-      String banner,
-      List<Shop> franchises,
-      List<Reward> Rewards,
-      List<RewardTransaction> RewardPartnerToRewardTransactions,
-      List<InternalAdvertisers> Advertises}) {
+      {String? id,
+      required String name,
+      String? image,
+      required String shortDescription,
+      int? size,
+      String? banner,
+      List<Shop>? franchises,
+      List<Reward>? Rewards,
+      List<RewardTransaction>? RewardPartnerToRewardTransactions,
+      List<InternalAdvertisers>? Advertises}) {
     return RewardPartner._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
@@ -74,15 +136,18 @@ class RewardPartner extends Model {
         shortDescription: shortDescription,
         size: size,
         banner: banner,
-        franchises:
-            franchises != null ? List.unmodifiable(franchises) : franchises,
-        Rewards: Rewards != null ? List.unmodifiable(Rewards) : Rewards,
+        franchises: franchises != null
+            ? List<Shop>.unmodifiable(franchises)
+            : franchises,
+        Rewards: Rewards != null ? List<Reward>.unmodifiable(Rewards) : Rewards,
         RewardPartnerToRewardTransactions:
             RewardPartnerToRewardTransactions != null
-                ? List.unmodifiable(RewardPartnerToRewardTransactions)
+                ? List<RewardTransaction>.unmodifiable(
+                    RewardPartnerToRewardTransactions)
                 : RewardPartnerToRewardTransactions,
-        Advertises:
-            Advertises != null ? List.unmodifiable(Advertises) : Advertises);
+        Advertises: Advertises != null
+            ? List<InternalAdvertisers>.unmodifiable(Advertises)
+            : Advertises);
   }
 
   bool equals(Object other) {
@@ -94,16 +159,16 @@ class RewardPartner extends Model {
     if (identical(other, this)) return true;
     return other is RewardPartner &&
         id == other.id &&
-        name == other.name &&
-        image == other.image &&
-        shortDescription == other.shortDescription &&
-        size == other.size &&
-        banner == other.banner &&
-        DeepCollectionEquality().equals(franchises, other.franchises) &&
-        DeepCollectionEquality().equals(Rewards, other.Rewards) &&
-        DeepCollectionEquality().equals(RewardPartnerToRewardTransactions,
-            other.RewardPartnerToRewardTransactions) &&
-        DeepCollectionEquality().equals(Advertises, other.Advertises);
+        _name == other._name &&
+        _image == other._image &&
+        _shortDescription == other._shortDescription &&
+        _size == other._size &&
+        _banner == other._banner &&
+        DeepCollectionEquality().equals(_franchises, other._franchises) &&
+        DeepCollectionEquality().equals(_Rewards, other._Rewards) &&
+        DeepCollectionEquality().equals(_RewardPartnerToRewardTransactions,
+            other._RewardPartnerToRewardTransactions) &&
+        DeepCollectionEquality().equals(_Advertises, other._Advertises);
   }
 
   @override
@@ -115,27 +180,27 @@ class RewardPartner extends Model {
 
     buffer.write("RewardPartner {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write("image=" + "$image" + ", ");
-    buffer.write("shortDescription=" + "$shortDescription" + ", ");
-    buffer.write("size=" + (size != null ? size.toString() : "null") + ", ");
-    buffer.write("banner=" + "$banner");
+    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("image=" + "$_image" + ", ");
+    buffer.write("shortDescription=" + "$_shortDescription" + ", ");
+    buffer.write("size=" + (_size != null ? _size!.toString() : "null") + ", ");
+    buffer.write("banner=" + "$_banner");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   RewardPartner copyWith(
-      {String id,
-      String name,
-      String image,
-      String shortDescription,
-      int size,
-      String banner,
-      List<Shop> franchises,
-      List<Reward> Rewards,
-      List<RewardTransaction> RewardPartnerToRewardTransactions,
-      List<InternalAdvertisers> Advertises}) {
+      {String? id,
+      String? name,
+      String? image,
+      String? shortDescription,
+      int? size,
+      String? banner,
+      List<Shop>? franchises,
+      List<Reward>? Rewards,
+      List<RewardTransaction>? RewardPartnerToRewardTransactions,
+      List<InternalAdvertisers>? Advertises}) {
     return RewardPartner(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -152,48 +217,53 @@ class RewardPartner extends Model {
 
   RewardPartner.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        name = json['name'],
-        image = json['image'],
-        shortDescription = json['shortDescription'],
-        size = json['size'],
-        banner = json['banner'],
-        franchises = json['franchises'] is List
+        _name = json['name'],
+        _image = json['image'],
+        _shortDescription = json['shortDescription'],
+        _size = json['size'],
+        _banner = json['banner'],
+        _franchises = json['franchises'] is List
             ? (json['franchises'] as List)
-                .map((e) => Shop.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => Shop.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
-        Rewards = json['Rewards'] is List
+        _Rewards = json['Rewards'] is List
             ? (json['Rewards'] as List)
-                .map((e) => Reward.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => Reward.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
-        RewardPartnerToRewardTransactions =
+        _RewardPartnerToRewardTransactions =
             json['RewardPartnerToRewardTransactions'] is List
                 ? (json['RewardPartnerToRewardTransactions'] as List)
+                    .where((e) => e?['serializedData'] != null)
                     .map((e) => RewardTransaction.fromJson(
-                        new Map<String, dynamic>.from(e)))
+                        new Map<String, dynamic>.from(e['serializedData'])))
                     .toList()
                 : null,
-        Advertises = json['Advertises'] is List
+        _Advertises = json['Advertises'] is List
             ? (json['Advertises'] as List)
+                .where((e) => e?['serializedData'] != null)
                 .map((e) => InternalAdvertisers.fromJson(
-                    new Map<String, dynamic>.from(e)))
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
-        'image': image,
-        'shortDescription': shortDescription,
-        'size': size,
-        'banner': banner,
-        'franchises': franchises?.map((e) => e?.toJson())?.toList(),
-        'Rewards': Rewards?.map((e) => e?.toJson())?.toList(),
+        'name': _name,
+        'image': _image,
+        'shortDescription': _shortDescription,
+        'size': _size,
+        'banner': _banner,
+        'franchises': _franchises?.map((e) => e.toJson()).toList(),
+        'Rewards': _Rewards?.map((e) => e.toJson()).toList(),
         'RewardPartnerToRewardTransactions':
-            RewardPartnerToRewardTransactions?.map((e) => e?.toJson())
-                ?.toList(),
-        'Advertises': Advertises?.map((e) => e?.toJson())?.toList()
+            _RewardPartnerToRewardTransactions?.map((e) => e.toJson()).toList(),
+        'Advertises': _Advertises?.map((e) => e.toJson()).toList()
       };
 
   static final QueryField ID = QueryField(fieldName: "rewardPartner.id");

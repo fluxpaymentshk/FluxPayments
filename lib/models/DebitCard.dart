@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -24,12 +23,12 @@ import 'package:flutter/foundation.dart';
 class DebitCard extends Model {
   static const classType = const _DebitCardModelType();
   final String id;
-  final int debitCardNumber;
-  final TemporalDate expiryDate;
-  final String bankName;
-  final int cvv;
-  final String name;
-  final String userID;
+  final int? _debitCardNumber;
+  final TemporalDate? _expiryDate;
+  final String? _bankName;
+  final int? _cvv;
+  final String? _name;
+  final String? _userID;
 
   @override
   getInstanceType() => classType;
@@ -39,23 +38,53 @@ class DebitCard extends Model {
     return id;
   }
 
+  int? get debitCardNumber {
+    return _debitCardNumber;
+  }
+
+  TemporalDate? get expiryDate {
+    return _expiryDate;
+  }
+
+  String? get bankName {
+    return _bankName;
+  }
+
+  int? get cvv {
+    return _cvv;
+  }
+
+  String? get name {
+    return _name;
+  }
+
+  String? get userID {
+    return _userID;
+  }
+
   const DebitCard._internal(
-      {@required this.id,
-      this.debitCardNumber,
-      this.expiryDate,
-      this.bankName,
-      this.cvv,
-      this.name,
-      this.userID});
+      {required this.id,
+      debitCardNumber,
+      expiryDate,
+      bankName,
+      cvv,
+      name,
+      userID})
+      : _debitCardNumber = debitCardNumber,
+        _expiryDate = expiryDate,
+        _bankName = bankName,
+        _cvv = cvv,
+        _name = name,
+        _userID = userID;
 
   factory DebitCard(
-      {String id,
-      int debitCardNumber,
-      TemporalDate expiryDate,
-      String bankName,
-      int cvv,
-      String name,
-      String userID}) {
+      {String? id,
+      int? debitCardNumber,
+      TemporalDate? expiryDate,
+      String? bankName,
+      int? cvv,
+      String? name,
+      String? userID}) {
     return DebitCard._internal(
         id: id == null ? UUID.getUUID() : id,
         debitCardNumber: debitCardNumber,
@@ -75,12 +104,12 @@ class DebitCard extends Model {
     if (identical(other, this)) return true;
     return other is DebitCard &&
         id == other.id &&
-        debitCardNumber == other.debitCardNumber &&
-        expiryDate == other.expiryDate &&
-        bankName == other.bankName &&
-        cvv == other.cvv &&
-        name == other.name &&
-        userID == other.userID;
+        _debitCardNumber == other._debitCardNumber &&
+        _expiryDate == other._expiryDate &&
+        _bankName == other._bankName &&
+        _cvv == other._cvv &&
+        _name == other._name &&
+        _userID == other._userID;
   }
 
   @override
@@ -93,28 +122,28 @@ class DebitCard extends Model {
     buffer.write("DebitCard {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("debitCardNumber=" +
-        (debitCardNumber != null ? debitCardNumber.toString() : "null") +
+        (_debitCardNumber != null ? _debitCardNumber!.toString() : "null") +
         ", ");
     buffer.write("expiryDate=" +
-        (expiryDate != null ? expiryDate.format() : "null") +
+        (_expiryDate != null ? _expiryDate!.format() : "null") +
         ", ");
-    buffer.write("bankName=" + "$bankName" + ", ");
-    buffer.write("cvv=" + (cvv != null ? cvv.toString() : "null") + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write("userID=" + "$userID");
+    buffer.write("bankName=" + "$_bankName" + ", ");
+    buffer.write("cvv=" + (_cvv != null ? _cvv!.toString() : "null") + ", ");
+    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("userID=" + "$_userID");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   DebitCard copyWith(
-      {String id,
-      int debitCardNumber,
-      TemporalDate expiryDate,
-      String bankName,
-      int cvv,
-      String name,
-      String userID}) {
+      {String? id,
+      int? debitCardNumber,
+      TemporalDate? expiryDate,
+      String? bankName,
+      int? cvv,
+      String? name,
+      String? userID}) {
     return DebitCard(
         id: id ?? this.id,
         debitCardNumber: debitCardNumber ?? this.debitCardNumber,
@@ -127,23 +156,23 @@ class DebitCard extends Model {
 
   DebitCard.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        debitCardNumber = json['debitCardNumber'],
-        expiryDate = json['expiryDate'] != null
+        _debitCardNumber = json['debitCardNumber'],
+        _expiryDate = json['expiryDate'] != null
             ? TemporalDate.fromString(json['expiryDate'])
             : null,
-        bankName = json['bankName'],
-        cvv = json['cvv'],
-        name = json['name'],
-        userID = json['userID'];
+        _bankName = json['bankName'],
+        _cvv = json['cvv'],
+        _name = json['name'],
+        _userID = json['userID'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'debitCardNumber': debitCardNumber,
-        'expiryDate': expiryDate?.format(),
-        'bankName': bankName,
-        'cvv': cvv,
-        'name': name,
-        'userID': userID
+        'debitCardNumber': _debitCardNumber,
+        'expiryDate': _expiryDate?.format(),
+        'bankName': _bankName,
+        'cvv': _cvv,
+        'name': _name,
+        'userID': _userID
       };
 
   static final QueryField ID = QueryField(fieldName: "debitCard.id");

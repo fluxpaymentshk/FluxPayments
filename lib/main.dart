@@ -1,24 +1,43 @@
-//@dart=2.9
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/amplifyconfiguration.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/notification_handler.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/login_page.dart';
-import 'package:flux_payments/routes/modal_routes.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
-// import 'package:dart_mssql/dart_mssql.dart';
 
-void main() async {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  NotificationHandler? _notificationHandler = NotificationHandler();
+
+  try {
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  } catch (e) {
+    print(e);
+  }
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    log("${message.data}");
+    if (message.data != null) {
+      log("hey");
+      _notificationHandler.firebaseMessagingForegroundHandler(message);
+    }
+  });
+
   runApp(MyApp());
 }
 
@@ -38,14 +57,13 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _configureAmplify();
-    ModalRoutes.loginRepo = _loginRepository;
-    ModalRoutes.userConfigRepository = _userConfigRepository;
   }
 
   void _configureAmplify() async {
     if (!mounted) return;
     AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
-    Amplify.addPlugins([authPlugin]);
+    AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
+    Amplify.addPlugins([authPlugin, analyticsPlugin]);
 
     try {
       await Amplify.configure(amplifyconfig);
@@ -92,7 +110,9 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MultiBlocProvider(
+      home:
+          // AnalyticsPage()
+          MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (_) => AuthBloc(_loginRepository),

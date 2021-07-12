@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -24,9 +23,9 @@ import 'package:flutter/foundation.dart';
 class UserWallet extends Model {
   static const classType = const _UserWalletModelType();
   final String id;
-  final String name;
-  final String upi;
-  final String userID;
+  final String? _name;
+  final String? _upi;
+  final String? _userID;
 
   @override
   getInstanceType() => classType;
@@ -36,10 +35,24 @@ class UserWallet extends Model {
     return id;
   }
 
-  const UserWallet._internal(
-      {@required this.id, this.name, this.upi, this.userID});
+  String? get name {
+    return _name;
+  }
 
-  factory UserWallet({String id, String name, String upi, String userID}) {
+  String? get upi {
+    return _upi;
+  }
+
+  String? get userID {
+    return _userID;
+  }
+
+  const UserWallet._internal({required this.id, name, upi, userID})
+      : _name = name,
+        _upi = upi,
+        _userID = userID;
+
+  factory UserWallet({String? id, String? name, String? upi, String? userID}) {
     return UserWallet._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
@@ -56,9 +69,9 @@ class UserWallet extends Model {
     if (identical(other, this)) return true;
     return other is UserWallet &&
         id == other.id &&
-        name == other.name &&
-        upi == other.upi &&
-        userID == other.userID;
+        _name == other._name &&
+        _upi == other._upi &&
+        _userID == other._userID;
   }
 
   @override
@@ -70,15 +83,15 @@ class UserWallet extends Model {
 
     buffer.write("UserWallet {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write("upi=" + "$upi" + ", ");
-    buffer.write("userID=" + "$userID");
+    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("upi=" + "$_upi" + ", ");
+    buffer.write("userID=" + "$_userID");
     buffer.write("}");
 
     return buffer.toString();
   }
 
-  UserWallet copyWith({String id, String name, String upi, String userID}) {
+  UserWallet copyWith({String? id, String? name, String? upi, String? userID}) {
     return UserWallet(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -88,12 +101,12 @@ class UserWallet extends Model {
 
   UserWallet.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        name = json['name'],
-        upi = json['upi'],
-        userID = json['userID'];
+        _name = json['name'],
+        _upi = json['upi'],
+        _userID = json['userID'];
 
   Map<String, dynamic> toJson() =>
-      {'id': id, 'name': name, 'upi': upi, 'userID': userID};
+      {'id': id, 'name': _name, 'upi': _upi, 'userID': _userID};
 
   static final QueryField ID = QueryField(fieldName: "userWallet.id");
   static final QueryField NAME = QueryField(fieldName: "name");

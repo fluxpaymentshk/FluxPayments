@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -26,10 +25,10 @@ import 'package:flutter/foundation.dart';
 class RewardCategory extends Model {
   static const classType = const _RewardCategoryModelType();
   final String id;
-  final String name;
-  final String icon;
-  final String description;
-  final List<Reward> categorizes;
+  final String? _name;
+  final String? _icon;
+  final String? _description;
+  final List<Reward>? _categorizes;
 
   @override
   getInstanceType() => classType;
@@ -39,26 +38,43 @@ class RewardCategory extends Model {
     return id;
   }
 
+  String? get name {
+    return _name;
+  }
+
+  String? get icon {
+    return _icon;
+  }
+
+  String? get description {
+    return _description;
+  }
+
+  List<Reward>? get categorizes {
+    return _categorizes;
+  }
+
   const RewardCategory._internal(
-      {@required this.id,
-      this.name,
-      this.icon,
-      this.description,
-      this.categorizes});
+      {required this.id, name, icon, description, categorizes})
+      : _name = name,
+        _icon = icon,
+        _description = description,
+        _categorizes = categorizes;
 
   factory RewardCategory(
-      {String id,
-      String name,
-      String icon,
-      String description,
-      List<Reward> categorizes}) {
+      {String? id,
+      String? name,
+      String? icon,
+      String? description,
+      List<Reward>? categorizes}) {
     return RewardCategory._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
         icon: icon,
         description: description,
-        categorizes:
-            categorizes != null ? List.unmodifiable(categorizes) : categorizes);
+        categorizes: categorizes != null
+            ? List<Reward>.unmodifiable(categorizes)
+            : categorizes);
   }
 
   bool equals(Object other) {
@@ -70,10 +86,10 @@ class RewardCategory extends Model {
     if (identical(other, this)) return true;
     return other is RewardCategory &&
         id == other.id &&
-        name == other.name &&
-        icon == other.icon &&
-        description == other.description &&
-        DeepCollectionEquality().equals(categorizes, other.categorizes);
+        _name == other._name &&
+        _icon == other._icon &&
+        _description == other._description &&
+        DeepCollectionEquality().equals(_categorizes, other._categorizes);
   }
 
   @override
@@ -85,20 +101,20 @@ class RewardCategory extends Model {
 
     buffer.write("RewardCategory {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write("icon=" + "$icon" + ", ");
-    buffer.write("description=" + "$description");
+    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("icon=" + "$_icon" + ", ");
+    buffer.write("description=" + "$_description");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   RewardCategory copyWith(
-      {String id,
-      String name,
-      String icon,
-      String description,
-      List<Reward> categorizes}) {
+      {String? id,
+      String? name,
+      String? icon,
+      String? description,
+      List<Reward>? categorizes}) {
     return RewardCategory(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -109,21 +125,23 @@ class RewardCategory extends Model {
 
   RewardCategory.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        name = json['name'],
-        icon = json['icon'],
-        description = json['description'],
-        categorizes = json['categorizes'] is List
+        _name = json['name'],
+        _icon = json['icon'],
+        _description = json['description'],
+        _categorizes = json['categorizes'] is List
             ? (json['categorizes'] as List)
-                .map((e) => Reward.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => Reward.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
-        'icon': icon,
-        'description': description,
-        'categorizes': categorizes?.map((e) => e?.toJson())?.toList()
+        'name': _name,
+        'icon': _icon,
+        'description': _description,
+        'categorizes': _categorizes?.map((e) => e.toJson()).toList()
       };
 
   static final QueryField ID = QueryField(fieldName: "rewardCategory.id");

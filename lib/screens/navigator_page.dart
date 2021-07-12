@@ -33,7 +33,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
     ];
   }
 
-
   // final List<Tuple2>
   int _selectedPage = 0;
 

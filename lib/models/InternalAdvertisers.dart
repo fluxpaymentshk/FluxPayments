@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -24,9 +23,9 @@ import 'package:flutter/foundation.dart';
 class InternalAdvertisers extends Model {
   static const classType = const _InternalAdvertisersModelType();
   final String id;
-  final String category;
-  final int score;
-  final String rewardpartnerID;
+  final String? _category;
+  final int? _score;
+  final String? _rewardpartnerID;
 
   @override
   getInstanceType() => classType;
@@ -36,11 +35,26 @@ class InternalAdvertisers extends Model {
     return id;
   }
 
+  String? get category {
+    return _category;
+  }
+
+  int? get score {
+    return _score;
+  }
+
+  String? get rewardpartnerID {
+    return _rewardpartnerID;
+  }
+
   const InternalAdvertisers._internal(
-      {@required this.id, this.category, this.score, this.rewardpartnerID});
+      {required this.id, category, score, rewardpartnerID})
+      : _category = category,
+        _score = score,
+        _rewardpartnerID = rewardpartnerID;
 
   factory InternalAdvertisers(
-      {String id, String category, int score, String rewardpartnerID}) {
+      {String? id, String? category, int? score, String? rewardpartnerID}) {
     return InternalAdvertisers._internal(
         id: id == null ? UUID.getUUID() : id,
         category: category,
@@ -57,9 +71,9 @@ class InternalAdvertisers extends Model {
     if (identical(other, this)) return true;
     return other is InternalAdvertisers &&
         id == other.id &&
-        category == other.category &&
-        score == other.score &&
-        rewardpartnerID == other.rewardpartnerID;
+        _category == other._category &&
+        _score == other._score &&
+        _rewardpartnerID == other._rewardpartnerID;
   }
 
   @override
@@ -71,16 +85,17 @@ class InternalAdvertisers extends Model {
 
     buffer.write("InternalAdvertisers {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("category=" + "$category" + ", ");
-    buffer.write("score=" + (score != null ? score.toString() : "null") + ", ");
-    buffer.write("rewardpartnerID=" + "$rewardpartnerID");
+    buffer.write("category=" + "$_category" + ", ");
+    buffer.write(
+        "score=" + (_score != null ? _score!.toString() : "null") + ", ");
+    buffer.write("rewardpartnerID=" + "$_rewardpartnerID");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   InternalAdvertisers copyWith(
-      {String id, String category, int score, String rewardpartnerID}) {
+      {String? id, String? category, int? score, String? rewardpartnerID}) {
     return InternalAdvertisers(
         id: id ?? this.id,
         category: category ?? this.category,
@@ -90,15 +105,15 @@ class InternalAdvertisers extends Model {
 
   InternalAdvertisers.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        category = json['category'],
-        score = json['score'],
-        rewardpartnerID = json['rewardpartnerID'];
+        _category = json['category'],
+        _score = json['score'],
+        _rewardpartnerID = json['rewardpartnerID'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'category': category,
-        'score': score,
-        'rewardpartnerID': rewardpartnerID
+        'category': _category,
+        'score': _score,
+        'rewardpartnerID': _rewardpartnerID
       };
 
   static final QueryField ID = QueryField(fieldName: "internalAdvertisers.id");

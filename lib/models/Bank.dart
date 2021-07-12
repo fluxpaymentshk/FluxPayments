@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -24,11 +23,11 @@ import 'package:flutter/foundation.dart';
 class Bank extends Model {
   static const classType = const _BankModelType();
   final String id;
-  final int accNumber;
-  final String bankName;
-  final String ifscCode;
-  final String name;
-  final String userID;
+  final int? _accNumber;
+  final String? _bankName;
+  final String? _ifscCode;
+  final String? _name;
+  final String? _userID;
 
   @override
   getInstanceType() => classType;
@@ -38,21 +37,41 @@ class Bank extends Model {
     return id;
   }
 
+  int? get accNumber {
+    return _accNumber;
+  }
+
+  String? get bankName {
+    return _bankName;
+  }
+
+  String? get ifscCode {
+    return _ifscCode;
+  }
+
+  String? get name {
+    return _name;
+  }
+
+  String? get userID {
+    return _userID;
+  }
+
   const Bank._internal(
-      {@required this.id,
-      this.accNumber,
-      this.bankName,
-      this.ifscCode,
-      this.name,
-      this.userID});
+      {required this.id, accNumber, bankName, ifscCode, name, userID})
+      : _accNumber = accNumber,
+        _bankName = bankName,
+        _ifscCode = ifscCode,
+        _name = name,
+        _userID = userID;
 
   factory Bank(
-      {String id,
-      int accNumber,
-      String bankName,
-      String ifscCode,
-      String name,
-      String userID}) {
+      {String? id,
+      int? accNumber,
+      String? bankName,
+      String? ifscCode,
+      String? name,
+      String? userID}) {
     return Bank._internal(
         id: id == null ? UUID.getUUID() : id,
         accNumber: accNumber,
@@ -71,11 +90,11 @@ class Bank extends Model {
     if (identical(other, this)) return true;
     return other is Bank &&
         id == other.id &&
-        accNumber == other.accNumber &&
-        bankName == other.bankName &&
-        ifscCode == other.ifscCode &&
-        name == other.name &&
-        userID == other.userID;
+        _accNumber == other._accNumber &&
+        _bankName == other._bankName &&
+        _ifscCode == other._ifscCode &&
+        _name == other._name &&
+        _userID == other._userID;
   }
 
   @override
@@ -88,24 +107,24 @@ class Bank extends Model {
     buffer.write("Bank {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("accNumber=" +
-        (accNumber != null ? accNumber.toString() : "null") +
+        (_accNumber != null ? _accNumber!.toString() : "null") +
         ", ");
-    buffer.write("bankName=" + "$bankName" + ", ");
-    buffer.write("ifscCode=" + "$ifscCode" + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write("userID=" + "$userID");
+    buffer.write("bankName=" + "$_bankName" + ", ");
+    buffer.write("ifscCode=" + "$_ifscCode" + ", ");
+    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("userID=" + "$_userID");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   Bank copyWith(
-      {String id,
-      int accNumber,
-      String bankName,
-      String ifscCode,
-      String name,
-      String userID}) {
+      {String? id,
+      int? accNumber,
+      String? bankName,
+      String? ifscCode,
+      String? name,
+      String? userID}) {
     return Bank(
         id: id ?? this.id,
         accNumber: accNumber ?? this.accNumber,
@@ -117,19 +136,19 @@ class Bank extends Model {
 
   Bank.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        accNumber = json['accNumber'],
-        bankName = json['bankName'],
-        ifscCode = json['ifscCode'],
-        name = json['name'],
-        userID = json['userID'];
+        _accNumber = json['accNumber'],
+        _bankName = json['bankName'],
+        _ifscCode = json['ifscCode'],
+        _name = json['name'],
+        _userID = json['userID'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'accNumber': accNumber,
-        'bankName': bankName,
-        'ifscCode': ifscCode,
-        'name': name,
-        'userID': userID
+        'accNumber': _accNumber,
+        'bankName': _bankName,
+        'ifscCode': _ifscCode,
+        'name': _name,
+        'userID': _userID
       };
 
   static final QueryField ID = QueryField(fieldName: "bank.id");

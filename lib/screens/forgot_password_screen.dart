@@ -52,22 +52,21 @@ class ForgetPasswordScreen extends StatelessWidget {
               child: ElevatedButton(
                 child: Text("Next"),
                 onPressed: () {
-                  bool? r=_formKey.currentState?.validate();
-                  if(r==true)
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => BlocProvider.value(
-                        value: userBloc,
-                        child: Scaffold(
-
-                          body: ResetPasswordOtpScreen(
-                            userConfigRepository: userConfigRepository,
-                            email: _emailController.value.text.trim(),
+                  bool? r = _formKey.currentState?.validate();
+                  if (r == true)
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider.value(
+                          value: userBloc,
+                          child: Scaffold(
+                            body: ResetPasswordOtpScreen(
+                              userConfigRepository: userConfigRepository,
+                              email: _emailController.value.text.trim(),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
+                    );
                 },
               ),
             ),

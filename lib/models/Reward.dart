@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -25,16 +24,16 @@ import 'package:flutter/foundation.dart';
 class Reward extends Model {
   static const classType = const _RewardModelType();
   final String id;
-  final String name;
-  final String category;
-  final String shortDescription;
-  final String longDescription;
-  final double amount;
-  final String image;
-  final String rewardpartnerID;
-  final RewardTransaction RewardtoRewardTransaction;
-  final String shopID;
-  final String rewardcategoryID;
+  final String? _name;
+  final String? _category;
+  final String? _shortDescription;
+  final String? _longDescription;
+  final double? _amount;
+  final String? _image;
+  final String? _rewardpartnerID;
+  final RewardTransaction? _RewardtoRewardTransaction;
+  final String? _shopID;
+  final String? _rewardcategoryID;
 
   @override
   getInstanceType() => classType;
@@ -44,31 +43,108 @@ class Reward extends Model {
     return id;
   }
 
+  String get name {
+    try {
+      return _name!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String get category {
+    try {
+      return _category!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String get shortDescription {
+    try {
+      return _shortDescription!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String? get longDescription {
+    return _longDescription;
+  }
+
+  double? get amount {
+    return _amount;
+  }
+
+  String? get image {
+    return _image;
+  }
+
+  String? get rewardpartnerID {
+    return _rewardpartnerID;
+  }
+
+  RewardTransaction? get RewardtoRewardTransaction {
+    return _RewardtoRewardTransaction;
+  }
+
+  String? get shopID {
+    return _shopID;
+  }
+
+  String? get rewardcategoryID {
+    return _rewardcategoryID;
+  }
+
   const Reward._internal(
-      {@required this.id,
-      @required this.name,
-      @required this.category,
-      @required this.shortDescription,
-      this.longDescription,
-      this.amount,
-      this.image,
-      this.rewardpartnerID,
-      this.RewardtoRewardTransaction,
-      this.shopID,
-      this.rewardcategoryID});
+      {required this.id,
+      required name,
+      required category,
+      required shortDescription,
+      longDescription,
+      amount,
+      image,
+      rewardpartnerID,
+      RewardtoRewardTransaction,
+      shopID,
+      rewardcategoryID})
+      : _name = name,
+        _category = category,
+        _shortDescription = shortDescription,
+        _longDescription = longDescription,
+        _amount = amount,
+        _image = image,
+        _rewardpartnerID = rewardpartnerID,
+        _RewardtoRewardTransaction = RewardtoRewardTransaction,
+        _shopID = shopID,
+        _rewardcategoryID = rewardcategoryID;
 
   factory Reward(
-      {String id,
-      @required String name,
-      @required String category,
-      @required String shortDescription,
-      String longDescription,
-      double amount,
-      String image,
-      String rewardpartnerID,
-      RewardTransaction RewardtoRewardTransaction,
-      String shopID,
-      String rewardcategoryID}) {
+      {String? id,
+      required String name,
+      required String category,
+      required String shortDescription,
+      String? longDescription,
+      double? amount,
+      String? image,
+      String? rewardpartnerID,
+      RewardTransaction? RewardtoRewardTransaction,
+      String? shopID,
+      String? rewardcategoryID}) {
     return Reward._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
@@ -92,16 +168,16 @@ class Reward extends Model {
     if (identical(other, this)) return true;
     return other is Reward &&
         id == other.id &&
-        name == other.name &&
-        category == other.category &&
-        shortDescription == other.shortDescription &&
-        longDescription == other.longDescription &&
-        amount == other.amount &&
-        image == other.image &&
-        rewardpartnerID == other.rewardpartnerID &&
-        RewardtoRewardTransaction == other.RewardtoRewardTransaction &&
-        shopID == other.shopID &&
-        rewardcategoryID == other.rewardcategoryID;
+        _name == other._name &&
+        _category == other._category &&
+        _shortDescription == other._shortDescription &&
+        _longDescription == other._longDescription &&
+        _amount == other._amount &&
+        _image == other._image &&
+        _rewardpartnerID == other._rewardpartnerID &&
+        _RewardtoRewardTransaction == other._RewardtoRewardTransaction &&
+        _shopID == other._shopID &&
+        _rewardcategoryID == other._rewardcategoryID;
   }
 
   @override
@@ -113,38 +189,38 @@ class Reward extends Model {
 
     buffer.write("Reward {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write("category=" + "$category" + ", ");
-    buffer.write("shortDescription=" + "$shortDescription" + ", ");
-    buffer.write("longDescription=" + "$longDescription" + ", ");
+    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("category=" + "$_category" + ", ");
+    buffer.write("shortDescription=" + "$_shortDescription" + ", ");
+    buffer.write("longDescription=" + "$_longDescription" + ", ");
     buffer.write(
-        "amount=" + (amount != null ? amount.toString() : "null") + ", ");
-    buffer.write("image=" + "$image" + ", ");
-    buffer.write("rewardpartnerID=" + "$rewardpartnerID" + ", ");
+        "amount=" + (_amount != null ? _amount!.toString() : "null") + ", ");
+    buffer.write("image=" + "$_image" + ", ");
+    buffer.write("rewardpartnerID=" + "$_rewardpartnerID" + ", ");
     buffer.write("RewardtoRewardTransaction=" +
-        (RewardtoRewardTransaction != null
-            ? RewardtoRewardTransaction.toString()
+        (_RewardtoRewardTransaction != null
+            ? _RewardtoRewardTransaction!.toString()
             : "null") +
         ", ");
-    buffer.write("shopID=" + "$shopID" + ", ");
-    buffer.write("rewardcategoryID=" + "$rewardcategoryID");
+    buffer.write("shopID=" + "$_shopID" + ", ");
+    buffer.write("rewardcategoryID=" + "$_rewardcategoryID");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   Reward copyWith(
-      {String id,
-      String name,
-      String category,
-      String shortDescription,
-      String longDescription,
-      double amount,
-      String image,
-      String rewardpartnerID,
-      RewardTransaction RewardtoRewardTransaction,
-      String shopID,
-      String rewardcategoryID}) {
+      {String? id,
+      String? name,
+      String? category,
+      String? shortDescription,
+      String? longDescription,
+      double? amount,
+      String? image,
+      String? rewardpartnerID,
+      RewardTransaction? RewardtoRewardTransaction,
+      String? shopID,
+      String? rewardcategoryID}) {
     return Reward(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -162,32 +238,33 @@ class Reward extends Model {
 
   Reward.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        name = json['name'],
-        category = json['category'],
-        shortDescription = json['shortDescription'],
-        longDescription = json['longDescription'],
-        amount = json['amount'],
-        image = json['image'],
-        rewardpartnerID = json['rewardpartnerID'],
-        RewardtoRewardTransaction = json['RewardtoRewardTransaction'] != null
-            ? RewardTransaction.fromJson(new Map<String, dynamic>.from(
-                json['RewardtoRewardTransaction']))
-            : null,
-        shopID = json['shopID'],
-        rewardcategoryID = json['rewardcategoryID'];
+        _name = json['name'],
+        _category = json['category'],
+        _shortDescription = json['shortDescription'],
+        _longDescription = json['longDescription'],
+        _amount = json['amount'],
+        _image = json['image'],
+        _rewardpartnerID = json['rewardpartnerID'],
+        _RewardtoRewardTransaction =
+            json['RewardtoRewardTransaction']?['serializedData'] != null
+                ? RewardTransaction.fromJson(new Map<String, dynamic>.from(
+                    json['RewardtoRewardTransaction']['serializedData']))
+                : null,
+        _shopID = json['shopID'],
+        _rewardcategoryID = json['rewardcategoryID'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
-        'category': category,
-        'shortDescription': shortDescription,
-        'longDescription': longDescription,
-        'amount': amount,
-        'image': image,
-        'rewardpartnerID': rewardpartnerID,
-        'RewardtoRewardTransaction': RewardtoRewardTransaction?.toJson(),
-        'shopID': shopID,
-        'rewardcategoryID': rewardcategoryID
+        'name': _name,
+        'category': _category,
+        'shortDescription': _shortDescription,
+        'longDescription': _longDescription,
+        'amount': _amount,
+        'image': _image,
+        'rewardpartnerID': _rewardpartnerID,
+        'RewardtoRewardTransaction': _RewardtoRewardTransaction?.toJson(),
+        'shopID': _shopID,
+        'rewardcategoryID': _rewardcategoryID
       };
 
   static final QueryField ID = QueryField(fieldName: "reward.id");

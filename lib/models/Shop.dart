@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -26,13 +25,13 @@ import 'package:flutter/foundation.dart';
 class Shop extends Model {
   static const classType = const _ShopModelType();
   final String id;
-  final String address;
-  final String name;
-  final String mapLink;
-  final String image;
-  final String rewardpartnerID;
-  final List<Reward> rewardshops;
-  final RewardTransaction ShopToRewardTransaction;
+  final String? _address;
+  final String? _name;
+  final String? _mapLink;
+  final String? _image;
+  final String? _rewardpartnerID;
+  final List<Reward>? _rewardshops;
+  final RewardTransaction? _ShopToRewardTransaction;
 
   @override
   getInstanceType() => classType;
@@ -42,25 +41,87 @@ class Shop extends Model {
     return id;
   }
 
+  String get address {
+    try {
+      return _address!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String get name {
+    try {
+      return _name!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String? get mapLink {
+    return _mapLink;
+  }
+
+  String? get image {
+    return _image;
+  }
+
+  String get rewardpartnerID {
+    try {
+      return _rewardpartnerID!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  List<Reward>? get rewardshops {
+    return _rewardshops;
+  }
+
+  RewardTransaction? get ShopToRewardTransaction {
+    return _ShopToRewardTransaction;
+  }
+
   const Shop._internal(
-      {@required this.id,
-      @required this.address,
-      @required this.name,
-      this.mapLink,
-      this.image,
-      @required this.rewardpartnerID,
-      this.rewardshops,
-      this.ShopToRewardTransaction});
+      {required this.id,
+      required address,
+      required name,
+      mapLink,
+      image,
+      required rewardpartnerID,
+      rewardshops,
+      ShopToRewardTransaction})
+      : _address = address,
+        _name = name,
+        _mapLink = mapLink,
+        _image = image,
+        _rewardpartnerID = rewardpartnerID,
+        _rewardshops = rewardshops,
+        _ShopToRewardTransaction = ShopToRewardTransaction;
 
   factory Shop(
-      {String id,
-      @required String address,
-      @required String name,
-      String mapLink,
-      String image,
-      @required String rewardpartnerID,
-      List<Reward> rewardshops,
-      RewardTransaction ShopToRewardTransaction}) {
+      {String? id,
+      required String address,
+      required String name,
+      String? mapLink,
+      String? image,
+      required String rewardpartnerID,
+      List<Reward>? rewardshops,
+      RewardTransaction? ShopToRewardTransaction}) {
     return Shop._internal(
         id: id == null ? UUID.getUUID() : id,
         address: address,
@@ -68,8 +129,9 @@ class Shop extends Model {
         mapLink: mapLink,
         image: image,
         rewardpartnerID: rewardpartnerID,
-        rewardshops:
-            rewardshops != null ? List.unmodifiable(rewardshops) : rewardshops,
+        rewardshops: rewardshops != null
+            ? List<Reward>.unmodifiable(rewardshops)
+            : rewardshops,
         ShopToRewardTransaction: ShopToRewardTransaction);
   }
 
@@ -82,13 +144,13 @@ class Shop extends Model {
     if (identical(other, this)) return true;
     return other is Shop &&
         id == other.id &&
-        address == other.address &&
-        name == other.name &&
-        mapLink == other.mapLink &&
-        image == other.image &&
-        rewardpartnerID == other.rewardpartnerID &&
-        DeepCollectionEquality().equals(rewardshops, other.rewardshops) &&
-        ShopToRewardTransaction == other.ShopToRewardTransaction;
+        _address == other._address &&
+        _name == other._name &&
+        _mapLink == other._mapLink &&
+        _image == other._image &&
+        _rewardpartnerID == other._rewardpartnerID &&
+        DeepCollectionEquality().equals(_rewardshops, other._rewardshops) &&
+        _ShopToRewardTransaction == other._ShopToRewardTransaction;
   }
 
   @override
@@ -100,14 +162,14 @@ class Shop extends Model {
 
     buffer.write("Shop {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("address=" + "$address" + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write("mapLink=" + "$mapLink" + ", ");
-    buffer.write("image=" + "$image" + ", ");
-    buffer.write("rewardpartnerID=" + "$rewardpartnerID" + ", ");
+    buffer.write("address=" + "$_address" + ", ");
+    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("mapLink=" + "$_mapLink" + ", ");
+    buffer.write("image=" + "$_image" + ", ");
+    buffer.write("rewardpartnerID=" + "$_rewardpartnerID" + ", ");
     buffer.write("ShopToRewardTransaction=" +
-        (ShopToRewardTransaction != null
-            ? ShopToRewardTransaction.toString()
+        (_ShopToRewardTransaction != null
+            ? _ShopToRewardTransaction!.toString()
             : "null"));
     buffer.write("}");
 
@@ -115,14 +177,14 @@ class Shop extends Model {
   }
 
   Shop copyWith(
-      {String id,
-      String address,
-      String name,
-      String mapLink,
-      String image,
-      String rewardpartnerID,
-      List<Reward> rewardshops,
-      RewardTransaction ShopToRewardTransaction}) {
+      {String? id,
+      String? address,
+      String? name,
+      String? mapLink,
+      String? image,
+      String? rewardpartnerID,
+      List<Reward>? rewardshops,
+      RewardTransaction? ShopToRewardTransaction}) {
     return Shop(
         id: id ?? this.id,
         address: address ?? this.address,
@@ -137,30 +199,33 @@ class Shop extends Model {
 
   Shop.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        address = json['address'],
-        name = json['name'],
-        mapLink = json['mapLink'],
-        image = json['image'],
-        rewardpartnerID = json['rewardpartnerID'],
-        rewardshops = json['rewardshops'] is List
+        _address = json['address'],
+        _name = json['name'],
+        _mapLink = json['mapLink'],
+        _image = json['image'],
+        _rewardpartnerID = json['rewardpartnerID'],
+        _rewardshops = json['rewardshops'] is List
             ? (json['rewardshops'] as List)
-                .map((e) => Reward.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => Reward.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
-        ShopToRewardTransaction = json['ShopToRewardTransaction'] != null
-            ? RewardTransaction.fromJson(
-                new Map<String, dynamic>.from(json['ShopToRewardTransaction']))
-            : null;
+        _ShopToRewardTransaction =
+            json['ShopToRewardTransaction']?['serializedData'] != null
+                ? RewardTransaction.fromJson(new Map<String, dynamic>.from(
+                    json['ShopToRewardTransaction']['serializedData']))
+                : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'address': address,
-        'name': name,
-        'mapLink': mapLink,
-        'image': image,
-        'rewardpartnerID': rewardpartnerID,
-        'rewardshops': rewardshops?.map((e) => e?.toJson())?.toList(),
-        'ShopToRewardTransaction': ShopToRewardTransaction?.toJson()
+        'address': _address,
+        'name': _name,
+        'mapLink': _mapLink,
+        'image': _image,
+        'rewardpartnerID': _rewardpartnerID,
+        'rewardshops': _rewardshops?.map((e) => e.toJson()).toList(),
+        'ShopToRewardTransaction': _ShopToRewardTransaction?.toJson()
       };
 
   static final QueryField ID = QueryField(fieldName: "shop.id");

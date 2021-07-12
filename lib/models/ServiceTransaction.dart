@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -24,11 +23,11 @@ import 'package:flutter/foundation.dart';
 class ServiceTransaction extends Model {
   static const classType = const _ServiceTransactionModelType();
   final String id;
-  final TemporalDate dueDate;
-  final TemporalDate paidOn;
-  final int rewardPoints;
-  final String billproviderID;
-  final String userID;
+  final TemporalDate? _dueDate;
+  final TemporalDate? _paidOn;
+  final int? _rewardPoints;
+  final String? _billproviderID;
+  final String? _userID;
 
   @override
   getInstanceType() => classType;
@@ -38,21 +37,41 @@ class ServiceTransaction extends Model {
     return id;
   }
 
+  TemporalDate? get dueDate {
+    return _dueDate;
+  }
+
+  TemporalDate? get paidOn {
+    return _paidOn;
+  }
+
+  int? get rewardPoints {
+    return _rewardPoints;
+  }
+
+  String? get billproviderID {
+    return _billproviderID;
+  }
+
+  String? get userID {
+    return _userID;
+  }
+
   const ServiceTransaction._internal(
-      {@required this.id,
-      this.dueDate,
-      this.paidOn,
-      this.rewardPoints,
-      this.billproviderID,
-      this.userID});
+      {required this.id, dueDate, paidOn, rewardPoints, billproviderID, userID})
+      : _dueDate = dueDate,
+        _paidOn = paidOn,
+        _rewardPoints = rewardPoints,
+        _billproviderID = billproviderID,
+        _userID = userID;
 
   factory ServiceTransaction(
-      {String id,
-      TemporalDate dueDate,
-      TemporalDate paidOn,
-      int rewardPoints,
-      String billproviderID,
-      String userID}) {
+      {String? id,
+      TemporalDate? dueDate,
+      TemporalDate? paidOn,
+      int? rewardPoints,
+      String? billproviderID,
+      String? userID}) {
     return ServiceTransaction._internal(
         id: id == null ? UUID.getUUID() : id,
         dueDate: dueDate,
@@ -71,11 +90,11 @@ class ServiceTransaction extends Model {
     if (identical(other, this)) return true;
     return other is ServiceTransaction &&
         id == other.id &&
-        dueDate == other.dueDate &&
-        paidOn == other.paidOn &&
-        rewardPoints == other.rewardPoints &&
-        billproviderID == other.billproviderID &&
-        userID == other.userID;
+        _dueDate == other._dueDate &&
+        _paidOn == other._paidOn &&
+        _rewardPoints == other._rewardPoints &&
+        _billproviderID == other._billproviderID &&
+        _userID == other._userID;
   }
 
   @override
@@ -88,26 +107,26 @@ class ServiceTransaction extends Model {
     buffer.write("ServiceTransaction {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write(
-        "dueDate=" + (dueDate != null ? dueDate.format() : "null") + ", ");
-    buffer
-        .write("paidOn=" + (paidOn != null ? paidOn.format() : "null") + ", ");
+        "dueDate=" + (_dueDate != null ? _dueDate!.format() : "null") + ", ");
+    buffer.write(
+        "paidOn=" + (_paidOn != null ? _paidOn!.format() : "null") + ", ");
     buffer.write("rewardPoints=" +
-        (rewardPoints != null ? rewardPoints.toString() : "null") +
+        (_rewardPoints != null ? _rewardPoints!.toString() : "null") +
         ", ");
-    buffer.write("billproviderID=" + "$billproviderID" + ", ");
-    buffer.write("userID=" + "$userID");
+    buffer.write("billproviderID=" + "$_billproviderID" + ", ");
+    buffer.write("userID=" + "$_userID");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   ServiceTransaction copyWith(
-      {String id,
-      TemporalDate dueDate,
-      TemporalDate paidOn,
-      int rewardPoints,
-      String billproviderID,
-      String userID}) {
+      {String? id,
+      TemporalDate? dueDate,
+      TemporalDate? paidOn,
+      int? rewardPoints,
+      String? billproviderID,
+      String? userID}) {
     return ServiceTransaction(
         id: id ?? this.id,
         dueDate: dueDate ?? this.dueDate,
@@ -119,23 +138,23 @@ class ServiceTransaction extends Model {
 
   ServiceTransaction.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        dueDate = json['dueDate'] != null
+        _dueDate = json['dueDate'] != null
             ? TemporalDate.fromString(json['dueDate'])
             : null,
-        paidOn = json['paidOn'] != null
+        _paidOn = json['paidOn'] != null
             ? TemporalDate.fromString(json['paidOn'])
             : null,
-        rewardPoints = json['rewardPoints'],
-        billproviderID = json['billproviderID'],
-        userID = json['userID'];
+        _rewardPoints = json['rewardPoints'],
+        _billproviderID = json['billproviderID'],
+        _userID = json['userID'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'dueDate': dueDate?.format(),
-        'paidOn': paidOn?.format(),
-        'rewardPoints': rewardPoints,
-        'billproviderID': billproviderID,
-        'userID': userID
+        'dueDate': _dueDate?.format(),
+        'paidOn': _paidOn?.format(),
+        'rewardPoints': _rewardPoints,
+        'billproviderID': _billproviderID,
+        'userID': _userID
       };
 
   static final QueryField ID = QueryField(fieldName: "serviceTransaction.id");

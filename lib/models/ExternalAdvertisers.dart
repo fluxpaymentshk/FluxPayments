@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -24,15 +23,15 @@ import 'package:flutter/foundation.dart';
 class ExternalAdvertisers extends Model {
   static const classType = const _ExternalAdvertisersModelType();
   final String id;
-  final String name;
-  final String log;
-  final String banner;
-  final String shortDescription;
-  final String longDescriptio;
-  final String productName;
-  final String category;
-  final int score;
-  final String productPic;
+  final String? _name;
+  final String? _log;
+  final String? _banner;
+  final String? _shortDescription;
+  final String? _longDescriptio;
+  final String? _productName;
+  final String? _category;
+  final int? _score;
+  final String? _productPic;
 
   @override
   getInstanceType() => classType;
@@ -42,29 +41,92 @@ class ExternalAdvertisers extends Model {
     return id;
   }
 
+  String get name {
+    try {
+      return _name!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String? get log {
+    return _log;
+  }
+
+  String? get banner {
+    return _banner;
+  }
+
+  String? get shortDescription {
+    return _shortDescription;
+  }
+
+  String? get longDescriptio {
+    return _longDescriptio;
+  }
+
+  String get productName {
+    try {
+      return _productName!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String? get category {
+    return _category;
+  }
+
+  int? get score {
+    return _score;
+  }
+
+  String? get productPic {
+    return _productPic;
+  }
+
   const ExternalAdvertisers._internal(
-      {@required this.id,
-      @required this.name,
-      this.log,
-      this.banner,
-      this.shortDescription,
-      this.longDescriptio,
-      @required this.productName,
-      this.category,
-      this.score,
-      this.productPic});
+      {required this.id,
+      required name,
+      log,
+      banner,
+      shortDescription,
+      longDescriptio,
+      required productName,
+      category,
+      score,
+      productPic})
+      : _name = name,
+        _log = log,
+        _banner = banner,
+        _shortDescription = shortDescription,
+        _longDescriptio = longDescriptio,
+        _productName = productName,
+        _category = category,
+        _score = score,
+        _productPic = productPic;
 
   factory ExternalAdvertisers(
-      {String id,
-      @required String name,
-      String log,
-      String banner,
-      String shortDescription,
-      String longDescriptio,
-      @required String productName,
-      String category,
-      int score,
-      String productPic}) {
+      {String? id,
+      required String name,
+      String? log,
+      String? banner,
+      String? shortDescription,
+      String? longDescriptio,
+      required String productName,
+      String? category,
+      int? score,
+      String? productPic}) {
     return ExternalAdvertisers._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
@@ -87,15 +149,15 @@ class ExternalAdvertisers extends Model {
     if (identical(other, this)) return true;
     return other is ExternalAdvertisers &&
         id == other.id &&
-        name == other.name &&
-        log == other.log &&
-        banner == other.banner &&
-        shortDescription == other.shortDescription &&
-        longDescriptio == other.longDescriptio &&
-        productName == other.productName &&
-        category == other.category &&
-        score == other.score &&
-        productPic == other.productPic;
+        _name == other._name &&
+        _log == other._log &&
+        _banner == other._banner &&
+        _shortDescription == other._shortDescription &&
+        _longDescriptio == other._longDescriptio &&
+        _productName == other._productName &&
+        _category == other._category &&
+        _score == other._score &&
+        _productPic == other._productPic;
   }
 
   @override
@@ -107,31 +169,32 @@ class ExternalAdvertisers extends Model {
 
     buffer.write("ExternalAdvertisers {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write("log=" + "$log" + ", ");
-    buffer.write("banner=" + "$banner" + ", ");
-    buffer.write("shortDescription=" + "$shortDescription" + ", ");
-    buffer.write("longDescriptio=" + "$longDescriptio" + ", ");
-    buffer.write("productName=" + "$productName" + ", ");
-    buffer.write("category=" + "$category" + ", ");
-    buffer.write("score=" + (score != null ? score.toString() : "null") + ", ");
-    buffer.write("productPic=" + "$productPic");
+    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("log=" + "$_log" + ", ");
+    buffer.write("banner=" + "$_banner" + ", ");
+    buffer.write("shortDescription=" + "$_shortDescription" + ", ");
+    buffer.write("longDescriptio=" + "$_longDescriptio" + ", ");
+    buffer.write("productName=" + "$_productName" + ", ");
+    buffer.write("category=" + "$_category" + ", ");
+    buffer.write(
+        "score=" + (_score != null ? _score!.toString() : "null") + ", ");
+    buffer.write("productPic=" + "$_productPic");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   ExternalAdvertisers copyWith(
-      {String id,
-      String name,
-      String log,
-      String banner,
-      String shortDescription,
-      String longDescriptio,
-      String productName,
-      String category,
-      int score,
-      String productPic}) {
+      {String? id,
+      String? name,
+      String? log,
+      String? banner,
+      String? shortDescription,
+      String? longDescriptio,
+      String? productName,
+      String? category,
+      int? score,
+      String? productPic}) {
     return ExternalAdvertisers(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -147,27 +210,27 @@ class ExternalAdvertisers extends Model {
 
   ExternalAdvertisers.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        name = json['name'],
-        log = json['log'],
-        banner = json['banner'],
-        shortDescription = json['shortDescription'],
-        longDescriptio = json['longDescriptio'],
-        productName = json['productName'],
-        category = json['category'],
-        score = json['score'],
-        productPic = json['productPic'];
+        _name = json['name'],
+        _log = json['log'],
+        _banner = json['banner'],
+        _shortDescription = json['shortDescription'],
+        _longDescriptio = json['longDescriptio'],
+        _productName = json['productName'],
+        _category = json['category'],
+        _score = json['score'],
+        _productPic = json['productPic'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
-        'log': log,
-        'banner': banner,
-        'shortDescription': shortDescription,
-        'longDescriptio': longDescriptio,
-        'productName': productName,
-        'category': category,
-        'score': score,
-        'productPic': productPic
+        'name': _name,
+        'log': _log,
+        'banner': _banner,
+        'shortDescription': _shortDescription,
+        'longDescriptio': _longDescriptio,
+        'productName': _productName,
+        'category': _category,
+        'score': _score,
+        'productPic': _productPic
       };
 
   static final QueryField ID = QueryField(fieldName: "externalAdvertisers.id");
