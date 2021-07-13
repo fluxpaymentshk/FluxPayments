@@ -21,6 +21,7 @@ import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/services.dart';
 
 List<types.Message> messages = [];
 
@@ -28,6 +29,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await dotenv.load(fileName: ".env");
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//     statusBarColor: Colors.transparent,
+//  ));
   NotificationHandler? _notificationHandler = NotificationHandler();
 
   try {
@@ -70,7 +75,7 @@ class _MyAppState extends State<MyApp> {
     AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
     AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
     AmplifyAPI amplifyAPI = AmplifyAPI();
-    Amplify.addPlugins([authPlugin,amplifyAPI, analyticsPlugin]);
+    Amplify.addPlugins([authPlugin, amplifyAPI, analyticsPlugin]);
 
     try {
       await Amplify.configure(amplifyconfig);
@@ -112,78 +117,86 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flux Payments',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      debugShowCheckedModeBanner: false,
+      title: 'Flux Payments',
+      theme: ThemeData(
+        primaryColor: Color(0xff7041EE),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Color(0xff7041EE),
+          unselectedItemColor: Color(0xff7041EE),
+          selectedLabelStyle:
+              TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+          selectedIconTheme: IconThemeData(size: 30),
+          unselectedIconTheme: IconThemeData(size: 30),
         ),
-        home:
-        //  SupportBotScreen()
-            MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) => AuthBloc(_loginRepository),
-            ),
-            BlocProvider(
-              create: (_) => UserBloc(_userConfigRepository),
-            ),
-          ],
-          child: BlocBuilder<AuthBloc, AuthState>(
-            buildWhen: (prevSt, newSt) {
-              return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
-            },
-            builder: (ctx, st) {
-              log(_amplifyConfigured.toString());
-              log("Sign?:$isSignedIn");
-              return (!_amplifyConfigured)
-                  ? Scaffold(
-                      body: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                  : FutureBuilder<bool>(
-                      future: currentUser(ctx),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Scaffold(
-                            body: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        }
-                        if (snapshot.hasData &&
-                            snapshot.data != null &&
-                            snapshot.data == false)
-                          return LoginPage(
-                            loginRepo: _loginRepository,
-                            userConfigRepository: _userConfigRepository,
-                          );
-                        return NavigatorPage(
-                            userRepository: _userConfigRepository);
-                      });
-            },
+      ),
+      home:
+          //  SupportBotScreen()
+          MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AuthBloc(_loginRepository),
           ),
+          BlocProvider(
+            create: (_) => UserBloc(_userConfigRepository),
+          ),
+        ],
+        child: BlocBuilder<AuthBloc, AuthState>(
+          buildWhen: (prevSt, newSt) {
+            return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
+          },
+          builder: (ctx, st) {
+            log(_amplifyConfigured.toString());
+            log("Sign?:$isSignedIn");
+            return (!_amplifyConfigured)
+                ? Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : FutureBuilder<bool>(
+                    future: currentUser(ctx),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Scaffold(
+                          body: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      if (snapshot.hasData &&
+                          snapshot.data != null &&
+                          snapshot.data == false)
+                        return LoginPage(
+                          loginRepo: _loginRepository,
+                          userConfigRepository: _userConfigRepository,
+                        );
+                      return NavigatorPage(
+                          userRepository: _userConfigRepository);
+                    });
+          },
         ),
-        routes: {
-          LoginPage.routeName: (_) => MultiBlocProvider(
-                providers: [
-                  BlocProvider<AuthBloc>(
-                    create: (_) => AuthBloc(_loginRepository),
-                  ),
-                  BlocProvider(create: (_) => UserBloc(_userConfigRepository)),
-                ],
-                child: LoginPage(
-                  loginRepo: _loginRepository,
-                  userConfigRepository: _userConfigRepository,
+      ),
+      routes: {
+        LoginPage.routeName: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider<AuthBloc>(
+                  create: (_) => AuthBloc(_loginRepository),
                 ),
+                BlocProvider(create: (_) => UserBloc(_userConfigRepository)),
+              ],
+              child: LoginPage(
+                loginRepo: _loginRepository,
+                userConfigRepository: _userConfigRepository,
               ),
-          HomePage.routeName: (_) => BlocProvider<UserBloc>(
-                create: (_) => UserBloc(_userConfigRepository),
-                child: HomePage(
-                    userRepository: _userConfigRepository,
-                    email: userDetails["email"] ?? ""),
-              ),
-        },
-        );
+            ),
+        HomePage.routeName: (_) => BlocProvider<UserBloc>(
+              create: (_) => UserBloc(_userConfigRepository),
+              child: HomePage(
+                  userRepository: _userConfigRepository,
+                  email: userDetails["email"] ?? ""),
+            ),
+      },
+    );
   }
 }

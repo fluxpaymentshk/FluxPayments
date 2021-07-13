@@ -84,57 +84,59 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: TextButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        child: Icon(Icons.arrow_back, color: Colors.blue),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
-      body: Column(
-        children: [
-          SizedBox(height: 40),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.grey[300],
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
+      // floatingActionButton: TextButton(
+      //   onPressed: () {
+      //     Navigator.of(context).pop();
+      //   },
+      //   child: Icon(Icons.arrow_back, color: Colors.blue),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
+      body: Container(
+        height: MediaQuery.of(context).size.height*0.8,
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.07,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(width: 20,),
+                  CircleAvatar(
+                    backgroundColor: Colors.grey[300],
+                    child: Icon(
+                      Icons.person,
+                      size: 40,
+                    ),
+                    radius: 30,
                   ),
-                  radius: 30,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Bot Mimi",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  "A bot especially made to solve your issues and complaints",
-                  style: TextStyle(
-                    color: Colors.grey,
+                  Expanded(
+                    child: ListTile(
+                      title:  Text(
+                      "Bot Mimi",
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                    ),
+                    subtitle: Text(
+                      "A bot especially made to solve your issues and complaints",
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: Chat(
-              messages: messages,
-              showUserNames: true,
-              onSendPressed: _handleSendPressed,
-              user: _user,
+            Expanded(
+              child: Chat(
+                messages: messages,
+                showUserNames: true,
+                onSendPressed: _handleSendPressed,
+                user: _user,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
