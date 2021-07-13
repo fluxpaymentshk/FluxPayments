@@ -56,84 +56,122 @@ class ModelProvider implements ModelProviderInterface {
   @override
   String version = "a30c7c0f1349ff4e0d56b33a24ede353";
   @override
-  List<ModelSchema> modelSchemas = [Bank.schema, BillProvider.schema, CreditCard.schema, DebitCard.schema, ExternalAdvertisers.schema, InternalAdvertisers.schema, Reward.schema, RewardCategory.schema, RewardPartner.schema, RewardTransaction.schema, Service.schema, ServiceTransaction.schema, Shop.schema, User.schema, UserBillProvider.schema, UserService.schema, UserWallet.schema];
+  List<ModelSchema> modelSchemas = [
+    Bank.schema,
+    BillProvider.schema,
+    CreditCard.schema,
+    DebitCard.schema,
+    ExternalAdvertisers.schema,
+    InternalAdvertisers.schema,
+    Reward.schema,
+    RewardCategory.schema,
+    RewardPartner.schema,
+    RewardTransaction.schema,
+    Service.schema,
+    ServiceTransaction.schema,
+    Shop.schema,
+    User.schema,
+    UserBillProvider.schema,
+    UserService.schema,
+    UserWallet.schema
+  ];
   static final ModelProvider _instance = ModelProvider();
 
   static ModelProvider get instance => _instance;
-  
+
   ModelType getModelTypeByModelName(String modelName) {
-    switch(modelName) {
-    case "Bank": {
-    return Bank.classType;
-    }
-    break;
-    case "BillProvider": {
-    return BillProvider.classType;
-    }
-    break;
-    case "CreditCard": {
-    return CreditCard.classType;
-    }
-    break;
-    case "DebitCard": {
-    return DebitCard.classType;
-    }
-    break;
-    case "ExternalAdvertisers": {
-    return ExternalAdvertisers.classType;
-    }
-    break;
-    case "InternalAdvertisers": {
-    return InternalAdvertisers.classType;
-    }
-    break;
-    case "Reward": {
-    return Reward.classType;
-    }
-    break;
-    case "RewardCategory": {
-    return RewardCategory.classType;
-    }
-    break;
-    case "RewardPartner": {
-    return RewardPartner.classType;
-    }
-    break;
-    case "RewardTransaction": {
-    return RewardTransaction.classType;
-    }
-    break;
-    case "Service": {
-    return Service.classType;
-    }
-    break;
-    case "ServiceTransaction": {
-    return ServiceTransaction.classType;
-    }
-    break;
-    case "Shop": {
-    return Shop.classType;
-    }
-    break;
-    case "User": {
-    return User.classType;
-    }
-    break;
-    case "UserBillProvider": {
-    return UserBillProvider.classType;
-    }
-    break;
-    case "UserService": {
-    return UserService.classType;
-    }
-    break;
-    case "UserWallet": {
-    return UserWallet.classType;
-    }
-    break;
-    default: {
-    throw Exception("Failed to find model in model provider for model name: " + modelName);
-    }
+    switch (modelName) {
+      case "Bank":
+        {
+          return Bank.classType;
+        }
+        break;
+      case "BillProvider":
+        {
+          return BillProvider.classType;
+        }
+        break;
+      case "CreditCard":
+        {
+          return CreditCard.classType;
+        }
+        break;
+      case "DebitCard":
+        {
+          return DebitCard.classType;
+        }
+        break;
+      case "ExternalAdvertisers":
+        {
+          return ExternalAdvertisers.classType;
+        }
+        break;
+      case "InternalAdvertisers":
+        {
+          return InternalAdvertisers.classType;
+        }
+        break;
+      case "Reward":
+        {
+          return Reward.classType;
+        }
+        break;
+      case "RewardCategory":
+        {
+          return RewardCategory.classType;
+        }
+        break;
+      case "RewardPartner":
+        {
+          return RewardPartner.classType;
+        }
+        break;
+      case "RewardTransaction":
+        {
+          return RewardTransaction.classType;
+        }
+        break;
+      case "Service":
+        {
+          return Service.classType;
+        }
+        break;
+      case "ServiceTransaction":
+        {
+          return ServiceTransaction.classType;
+        }
+        break;
+      case "Shop":
+        {
+          return Shop.classType;
+        }
+        break;
+      case "User":
+        {
+          return User.classType;
+        }
+        break;
+      case "UserBillProvider":
+        {
+          return UserBillProvider.classType;
+        }
+        break;
+      case "UserService":
+        {
+          return UserService.classType;
+        }
+        break;
+      case "UserWallet":
+        {
+          return UserWallet.classType;
+        }
+        break;
+      default:
+        {
+          throw Exception(
+              "Failed to find model in model provider for model name: " +
+                  modelName);
+        }
     }
   }
 }

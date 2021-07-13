@@ -72,9 +72,15 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
         author: _bot,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         id: const Uuid().v4(),
+        text:
+            "Type: \n 'BILLS'- To get info about your bills \n 'COUPON'- To solve issues related to Coupons \n 'ISSUE'- To help me solve your other issues",
+      ));
+      messagesList.add(types.TextMessage(
+        author: _bot,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: const Uuid().v4(),
         text: "Hello. My name is Mimi- your support bot. How can I help you?",
       ));
-
       setState(() {
         messages = messagesList;
       });
