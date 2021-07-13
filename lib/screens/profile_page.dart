@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/bill_bloc/bill_bloc.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/user_model.dart';
+import 'package:flux_payments/screens/map.dart';
 import 'package:flux_payments/screens/pay_bills.dart';
 import 'package:flux_payments/services/user_details_services.dart';
 import 'package:flux_payments/services/database_lambda.dart';
@@ -44,6 +45,15 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
+            heroTag: "btn1",
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MapScreen()));
+            },
+            child: Icon(Icons.map_outlined),
+          ),
+          SizedBox(height: 10,),
+          FloatingActionButton(
+            heroTag: "btn2",
             onPressed: () async {
              // _databaseLambdaService.CouponToTransaction();
               // Map<String, dynamic> c = await _databaseLambdaService.fetchCreditCardInfo(userID: "fluxsam1");
@@ -73,6 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SizedBox(height: 10),
           FloatingActionButton(
+            heroTag: "btn3",
             onPressed: () async {
               await Amplify.Auth.signOut();
               Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
