@@ -2,14 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-import 'package:flux_payments/screens/gift_page.dart';
 import 'package:flux_payments/screens/reward_partners.dart';
 import 'package:flux_payments/screens/support_bot_screen.dart';
+import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:tuple/tuple.dart';
 
-import 'package:sliding_sheet/sliding_sheet.dart';
 import 'home_page.dart';
-import 'pay_bills.dart';
 import 'profile_page.dart';
 
 class NavigatorPage extends StatefulWidget {
