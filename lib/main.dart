@@ -21,6 +21,8 @@ import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/services.dart';
 
 List<types.Message> messages = [];
 
@@ -28,6 +30,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await dotenv.load(fileName: ".env");
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//     statusBarColor: Colors.transparent,
+//  ));
   NotificationHandler? _notificationHandler = NotificationHandler();
 
   try {
@@ -115,9 +121,19 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flux Payments',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xff7041EE),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Color(0xff7041EE),
+          unselectedItemColor: Color(0xff7041EE),
+          selectedLabelStyle:
+              TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+          selectedIconTheme: IconThemeData(size: 30),
+          unselectedIconTheme: IconThemeData(size: 30),
+        ),
       ),
-      home: MultiBlocProvider(
+      home:
+          //  SupportBotScreen()
+          MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (_) => AuthBloc(_loginRepository),
