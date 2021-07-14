@@ -95,7 +95,9 @@ class _LoginPageState extends State<LoginPage> {
                     //   userRepository: widget.userConfigRepository,
                     // ),
                     // child:ProfilePage(),
-                    child:NavigatorPage(userRepository: widget.userConfigRepository,),
+                    child: NavigatorPage(
+                      userRepository: widget.userConfigRepository,
+                    ),
                   ),
                 ),
               );

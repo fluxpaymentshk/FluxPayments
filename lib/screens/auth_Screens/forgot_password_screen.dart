@@ -5,7 +5,6 @@ import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/reset_password_otp_screen.dart';
 
-
 class ForgetPasswordScreen extends StatelessWidget {
   final UserConfigRepository? userConfigRepository;
   final LoginRepository? loginRepository;

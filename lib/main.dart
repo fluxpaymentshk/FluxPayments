@@ -10,6 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flux_payments/amplifyconfiguration.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';

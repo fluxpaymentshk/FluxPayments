@@ -11,8 +11,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class Bot {
   var result;
 
-  String kAccessKeyId = dotenv.env['ACCESS_KEY']??"";
-  String kSecretAccessKey = dotenv.env['SECRET_ACCESS_KEY']??"";
+  String kAccessKeyId = dotenv.env['ACCESS_KEY'] ?? "";
+  String kSecretAccessKey = dotenv.env['SECRET_ACCESS_KEY'] ?? "";
 
   Future<http.Response> callBot(String message) async {
     var response;

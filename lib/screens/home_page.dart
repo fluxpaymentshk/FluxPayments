@@ -148,9 +148,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) =>SupportBotScreen()
-                  ),
+                  MaterialPageRoute(builder: (_) => SupportBotScreen()),
                 );
               },
               child: Text(
