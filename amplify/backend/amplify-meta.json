@@ -29,12 +29,12 @@
 				"OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"fluxapp://\"],\"LogoutURLs\":[\"fluxapp://\"]}",
 				"UserPoolName": "fluxpayments4f50e62b_userpool_4f50e62b"
 			},
-			"lastPushTimeStamp": "2021-07-10T10:58:01.493Z",
+			"lastPushTimeStamp": "2021-07-12T11:33:05.207Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/auth/fluxpayments4f50e62b-cloudformation-template.yml",
 				"logicalId": "authfluxpayments4f50e62b"
 			},
-			"lastPushDirHash": "6jL8/H6ErHoCkJL7dlJND+J4pak="
+			"lastPushDirHash": "7T2v8DD/T2DoDcmUEVi6WooYlz4="
 		}
 	},
 	"api": {
@@ -60,7 +60,7 @@
 				"GraphQLAPIEndpointOutput": "https://d567q7lppfag7hcdafokav5pge.appsync-api.ap-southeast-1.amazonaws.com/graphql",
 				"GraphQLAPIKeyOutput": "da2-qkpqd5n4hjdwtfhsnysxngvloq"
 			},
-			"lastPushTimeStamp": "2021-07-10T10:58:01.495Z",
+			"lastPushTimeStamp": "2021-07-12T11:33:05.208Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/api/cloudformation-template.json",
 				"logicalId": "apiFluxPayments"
@@ -76,7 +76,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/analytics/pinpoint-cloudformation-template.json",
 				"logicalId": "analyticsfluxPaymentsPINPOINTS"
 			},
-			"lastPushTimeStamp": "2021-07-10T10:58:01.497Z",
+			"lastPushTimeStamp": "2021-07-12T11:33:05.209Z",
 			"output": {
 				"appName": "fluxPaymentsPINPOINTS-staging",
 				"Region": "us-west-2",
@@ -104,7 +104,31 @@
 					"Version": 1
 				}
 			},
-			"lastPushTimeStamp": "2021-07-10T10:58:06.563Z"
+			"lastPushTimeStamp": "2021-07-12T11:33:12.157Z"
+		}
+	},
+	"interactions": {
+		"FluxSupportBotMimi": {
+			"service": "Lex",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"lastPackageTimeStamp": "2021-07-12T09:19:45.938Z",
+			"distZipFilename": "FluxSupportBotMimi-784e55627472686f6a41-build.zip",
+			"s3Bucket": {
+				"deploymentBucketName": "amplify-fluxpayments-staging-122415-deployment",
+				"s3Key": "amplify-builds/FluxSupportBotMimi-784e55627472686f6a41-build.zip"
+			},
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/interactions/FluxSupportBotMimi-cloudformation-template.json",
+				"logicalId": "interactionsFluxSupportBotMimi"
+			},
+			"lastPushTimeStamp": "2021-07-12T11:33:05.211Z",
+			"output": {
+				"FunctionArn": "arn:aws:lambda:ap-southeast-1:277253331545:function:fluxpayments_cfnlambda_7af9ecfe-staging",
+				"Region": "ap-southeast-1",
+				"BotName": "Mimi_staging"
+			},
+			"lastPushDirHash": "zhXVuOtA2fRS2+PfTRRBObIiG/4="
 		}
 	}
 }
