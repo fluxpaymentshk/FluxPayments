@@ -53,7 +53,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
             color: Color(0xffF6F6FF),
             elevation: 0,
             maxWidth: 500,
-            cornerRadius: 16,
+            cornerRadius: 21,
             cornerRadiusOnFullscreen: 0.0,
             closeOnBackdropTap: true,
             closeOnBackButtonPressed: true,
@@ -105,24 +105,13 @@ class _NavigatorPageState extends State<NavigatorPage> {
                 return Container(
                   height: headerHeight,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ListTile(
-                    title: Center(
-                      child: Text(
-                        "Mimi Support Bot",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_upward_sharp,
+                      size: 30,
+                      color: Color(0xff7041EE),
                     ),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.close_sharp,
-                        size: 30,
-                        color: Color(0xff7041EE),
-                      ),
-                      onPressed: controller.collapse,
-                    ),
+                    onPressed: controller.collapse,
                   ),
                 );
               return Container(

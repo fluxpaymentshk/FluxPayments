@@ -142,21 +142,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => SupportBotScreen()),
-                );
-              },
-              child: Text(
-                'Talk to Mimi',
-                style: TextStyle(color: Colors.blue, fontSize: 17),
-              ),
-            ),
-          ),
         ],
       ),
     );

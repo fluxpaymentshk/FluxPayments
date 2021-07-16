@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flux_payments/repository/bot_repository.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +18,9 @@ class SupportBotScreen extends StatefulWidget {
 
 class _SupportBotScreenState extends State<SupportBotScreen> {
   final _user = const types.User(id: '1234556');
-  final _bot = const types.User(id: "123");
+  final _bot = const types.User(
+    id: "123",
+  );
 
   BotRepository _botRepository = BotRepository();
 
@@ -90,55 +92,149 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: TextButton(
-      //   onPressed: () {
-      //     Navigator.of(context).pop();
-      //   },
-      //   child: Icon(Icons.arrow_back, color: Colors.blue),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
+      resizeToAvoidBottomInset: true,
       body: Container(
-        height: MediaQuery.of(context).size.height*0.8,
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: createChat(messages)
+          // chat.Chat(
+          //   messages: messages,
+          //   showUserNames: true,
+          //   showUserAvatars: true,
+          //   onSendPressed: _handleSendPressed,
+          //   user: _user,
+          // ),
+          ),
+    );
+  }
+
+  Widget createChat(List<types.Message> messages) {
+    log("!!!!${messages.toString()}");
+    var result = messages[0].toJson();
+    print(result);
+    final TextEditingController _messageController =
+        new TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+    var controller = ScrollController();
+    return SingleChildScrollView(
+      // reverse:true,
+      controller: controller,
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.8,
+        color: Color(0xffF2F2FF),
         child: Column(
-          children: [
-            SizedBox(height: 10),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.07,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 20,),
-                  CircleAvatar(
-                    backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      Icons.person,
-                      size: 40,
-                    ),
-                    radius: 30,
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      title:  Text(
-                      "Bot Mimi",
-                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                    ),
-                    subtitle: Text(
-                      "A bot especially made to solve your issues and complaints",
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          children: <Widget>[
             Expanded(
-              child: Chat(
-                messages: messages,
-                showUserNames: true,
-                onSendPressed: _handleSendPressed,
-                user: _user,
+              child: ListView.builder(
+                  reverse: true,
+                  itemCount: messages.length,
+                  controller: controller,
+                  itemBuilder: (context, index) {
+                    Map<String, dynamic> r = messages[index].toJson();
+                    return Container(
+                      padding: EdgeInsets.only(
+                          left: r["author"]["id"].toString() == "123" ? 0 : 14,
+                          right: r["author"]["id"].toString() == "123" ? 14 : 0,
+                          top: 5,
+                          bottom: 5),
+                      child: Align(
+                        alignment: (r["author"]["id"].toString() == "123"
+                            ? Alignment.topLeft
+                            : Alignment.topRight),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                          horizontalTitleGap: 4,
+                          minLeadingWidth: 5,
+                          minVerticalPadding: 1,
+                          leading: r["author"]["id"].toString() == "123"
+                              ? CircleAvatar(
+                                  child:
+                                      Image.asset("assets/icons/mimi_bot.png"),
+                                  backgroundColor: Colors.white,
+                                )
+                              : null,
+                          trailing: r["author"]["id"].toString() != "123"
+                              ? CircleAvatar(
+                                  child: Image.asset(
+                                      "assets/icons/user_avatar.png"))
+                              : null,
+                          title: Card(
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(35),
+                              ),
+                            ),
+                            color: (r["author"]["id"].toString() == "123"
+                                ? Color(0xffFFFFFF)
+                                : Color(0xffD9D9FF)),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(35),
+                                color: (r["author"]["id"].toString() == "123"
+                                    ? Color(0xffFFFFFF)
+                                    : Color(0xffD9D9FF)),
+                              ),
+                              padding: EdgeInsets.all(16),
+                              child: Text(
+                                r["text"],
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Card(
+                elevation: 15,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(21))),
+                child: Container(
+                  padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(21),
+                    ),
+                    color: Colors.white,
+                  ),
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _messageController,
+                          decoration: InputDecoration(
+                              hintText: "Type Here...",
+                              hintStyle: TextStyle(color: Colors.black54),
+                              border: InputBorder.none),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      FloatingActionButton(
+                        onPressed: () {
+                          log("-------------------------------${_messageController.value.text}");
+                          if (_messageController.value.text.length > 0)
+                            _handleSendPressed(types.PartialText(
+                                text: _messageController.value.text));
+                          _messageController.clear();
+                        },
+                        child: Icon(
+                          Icons.send,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        backgroundColor: Colors.blue,
+                        elevation: 0,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
