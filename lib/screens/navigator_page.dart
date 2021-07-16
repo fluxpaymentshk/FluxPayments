@@ -104,20 +104,20 @@ class _NavigatorPageState extends State<NavigatorPage> {
               if (isOpened)
                 return Container(
                   height: headerHeight,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ImageIcon(
-                    AssetImage(
-                      "assets/icons/up_icon.png",
-                    ),
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(21),
+                    color: Color(0xffF2F2FF),
                   ),
-                  // IconButton(
-                  //   icon: Icon(
-                  //     Icons.arrow_upward_sharp,
-                  //     size: 30,
-                  //     color: Color(0xff7041EE),
-                  //   ),
-                  //   onPressed: controller.collapse,
-                  // ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: IconButton(
+                    icon: ImageIcon(
+                      AssetImage(
+                        "assets/icons/down_icon.png",
+                      ),
+                    ),
+                    onPressed: controller.collapse,
+                  ),
                 );
               return Container(
                 height: headerHeight,

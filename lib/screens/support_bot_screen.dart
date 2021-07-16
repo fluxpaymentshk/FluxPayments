@@ -34,12 +34,12 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
     setState(() {
       messages.insert(0, message);
     });
-    log("${message.toJson()["text"]}");
     var data = await _botRepository.accessBot(message.toJson()["text"]);
     log("#####${data}");
-    setState(() {
-      messages.insert(0, botMessageReply(data));
-    });
+    if (data != null)
+      setState(() {
+        messages.insert(0, botMessageReply(data));
+      });
   }
 
   types.Message botMessageReply(String message) {
@@ -101,9 +101,6 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
   }
 
   Widget createChat(List<types.Message> messages) {
-    log("!!!!${messages.toString()}");
-    var result = messages[0].toJson();
-    print(result);
     final TextEditingController _messageController =
         new TextEditingController();
     var controller = ScrollController();
@@ -171,8 +168,9 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                             ),
                           if (r["author"]["id"].toString() != "123")
                             CircleAvatar(
-                                child:
-                                    Image.asset("assets/icons/user_avatar.png"))
+                              child:
+                                  Image.asset("assets/icons/user_avatar.png"),
+                            ),
                         ],
                       ),
                     );
@@ -210,7 +208,6 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                       ),
                       FloatingActionButton(
                         onPressed: () {
-                          log("-------------------------------${_messageController.value.text}");
                           if (_messageController.value.text.length > 0)
                             _handleSendPressed(types.PartialText(
                                 text: _messageController.value.text));
