@@ -1,6 +1,6 @@
 {
     "identityPoolName": "fluxpayments4f50e62b_identitypool_4f50e62b",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "fluxpa4f50e62b",
     "userPoolName": "fluxpayments4f50e62b_userpool_4f50e62b",
     "autoVerifiedAttributes": [

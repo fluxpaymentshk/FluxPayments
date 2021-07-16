@@ -18,6 +18,7 @@ import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/login_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -109,8 +110,16 @@ class _MyAppState extends State<MyApp> {
       title: 'Flux Payments',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        
+   
+   textTheme: GoogleFonts.montserratTextTheme(
+      Theme.of(context).textTheme,
+    ),
       ),
       home:
+       
+   //   HomePage(userRepository: userRepository),
+
           // AnalyticsPage()
           MultiBlocProvider(
         providers: [
@@ -157,6 +166,7 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
+     
       routes: {
         LoginPage.routeName: (_) => MultiBlocProvider(
               providers: [

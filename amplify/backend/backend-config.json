@@ -42,5 +42,12 @@
                 "FCM"
             ]
         }
+    },
+    "interactions": {
+        "FluxSupportBotMimi": {
+            "service": "Lex",
+            "providerPlugin": "awscloudformation",
+            "build": true
+        }
     }
 }
