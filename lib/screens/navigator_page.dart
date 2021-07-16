@@ -105,7 +105,11 @@ class _NavigatorPageState extends State<NavigatorPage> {
                 return Container(
                   height: headerHeight,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ImageIcon(AssetImage("assets/icons/up_icon.png"))
+                  child: ImageIcon(
+                    AssetImage(
+                      "assets/icons/up_icon.png",
+                    ),
+                  ),
                   // IconButton(
                   //   icon: Icon(
                   //     Icons.arrow_upward_sharp,
