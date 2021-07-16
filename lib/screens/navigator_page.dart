@@ -105,14 +105,15 @@ class _NavigatorPageState extends State<NavigatorPage> {
                 return Container(
                   height: headerHeight,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_upward_sharp,
-                      size: 30,
-                      color: Color(0xff7041EE),
-                    ),
-                    onPressed: controller.collapse,
-                  ),
+                  child: ImageIcon(AssetImage("assets/icons/up_icon.png"))
+                  // IconButton(
+                  //   icon: Icon(
+                  //     Icons.arrow_upward_sharp,
+                  //     size: 30,
+                  //     color: Color(0xff7041EE),
+                  //   ),
+                  //   onPressed: controller.collapse,
+                  // ),
                 );
               return Container(
                 height: headerHeight,

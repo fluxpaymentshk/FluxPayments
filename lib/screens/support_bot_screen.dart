@@ -94,16 +94,9 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Container(
-          height: MediaQuery.of(context).size.height * 0.8,
-          child: createChat(messages)
-          // chat.Chat(
-          //   messages: messages,
-          //   showUserNames: true,
-          //   showUserAvatars: true,
-          //   onSendPressed: _handleSendPressed,
-          //   user: _user,
-          // ),
-          ),
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: createChat(messages),
+      ),
     );
   }
 
@@ -113,7 +106,6 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
     print(result);
     final TextEditingController _messageController =
         new TextEditingController();
-    final _formKey = GlobalKey<FormState>();
     var controller = ScrollController();
     return SingleChildScrollView(
       // reverse:true,
@@ -130,34 +122,24 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                   controller: controller,
                   itemBuilder: (context, index) {
                     Map<String, dynamic> r = messages[index].toJson();
-                    return Container(
-                      padding: EdgeInsets.only(
-                          left: r["author"]["id"].toString() == "123" ? 0 : 14,
-                          right: r["author"]["id"].toString() == "123" ? 14 : 0,
-                          top: 5,
-                          bottom: 5),
-                      child: Align(
-                        alignment: (r["author"]["id"].toString() == "123"
-                            ? Alignment.topLeft
-                            : Alignment.topRight),
-                        child: ListTile(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                          horizontalTitleGap: 4,
-                          minLeadingWidth: 5,
-                          minVerticalPadding: 1,
-                          leading: r["author"]["id"].toString() == "123"
-                              ? CircleAvatar(
-                                  child:
-                                      Image.asset("assets/icons/mimi_bot.png"),
-                                  backgroundColor: Colors.white,
-                                )
-                              : null,
-                          trailing: r["author"]["id"].toString() != "123"
-                              ? CircleAvatar(
-                                  child: Image.asset(
-                                      "assets/icons/user_avatar.png"))
-                              : null,
-                          title: Card(
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Flex(
+                        direction: Axis.horizontal,
+                        mainAxisAlignment: r["author"]["id"].toString() == "123"
+                            ? MainAxisAlignment.start
+                            : MainAxisAlignment.end,
+                        children: <Widget>[
+                          if (r["author"]["id"].toString() == "123")
+                            CircleAvatar(
+                              child: Image.asset("assets/icons/mimi_bot.png"),
+                              backgroundColor: Colors.white,
+                            ),
+                          if (r["author"]["id"].toString() == "123")
+                            SizedBox(
+                              width: 4,
+                            ),
+                          Card(
                             elevation: 3,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
@@ -168,20 +150,30 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                                 ? Color(0xffFFFFFF)
                                 : Color(0xffD9D9FF)),
                             child: Container(
+                              padding: const EdgeInsets.all(20.0),
+                              constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.7,
+                              ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(35),
                                 color: (r["author"]["id"].toString() == "123"
                                     ? Color(0xffFFFFFF)
                                     : Color(0xffD9D9FF)),
                               ),
-                              padding: EdgeInsets.all(16),
-                              child: Text(
-                                r["text"],
-                                style: TextStyle(fontSize: 15),
-                              ),
+                              child: Text(r["text"],
+                                  style: TextStyle(color: Colors.black)),
                             ),
                           ),
-                        ),
+                          if (r["author"]["id"].toString() != "123")
+                            SizedBox(
+                              width: 4,
+                            ),
+                          if (r["author"]["id"].toString() != "123")
+                            CircleAvatar(
+                                child:
+                                    Image.asset("assets/icons/user_avatar.png"))
+                        ],
                       ),
                     );
                   }),
@@ -226,10 +218,10 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                         },
                         child: Icon(
                           Icons.send,
-                          color: Colors.white,
-                          size: 18,
+                          color: Color(0xff7041EE),
+                          size: 28,
                         ),
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Colors.transparent,
                         elevation: 0,
                       ),
                     ],
