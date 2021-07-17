@@ -65,18 +65,30 @@ class _HomePageState extends State<HomePage> {
   //   });
   // }
 
-
-List <RewardPartner>rewardPartner=[
-
- RewardPartner(name: 'kfc', shortDescription: 'hot juicy chicken with kfc',image: "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/kfc.png"),
- RewardPartner(name: 'cleb', shortDescription: 'celebrate every successwith flux',image: "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/celebrate.png"),
- RewardPartner(name: 'beach', shortDescription: 'cashless beachday with flux',image: "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/beach.png"),
- RewardPartner(name: 'central food', shortDescription: 'Michelin in Central',image: "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/centrall.png"),
-
-];
+  List<RewardPartner> rewardPartner = [
+    RewardPartner(
+        name: 'kfc',
+        shortDescription: 'hot juicy chicken with kfc',
+        image:
+            "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/kfc.png"),
+    RewardPartner(
+        name: 'cleb',
+        shortDescription: 'celebrate every successwith flux',
+        image:
+            "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/celebrate.png"),
+    RewardPartner(
+        name: 'beach',
+        shortDescription: 'cashless beachday with flux',
+        image:
+            "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/beach.png"),
+    RewardPartner(
+        name: 'central food',
+        shortDescription: 'Michelin in Central',
+        image:
+            "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/centrall.png"),
+  ];
   @override
   Widget build(BuildContext context) {
-
     var userBloc = BlocProvider.of<UserBloc>(context);
     log("EMAIL-------------------> ${widget.email}");
 
@@ -116,136 +128,178 @@ List <RewardPartner>rewardPartner=[
 
         body: LayoutBuilder(builder: (context, constraints) {
       SizeConfig().init(constraints);
-      return SingleChildScrollView(
-        child:  Flex(
-          direction: Axis.horizontal,
-          children: 
-       [   Expanded(
+      return Flex(direction: Axis.horizontal, children: [
+        Expanded(
+          child: SingleChildScrollView(
             child: Column(
-              mainAxisSize:MainAxisSize.min,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: SizeConfig.heightMultiplier*8,),
+                SizedBox(
+                  height: SizeConfig.heightMultiplier * 8,
+                ),
                 Container(
-                  height: SizeConfig.heightMultiplier*12,
-                  width: SizeConfig.widthMultiplier*100,
+                  height: SizeConfig.heightMultiplier * 12,
+                  width: SizeConfig.widthMultiplier * 100,
                   child: Center(
-                  //  child: Image.asset("assets/images/logo.png"),
-                       child:Text("Flux.",style: TextStyle(
-                          foreground: Paint()..shader =  LinearGradient(
-  colors: <Color>[AppTheme.main, Color(0xffA867EE)],
-).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                           
-                           fontSize: 60,
-                           fontWeight: FontWeight.w900,
-                           ),
-                           
-                           ),
+                    //  child: Image.asset("assets/images/logo.png"),
+                    child: Text(
+                      "Flux.",
+                      style: TextStyle(
+                        foreground: Paint()
+                          ..shader = LinearGradient(
+                            colors: <Color>[AppTheme.main, Color(0xffA867EE)],
+                          ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                        fontSize: 60,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
                   ),
                 ),
 
-                 Container(
-                  height: SizeConfig.heightMultiplier*12,
-                  width: SizeConfig.widthMultiplier*97,
-                //  decoration: BoxDecoration(color: AppTheme.main),
+                Container(
+                  height: SizeConfig.heightMultiplier * 12,
+                  width: SizeConfig.widthMultiplier * 97,
+                  //  decoration: BoxDecoration(color: AppTheme.main),
                   child: Row(
                     children: [
-                     Text('Hello Vidit!',style: AppTheme.display1,),
-                     Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Container(
-                  // height: SizeConfig.heightMultiplier*12,
-                  // width: SizeConfig.widthMultiplier*100, 
-                        
-                      child: Image.asset("assets/images/av.png"),
-                 
-                ),
-                    ),
+                      Text(
+                        'Hello Vidit!',
+                        style: AppTheme.display1,
+                      ),
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Container(
+                          // height: SizeConfig.heightMultiplier*12,
+                          // width: SizeConfig.widthMultiplier*100,
+
+                          child: Image.asset("assets/images/av.png"),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-               SizedBox(height: SizeConfig.heightMultiplier*2,),
+                SizedBox(
+                  height: SizeConfig.heightMultiplier * 2,
+                ),
+                Container(
+                  height: SizeConfig.heightMultiplier * 25,
+                  width: SizeConfig.widthMultiplier * 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(SizeConfig.heightMultiplier * 2)),
 
-                 Container(
-                  height: SizeConfig.heightMultiplier*25,
-                  width: SizeConfig.widthMultiplier*100,
-                  
-                 decoration: BoxDecoration(
-                     borderRadius: BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier*2)),
-                 //   color: AppTheme.brownishPink,
+//   color: AppTheme.brownishPink,
                   ),
                   child: Stack(
                     children: [
                       Positioned.fill(
-                        top:8.0,
-                        right:15.0,
-                        left:5.0,
+                        top: 8.0,
+                        right: 15.0,
+                        left: 5.0,
                         child: Container(
-  height: SizeConfig.heightMultiplier*22,
-                  width: SizeConfig.widthMultiplier*90,
-                  
-
-  decoration: BoxDecoration(
-                     borderRadius: BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier*2)),
-                     boxShadow: [BoxShadow(
-            color: Colors.grey,
-            blurRadius: 10.0,
-    ),],
-                    gradient: LinearGradient(
-                    end: Alignment.topRight,
-                    begin: Alignment.bottomLeft,
-                    colors: [
-                   AppTheme.main,
-                      AppTheme.offWhite,
-                    ],
-                  )
-                  ),
-
+                          height: SizeConfig.heightMultiplier * 22,
+                          width: SizeConfig.widthMultiplier * 90,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(
+                                  SizeConfig.heightMultiplier * 2)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 10.0,
+                                ),
+                              ],
+                              gradient: LinearGradient(
+                                end: Alignment.topRight,
+                                begin: Alignment.bottomLeft,
+                                colors: [
+                                  AppTheme.main,
+                                  AppTheme.offWhite,
+                                ],
+                              )),
                           child: Container(
-                  //              decoration: BoxDecoration(
-                  //    borderRadius: BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier*2)),
-                  //  color: AppTheme.brownishPink,
-                  // ),
+                            //              decoration: BoxDecoration(
+
+                            //    borderRadius: BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier*2)),
+
+                            //  color: AppTheme.brownishPink,
+
+                            // ),
+
                             child: Row(
-                         
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left:12.0,top: 8.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 12.0, top: 8.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: SizeConfig.heightMultiplier*2,),
-                                      Text('08 sep, 2021',style: AppTheme.display3,),
-                                         SizedBox(height: SizeConfig.heightMultiplier*4,),
-                                           Text('\$ 1,354',style: AppTheme.display2bold,),
-                                              SizedBox(height: SizeConfig.heightMultiplier*1,),
-                                              Text('You are eligible for',style: AppTheme.display2,),
-                                                SizedBox(height: SizeConfig.heightMultiplier*1,),
-                                                Text('HSBC Premiere Card',style: AppTheme.display2,),
-                                          SizedBox(height: SizeConfig.heightMultiplier*2,),
-
-                                           Container(
-                  height: SizeConfig.heightMultiplier*5,
-                  width: SizeConfig.widthMultiplier*23.5,
-                  
-                 decoration: BoxDecoration(
-                    boxShadow: [BoxShadow(
-            color: Colors.grey,
-            blurRadius: 3.0,
-    ),],
-                     borderRadius: BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier*1.1)),
-                    color: AppTheme.white,
-                  ),
-                  child:Center(child: Text('Claim Now',style:GoogleFonts.montserrat(
-  
-    fontWeight: FontWeight.w600,
-    fontSize: SizeConfig.heightMultiplier * 2.0,
-    letterSpacing: SizeConfig.widthMultiplier / 16,
-    height: SizeConfig.heightMultiplier / 10,
-    color: AppTheme.main,
-  ),)), 
-                  ),
+                                      SizedBox(
+                                        height: SizeConfig.heightMultiplier * 2,
+                                      ),
+                                      Text(
+                                        '08 sep, 2021',
+                                        style: AppTheme.display3,
+                                      ),
+                                      SizedBox(
+                                        height: SizeConfig.heightMultiplier * 4,
+                                      ),
+                                      Text(
+                                        '\$ 1,354',
+                                        style: AppTheme.display2bold,
+                                      ),
+                                      SizedBox(
+                                        height: SizeConfig.heightMultiplier * 1,
+                                      ),
+                                      Text(
+                                        'You are eligible for',
+                                        style: AppTheme.display2,
+                                      ),
+                                      SizedBox(
+                                        height: SizeConfig.heightMultiplier * 1,
+                                      ),
+                                      Text(
+                                        'HSBC Premiere Card',
+                                        style: AppTheme.display2,
+                                      ),
+                                      SizedBox(
+                                        height: SizeConfig.heightMultiplier * 2,
+                                      ),
+                                      Container(
+                                        height: SizeConfig.heightMultiplier * 5,
+                                        width:
+                                            SizeConfig.widthMultiplier * 23.5,
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey,
+                                              blurRadius: 3.0,
+                                            ),
+                                          ],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                  SizeConfig.heightMultiplier *
+                                                      1.1)),
+                                          color: AppTheme.white,
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                          'Claim Now',
+                                          style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize:
+                                                SizeConfig.heightMultiplier *
+                                                    2.0,
+                                            letterSpacing:
+                                                SizeConfig.widthMultiplier / 16,
+                                            height:
+                                                SizeConfig.heightMultiplier /
+                                                    10,
+                                            color: AppTheme.main,
+                                          ),
+                                        )),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -254,186 +308,228 @@ List <RewardPartner>rewardPartner=[
                           ),
                         ),
                       ),
-                     // Spacer(),
+
+                      // Spacer(),
+
                       Positioned.fill(
-
-                        bottom:10.0,
-                        left:210.0,
-
-                        child:Image.asset("assets/images/wallet.png"),
+                        bottom: 10.0,
+                        left: 210.0,
+                        child: Image.asset("assets/images/wallet.png"),
                       ),
-                       
-              
                     ],
                   ),
-                  
-                 
                 ),
-               SizedBox(height: SizeConfig.heightMultiplier*2,),
-               Align(
-                 alignment: Alignment.bottomLeft,
+
+                SizedBox(
+                  height: SizeConfig.heightMultiplier * 2,
+                ),
+
+                Align(
+                  alignment: Alignment.bottomLeft,
                   child: Padding(
-                    padding: const EdgeInsets.only(left:8.0),
+                    padding: const EdgeInsets.only(left: 8.0),
                     child: Container(
-                      height: SizeConfig.heightMultiplier*7.5,
-                      width: SizeConfig.widthMultiplier*93,
-                      
-                     decoration: BoxDecoration(
-                         borderRadius: BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier*1)),
-                          border: Border.all(color: AppTheme.red),
-                       color: Color(0xffFFECEC),
+                      height: SizeConfig.heightMultiplier * 7.5,
+                      width: SizeConfig.widthMultiplier * 93,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(SizeConfig.heightMultiplier * 1)),
+                        border: Border.all(color: AppTheme.red),
+                        color: Color(0xffFFECEC),
                       ),
-                     child: Row(
+                      child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left:9.0),
-                            child: Text('Pending \$120 payments from 4 providers',style: TextStyle(fontWeight:FontWeight.w600, ),),
+                            padding: const EdgeInsets.only(left: 9.0),
+                            child: Text(
+                              'Pending \$120 payments from 4 providers',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
-                           Spacer(),
-
-                           Padding(
-                             padding: const EdgeInsets.only(right:6.0),
-                             child: Image.asset("assets/images/arrow.png",  height: SizeConfig.heightMultiplier*7,
-                      width: SizeConfig.widthMultiplier*9,
-    fit: BoxFit.fitWidth,),
-                           ),
+                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 6.0),
+                            child: Image.asset(
+                              "assets/images/arrow.png",
+                              height: SizeConfig.heightMultiplier * 7,
+                              width: SizeConfig.widthMultiplier * 9,
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
                         ],
                       ),
-                      
                     ),
                   ),
                 ),
 
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Align(alignment:Alignment.centerLeft,child: Text("For You",style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),)),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "For You",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )),
                 ),
 
-                 //Horizontal list view builder.
+//Horizontal list view builder.
+
                 //  Container(
 
                 //  ),
 
                 //////////////////////
+
                 Container(
-                        height: SizeConfig.heightMultiplier * 22,
-                        //    child: Expanded(
+                  height: SizeConfig.heightMultiplier * 22,
 
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            physics: AlwaysScrollableScrollPhysics(),
-                            // shrinkWrap: true,
-                            itemCount: rewardPartner.length,
-                            itemBuilder: (context, int index) {
-                              return rewardPartnerTile(
-                                  imageurl: rewardPartner[index].image,
-                                  desc: rewardPartner[index].shortDescription,
-                                  i:index);
-                            }),
-                        //   ),
-                      ),
-              //  rewardPartnerTile(),
+                  //    child: Expanded(
 
-              Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Align(alignment:Alignment.centerLeft,child: Text("My Points",style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),)),
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      physics: AlwaysScrollableScrollPhysics(),
+
+                      // shrinkWrap: true,
+
+                      itemCount: rewardPartner.length,
+                      itemBuilder: (context, int index) {
+                        return rewardPartnerTile(
+                            imageurl: rewardPartner[index].image,
+                            desc: rewardPartner[index].shortDescription,
+                            i: index);
+                      }),
+
+                  //   ),
                 ),
-                 
-                  Container(
-                  height: SizeConfig.heightMultiplier*32,
-                  width: SizeConfig.widthMultiplier*94,
-                  
-                 decoration: BoxDecoration(
-                     borderRadius: BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier*2)),
+
+                //  rewardPartnerTile(),
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "My Points",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )),
+                ),
+
+                Container(
+                  height: SizeConfig.heightMultiplier * 32,
+                  width: SizeConfig.widthMultiplier * 94,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(SizeConfig.heightMultiplier * 2)),
                     color: AppTheme.offWhite,
                   ),
-                  
-                  child:Column(
-
+                  child: Column(
                     children: [
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
-                         //   color:Colors.amber,
-                            height: SizeConfig.heightMultiplier*15,
-                            width: SizeConfig.widthMultiplier*65,
+                            height: SizeConfig.heightMultiplier * 15,
+                            width: SizeConfig.widthMultiplier * 65,
                             child: Row(
                               children: [
-                                Container(child: Image.asset("assets/images/coin.png")),
-                              SizedBox(width: SizeConfig.widthMultiplier*2 ,),
-                              Container(child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: SizeConfig.heightMultiplier*1.5,),
-                                  Text('5000',style: TextStyle(
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.bold,
-                                  ),),
-                                  Text('Flux Points',style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                  ),),
-                                ],
-                              )),
-
+                                Container(
+                                    child:
+                                        Image.asset("assets/images/coin.png")),
+                                SizedBox(
+                                  width: SizeConfig.widthMultiplier * 2,
+                                ),
+                                Container(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: SizeConfig.heightMultiplier * 1.5,
+                                    ),
+                                    Text(
+                                      '5000',
+                                      style: TextStyle(
+                                        fontSize: 35,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Flux Points',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                )),
                               ],
                             ),
-
-                            
                           ),
                         ),
                       ),
-
                       Padding(
-                        padding: const EdgeInsets.only(left:20.0,right:8.0,bottom:8.0),
-                        child: Text('Congratulations! You are among top 5 % of highest point users.!',style: TextStyle(
-                          color: AppTheme.main,
-                          fontSize: 12,
-                        ),),
+                        padding: const EdgeInsets.only(
+                            left: 20.0, right: 8.0, bottom: 8.0),
+                        child: Text(
+                          'Congratulations! You are among top 5 % of highest point users.!',
+                          style: TextStyle(
+                            color: AppTheme.main,
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
-
                     ],
                   ),
-
-
-                  ),
-
-                   Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Align(alignment:Alignment.centerLeft,child: Text("What's New",style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),)),
                 ),
 
-               advertiserTile(),
-            //   Spacer(),
-            //   Container(child: Flexible(fit: FlexFit.loose,child: LineChartSample1())),
-            Padding(
+                Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Align(alignment:Alignment.centerLeft,child: Text("Paid With Flux",style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),)),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "What's New",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )),
                 ),
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: LineChartGraph(),
-              ),
+                advertiserTile(),
+
+                //   Spacer(),
+
+                //   Container(child: Flexible(fit: FlexFit.loose,child: LineChartSample1())),
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Paid With Flux",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: LineChartGraph(),
+                ),
               ],
             ),
           ),
-      ]
         ),
-      );
+      ]);
     })
 
         //  Column(
