@@ -11,14 +11,19 @@ import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/RewardPartner.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-import 'package:flux_payments/screens/change_password.dart';
-import 'package:flux_payments/screens/login_page.dart';
-import 'package:flux_payments/screens/password_reset.dart';
+import 'package:flux_payments/screens/auth_Screens/change_password.dart';
+import 'package:flux_payments/screens/auth_Screens/login_page.dart';
+import 'package:flux_payments/screens/auth_Screens/password_reset.dart';
+import 'package:flux_payments/screens/support_bot_screen.dart';
 import 'package:flux_payments/services/database_lambda.dart';
+<<<<<<< HEAD
 import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
 import 'package:flux_payments/widgets/reward_partner_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
+=======
+import 'package:flux_payments/services/bot.dart';
+>>>>>>> 7db0e30904265e949c3a8243e5f0a179aba59f07
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -93,6 +98,7 @@ class _HomePageState extends State<HomePage> {
     log("EMAIL-------------------> ${widget.email}");
 
     return Scaffold(
+<<<<<<< HEAD
         // appBar: AppBar(
         //   title: const Text('BottomNavigationBar Sample'),
         // ),
@@ -174,6 +180,42 @@ class _HomePageState extends State<HomePage> {
                           // width: SizeConfig.widthMultiplier*100,
 
                           child: Image.asset("assets/images/av.png"),
+=======
+      appBar: AppBar(
+        title: const Text('BottomNavigationBar Sample'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Amplify.Auth.signOut();
+          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+        },
+        child: Icon(Icons.logout),
+      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 250,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Container(
+                height: 35,
+                width: 220,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(1)),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => BlocProvider.value(
+                          value: userBloc,
+                          // create: (_) => UserBloc(
+                          //     widget.userRepository ?? _userConfigRepository),
+                          child: ChangePassword(),
+>>>>>>> 7db0e30904265e949c3a8243e5f0a179aba59f07
                         ),
                       ),
                     ],
@@ -528,6 +570,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+<<<<<<< HEAD
         ),
       ]);
     })
@@ -603,5 +646,25 @@ class _HomePageState extends State<HomePage> {
         // ),
 
         );
+=======
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => SupportBotScreen()),
+                );
+              },
+              child: Text(
+                'Talk to Mimi',
+                style: TextStyle(color: Colors.blue, fontSize: 17),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+>>>>>>> 7db0e30904265e949c3a8243e5f0a179aba59f07
   }
 }
