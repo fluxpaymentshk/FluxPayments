@@ -123,7 +123,15 @@ class _MyAppState extends State<MyApp> {
       title: 'Flux Payments',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        
+         primaryColor: Color(0xff7041EE),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Color(0xff7041EE),
+          unselectedItemColor: Color(0xff7041EE),
+          selectedLabelStyle:
+              TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+          selectedIconTheme: IconThemeData(size: 30),
+          unselectedIconTheme: IconThemeData(size: 30),
+        ),
    
    textTheme: GoogleFonts.montserratTextTheme(
       Theme.of(context).textTheme,
@@ -134,16 +142,6 @@ class _MyAppState extends State<MyApp> {
    //   HomePage(userRepository: userRepository),
 
           // AnalyticsPage()
-        primaryColor: Color(0xff7041EE),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          selectedItemColor: Color(0xff7041EE),
-          unselectedItemColor: Color(0xff7041EE),
-          selectedLabelStyle:
-              TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-          selectedIconTheme: IconThemeData(size: 30),
-          unselectedIconTheme: IconThemeData(size: 30),
-        ),
-      ),
       home:
           //  SupportBotScreen()
           MultiBlocProvider(
