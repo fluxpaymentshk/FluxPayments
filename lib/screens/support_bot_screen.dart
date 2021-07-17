@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flux_payments/repository/bot_repository.dart';
+import 'package:google_fonts/google_fonts.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,6 +18,8 @@ class SupportBotScreen extends StatefulWidget {
 }
 
 class _SupportBotScreenState extends State<SupportBotScreen> {
+
+  TextStyle chatTextStyle = GoogleFonts.montserrat(fontSize: 16);
   final _user = const types.User(id: '1234556');
   final _bot = const types.User(
     id: "123",
@@ -159,7 +162,7 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                                     : Color(0xffD9D9FF)),
                               ),
                               child: Text(r["text"],
-                                  style: TextStyle(color: Colors.black)),
+                                  style: chatTextStyle),
                             ),
                           ),
                           if (r["author"]["id"].toString() != "123")
@@ -199,7 +202,7 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                           controller: _messageController,
                           decoration: InputDecoration(
                               hintText: "Type Here...",
-                              hintStyle: TextStyle(color: Colors.black54),
+                              hintStyle: GoogleFonts.montserrat(fontSize:18,color: Colors.black54),
                               border: InputBorder.none),
                         ),
                       ),

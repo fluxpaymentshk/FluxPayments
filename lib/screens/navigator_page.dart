@@ -6,6 +6,7 @@ import 'package:flux_payments/screens/reward_partners.dart';
 import 'package:flux_payments/screens/support_bot_screen.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:tuple/tuple.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'home_page.dart';
 import 'profile_page.dart';
@@ -27,6 +28,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   double headerHeight = 75;
   double botScreenHeightRatio = 0.8;
   double activeIconElevation = 4;
+  TextStyle navigationBarTextStyle = GoogleFonts.rubik(fontSize: 10,fontWeight: FontWeight.bold);
 
   @override
   void initState() {
