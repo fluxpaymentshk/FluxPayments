@@ -42,6 +42,7 @@ class User extends Model {
   final List<CreditCard>? _hasCreditCard;
   final List<UserWallet>? _hasWallets;
   final String? _refreeID;
+  // final String? _referredTo;
   final List<String>? _referredTo;
 
   @override
@@ -314,7 +315,7 @@ class User extends Model {
     fieldName: "hasWallets",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (UserWallet).toString()));
   static final QueryField REFREEID = QueryField(fieldName: "refreeID");
-  static final QueryField REFERREDTO = QueryField(fieldName: "referredTo");
+  // static final QueryField referredTo = QueryField(fieldName: "referredTo");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "User";
     modelSchemaDefinition.pluralName = "Users";
@@ -435,12 +436,12 @@ class User extends Model {
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: User.REFERREDTO,
-      isRequired: false,
-      isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.string))
-    ));
+    // modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    //   key: User.referredTo,
+    //   isRequired: false,
+    //   isArray: true,
+    //   ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.string))
+    // ));
   });
 }
 

@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flux_payments/models/RewardPartner.dart';
+import 'package:flux_payments/models/curatedList.dart';
 
 class DatabaseLambdaService {
   Map<String, dynamic> result = {};
@@ -16,6 +18,60 @@ class DatabaseLambdaService {
         });
   }
 
+  Future<void> getCuratedList(
+      {@required int? page, required List<curatedList> curatedListData}) async {
+    result = {};
+    try {
+      List<String> schemaName = [];
+
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-function-curatedList',
+          <String, dynamic>{"page": page ?? 0});
+      result = re;
+
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      //  Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      // print(
+      //     "---------------------------------------------------------------------------------${res}");
+
+      res.forEach((ele) {
+        curatedListData.add(new curatedList(
+            background: ele["background"],
+            categoryID: ele["categoryID"],
+            icon: ele["icon"],
+            name: ele["icon"],
+            tagline: ele["tagline"]));
+      });
+     // return curatedListData;
+      //print("@@@@@@@@@@@@@@@@@@@@@@@@@            ");
+      //print(curatedListData[0].background);
+    } catch (e) {
+      print(e);
+   //   return [];
+    }
+  }
+
+/////////////////////////////////////////////
   Future<Map<String, dynamic>> updateFluxPoints(
       {@required String? userID,
       @required String? appEvent,
