@@ -135,8 +135,12 @@ class _HomePageState extends State<HomePage> {
       return
       
           FutureBuilder(
-              future: _databaseLambdaService.getCuratedList(
-                  page: 0, curatedListData: curatedListData),
+              future:
+              //  _databaseLambdaService.getCuratedList(
+              //     page: 0, curatedListData: curatedListData)
+              _databaseLambdaService.getUserDetails(userID: 'flux-vid1')
+                  
+                  ,
               builder: (context, snapshot) {
                 if (snapshot.connectionState != snapshot.hasError) {
                 return   Flex(direction: Axis.horizontal, children: [

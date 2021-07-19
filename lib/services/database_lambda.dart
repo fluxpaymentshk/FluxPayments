@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flux_payments/models/RewardPartner.dart';
+import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/curatedList.dart';
 
 class DatabaseLambdaService {
@@ -62,13 +63,71 @@ class DatabaseLambdaService {
             name: ele["icon"],
             tagline: ele["tagline"]));
       });
-     // return curatedListData;
+      // return curatedListData;
       //print("@@@@@@@@@@@@@@@@@@@@@@@@@            ");
       //print(curatedListData[0].background);
     } catch (e) {
       print(e);
-   //   return [];
+      //   return [];
     }
+  }
+
+  Future<User> getUserDetails({@required String? userID}) async {
+    result = {};
+    List<User> userDetails = [];
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-userDetails', <String, dynamic>{
+        "userID": userID,
+      });
+      print(
+          "---------------------------------------------------------------------------------$result");
+
+      List<String> schemaName = [];
+      result["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      result["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      res.forEach((ele) {
+        print(ele);
+        print('///////');
+        userDetails.add(
+          // new User(
+          //   firstName: ele["firstName"],
+          //   uniqueID: userID!,
+          //   refreeID: ele["refreeID"],
+          //   email:ele["email"],
+          //   mobileNumber: ele["mobileNumber"],
+          //   referralID: ele["referralID"],
+          //   dateOfBirth: ele["dateOfBirth"],
+
+          //   )
+
+          User.fromJson(ele),
+        );
+      });
+    } catch (e) {
+      print(e);
+    }
+    print(userDetails[0].toString());
+    return userDetails[0];
   }
 
 /////////////////////////////////////////////
