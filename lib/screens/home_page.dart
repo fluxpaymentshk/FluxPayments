@@ -11,14 +11,16 @@ import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/RewardPartner.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-import 'package:flux_payments/screens/change_password.dart';
-import 'package:flux_payments/screens/login_page.dart';
-import 'package:flux_payments/screens/password_reset.dart';
+import 'package:flux_payments/screens/auth_Screens/change_password.dart';
+import 'package:flux_payments/screens/auth_Screens/login_page.dart';
+import 'package:flux_payments/screens/auth_Screens/password_reset.dart';
+import 'package:flux_payments/screens/support_bot_screen.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
 import 'package:flux_payments/widgets/reward_partner_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flux_payments/services/bot.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -93,87 +95,40 @@ class _HomePageState extends State<HomePage> {
     log("EMAIL-------------------> ${widget.email}");
 
     return Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('BottomNavigationBar Sample'),
-        // ),
-        // floatingActionButton: Column(
-        //   mainAxisAlignment: MainAxisAlignment.end,
-        //   children: [
-        //     FloatingActionButton(
-        //       onPressed: () async {
-        //         Map<String, dynamic> r = await _databaseLambdaService
-        //             .getPaymentHistoryProviderWiseDetails(userID: "Flux-Monik");
-        //         r.forEach((key, value) {
-        //           if (key == "records") print(key + "--->" + value.toString());
-        //         });
-        //         ScaffoldMessenger.of(context).showSnackBar(
-        //           SnackBar(
-        //             content: Text("Called the lambda function"),
-        //             behavior: SnackBarBehavior.floating,
-        //           ),
-        //         );
-        //       },
-        //       child: Icon(Icons.run_circle_outlined, size: 40),
-        //     ),
-        //     SizedBox(height: 10),
-        //     FloatingActionButton(
-        //       onPressed: () async {
-        //         await Amplify.Auth.signOut();
-        //         Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-        //       },
-        //       child: Icon(Icons.logout),
-        //     ),
-        //   ],
-        // ),
-
-        body: LayoutBuilder(builder: (context, constraints) {
-      SizeConfig().init(constraints);
-      return Flex(direction: Axis.horizontal, children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 8,
-                ),
-                Container(
-                  height: SizeConfig.heightMultiplier * 12,
-                  width: SizeConfig.widthMultiplier * 100,
-                  child: Center(
-                    //  child: Image.asset("assets/images/logo.png"),
-                    child: Text(
-                      "Flux.",
-                      style: TextStyle(
-                        foreground: Paint()
-                          ..shader = LinearGradient(
-                            colors: <Color>[AppTheme.main, Color(0xffA867EE)],
-                          ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                        fontSize: 60,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ),
-                ),
-
-                Container(
-                  height: SizeConfig.heightMultiplier * 12,
-                  width: SizeConfig.widthMultiplier * 97,
-                  //  decoration: BoxDecoration(color: AppTheme.main),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Hello Vidit!',
-                        style: AppTheme.display1,
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Container(
-                          // height: SizeConfig.heightMultiplier*12,
-                          // width: SizeConfig.widthMultiplier*100,
-
-                          child: Image.asset("assets/images/av.png"),
+      appBar: AppBar(
+        title: const Text('BottomNavigationBar Sample'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Amplify.Auth.signOut();
+          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+        },
+        child: Icon(Icons.logout),
+      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 250,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Container(
+                height: 35,
+                width: 220,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(1)),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => BlocProvider.value(
+                          value: userBloc,
+                          // create: (_) => UserBloc(
+                          //     widget.userRepository ?? _userConfigRepository),
+                          child: ChangePassword(),
                         ),
                       ),
                     ],
