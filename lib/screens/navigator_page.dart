@@ -6,6 +6,7 @@ import 'package:flux_payments/screens/reward_partners.dart';
 import 'package:flux_payments/screens/support_bot_screen.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:tuple/tuple.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'home_page.dart';
 import 'profile_page.dart';
@@ -27,6 +28,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   double headerHeight = 75;
   double botScreenHeightRatio = 0.8;
   double activeIconElevation = 4;
+  TextStyle navigationBarTextStyle = GoogleFonts.rubik(fontSize: 10,fontWeight: FontWeight.bold);
 
   @override
   void initState() {
@@ -53,7 +55,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
             color: Color(0xffF6F6FF),
             elevation: 0,
             maxWidth: 500,
-            cornerRadius: 16,
+            cornerRadius: 21,
             cornerRadiusOnFullscreen: 0.0,
             closeOnBackdropTap: true,
             closeOnBackButtonPressed: true,
@@ -104,25 +106,19 @@ class _NavigatorPageState extends State<NavigatorPage> {
               if (isOpened)
                 return Container(
                   height: headerHeight,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(21),
+                    color: Color(0xffF2F2FF),
+                  ),
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ListTile(
-                    title: Center(
-                      child: Text(
-                        "Mimi Support Bot",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  child: IconButton(
+                    icon: ImageIcon(
+                      AssetImage(
+                        "assets/icons/down_icon.png",
                       ),
                     ),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.close_sharp,
-                        size: 30,
-                        color: Color(0xff7041EE),
-                      ),
-                      onPressed: controller.collapse,
-                    ),
+                    onPressed: controller.collapse,
                   ),
                 );
               return Container(
