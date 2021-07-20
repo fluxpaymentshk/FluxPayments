@@ -143,7 +143,8 @@ class _HomePageState extends State<HomePage> {
           );
         } else if (state is UserDetails) {
           print('hjjjjjjjjj');
-          databaseRepo.getPaymentHistoryProviderWiseDetails(userID: "Flux-Monik");
+          databaseRepo.getPaymentHistoryProviderWiseDetails(
+              userID: "Flux-Monik");
 
           return Scaffold(
               // appBar: AppBar(
@@ -545,10 +546,15 @@ class _HomePageState extends State<HomePage> {
                             )),
                       ),
 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: LineChartGraph(),
-                      ),
+                      // BlocBuilder<GraphBloc, GraphState>(
+                      //   builder: (context, state) {
+
+                      //     return Padding(
+                      //       padding: const EdgeInsets.all(8.0),
+                      //       child: LineChartGraph(),
+                      //     );
+                      //   },
+                      // ),
                     ],
                   ),
                 ),

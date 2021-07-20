@@ -252,10 +252,93 @@ class DatabaseLambdaService {
       log("$result");
       print("####################");
       print(result);
+
+      print("@@@@@@@@@@@@@@@@@@@@@@@@");
+
+      Map<String, Map<String, double>> mp = {};
+      Map<String, List<Map<String, double>>> mpnew = {};
+      print(result.keys);
+      result.forEach((key, value) {
+        //  mp.putIfAbsent(key, () => []);
+        if (value.length >= 1 &&
+            (value[0]["paidOn"].contains('2021-09') ||
+                value[0]["paidOn"].contains('2021-08') ||
+                value[0]["paidOn"].contains('2021-08'))) {
+          mp.putIfAbsent(
+              value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3),
+              () => {});
+
+          mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3)]![
+              key] = mp[value[0]["paidOn"]
+                  .substring(0, value[0]["paidOn"].length - 3)]![key]! +
+              value[0]["rewardPoints"];
+        }
+        //  mp[key]?.add({value[0]["paidOn"]: value[0]["rewardPoints"]});
+
+        // if (value.length >= 2)
+        //   mp[key]?.add({value[1]["paidOn"]: value[1]["rewardPoints"]});
+
+        if (value.length >= 2 &&
+            (value[1]["paidOn"].contains('2021-09') ||
+                value[1]["paidOn"].contains('2021-08') ||
+                value[1]["paidOn"].contains('2021-08'))) {
+          mp.putIfAbsent(
+              value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3),
+              () => {});
+
+          mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3)]![
+              key] = mp[value[1]["paidOn"]
+                  .substring(0, value[1]["paidOn"].length - 3)]![key]! +
+              value[1]["rewardPoints"];
+        }
+
+        if (value.length >= 3 &&
+            (value[2]["paidOn"].contains('2021-09') ||
+                value[2]["paidOn"].contains('2021-08') ||
+                value[2]["paidOn"].contains('2021-08'))) {
+          mp.putIfAbsent(
+              value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3),
+              () => {});
+
+          mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3)]![
+              key] = mp[value[2]["paidOn"]
+                  .substring(0, value[2]["paidOn"].length - 3)]![key]! +
+              value[2]["rewardPoints"];
+        }
+
+        // if (value.length >= 3)
+        //   mp[key]?.add({value[2]["paidOn"]: value[2]["rewardPoints"]});
+
+//to process cummulative data for respective month.
+        // value.forEach((el) {});
+      });
+      print('hehehehehehehhehehehehh');
+      print(mp);
+
+      // mp.forEach((key, value) {
+      //   mp[key]?.forEach((ele) {
+      //     ele.forEach((key, value) {
+
+      //       if(mpnew[key]!.contains())
+      //     });
+      //   });
+      // });
+      return mp;
     } catch (e) {
       print(e);
+
+      throw new Exception();
     }
-    return result;
+    // return result;
   }
 
   Future<void> getExternalAdvertiserList(
