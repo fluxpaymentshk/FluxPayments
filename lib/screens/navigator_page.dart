@@ -25,7 +25,6 @@ class NavigatorPage extends StatefulWidget {
 class _NavigatorPageState extends State<NavigatorPage> {
   late List<Tuple2> _pages = [];
   bool isOpened = false;
-  double headerHeight = 75;
   double botScreenHeightRatio = 0.8;
   double activeIconElevation = 4;
   TextStyle navigationBarTextStyle = GoogleFonts.rubik(fontSize: 10,fontWeight: FontWeight.bold);
@@ -47,6 +46,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   @override
   Widget build(BuildContext context) {
+  double headerHeight = MediaQuery.of(context).size.height*0.08;
     return Scaffold(
       bottomNavigationBar: SafeArea(
         child: SlidingSheet(
