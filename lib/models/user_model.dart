@@ -82,7 +82,6 @@
 //   }
 // }
 
-
 // // class UserModel {
 // //   String? firstName;
 // //   String? lastName;
@@ -109,7 +108,6 @@
 //   String? desc;
 //   int? amount;
 // }
-
 
 // // {
 // //     "fullName": "",

@@ -14,6 +14,19 @@
     "categories": {
       "auth": {
         "fluxpayments4f50e62b": {}
+      },
+      "notifications": {
+        "Pinpoint": {
+          "Name": "fluxPaymentsPINPOINTS-staging",
+          "Id": "3888d9cba2ba428fb550981f03a94d50",
+          "Region": "us-west-2"
+        }
+      },
+      "interactions": {
+        "FluxSupportBotMimi": {
+          "deploymentBucketName": "amplify-fluxpayments-staging-122415-deployment",
+          "s3Key": "amplify-builds/FluxSupportBotMimi-784e55627472686f6a41-build.zip"
+        }
       }
     }
   }

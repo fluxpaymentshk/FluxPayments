@@ -2,54 +2,45 @@ import 'package:flutter/material.dart';
 
 class BillTile extends StatelessWidget {
   const BillTile(
-      {Key? key,
-      required this.title,
-      required this.desc,
-      required this.amount})
+      {Key? key, required this.title, required this.desc, required this.amount})
       : super(key: key);
-  final String title, desc, amount;//implement
+  final String title, desc, amount; //implement
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(7.0),
       child: Card(
-        
         child: Column(
           children: [
-          
             SizedBox(
               height: 10,
             ),
-
-Row(
-  children: [
-     Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Text(
-                amount,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Text(
+                    amount,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-
-  ],
-),
-           
             SizedBox(
               height: 10,
             ),

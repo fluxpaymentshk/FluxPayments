@@ -63,9 +63,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     }
     if (event is EmailLogInUser) {
-        bool userSignedIn = await currentUser;
-        log("83883---->$userSignedIn");
-        yield AuthStateLoading();
+      bool userSignedIn = await currentUser;
+      log("83883---->$userSignedIn");
+      yield AuthStateLoading();
       try {
         if (!userSignedIn)
           request = await _loginRepository.signIn(event.email, event.password);
