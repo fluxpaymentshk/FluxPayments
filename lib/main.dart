@@ -1,7 +1,7 @@
 //@dart=2.9
 import 'dart:async';
 import 'dart:developer';
-
+import './screens/coupons.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
@@ -155,6 +155,10 @@ class _MyAppState extends State<MyApp> {
               child: HomePage(
                   userRepository: _userConfigRepository,
                   email: userDetails["email"] ?? ""),
+            ),
+            Coupons.routeName: (_) => BlocProvider<UserBloc>(
+              create: (_) => UserBloc(_userConfigRepository),
+              child: Coupons(),
             ),
       },
     );

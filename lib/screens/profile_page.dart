@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/bill_bloc/bill_bloc.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/user_model.dart';
+import 'package:flux_payments/screens/coupons.dart';
 import 'package:flux_payments/screens/map.dart';
 import 'package:flux_payments/screens/pay_bills.dart';
 import 'package:flux_payments/services/user_details_services.dart';
@@ -68,10 +69,12 @@ class _ProfilePageState extends State<ProfilePage> {
               // d.forEach((key, value) {
               //   if (key == "records") print(key + "--->" + value.toString());
               // });
-              Map<String, dynamic> d = await _databaseLambdaService.fetchUserWalletInfo(userID: "fluxsam1");
-              d.forEach((key, value) {
-                if (key == "records") print(key + "--->" + value.toString());
-              });
+              // Map<String, dynamic> d = await _databaseLambdaService.fetchUserWalletInfo(userID: "fluxsam1");
+              // d.forEach((key, value) {
+              //   if (key == "records") print(key + "--->" + value.toString());
+              // });
+              var data = await _databaseLambdaService.getUserFavorites(userID: 'fluxsam1');
+              print(data);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text("Fetched Records"),
@@ -84,6 +87,15 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(height: 10),
           FloatingActionButton(
             heroTag: "btn3",
+            onPressed: () async {
+              await Amplify.Auth.signOut();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Coupons()));
+            },
+            child: Icon(Icons.verified_user),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            heroTag: "btn4",
             onPressed: () async {
               await Amplify.Auth.signOut();
               Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
