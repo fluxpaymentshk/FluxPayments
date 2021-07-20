@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flux_payments/models/ExternalAdvertisers.dart';
+import 'package:flux_payments/models/InternalAdvertisers.dart';
 import 'package:flux_payments/models/RewardPartner.dart';
 import 'package:flux_payments/models/User.dart';
+import 'package:flux_payments/models/banner.dart';
 import 'package:flux_payments/models/curatedList.dart';
 
 class DatabaseLambdaService {
@@ -247,9 +250,187 @@ class DatabaseLambdaService {
       });
       result = companyWiseData;
       log("$result");
+      print("####################");
+      print(result);
     } catch (e) {
       print(e);
     }
     return result;
+  }
+
+  Future<void> getExternalAdvertiserList(
+      {required int? page,
+      required List<ExternalAdvertisers> ExternalAdvertisersListData}) async {
+    result = {};
+    try {
+      List<String> schemaName = [];
+
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-externalAdvertisers',
+          <String, dynamic>{"page": page ?? 0});
+      result = re;
+
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      //  Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      print(
+          "---------------------------------------------------------------------------------${res}");
+
+      res.forEach((ele) {
+        ExternalAdvertisersListData.add(
+          //new ExternalAdvertisers(name: ele["name"], productName: ele["productName"],),
+          new ExternalAdvertisers.fromJson(ele),
+        );
+      });
+      // return curatedListData;
+      //print("@@@@@@@@@@@@@@@@@@@@@@@@@            ");
+      //print(curatedListData[0].background);
+    } catch (e) {
+      print(e);
+      //   return [];
+    }
+  }
+
+  Future<void> getInternalAdvertiserList(
+      {required int? page,
+      required List<InternalAdvertisers> internalAdvertisersListData}) async {
+    result = {};
+    try {
+      List<String> schemaName = [];
+
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-internalAdvertisers',
+          <String, dynamic>{"page": page ?? 0});
+      result = re;
+
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      //  Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      // print(
+      //     "---------------------------------------------------------------------------------${res}");
+
+      res.forEach((ele) {
+        internalAdvertisersListData.add(
+          //new ExternalAdvertisers(name: ele["name"], productName: ele["productName"],),
+          new InternalAdvertisers.fromJson(ele),
+        );
+      });
+      // return curatedListData;
+      //print("@@@@@@@@@@@@@@@@@@@@@@@@@            ");
+      //print(curatedListData[0].background);
+    } catch (e) {
+      print(e);
+      //   return [];
+    }
+  }
+
+  Future<Banner> getBannerDetails() async {
+    try {
+      result = {};
+      // try {
+      List<String> schemaName = [];
+      print(
+          '##############                Before        ##########################################################');
+      Map<String, dynamic> re = await lambda
+          .callLambda('aurora-serverless-banner', <String, dynamic>{});
+      print(
+          '##############                after        ##########################################################');
+
+      result = re;
+
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      //  Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      print(
+          '########################################################################');
+      print(
+          "---------------------------------------------------------------------------------${res}");
+
+      List<Banner> bannerList = [];
+      Banner banner = new Banner(
+          Logo: 'Logo',
+          bannerID: 1233.0,
+          buttonDesc: '',
+          dueDate: '',
+          heading: '');
+      res.forEach((ele) {
+        bannerList.add(
+          //new ExternalAdvertisers(name: ele["name"], productName: ele["productName"],),
+          banner = Banner.fromJson(ele),
+        );
+      });
+      //return bannerList[0];
+      return banner;
+      // return curatedListData;
+      //print("@@@@@@@@@@@@@@@@@@@@@@@@@            ");
+      //print(curatedListData[0].background);
+    } catch (e) {
+      print(e);
+
+      throw new Exception();
+      // return Banner(
+      //     Logo: null,
+      //     bannerID: null,
+      //     buttonDesc: null,
+      //     dueDate: null,
+      //     heading: null);
+    }
   }
 }

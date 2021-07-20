@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/gift_page.dart';
 import 'package:flux_payments/screens/reward_partners.dart';
@@ -12,8 +13,12 @@ class NavigatorPage extends StatefulWidget {
   static const routeName = '/nav';
   final String email;
   final UserConfigRepository? userRepository;
+  final DatabaseRepository? databaseRepository;
   const NavigatorPage(
-      {Key? key, @required this.userRepository, this.email = ""})
+      {Key? key,
+      @required this.userRepository,
+      @required this.databaseRepository,
+      this.email = ""})
       : super(key: key);
   @override
   _NavigatorPageState createState() => _NavigatorPageState();
@@ -25,7 +30,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   void initState() {
     super.initState();
     _pages = [
-      Tuple2('payment', HomePage(userRepository: widget.userRepository)),
+      Tuple2('payment', HomePage(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
       // Tuple2('payment', PayBills()),
       Tuple2('home', ProfilePage()),
       // Tuple2('gift', giftPage()),

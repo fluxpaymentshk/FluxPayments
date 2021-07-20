@@ -9,16 +9,22 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/amplifyconfiguration.dart';
+import 'package:flux_payments/bloc/advertiser_bloc/advertiser_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
+import 'package:flux_payments/bloc/curated_list_bloc/curated_list_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/notification_handler.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/login_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
+import 'package:flux_payments/services/database_lambda.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'bloc/banner_bloc/banner_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +56,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   LoginRepository _loginRepository = new LoginRepository();
   UserConfigRepository _userConfigRepository = new UserConfigRepository();
+   DatabaseRepository _databaseRepository = DatabaseRepository();
 
   bool _amplifyConfigured = false;
   bool isSignedIn = false;
@@ -127,8 +134,12 @@ class _MyAppState extends State<MyApp> {
             create: (_) => AuthBloc(_loginRepository),
           ),
           BlocProvider(
-            create: (_) => UserBloc(_userConfigRepository),
+            create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
           ),
+            BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
+                BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
+                     BlocProvider(create: (_)=>BannerBloc(_databaseRepository))
+
         ],
         child: BlocBuilder<AuthBloc, AuthState>(
           buildWhen: (prevSt, newSt) {
@@ -161,7 +172,7 @@ class _MyAppState extends State<MyApp> {
                           userConfigRepository: _userConfigRepository,
                         );
                       return NavigatorPage(
-                          userRepository: _userConfigRepository);
+                          userRepository: _userConfigRepository,databaseRepository: _databaseRepository,);
                     });
           },
         ),
@@ -173,7 +184,10 @@ class _MyAppState extends State<MyApp> {
                 BlocProvider<AuthBloc>(
                   create: (_) => AuthBloc(_loginRepository),
                 ),
-                BlocProvider(create: (_) => UserBloc(_userConfigRepository)),
+                BlocProvider(create: (_) => UserBloc(_userConfigRepository,_databaseRepository)),
+                BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
+                BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
+                   BlocProvider(create: (_)=>BannerBloc(_databaseRepository))
               ],
               child: LoginPage(
                 loginRepo: _loginRepository,
@@ -181,7 +195,7 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
         HomePage.routeName: (_) => BlocProvider<UserBloc>(
-              create: (_) => UserBloc(_userConfigRepository),
+              create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
               child: HomePage(
                   userRepository: _userConfigRepository,
                   email: userDetails["email"] ?? ""),
