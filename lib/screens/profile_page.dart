@@ -26,12 +26,8 @@ class _ProfilePageState extends State<ProfilePage> {
     // UserDetailsServices().getUserCredentials(user);
   }
 
-<<<<<<< HEAD
-  User user = User(firstName: '', uniqueID: '',refreeID: "ll");
-  DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
-=======
   User user = User(firstName: '', uniqueID: '', refreeID: "ll");
->>>>>>> b60c8188dba7a268422e86f357a5b825e2253cbb
+  DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +88,6 @@ class _ProfilePageState extends State<ProfilePage> {
           FloatingActionButton(
             heroTag: "btn3",
             onPressed: () async {
-              await Amplify.Auth.signOut();
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => Coupons()));
             },
             child: Icon(Icons.verified_user),

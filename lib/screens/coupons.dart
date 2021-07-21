@@ -236,21 +236,32 @@ class _CouponsState extends State<Coupons> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    Container(
-                      child: Text(
-                        "Favorites",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: height * 0.03,
-                          fontWeight: FontWeight.bold,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text(
+                            "Favorites",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: height * 0.03,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
+                        IconButton(onPressed: (){
+                          setState(() {
+                            loadAllFav =! loadAllFav;
+                          });
+                        }, icon: Icon(loadAllFav ? Icons.upload : Icons.download))
+                      ],
                     ),
                     SizedBox(
                       height: height * 0.018,
                     ),
                     Container(
-                      height: fav.length > 5 ? height * 0.258 : height * 0.147,
+                      //height: fav.length > 5 && loadAllFav ? height * 0.318 : height * 0.21,
+                      height: fav.length > 5 && loadAllFav ? height * 0.258 : height * 0.147,
                       padding: EdgeInsets.fromLTRB(width * 0.01, height * 0.016, width * 0.01, height * 0.01),
                       decoration: BoxDecoration(
                         color: color,
@@ -262,8 +273,13 @@ class _CouponsState extends State<Coupons> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          if(fav.length >= 5)
-                          favContainer(5, min(fav.length, 10))
+                          if(fav.length >= 5 && loadAllFav)
+                          favContainer(5, min(fav.length, 10)),
+                          // IconButton(onPressed: (){
+                          //   setState(() {
+                          //     loadAllFav =! loadAllFav;
+                          //   });
+                          // }, icon: Icon(Icons.file_upload))
                         ],
                       ),
                     ),
@@ -303,7 +319,7 @@ class _CouponsState extends State<Coupons> {
                     Expanded(
                         child: ListView.builder(
                             controller: controller,
-                            itemCount: 1,
+                            itemCount: 15,
                             physics: BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               double scale = 1.0;

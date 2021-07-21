@@ -16,6 +16,7 @@ import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
 import 'package:flux_payments/widgets/reward_partner_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/database_lambda.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';

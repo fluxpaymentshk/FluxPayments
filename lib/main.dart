@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
-<<<<<<< HEAD
 import './screens/coupons.dart';
-=======
 
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_api/amplify_api.dart';
->>>>>>> b60c8188dba7a268422e86f357a5b825e2253cbb
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:firebase_core/firebase_core.dart';

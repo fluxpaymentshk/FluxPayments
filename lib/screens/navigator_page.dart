@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/coupons.dart';
 import 'package:flux_payments/screens/reward_partners.dart';
 import 'package:flux_payments/screens/support_bot_screen.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
@@ -35,7 +36,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
     _pages = [
       Tuple2('payment', HomePage(userRepository: widget.userRepository)),
       Tuple2('home', ProfilePage()),
-      Tuple2("Rewards", RewardPartnerScreen())
+      Tuple2("Rewards",Coupons()),
     ];
   }
 
@@ -46,7 +47,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   @override
   Widget build(BuildContext context) {
-  double headerHeight = MediaQuery.of(context).size.height*0.08;
+  double headerHeight = MediaQuery.of(context).size.height*0.09;
     return Scaffold(
       bottomNavigationBar: SafeArea(
         child: SlidingSheet(
