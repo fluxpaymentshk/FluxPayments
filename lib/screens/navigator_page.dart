@@ -27,7 +27,8 @@ class _NavigatorPageState extends State<NavigatorPage> {
   bool isOpened = false;
   double botScreenHeightRatio = 0.8;
   double activeIconElevation = 4;
-  TextStyle navigationBarTextStyle = GoogleFonts.rubik(fontSize: 10,fontWeight: FontWeight.bold);
+  TextStyle navigationBarTextStyle =
+      GoogleFonts.rubik(fontSize: 10, fontWeight: FontWeight.bold);
 
   @override
   void initState() {
@@ -46,14 +47,14 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   @override
   Widget build(BuildContext context) {
-  double headerHeight = MediaQuery.of(context).size.height*0.08;
+    double headerHeight = MediaQuery.of(context).size.height * 0.08;
     return Scaffold(
       bottomNavigationBar: SafeArea(
         child: SlidingSheet(
             duration: const Duration(milliseconds: 900),
             controller: controller,
             color: Color(0xffF6F6FF),
-            elevation: 0,
+            elevation: 4,
             maxWidth: 500,
             cornerRadius: 21,
             cornerRadiusOnFullscreen: 0.0,

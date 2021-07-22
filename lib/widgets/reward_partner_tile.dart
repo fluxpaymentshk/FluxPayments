@@ -3,7 +3,8 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 
 class rewardPartnerTile extends StatelessWidget {
-  rewardPartnerTile({this.i,this.imageurl,this.desc,Key? key}) : super(key: key);
+  rewardPartnerTile({this.i, this.imageurl, this.desc, Key? key})
+      : super(key: key);
   final i, imageurl, desc;
   final List<List<Color>> colors = [
     [
@@ -50,11 +51,11 @@ class rewardPartnerTile extends StatelessWidget {
           children: [
             //  SizedBox(height:SizeConfig.heightMultiplier * 2,),
             Padding(
-              padding: const EdgeInsets.only(top: 8.7, left: 4.2,right:4.2),
+              padding: const EdgeInsets.only(top: 8.7, left: 4.2, right: 4.2),
               child: Container(
                 child: Text(
                   //'Hot juicy chicken with KFC',
-                desc,
+                  desc,
                   style: TextStyle(
                     color: AppTheme.white,
                     fontSize: 15,
@@ -66,19 +67,18 @@ class rewardPartnerTile extends StatelessWidget {
               top: SizeConfig.heightMultiplier * 9.1,
               // bottom:0,
               child: Padding(
-                padding: const EdgeInsets.only(top:3.6),
+                padding: const EdgeInsets.only(top: 3.6),
                 child: Container(
                   decoration: new BoxDecoration(
-                     borderRadius: BorderRadius.all(
-                  Radius.circular(SizeConfig.heightMultiplier * 2)),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(SizeConfig.heightMultiplier * 2)),
                       image: new DecorationImage(
-                    fit: BoxFit.cover,
-                    alignment: FractionalOffset.topCenter,
-                    image: new NetworkImage(
-                        //"https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/kfc.png"
-                        imageurl
-                        ),
-                  )),
+                        fit: BoxFit.cover,
+                        alignment: FractionalOffset.topCenter,
+                        image: new NetworkImage(
+                            //"https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/kfc.png"
+                            imageurl),
+                      )),
                 ),
               ),
             ),

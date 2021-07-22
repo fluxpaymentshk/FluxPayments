@@ -21,11 +21,11 @@ class LineChartGraphState extends State<LineChartGraph> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio:1.23,
-     // child: Container(),
+      aspectRatio: 1.23,
+      // child: Container(),
       child: Container(
-      //   height: SizeConfig.heightMultiplier * 50,
-      // width: SizeConfig.widthMultiplier * 90,
+        //   height: SizeConfig.heightMultiplier * 50,
+        // width: SizeConfig.widthMultiplier * 90,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(18)),
           // gradient: LinearGradient(
@@ -34,9 +34,9 @@ class LineChartGraphState extends State<LineChartGraph> {
           //     Color(0xff46426c),
           //   ],
           color: AppTheme.offWhite,
-            // begin: Alignment.bottomCenter,
-            // end: Alignment.topCenter,
-         // ),
+          // begin: Alignment.bottomCenter,
+          // end: Alignment.topCenter,
+          // ),
         ),
         child: Stack(
           children: <Widget>[
@@ -84,63 +84,60 @@ class LineChartGraphState extends State<LineChartGraph> {
                   height: 10,
                 ),
 
-             Center(
-               child: Row(
-                 children: [
-                   
-                   Container(
-                     child:Row(
-
-                      children:[
-                        CircleAvatar(
-                          radius: 3,
-                          backgroundColor: Color(0xffaa4cfc),
+                Center(
+                  child: Row(
+                    children: [
+                      Container(
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 3,
+                              backgroundColor: Color(0xffaa4cfc),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.widthMultiplier * 2,
+                            ),
+                            Text('HSBC Card'),
+                          ],
                         ),
-                        SizedBox(width: SizeConfig.widthMultiplier*2,),
-                           Text('HSBC Card'),
-
-                      ],
-                     ),
-                   ),
-                   Spacer(),
-
-                    Container(
-                     child:Row(
-
-                      children:[
-                        CircleAvatar(
-                           radius: 3,
-                          backgroundColor: Color(0xffaa4cfc),
+                      ),
+                      Spacer(),
+                      Container(
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 3,
+                              backgroundColor: Color(0xffaa4cfc),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.widthMultiplier * 2,
+                            ),
+                            Text('HSBC Card'),
+                          ],
                         ),
-                        SizedBox(width: SizeConfig.widthMultiplier*2,),
-                           Text('HSBC Card'),
-
-                      ],
-                     ),
-                   ),
-Spacer(),
-                    Container(
-                     child:Padding(
-                       padding: const EdgeInsets.all(6.0),
-                       child: Row(
-
-                        children:[
-                          CircleAvatar(
-                             radius: 3,
-                            backgroundColor: Color(0xffaa4cfc),
+                      ),
+                      Spacer(),
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 3,
+                                backgroundColor: Color(0xffaa4cfc),
+                              ),
+                              SizedBox(
+                                width: SizeConfig.widthMultiplier * 2,
+                              ),
+                              Text('HSBC Card'),
+                            ],
                           ),
-                          SizedBox(width: SizeConfig.widthMultiplier*2,),
-                             Text('HSBC Card'),
-
-                        ],
-                       ),
-                     ),
-                   )
-                 
-                 ],
-               ),
-             ), 
-               const SizedBox(
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
                   height: 20,
                 ),
               ],
@@ -159,7 +156,6 @@ Spacer(),
           ],
         ),
       ),
-     
     );
   }
 
@@ -181,9 +177,8 @@ Spacer(),
           reservedSize: 22, // Expppppppppppppppp
           getTextStyles: (value) => const TextStyle(
             color: Color(0xff72719b),
-         //   fontWeight: FontWeight.bold,
+            //   fontWeight: FontWeight.bold,
             fontSize: 10,
-           
           ),
           margin: 10, // EXppppppppppppppppppppppp
           getTitles: (value) {
@@ -202,10 +197,9 @@ Spacer(),
           showTitles: true,
           getTextStyles: (value) => const TextStyle(
             color: Color(0xff75729e),
-         //   fontWeight: FontWeight.bold,
+            //   fontWeight: FontWeight.bold,
             fontSize: 10,
             // wordSpacing: 0.0,
-         
           ),
           getTitles: (value) {
             switch (value.toInt()) {
@@ -220,8 +214,8 @@ Spacer(),
             }
             return '';
           },
-          margin: 8,             //Exppppppppppppp
-          reservedSize: 30,  //Exppppppppppppppppp
+          margin: 8, //Exppppppppppppp
+          reservedSize: 30, //Exppppppppppppppppp
         ),
       ),
       borderData: FlBorderData(
@@ -476,5 +470,4 @@ Spacer(),
       ),
     ];
   }
-
 }

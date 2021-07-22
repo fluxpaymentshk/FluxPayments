@@ -36,6 +36,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    log("${SizeConfig.heightMultiplier}");
+    log("${SizeConfig.widthMultiplier}");
   }
 
   // int _selectedIndex = 0;
@@ -89,41 +91,10 @@ class _HomePageState extends State<HomePage> {
     var userBloc = BlocProvider.of<UserBloc>(context);
     log("EMAIL-------------------> ${widget.email}");
 
-    return Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('BottomNavigationBar Sample'),
-        // ),
-        // floatingActionButton: Column(
-        //   mainAxisAlignment: MainAxisAlignment.end,
-        //   children: [
-        //     FloatingActionButton(
-        //       onPressed: () async {
-        //         Map<String, dynamic> r = await _databaseLambdaService
-        //             .getPaymentHistoryProviderWiseDetails(userID: "Flux-Monik");
-        //         r.forEach((key, value) {
-        //           if (key == "records") print(key + "--->" + value.toString());
-        //         });
-        //         ScaffoldMessenger.of(context).showSnackBar(
-        //           SnackBar(
-        //             content: Text("Called the lambda function"),
-        //             behavior: SnackBarBehavior.floating,
-        //           ),
-        //         );
-        //       },
-        //       child: Icon(Icons.run_circle_outlined, size: 40),
-        //     ),
-        //     SizedBox(height: 10),
-        //     FloatingActionButton(
-        //       onPressed: () async {
-        //         await Amplify.Auth.signOut();
-        //         Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-        //       },
-        //       child: Icon(Icons.logout),
-        //     ),
-        //   ],
-        // ),
+    log("-----${SizeConfig.heightMultiplier}");
+    log("---${SizeConfig.widthMultiplier}");
 
-        body: LayoutBuilder(builder: (context, constraints) {
+    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
       SizeConfig().init(constraints);
       return Flex(direction: Axis.horizontal, children: [
         Expanded(

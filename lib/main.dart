@@ -31,10 +31,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await dotenv.load(fileName: ".env");
-  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-//     statusBarColor: Colors.transparent,
-//  ));
+  // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
   NotificationHandler? _notificationHandler = NotificationHandler();
 
   try {
@@ -122,10 +122,9 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flux Payments',
       theme: ThemeData(
-   
-   textTheme: GoogleFonts.montserratTextTheme(
-      Theme.of(context).textTheme,
-    ),
+        textTheme: GoogleFonts.montserratTextTheme(
+          Theme.of(context).textTheme,
+        ),
         primaryColor: Color(0xff7041EE),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           selectedItemColor: Color(0xff7041EE),
@@ -183,7 +182,6 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
-     
       routes: {
         LoginPage.routeName: (_) => MultiBlocProvider(
               providers: [

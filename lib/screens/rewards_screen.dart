@@ -63,7 +63,8 @@ class _RewardsScreenState extends State<RewardsScreen> {
                 onTap: () {
                   print("_+++__________++++++++++++++_________");
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => RewardsSearchScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => RewardsSearchScreen()),
                   );
                 },
                 child: TextField(

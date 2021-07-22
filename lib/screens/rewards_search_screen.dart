@@ -21,13 +21,14 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
   final Shader linearGradientText = LinearGradient(
     colors: <Color>[Color(0xFF7041EE), Color(0xffE9D9FB)],
   ).createShader(Rect.fromLTWH(100.0, 0.0, 200.0, 70.0));
+  List<String> selectedCategories = [];
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: backButton(context,"button1"),
+        floatingActionButton: backButton(context, "button1"),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
         body: ListView(
           children: [
@@ -84,8 +85,11 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
               future: DatabaseLambdaService().getCategories(),
               builder: (context, futureData) {
                 if (!futureData.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
+                  return Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
                 }
                 log("^^^^^^^^${futureData.data}");
@@ -104,11 +108,34 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  if (selectedCategories.contains(futureData
+                                      .data?[index]["rewardCategoryID"])) {
+                                    setState(() {
+                                      selectedCategories.remove(futureData
+                                          .data?[index]["rewardCategoryID"]);
+                                    });
+                                  } else {
+                                    setState(() {
+                                      selectedCategories.add(futureData
+                                          .data?[index]["rewardCategoryID"]);
+                                    });
+                                  }
+                                },
                                 child: Container(
                                   padding: EdgeInsets.all(4),
                                   // width: 40,
                                   decoration: BoxDecoration(
+                                    gradient: selectedCategories.contains(
+                                            futureData.data?[index]
+                                                ["rewardCategoryID"])
+                                        ? RadialGradient(
+                                            colors: [
+                                              Color(0xffB772EE),
+                                              Color(0xff7041EE)
+                                            ],
+                                          )
+                                        : null,
                                     color: Color(0xffE9E9FF),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)),
@@ -118,9 +145,13 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                   child: Text(
                                     futureData.data?[index]["name"],
                                     style: GoogleFonts.montserrat(
-                                      color: AppTheme.main,
+                                      color: selectedCategories.contains(
+                                              futureData.data?[index]
+                                                  ["rewardCategoryID"])
+                                          ? Colors.white
+                                          : AppTheme.main,
                                       fontSize: 12,
-                                      fontWeight: FontWeight.w400,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
@@ -212,8 +243,8 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                           ),
                         ),
                         Container(
-                        height: MediaQuery.of(context).size.height * 0.6,
-                        color: Colors.transparent,
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          color: Colors.transparent,
                           child: ListView.builder(
                               itemBuilder: (context, i) => InkWell(
                                     onTap: () {
@@ -255,7 +286,6 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                     Radius.circular(5),
                                                   ),
                                                 ),
-                                                color: Colors.orange,
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
@@ -293,9 +323,12 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                         "Valid until 01-Jun-2021",
                                                         style: GoogleFonts
                                                             .montserrat(
-                                                          fontSize: 10,
-                                                          color: AppTheme.main,
-                                                        ),
+                                                                fontSize: 10,
+                                                                color: AppTheme
+                                                                    .main,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
                                                       ),
                                                     ),
                                                   ),

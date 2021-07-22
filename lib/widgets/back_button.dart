@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flux_payments/config/theme.dart';
 
-Widget backButton(BuildContext context,String tag) {
+Widget backButton(BuildContext context, String tag) {
   return Container(
-    color:Colors.transparent,
+    color: Colors.transparent,
     width: 35,
     height: 35,
-    margin: const EdgeInsets.symmetric(vertical: 18.0,horizontal: 1,),
+    margin: const EdgeInsets.symmetric(
+      vertical: 18.0,
+      horizontal: 1,
+    ),
     child: FloatingActionButton(
       heroTag: tag,
       shape: CircleBorder(
         side: BorderSide(
           color: AppTheme.main,
-          width:2.5,
+          width: 2.5,
         ),
       ),
       backgroundColor: Colors.white,

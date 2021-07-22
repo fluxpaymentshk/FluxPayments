@@ -4,7 +4,7 @@ import 'package:flux_payments/config/theme.dart';
 
 class advertiserTile extends StatelessWidget {
   //advertiserTile({this.i,this.imageurl,this.desc,Key? key}) : super(key: key);
- // final i, imageurl, desc;
+  // final i, imageurl, desc;
   final List<List<Color>> colors = [
     // [
     //   Color(0xff5a3f78),
@@ -50,11 +50,11 @@ class advertiserTile extends StatelessWidget {
           children: [
             //  SizedBox(height:SizeConfig.heightMultiplier * 2,),
             Padding(
-              padding: const EdgeInsets.only(top: 8.7, left: 4.2,right:4.2),
+              padding: const EdgeInsets.only(top: 8.7, left: 4.2, right: 4.2),
               child: Container(
                 child: Text(
                   '3X point when redeem point on your Birthday month',
-              //  desc,
+                  //  desc,
                   style: TextStyle(
                     color: AppTheme.white,
                     fontSize: 15,
