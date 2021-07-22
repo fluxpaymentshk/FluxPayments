@@ -11,8 +11,8 @@ class DatabaseLambdaService {
         region: 'ap-southeast-1',
         cognitoRegion: 'ap-southeast-1',
         clientConfiguration: <String, dynamic>{
-          'ConnectionTimeout': 60000,
-          'SocketTimeout': 60000
+          'ConnectionTimeout': 100000,
+          'SocketTimeout': 100000
         });
   }
 
@@ -136,5 +136,44 @@ class DatabaseLambdaService {
       print(e);
     }
     return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getCategories() async {
+    result = {};
+    List<Map<String, dynamic>> rp = [];
+    try {
+      result = await lambda
+          .callLambda('aurora-serverless-rewardCategory', <String, dynamic>{});
+      print(
+          "---------------------------------------------------------------------------------$result");
+      List<String> categories = [];
+      rp = getOrganizedData(result);
+      log("$rp");
+    } catch (e) {
+      print(e);
+    }
+    return rp;
+  }
+
+  List<Map<String, dynamic>> getOrganizedData(Map<String, dynamic> result) {
+    List<String> schema = [];
+    List re = result["records"];
+    result["columnMetadata"].forEach((e) {
+      schema.add(e["name"]);
+    });
+    List<Map<String, dynamic>> response = [];
+    re.forEach((element) {
+      int i = 0;
+      Map<String, dynamic> m = {};
+      // log("$element");
+      element.forEach((e) {
+        // log("----$e");
+        m[schema[i]] = e["stringValue"];
+        i++;
+      });
+      response.add(m);
+    });
+    // print("======================================+$response");
+    return response;
   }
 }

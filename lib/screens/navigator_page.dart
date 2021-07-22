@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-import 'package:flux_payments/screens/reward_partners.dart';
+import 'package:flux_payments/screens/rewards_screen.dart';
 import 'package:flux_payments/screens/support_bot_screen.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:tuple/tuple.dart';
@@ -33,9 +33,9 @@ class _NavigatorPageState extends State<NavigatorPage> {
   void initState() {
     super.initState();
     _pages = [
-      Tuple2('payment', HomePage(userRepository: widget.userRepository)),
-      Tuple2('home', ProfilePage()),
-      Tuple2("Rewards", RewardPartnerScreen())
+      Tuple2('payment', ProfilePage()),
+      Tuple2('home', HomePage(userRepository: widget.userRepository)),
+      Tuple2("Rewards", RewardsScreen())
     ];
   }
 
