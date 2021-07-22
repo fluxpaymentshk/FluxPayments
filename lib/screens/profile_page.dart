@@ -73,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
               // d.forEach((key, value) {
               //   if (key == "records") print(key + "--->" + value.toString());
               // });
-              var data = await _databaseLambdaService.getUserFavorites(userID: 'fluxsam1');
+              var data = await _databaseLambdaService.getUserFavoritesList(userID: 'fluxsam1');
               print(data);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

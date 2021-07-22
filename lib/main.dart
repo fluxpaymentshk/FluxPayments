@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
+import 'package:flux_payments/repository/database_repo.dart';
+
 import './screens/coupons.dart';
 
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
@@ -63,6 +66,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   LoginRepository _loginRepository = new LoginRepository();
   UserConfigRepository _userConfigRepository = new UserConfigRepository();
+  DatabaseRepo _databaseRepository = DatabaseRepo();
 
   bool _amplifyConfigured = false;
   bool isSignedIn = false;
@@ -123,10 +127,9 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flux Payments',
       theme: ThemeData(
-   
-   textTheme: GoogleFonts.montserratTextTheme(
-      Theme.of(context).textTheme,
-    ),
+        textTheme: GoogleFonts.montserratTextTheme(
+          Theme.of(context).textTheme,
+        ),
         primaryColor: Color(0xff7041EE),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           selectedItemColor: Color(0xff7041EE),
@@ -145,8 +148,9 @@ class _MyAppState extends State<MyApp> {
             create: (_) => AuthBloc(_loginRepository),
           ),
           BlocProvider(
-            create: (_) => UserBloc(_userConfigRepository),
+            create: (_) => UserBloc(_userConfigRepository, _databaseRepository),
           ),
+          BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
         ],
         child: BlocBuilder<AuthBloc, AuthState>(
           buildWhen: (prevSt, newSt) {
@@ -184,14 +188,15 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
-     
       routes: {
         LoginPage.routeName: (_) => MultiBlocProvider(
               providers: [
                 BlocProvider<AuthBloc>(
                   create: (_) => AuthBloc(_loginRepository),
                 ),
-                BlocProvider(create: (_) => UserBloc(_userConfigRepository)),
+                BlocProvider(
+                    create: (_) =>
+                        UserBloc(_userConfigRepository, _databaseRepository)),
               ],
               child: LoginPage(
                 loginRepo: _loginRepository,
@@ -199,15 +204,24 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
         HomePage.routeName: (_) => BlocProvider<UserBloc>(
-              create: (_) => UserBloc(_userConfigRepository),
+              create: (_) =>
+                  UserBloc(_userConfigRepository, _databaseRepository),
               child: HomePage(
                   userRepository: _userConfigRepository,
                   email: userDetails["email"] ?? ""),
             ),
-            Coupons.routeName: (_) => BlocProvider<UserBloc>(
-              create: (_) => UserBloc(_userConfigRepository),
-              child: Coupons(),
-            ),
+        Coupons.routeName: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<UserBloc>(create: (_) => UserBloc(_userConfigRepository,_databaseRepository),),
+              BlocProvider<FavoritesBloc>(create: (_) => FavoritesBloc(_databaseRepository)),
+            ],
+            child: Coupons(
+              databaseRepo: _databaseRepository,
+            ))
+        // Coupons.routeName: (_) => BlocProvider<UserBloc>(
+        //   create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
+        //   child: Coupons(databaseRepo: _databaseRepository,),
+        // ),
       },
     );
   }
