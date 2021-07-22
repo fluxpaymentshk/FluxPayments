@@ -25,9 +25,6 @@ import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-import 'package:flux_payments/screens/change_password.dart';
-import 'package:flux_payments/screens/login_page.dart';
-import 'package:flux_payments/screens/password_reset.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/banner_tile.dart';
@@ -385,6 +382,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             )),
                       ),
+
 
                       Container(
                         height: SizeConfig.heightMultiplier * 32,

@@ -49,3 +49,5 @@ app.*.map.json
 /android/app/build
 
 lib/amplifyconfiguration.dart
+
+*.env
