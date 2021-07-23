@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flux_payments/models/Favorite.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/User.dart';
+import 'package:flux_payments/models/myCoupons.dart';
+import 'package:flux_payments/screens/coupons.dart';
 
 class DatabaseLambdaService{
 Map<String, dynamic> result = {};
@@ -199,6 +201,67 @@ Map<String, dynamic> result = {};
     print(fav[0].name);
     //return result;
     return fav;
+  }
+
+
+  Future <List<myCoupons>> getUserCouponsList({@required String? userID}) async {
+    result = {};
+    List<User> userDetails = [];
+    List<myCoupons> coupons = [];
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-myCoupons', <String, dynamic>{
+        "userID": userID,
+      });
+      print(
+          "---------------------------------------------------------------------------------$result");
+
+      List<String> schemaName = [];
+      result["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      result["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      res.forEach((ele) {
+        //print(ele);
+        //print('///////');
+        coupons.add(
+          // new User(
+          //   firstName: ele["firstName"],
+          //   uniqueID: userID!,
+          //   refreeID: ele["refreeID"],
+          //   email:ele["email"],
+          //   mobileNumber: ele["mobileNumber"],
+          //   referralID: ele["referralID"],
+          //   dateOfBirth: ele["dateOfBirth"],
+
+          //   )
+
+          myCoupons.fromJson(ele),
+        );
+      });
+    } catch (e) {
+      print(e);
+    }
+    print(coupons);
+    //return result;
+    return coupons;
   }
 
   Future<User> getUserDetails({@required String? userID}) async {

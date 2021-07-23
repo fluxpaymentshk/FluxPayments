@@ -29,6 +29,8 @@ import 'package:flux_payments/screens/navigator_page.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
+import 'bloc/coupons_bloc/coupons_bloc.dart';
+
 List<types.Message> messages = [];
 
 Future<void> main() async {
@@ -151,6 +153,7 @@ class _MyAppState extends State<MyApp> {
             create: (_) => UserBloc(_userConfigRepository, _databaseRepository),
           ),
           BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
+          BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
         ],
         child: BlocBuilder<AuthBloc, AuthState>(
           buildWhen: (prevSt, newSt) {
@@ -214,6 +217,7 @@ class _MyAppState extends State<MyApp> {
             providers: [
               BlocProvider<UserBloc>(create: (_) => UserBloc(_userConfigRepository,_databaseRepository),),
               BlocProvider<FavoritesBloc>(create: (_) => FavoritesBloc(_databaseRepository)),
+              BlocProvider<CouponsBloc>(create: (_) => CouponsBloc(_databaseRepository)),
             ],
             child: Coupons(
               databaseRepo: _databaseRepository,

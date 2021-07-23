@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flux_payments/bloc/coupons_bloc/coupons_bloc.dart';
+import 'package:flux_payments/bloc/coupons_bloc/coupons_event.dart';
+import 'package:flux_payments/bloc/coupons_bloc/coupons_state.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_event.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_state.dart';
@@ -9,6 +12,7 @@ import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
 import 'package:flux_payments/models/Favorite.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
+import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/repository/database_repo.dart';
 import 'dart:math';
 import 'package:vector_math/vector_math.dart' as v_math;
@@ -57,7 +61,7 @@ class _CouponsState extends State<Coupons> {
   //var color = (Colors.deepPurple[50]);
   List<Reward> fav = [];
   ScrollController controller = ScrollController();
-
+  List<myCoupons> coupons = [];
   var expand = true;
   late List<Widget> listItems;
   var height;
@@ -103,11 +107,12 @@ class _CouponsState extends State<Coupons> {
   Widget build(BuildContext context) {
     var userBloc = BlocProvider.of<UserBloc>(context);
     var favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
-
+    var couponsBloc = BlocProvider.of<CouponsBloc>(context);
     final DatabaseRepo databaseRepo = DatabaseRepo();
     userBloc.add(GetUserDetails(userID: 'fluxsam1'));
     favoritesBloc
         .add(GetFavorites(page: 0, userID: 'fluxsam1', favorites: fav));
+    couponsBloc.add(GetCoupons(page: 0, userID: 'fluxsam1', coupons: coupons));
 
     Size size = MediaQuery.of(context).size;
 
@@ -374,6 +379,35 @@ class _CouponsState extends State<Coupons> {
                     SizedBox(
                       height: height * 0.01,
                     ),
+
+
+
+                    BlocBuilder<CouponsBloc, CouponsState>(
+                        builder: (context, state) {
+                      if (state is LoadingCoupons) {
+                        print("State is LoadingCoupons");
+                        return CircularProgressIndicator(
+                          strokeWidth: 5.0,
+                          color: Colors.black,
+                          //color: AppTheme.main,
+                        );
+                      } else if (state is LoadedCoupons) {
+                        print("State is LoadedCoupons");
+                        print(state.coupons[1].myCouponsID);
+                        return Container(
+                          color: Colors.black,
+                          height: 100,
+                        );
+                      } else{
+                        return Container(
+                          color: Colors.black,
+                          height: 100,
+                        );
+                      }
+                    }),
+
+
+
                     Container(
                       child: Text(
                         "My Coupon",
