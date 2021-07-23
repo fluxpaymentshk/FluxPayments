@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flux_payments/models/Favorite.dart';
+import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/User.dart';
 
 class DatabaseLambdaService{
@@ -140,10 +141,10 @@ Map<String, dynamic> result = {};
     return result;
   }
 
-  Future <List<Favorites>> getUserFavoritesList({@required String? userID}) async {
+  Future <List<Reward>> getUserFavoritesList({@required String? userID}) async {
     result = {};
     List<User> userDetails = [];
-    List<Favorites> fav = [];
+    List<Reward> fav = [];
     try {
       result = await lambda.callLambda(
           'aurora-serverless-function-favorites', <String, dynamic>{
@@ -189,13 +190,13 @@ Map<String, dynamic> result = {};
 
           //   )
 
-          Favorites.fromJson(ele),
+          Reward.fromJson(ele),
         );
       });
     } catch (e) {
       print(e);
     }
-    print(fav[0].favoriteID);
+    print(fav[0].name);
     //return result;
     return fav;
   }

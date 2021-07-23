@@ -1,4 +1,5 @@
 import 'package:flux_payments/models/Favorite.dart';
+import 'package:flux_payments/models/Reward.dart';
 
 abstract class FavoritesState {
   const FavoritesState();
@@ -13,7 +14,7 @@ class LoadingFavorites extends FavoritesState {
 }
 
 class LoadedFavorites extends FavoritesState {
-  final List<Favorites> favorites;
+  final List<Reward> favorites;
   const LoadedFavorites({required this.favorites});
 }
 

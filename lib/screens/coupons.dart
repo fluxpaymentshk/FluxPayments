@@ -8,6 +8,7 @@ import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
 import 'package:flux_payments/models/Favorite.dart';
+import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/repository/database_repo.dart';
 import 'dart:math';
 import 'package:vector_math/vector_math.dart' as v_math;
@@ -54,9 +55,9 @@ class _CouponsState extends State<Coupons> {
   // ];
 
   //var color = (Colors.deepPurple[50]);
-  List<Favorites> fav = [];
+  List<Reward> fav = [];
   ScrollController controller = ScrollController();
-  
+
   var expand = true;
   late List<Widget> listItems;
   var height;
@@ -100,7 +101,6 @@ class _CouponsState extends State<Coupons> {
 
   @override
   Widget build(BuildContext context) {
-    
     var userBloc = BlocProvider.of<UserBloc>(context);
     var favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
 
@@ -108,11 +108,7 @@ class _CouponsState extends State<Coupons> {
     userBloc.add(GetUserDetails(userID: 'fluxsam1'));
     favoritesBloc
         .add(GetFavorites(page: 0, userID: 'fluxsam1', favorites: fav));
-        if (fav.length < 10) {
-      fav = fav.sublist(0, fav.length);
-    } else {
-      fav = fav.sublist(0, 10);
-    }
+
     Size size = MediaQuery.of(context).size;
 
     setState(() {
@@ -123,10 +119,12 @@ class _CouponsState extends State<Coupons> {
       builder: (context, state) {
         if (state is UserDetailsLoading) {
           print("State is UserDetailsLoading");
-          return CircularProgressIndicator(
-            strokeWidth: 5,
-            color: Colors.black,
-            //color: AppTheme.main,
+          return Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 5,
+              color: Colors.black,
+              //color: AppTheme.main,
+            ),
           );
         } else if (state is UserDetails) {
           print("State is UserDetails");
@@ -296,68 +294,77 @@ class _CouponsState extends State<Coupons> {
                                   ),
                                 ),
                               ),
-                              IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      loadAllFav = !loadAllFav;
-                                    });
-                                  },
-                                  icon: Icon(loadAllFav
-                                      ? Icons.upload
-                                      : Icons.download))
+                              // IconButton(
+                              //     onPressed: () {
+                              //       setState(() {
+                              //         loadAllFav = !loadAllFav;
+                              //       });
+                              //     },
+                              //     icon: Icon(loadAllFav
+                              //         ? Icons.upload
+                              //         : Icons.download))
                             ],
                           ),
                           SizedBox(
                             height: height * 0.018,
                           ),
                           BlocBuilder<FavoritesBloc, FavoritesState>(
-                      builder: (context, state) {
-                        if (state is LoadingFavorites) {
-                          print("State is LoadindFavorites");
-                          return CircularProgressIndicator(
-                            strokeWidth: 5.0,
-                            color: Colors.black,
-                            //color: AppTheme.main,
-                          );
-                        } else if (state is LoadedFavorites) {
-                          print("State is LoadedFavorites");
-                          fav = state.favorites;
-                          return Container(
-                            //height: fav.length > 5 && loadAllFav ? height * 0.318 : height * 0.21,
-                            height: fav.length > 5 && loadAllFav
-                                ? height * 0.258
-                                : height * 0.147,
-                            padding: EdgeInsets.fromLTRB(width * 0.01,
-                                height * 0.016, width * 0.01, height * 0.01),
-                            decoration: BoxDecoration(
-                              color: color,
-                              borderRadius: BorderRadius.circular(width * 0.03),
-                            ),
-                            child: Column(
-                              children: [
-                                favContainer(0, min(fav.length, 5)),
-                                SizedBox(
-                                  height: height * 0.01,
-                                ),
-                                if (fav.length >= 5 && loadAllFav)
-                                  favContainer(5, min(fav.length, 10)),
-                                // IconButton(onPressed: (){
-                                //   setState(() {
-                                //     loadAllFav =! loadAllFav;
-                                //   });
-                                // }, icon: Icon(Icons.file_upload))
-                              ],
-                            ),
-                          );
-                        } else {
-                          return Container(
-                            child: 
-                                Text((state as ErrorFavorites).message ?? ''),
-                          );
-                        }
-                      },
-                    ),
-                          
+                            builder: (context, state) {
+                              if (state is LoadingFavorites) {
+                                print("State is LoadindFavorites");
+                                return CircularProgressIndicator(
+                                  strokeWidth: 5.0,
+                                  color: Colors.black,
+                                  //color: AppTheme.main,
+                                );
+                              } else if (state is LoadedFavorites) {
+                                print("State is LoadedFavorites");
+                                fav = state.favorites;
+                                if (fav.length < 10) {
+                                  fav = fav.sublist(0, fav.length);
+                                } else {
+                                  fav = fav.sublist(0, 10);
+                                }
+                                return Container(
+                                  //height: fav.length > 5 && loadAllFav ? height * 0.318 : height * 0.21,
+                                  height: fav.length > 5 && loadAllFav
+                                      ? height * 0.258
+                                      : height * 0.147,
+                                  padding: EdgeInsets.fromLTRB(
+                                      width * 0.01,
+                                      height * 0.016,
+                                      width * 0.01,
+                                      height * 0.01),
+                                  decoration: BoxDecoration(
+                                    color: color,
+                                    borderRadius:
+                                        BorderRadius.circular(width * 0.03),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      favContainer(0, min(fav.length, 5)),
+                                      SizedBox(
+                                        height: height * 0.01,
+                                      ),
+                                      if (fav.length >= 5 && loadAllFav)
+                                        favContainer(5, min(fav.length, 10)),
+                                      // IconButton(onPressed: (){
+                                      //   setState(() {
+                                      //     loadAllFav =! loadAllFav;
+                                      //   });
+                                      // }, icon: Icon(Icons.file_upload))
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return Container(
+                                  child: Text(
+                                      (state as ErrorFavorites).message ?? ''),
+                                );
+                              }
+                            },
+                          ),
+
                           SizedBox(
                             height: height * 0.018,
                           ),
@@ -429,7 +436,6 @@ class _CouponsState extends State<Coupons> {
                         ],
                       ),
                     ),
-                    
                   ],
                 ),
               ),
@@ -481,7 +487,7 @@ class _CouponsState extends State<Coupons> {
                 ),
                 Center(
                   child: Text(
-                    e.favoriteID.toString(),
+                    e.name.toString(),
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -697,5 +703,19 @@ class TimelinePainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter delegate) {
     return false;
+  }
+}
+
+class FavContainerWidget extends StatefulWidget {
+  const FavContainerWidget({Key? key}) : super(key: key);
+
+  @override
+  _FavContainerWidgetState createState() => _FavContainerWidgetState();
+}
+
+class _FavContainerWidgetState extends State<FavContainerWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
