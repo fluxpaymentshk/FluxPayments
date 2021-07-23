@@ -25,6 +25,8 @@ import 'package:flux_payments/services/database_lambda.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'bloc/banner_bloc/banner_bloc.dart';
+import 'bloc/graph_bloc/graph_bloc.dart';
+import 'bloc/recent_payment_bloc/recent_payment_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -138,7 +140,9 @@ class _MyAppState extends State<MyApp> {
           ),
             BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
                 BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
-                     BlocProvider(create: (_)=>BannerBloc(_databaseRepository))
+                     BlocProvider(create: (_)=>BannerBloc(_databaseRepository)),
+                     BlocProvider(create: (_)=>GraphBloc(_databaseRepository)),
+                      BlocProvider(create: (_)=>RecentPaymentBloc(_databaseRepository))
 
         ],
         child: BlocBuilder<AuthBloc, AuthState>(
@@ -187,7 +191,10 @@ class _MyAppState extends State<MyApp> {
                 BlocProvider(create: (_) => UserBloc(_userConfigRepository,_databaseRepository)),
                 BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
                 BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
-                   BlocProvider(create: (_)=>BannerBloc(_databaseRepository))
+                   BlocProvider(create: (_)=>BannerBloc(_databaseRepository)),
+                      BlocProvider(create: (_)=>GraphBloc(_databaseRepository)),
+                        BlocProvider(create: (_)=>RecentPaymentBloc(_databaseRepository))
+
               ],
               child: LoginPage(
                 loginRepo: _loginRepository,

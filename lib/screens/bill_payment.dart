@@ -16,9 +16,6 @@ import 'package:flux_payments/bloc/curated_list_bloc/curated_list_state.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_bloc.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_event.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_state.dart';
-import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_bloc.dart';
-import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_event.dart';
-import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
@@ -38,16 +35,15 @@ import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/banner_tile.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
-import 'package:flux_payments/widgets/recent_payment_tile.dart';
 import 'package:flux_payments/widgets/reward_partner_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomePage extends StatefulWidget {
-  static const routeName = '/home';
+class BillPayment extends StatefulWidget {
+  static const routeName = '/billPayment';
   final String email;
   final UserConfigRepository? userRepository;
   final DatabaseRepository? databaseRepository;
-  const HomePage(
+  const BillPayment(
       {Key? key,
       @required this.userRepository,
       @required this.databaseRepository,
@@ -55,13 +51,13 @@ class HomePage extends StatefulWidget {
       : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _BillPaymentState createState() => _BillPaymentState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BillPaymentState extends State<BillPayment> {
   //UserConfigRepository _userConfigRepository = new UserConfigRepository();
 
-  DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
+  // DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
 
   @override
   void initState() {
@@ -118,30 +114,27 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<curatedList> curatedListData = [];
+ //   List<curatedList> curatedListData = [];
     List<ExternalAdvertisers> ExadvertiseList = [];
     List<InternalAdvertisers> InadvertiseList = [];
 
     var userBloc = BlocProvider.of<UserBloc>(context);
-    var curatedListBloc = BlocProvider.of<CuratedListBloc>(context);
+  //  var curatedListBloc = BlocProvider.of<CuratedListBloc>(context);
     var advertiserBloc = BlocProvider.of<AdvertiserBloc>(context);
     var bannerBloc = BlocProvider.of<BannerBloc>(context);
     var graphBloc = BlocProvider.of<GraphBloc>(context);
-
-    var recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
 
     final DatabaseRepository databaseRepo = DatabaseRepository();
     bannerBloc.add(GetBannerEvent());
     userBloc.add(GetUserDetails(userID: 'flux-vid1'));
     graphBloc.add(GetGraphEvent(UserID: 'Flux-Monik'));
-    recentPaymentBloc.add(GetRecentPaymentDetails(userID: 'Flux-Monik'));
     //((userID: 'flux-vid1'));
 
     advertiserBloc.add(GetExternalAdvertiserEvent(
         page: 0, externalAdvertiserList: ExadvertiseList));
 
-    curatedListBloc
-        .add(LoadCuratedListEvent(page: 0, curatedListData: curatedListData));
+    // curatedListBloc
+    //     .add(LoadCuratedListEvent(page: 0, curatedListData: curatedListData));
 
     //  var
     log("EMAIL-------------------> ${widget.email}");
@@ -149,7 +142,6 @@ class _HomePageState extends State<HomePage> {
     //     await _databaseLambdaService.getCuratedList(page: 0) ;
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-        _databaseLambdaService.getRecentPayment(userID: 'Flux-Monik');
         if (state is UserDetailsLoading) {
           return CircularProgressIndicator(
             strokeWidth: 5,
@@ -350,40 +342,40 @@ class _HomePageState extends State<HomePage> {
 
                       //////////////////////
 
-                      BlocBuilder<CuratedListBloc, CuratedListState>(
-                        builder: (context, state) {
-                          if (state is LoadingCuratedList)
-                            return CircularProgressIndicator(
-                              strokeWidth: 5.0,
-                              color: AppTheme.main,
-                            );
-                          else if (state is LoadedCuratedList) {
-                            //currently done for only one page!!
-                            return Container(
-                              height: SizeConfig.heightMultiplier * 22,
+                      // BlocBuilder<CuratedListBloc, CuratedListState>(
+                      //   builder: (context, state) {
+                      //     if (state is LoadingCuratedList)
+                      //       return CircularProgressIndicator(
+                      //         strokeWidth: 5.0,
+                      //         color: AppTheme.main,
+                      //       );
+                      //     else if (state is LoadedCuratedList) {
+                      //       //currently done for only one page!!
+                      //       return Container(
+                      //         height: SizeConfig.heightMultiplier * 22,
 
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  itemCount: curatedListData.length,
-                                  itemBuilder: (context, int index) {
-                                    return rewardPartnerTile(
-                                        background:
-                                            curatedListData[index].background,
-                                        imageurl: curatedListData[index].icon,
-                                        desc: curatedListData[index].tagline,
-                                        i: index);
-                                  }),
+                      //         child: ListView.builder(
+                      //             scrollDirection: Axis.horizontal,
+                      //             physics: AlwaysScrollableScrollPhysics(),
+                      //             itemCount: curatedListData.length,
+                      //             itemBuilder: (context, int index) {
+                      //               return rewardPartnerTile(
+                      //                   background:
+                      //                       curatedListData[index].background,
+                      //                   imageurl: curatedListData[index].icon,
+                      //                   desc: curatedListData[index].tagline,
+                      //                   i: index);
+                      //             }),
 
-                              //   ),
-                            );
-                          } else {
-                            return Container(
-                                child: Text(
-                                    (state as ErrorCuratedist).message ?? ''));
-                          }
-                        },
-                      ),
+                      //         //   ),
+                      //       );
+                      //     } else {
+                      //       return Container(
+                      //           child: Text(
+                      //               (state as ErrorCuratedist).message ?? ''));
+                      //     }
+                      //   },
+                      // ),
 
                       //  rewardPartnerTile(),
 
@@ -567,7 +559,6 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.all(8.0),
                               child: LineChartGraph(
                                 mp: state.graphData,
-                             //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
                               ),
                             );
                           } else if (state is LoadingGraphState) {
@@ -583,67 +574,6 @@ class _HomePageState extends State<HomePage> {
                           }
                         },
                       ),
-
-                      //////////////////////////////###########################
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "My Recent Payment",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )),
-                      ),
-
-                      BlocBuilder<RecentPaymentBloc, RecentPaymentState>(
-                        builder: (context, state) {
-                          if (state is LoadingRecentPaymentState)
-                            return CircularProgressIndicator();
-                          else if (state is LoadRecentPaymentState) {
-                            return Container(
-                              height: SizeConfig.heightMultiplier * 9,
-
-                              child: ListView.builder(
-                                 // scrollDirection: Axis.vertical,
-                                physics: const ClampingScrollPhysics(),
-                                  itemCount: state.RecentPaymentData.length,
-                                  itemBuilder: (context, int index) {
-                                    return recentPaymentTile(
-                                        name: state.RecentPaymentData[index]
-                                            ['name'],
-                                        paidOn: state.RecentPaymentData[index]
-                                            ['paidOn'],
-                                        imageurl: state.RecentPaymentData[index]
-                                            ['imageurl'],
-                                        amount: state.RecentPaymentData[index]
-                                            ['amount']);
-                                  }),
-
-                              //   ),
-                            );
-                          } else if (state is ErrorRecentPaymentState)
-                            return Container(child: Text(state.message));
-                          else
-                            return Container(
-                                child: Text(
-                                    'get recent payment details Event not Fired!'));
-                        },
-                      ),
-                      // recentPaymentTile(
-                      //     name: '', paidOn: '', imageurl: '', amount: 0),
-                      // recentPaymentTile(
-                      //     name: '', paidOn: '', imageurl: '', amount: 0),
-                      // recentPaymentTile(
-                      //     name: '', paidOn: '', imageurl: '', amount: 0),
-                      // recentPaymentTile(
-                      //     name: '', paidOn: '', imageurl: '', amount: 0),
-                      // recentPaymentTile(
-                      //     name: '', paidOn: '', imageurl: '', amount: 0),
-
-                      //#############################################
                     ],
                   ),
                 ),

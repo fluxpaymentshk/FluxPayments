@@ -30,9 +30,10 @@ class _NavigatorPageState extends State<NavigatorPage> {
   void initState() {
     super.initState();
     _pages = [
-      Tuple2('payment', HomePage(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
+      
       // Tuple2('payment', PayBills()),
       Tuple2('home', ProfilePage()),
+      Tuple2('payment', HomePage(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
       // Tuple2('gift', giftPage()),
       Tuple2("Rewards", RewardPartnerScreen())
     ];
