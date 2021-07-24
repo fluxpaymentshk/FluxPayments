@@ -92,7 +92,6 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                     ),
                   );
                 }
-                setState(() {});
                 log("^^^^^^^^${futureData.data}");
 
                 return SingleChildScrollView(
