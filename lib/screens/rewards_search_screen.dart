@@ -92,6 +92,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                     ),
                   );
                 }
+                setState(() {});
                 log("^^^^^^^^${futureData.data}");
 
                 return SingleChildScrollView(
@@ -130,10 +131,12 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                             futureData.data?[index]
                                                 ["rewardCategoryID"])
                                         ? RadialGradient(
+                                            center: Alignment(0.8, 0.8),
                                             colors: [
                                               Color(0xffB772EE),
-                                              Color(0xff7041EE)
+                                              Color(0xff7041EE),
                                             ],
+                                            radius: 2,
                                           )
                                         : null,
                                     color: Color(0xffE9E9FF),
@@ -208,6 +211,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                               ),
                               Container(
                                 width: 200,
+                                height: 80,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
@@ -215,6 +219,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                     ListTile(
                                       minVerticalPadding: 1,
                                       horizontalTitleGap: 1,
+                                      // dense: true,
                                       leading: Image.asset(
                                         "assets/images/coin.png",
                                         height: 40,
@@ -229,7 +234,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                       ),
                                     ),
                                     Text(
-                                      "My Coins",
+                                      "My Points",
                                       style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.w300,
                                         fontSize: 20,
