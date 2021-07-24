@@ -18,6 +18,7 @@ import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/curated_list_bloc/curated_list_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/bloc/pending_service_bloc/pending_service_bloc.dart';
 import 'package:flux_payments/notification_handler.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
@@ -30,6 +31,8 @@ import 'package:flux_payments/services/database_lambda.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'bloc/banner_bloc/banner_bloc.dart';
+import 'bloc/graph_bloc/graph_bloc.dart';
+import 'bloc/recent_payment_bloc/recent_payment_bloc.dart';
 
 
 List<types.Message> messages = [];
@@ -156,7 +159,11 @@ class _MyAppState extends State<MyApp> {
           ),
             BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
                 BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
-                     BlocProvider(create: (_)=>BannerBloc(_databaseRepository))
+                     BlocProvider(create: (_)=>BannerBloc(_databaseRepository)),
+                     BlocProvider(create: (_)=>GraphBloc(_databaseRepository)),
+                      BlocProvider(create: (_)=>RecentPaymentBloc(_databaseRepository)),
+
+  BlocProvider(create: (_)=>PendingServiceBloc(_databaseRepository))
 
         ],
         child: BlocBuilder<AuthBloc, AuthState>(
@@ -205,7 +212,11 @@ class _MyAppState extends State<MyApp> {
                 BlocProvider(create: (_) => UserBloc(_userConfigRepository,_databaseRepository)),
                 BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
                 BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
-                   BlocProvider(create: (_)=>BannerBloc(_databaseRepository))
+                   BlocProvider(create: (_)=>BannerBloc(_databaseRepository)),
+                      BlocProvider(create: (_)=>GraphBloc(_databaseRepository)),
+                        BlocProvider(create: (_)=>RecentPaymentBloc(_databaseRepository)),
+                        BlocProvider(create: (_)=>PendingServiceBloc(_databaseRepository))
+
               ],
               child: LoginPage(
                 loginRepo: _loginRepository,

@@ -9,6 +9,10 @@ import 'package:flux_payments/services/database_lambda.dart';
 abstract class databaseBaseRepository {
   Future<void> getCuratedList(
       {required int? page, required List<curatedList> curatedListData});
+      Future<List<Map<String,dynamic>>>getRecentPayments({required String UserID});
+
+      Future<Map<String,dynamic>>getPendingServices(
+            {required String userID, required String todayDate});
 
   Future<void> getInternalAdvertiserList(
       {required int? page,
@@ -45,9 +49,13 @@ class DatabaseRepository extends databaseBaseRepository {
     await _databaseLambdaService.getCuratedList(
         page: page, curatedListData: curatedListData);
   }
+@override
+  Future<List<Map<String,dynamic>>>getRecentPayments({required String UserID})async{
+  return  await _databaseLambdaService.getRecentPayment(userID: UserID);
+  }
 
   @override
-  Future<Map<String, dynamic>> getPaymentHistoryProviderWiseDetails(
+  Future< Map<String, Map<String, double>>> getPaymentHistoryProviderWiseDetails(
       {required String? userID}) async {
     return await _databaseLambdaService.getPaymentHistoryProviderWiseDetails(
         userID: userID);
@@ -103,5 +111,10 @@ class DatabaseRepository extends databaseBaseRepository {
       required List<ExternalAdvertisers> externalAdvertisersListData}) async {
     return await _databaseLambdaService.getExternalAdvertiserList(
         page: page, ExternalAdvertisersListData: externalAdvertisersListData);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getPendingServices({required String userID, required String todayDate})async {
+   return  await _databaseLambdaService.getPendingServices(userID: userID, todayDate: todayDate);
   }
 }

@@ -208,7 +208,7 @@ class DatabaseLambdaService {
     return result;
   }
 
-  Future<Map<String, dynamic>> getPaymentHistoryProviderWiseDetails(
+  Future<Map<String, Map<String, double>>> getPaymentHistoryProviderWiseDetails(
       {@required String? userID}) async {
     result = {};
     try {
@@ -256,7 +256,7 @@ class DatabaseLambdaService {
       print("@@@@@@@@@@@@@@@@@@@@@@@@");
 
       Map<String, Map<String, double>> mp = {};
-      Map<String, List<Map<String, double>>> mpnew = {};
+      //  Map<String, List<Map<String, double>>> mpnew = {};
       print(result.keys);
       result.forEach((key, value) {
         //  mp.putIfAbsent(key, () => []);
@@ -323,7 +323,7 @@ class DatabaseLambdaService {
       });
       print('hehehehehehehhehehehehh');
       print(mp);
-
+      return mp;
       // mp.forEach((key, value) {
       //   mp[key]?.forEach((ele) {
       //     ele.forEach((key, value) {
@@ -514,6 +514,114 @@ class DatabaseLambdaService {
       //     buttonDesc: null,
       //     dueDate: null,
       //     heading: null);
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getRecentPayment(
+      {@required String? userID}) async {
+    List<Map<String, dynamic>> recentPayments = [];
+    result = {};
+    try {
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-function-recentPayment', <String, dynamic>{
+        "userID": userID,
+      });
+      result = re;
+      List<String> schemaName = [];
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+      //  Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+
+      // Set<String> nameOfCompanies = {};
+      // res.forEach((element) {
+      //   nameOfCompanies.add(element["name"]);
+      // });
+
+      // nameOfCompanies.forEach((element) {
+      //   companyWiseData[element] = [];
+      // });
+      // res.forEach((element) {
+      //   companyWiseData[element["name"]]?.add(element);
+      // });
+      // result = companyWiseData;
+      // log("$result");
+      // print("####################");
+      // print(result);
+      Map<String, dynamic> mp = {};
+
+      res.forEach((ele) {
+        mp = {};
+        mp.addAll({
+          'paidOn': ele['paidOn'],
+          'imageurl': ele['logo'],
+          'amount': ele['amount'],
+          'name': ele['name']
+        });
+        recentPayments.add(mp);
+      });
+      print(recentPayments);
+      print('ggggggggggg');
+
+      return recentPayments;
+    } catch (e) {
+      print(e);
+
+      throw new Exception();
+    }
+    // return result;
+  }
+
+  Future<Map<String, dynamic>> getPendingServices(
+      {required String userID, required String todayDate}) async {
+    try {
+      Map<String, dynamic> pendingService = {};
+      List pendingServiceDetails = [];
+      result = {};
+      // try {
+      //List<String> schemaName = [];
+      print(
+          '##############                Beforeeeeeeeeeeeeeeee_____________________       ##########################################################');
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-function-pendingPayment',
+          <String, dynamic>{"UserID": userID, "todayDate": todayDate});
+      print(
+          '##############                after        ##########################################################');
+
+      result = re;
+      print(result);
+
+      result["records"][0].forEach((ele) {
+        ele.forEach((k, v) {
+          pendingServiceDetails.add(v);
+        });
+      });
+
+      pendingService.addAll({
+        'dueAmount': double.parse(pendingServiceDetails[0]),
+        'dueProviders': pendingServiceDetails[1]
+      });
+      // print(result["records"][0][1]);
+      print(pendingService);
+      return pendingService;
+
+      //to check all done or not!
+    } catch (e) {
+      return throw Exception(e);
     }
   }
 }
