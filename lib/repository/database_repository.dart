@@ -11,6 +11,9 @@ abstract class databaseBaseRepository {
       {required int? page, required List<curatedList> curatedListData});
       Future<List<Map<String,dynamic>>>getRecentPayments({required String UserID});
 
+      Future<Map<String,dynamic>>getPendingServices(
+            {required String userID, required String todayDate});
+
   Future<void> getInternalAdvertiserList(
       {required int? page,
       required List<InternalAdvertisers> internalAdvertisersListData});
@@ -108,5 +111,10 @@ class DatabaseRepository extends databaseBaseRepository {
       required List<ExternalAdvertisers> externalAdvertisersListData}) async {
     return await _databaseLambdaService.getExternalAdvertiserList(
         page: page, ExternalAdvertisersListData: externalAdvertisersListData);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getPendingServices({required String userID, required String todayDate})async {
+   return  await _databaseLambdaService.getPendingServices(userID: userID, todayDate: todayDate);
   }
 }

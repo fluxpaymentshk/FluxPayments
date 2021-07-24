@@ -16,6 +16,9 @@ import 'package:flux_payments/bloc/curated_list_bloc/curated_list_state.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_bloc.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_event.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_state.dart';
+import 'package:flux_payments/bloc/pending_service_bloc/pending_service_bloc.dart';
+import 'package:flux_payments/bloc/pending_service_bloc/pending_service_event.dart';
+import 'package:flux_payments/bloc/pending_service_bloc/pending_service_state.dart';
 import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_bloc.dart';
 import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_event.dart';
 import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_state.dart';
@@ -38,6 +41,7 @@ import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/banner_tile.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
+import 'package:flux_payments/widgets/pending_payment_tile.dart';
 import 'package:flux_payments/widgets/recent_payment_tile.dart';
 import 'package:flux_payments/widgets/reward_partner_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -65,57 +69,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    //  SizeConfig().init(constraints);
     super.initState();
   }
 
-  // int _selectedIndex = 0;
-  // static const TextStyle optionStyle =
-  //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  // static const List<Widget> _widgetOptions = <Widget>[
-  //   Text(
-  //     'Index 0: Payments',
-  //     style: optionStyle,
-  //   ),
-  //   Text(
-  //     'Index 1: home',
-  //     style: optionStyle,
-  //   ),
-  //   Text(
-  //     'Index 2:gift',
-  //     style: optionStyle,
-  //   ),
-  // ];
-
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
-
-  // List<RewardPartner> rewardPartner =
-  // [
-  //   RewardPartner(
-  //       name: 'kfc',
-  //       shortDescription: 'hot juicy chicken with kfc',
-  //       image:
-  //           "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/kfc.png"),
-  //   RewardPartner(
-  //       name: 'cleb',
-  //       shortDescription: 'celebrate every successwith flux',
-  //       image:
-  //           "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/celebrate.png"),
-  //   RewardPartner(
-  //       name: 'beach',
-  //       shortDescription: 'cashless beachday with flux',
-  //       image:
-  //           "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/beach.png"),
-  //   RewardPartner(
-  //       name: 'central food',
-  //       shortDescription: 'Michelin in Central',
-  //       image:
-  //           "https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/centrall.png"),
-  // ];
-
+  
   @override
   Widget build(BuildContext context) {
     List<curatedList> curatedListData = [];
@@ -128,6 +86,7 @@ class _HomePageState extends State<HomePage> {
     var bannerBloc = BlocProvider.of<BannerBloc>(context);
     var graphBloc = BlocProvider.of<GraphBloc>(context);
 
+    var pendingServiceBloc = BlocProvider.of<PendingServiceBloc>(context);
     var recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
 
     final DatabaseRepository databaseRepo = DatabaseRepository();
@@ -135,6 +94,8 @@ class _HomePageState extends State<HomePage> {
     userBloc.add(GetUserDetails(userID: 'flux-vid1'));
     graphBloc.add(GetGraphEvent(UserID: 'Flux-Monik'));
     recentPaymentBloc.add(GetRecentPaymentDetails(userID: 'Flux-Monik'));
+    pendingServiceBloc
+        .add(GetPendingService(userID: 'Flux-Monik', todayDate: '2021-07-23'));
     //((userID: 'flux-vid1'));
 
     advertiserBloc.add(GetExternalAdvertiserEvent(
@@ -143,13 +104,14 @@ class _HomePageState extends State<HomePage> {
     curatedListBloc
         .add(LoadCuratedListEvent(page: 0, curatedListData: curatedListData));
 
-    //  var
     log("EMAIL-------------------> ${widget.email}");
 
     //     await _databaseLambdaService.getCuratedList(page: 0) ;
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-        _databaseLambdaService.getRecentPayment(userID: 'Flux-Monik');
+        // _databaseLambdaService.getRecentPayment(userID: 'Flux-Monik');
+        _databaseLambdaService.getPendingServices(
+            userID: 'Flux-Monik', todayDate: '2021-07-23');
         if (state is UserDetailsLoading) {
           return CircularProgressIndicator(
             strokeWidth: 5,
@@ -157,32 +119,10 @@ class _HomePageState extends State<HomePage> {
           );
         } else if (state is UserDetails) {
           print('hjjjjjjjjj');
-          // databaseRepo.getPaymentHistoryProviderWiseDetails(
-          //     userID: "Flux-Monik");
+       
 
           return Scaffold(
-              // appBar: AppBar(
-              //   title: const Text('BottomNavigationBar Sample'),
-              // ),
-              // floatingActionButton: Column(
-              //   mainAxisAlignment: MainAxisAlignment.end,
-              //   children: [
-              //     FloatingActionButton(
-              //       onPressed: () async {
-              //         Map<String, dynamic> r = await _databaseLambdaService
-              //             .getPaymentHistoryProviderWiseDetails(userID: "Flux-Monik");
-              //         r.forEach((key, value) {
-              //           if (key == "records") print(key + "--->" + value.toString());
-              //         });
-              //         ScaffoldMessenger.of(context).showSnackBar(
-              //           SnackBar(
-              //             content: Text("Called the lambda function"),
-              //             behavior: SnackBarBehavior.floating,
-              //           ),
-              //         );
-              //       },
-              //       child: Icon(Icons.run_circle_outlined, size: 40),
-              //     ),
+          
               //     SizedBox(height: 10),
               //     FloatingActionButton(
               //       onPressed: () async {
@@ -194,8 +134,9 @@ class _HomePageState extends State<HomePage> {
               //   ],
               // ),
 
-              body: LayoutBuilder(builder: (context, constraints) {
-            SizeConfig().init(constraints);
+              body: 
+              //LayoutBuilder(builder: (context, constraints) {
+          //  SizeConfig().init(constraints);
             // return FutureBuilder(
             //     future:
             //         //  _databaseLambdaService.getCuratedList(
@@ -208,7 +149,7 @@ class _HomePageState extends State<HomePage> {
 
             //       if (snapshot.connectionState != snapshot.hasError) {
 
-            return Flex(direction: Axis.vertical, children: [
+             Flex(direction: Axis.vertical, children: [
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -289,46 +230,27 @@ class _HomePageState extends State<HomePage> {
                         height: SizeConfig.heightMultiplier * 2,
                       ),
 
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Container(
-                            height: SizeConfig.heightMultiplier * 7.5,
-                            width: SizeConfig.widthMultiplier * 95,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  SizeConfig.heightMultiplier * 1)),
-                              border: Border.all(color: AppTheme.red),
-                              color: Color(0xffFFECEC),
-                            ),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 9.0),
-                                  child: Text(
-                                    'Pending \$ 120 payments from 4 providers',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 6.0),
-                                  child: Image.asset(
-                                    "assets/images/arrow.png",
-                                    height: SizeConfig.heightMultiplier * 7,
-                                    width: SizeConfig.widthMultiplier * 9,
-                                    fit: BoxFit.fitWidth,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      BlocBuilder<PendingServiceBloc, PendingServiceState>(
+                        builder: (context, state) {
+                          if (state is LoadPendingService) {
+                            return PendingPaymentTile(
+                                amount: state.pendingService["dueAmount"].toDouble(),
+                                serviceProviders: state
+                                    .pendingService["dueProviders"]
+                                    .toInt());
+                          } else if (State is LoadingPendingService) {
+                            return CircularProgressIndicator();
+                          } else if (state is PendingServiceError) {
+                            return Container(
+                              child: Text(state.message),
+                            );
+                          } else {
+                            return Container(
+                              child: Text('Unable to trigger Event!'),
+                            );
+                          }
+                        },
                       ),
-
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Align(
@@ -567,7 +489,7 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.all(8.0),
                               child: LineChartGraph(
                                 mp: state.graphData,
-                             //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
+                                //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
                               ),
                             );
                           } else if (state is LoadingGraphState) {
@@ -585,70 +507,60 @@ class _HomePageState extends State<HomePage> {
                       ),
 
                       //////////////////////////////###########################
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "My Recent Payment",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(10.0),
+                      //   child: Align(
+                      //       alignment: Alignment.centerLeft,
+                      //       child: Text(
+                      //         "My Recent Payment",
+                      //         style: TextStyle(
+                      //           fontSize: 20,
+                      //           fontWeight: FontWeight.w500,
+                      //         ),
+                      //       )),
+                      // ),
 
-                      BlocBuilder<RecentPaymentBloc, RecentPaymentState>(
-                        builder: (context, state) {
-                          if (state is LoadingRecentPaymentState)
-                            return CircularProgressIndicator();
-                          else if (state is LoadRecentPaymentState) {
-                            return Container(
-                              height: SizeConfig.heightMultiplier * 9,
+                      // BlocBuilder<RecentPaymentBloc, RecentPaymentState>(
+                      //   builder: (context, state) {
+                      //     if (state is LoadingRecentPaymentState)
+                      //       return CircularProgressIndicator();
+                      //     else if (state is LoadRecentPaymentState) {
+                      //       return Container(
+                      //         height: SizeConfig.heightMultiplier * 9,
 
-                              child: ListView.builder(
-                                 // scrollDirection: Axis.vertical,
-                                physics: const ClampingScrollPhysics(),
-                                  itemCount: state.RecentPaymentData.length,
-                                  itemBuilder: (context, int index) {
-                                    return recentPaymentTile(
-                                        name: state.RecentPaymentData[index]
-                                            ['name'],
-                                        paidOn: state.RecentPaymentData[index]
-                                            ['paidOn'],
-                                        imageurl: state.RecentPaymentData[index]
-                                            ['imageurl'],
-                                        amount: state.RecentPaymentData[index]
-                                            ['amount']);
-                                  }),
+                      //         child: ListView.builder(
+                      //             // scrollDirection: Axis.vertical,
+                      //             physics: const ClampingScrollPhysics(),
+                      //             itemCount: state.RecentPaymentData.length,
+                      //             itemBuilder: (context, int index) {
+                      //               return recentPaymentTile(
+                      //                   name: state.RecentPaymentData[index]
+                      //                       ['name'],
+                      //                   paidOn: state.RecentPaymentData[index]
+                      //                       ['paidOn'],
+                      //                   imageurl: state.RecentPaymentData[index]
+                      //                       ['imageurl'],
+                      //                   amount: state.RecentPaymentData[index]
+                      //                       ['amount']);
+                      //             }),
 
-                              //   ),
-                            );
-                          } else if (state is ErrorRecentPaymentState)
-                            return Container(child: Text(state.message));
-                          else
-                            return Container(
-                                child: Text(
-                                    'get recent payment details Event not Fired!'));
-                        },
-                      ),
-                      // recentPaymentTile(
-                      //     name: '', paidOn: '', imageurl: '', amount: 0),
-                      // recentPaymentTile(
-                      //     name: '', paidOn: '', imageurl: '', amount: 0),
-                      // recentPaymentTile(
-                      //     name: '', paidOn: '', imageurl: '', amount: 0),
-                      // recentPaymentTile(
-                      //     name: '', paidOn: '', imageurl: '', amount: 0),
-                      // recentPaymentTile(
-                      //     name: '', paidOn: '', imageurl: '', amount: 0),
-
+                      //         //   ),
+                      //       );
+                      //     } else if (state is ErrorRecentPaymentState)
+                      //       return Container(child: Text(state.message));
+                      //     else
+                      //       return Container(
+                      //           child: Text(
+                      //               'get recent payment details Event not Fired!'));
+                      //   },
+                      // ),
+                    
                       //#############################################
                     ],
                   ),
                 ),
               ),
-            ]);
+            ])
             //   } else {
             //     return Center(
             //         child: CircularProgressIndicator(
@@ -656,7 +568,7 @@ class _HomePageState extends State<HomePage> {
             //     ));
             //   }
             // });
-          })
+          // })
 
               //  Column(
               //   children: [

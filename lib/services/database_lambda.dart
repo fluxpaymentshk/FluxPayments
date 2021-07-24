@@ -563,7 +563,7 @@ class DatabaseLambdaService {
       // print("####################");
       // print(result);
       Map<String, dynamic> mp = {};
-     
+
       res.forEach((ele) {
         mp = {};
         mp.addAll({
@@ -574,7 +574,7 @@ class DatabaseLambdaService {
         });
         recentPayments.add(mp);
       });
-       print(recentPayments);
+      print(recentPayments);
       print('ggggggggggg');
 
       return recentPayments;
@@ -584,5 +584,44 @@ class DatabaseLambdaService {
       throw new Exception();
     }
     // return result;
+  }
+
+  Future<Map<String, dynamic>> getPendingServices(
+      {required String userID, required String todayDate}) async {
+    try {
+      Map<String, dynamic> pendingService = {};
+      List pendingServiceDetails = [];
+      result = {};
+      // try {
+      //List<String> schemaName = [];
+      print(
+          '##############                Beforeeeeeeeeeeeeeeee_____________________       ##########################################################');
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-function-pendingPayment',
+          <String, dynamic>{"UserID": userID, "todayDate": todayDate});
+      print(
+          '##############                after        ##########################################################');
+
+      result = re;
+      print(result);
+
+      result["records"][0].forEach((ele) {
+        ele.forEach((k, v) {
+          pendingServiceDetails.add(v);
+        });
+      });
+
+      pendingService.addAll({
+        'dueAmount': double.parse(pendingServiceDetails[0]),
+        'dueProviders': pendingServiceDetails[1]
+      });
+      // print(result["records"][0][1]);
+      print(pendingService);
+      return pendingService;
+
+      //to check all done or not!
+    } catch (e) {
+      return throw Exception(e);
+    }
   }
 }
