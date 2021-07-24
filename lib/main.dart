@@ -2,12 +2,16 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flux_payments/amplifyconfiguration.dart';
 import 'package:flux_payments/bloc/advertiser_bloc/advertiser_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
@@ -19,9 +23,10 @@ import 'package:flux_payments/notification_handler.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/home_page.dart';
-import 'package:flux_payments/screens/login_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
+
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -29,9 +34,17 @@ import 'bloc/banner_bloc/banner_bloc.dart';
 import 'bloc/graph_bloc/graph_bloc.dart';
 import 'bloc/recent_payment_bloc/recent_payment_bloc.dart';
 
+
+List<types.Message> messages = [];
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await dotenv.load(fileName: ".env");
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//     statusBarColor: Colors.transparent,
+//  ));
   NotificationHandler? _notificationHandler = NotificationHandler();
 
   try {
@@ -74,7 +87,8 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
     AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
     AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
-    Amplify.addPlugins([authPlugin, analyticsPlugin]);
+    AmplifyAPI amplifyAPI = AmplifyAPI();
+    Amplify.addPlugins([authPlugin, amplifyAPI, analyticsPlugin]);
 
     try {
       await Amplify.configure(amplifyconfig);
@@ -119,18 +133,22 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flux Payments',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        
    
    textTheme: GoogleFonts.montserratTextTheme(
       Theme.of(context).textTheme,
     ),
+        primaryColor: Color(0xff7041EE),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Color(0xff7041EE),
+          unselectedItemColor: Color(0xff7041EE),
+          selectedLabelStyle:
+              TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+          selectedIconTheme: IconThemeData(size: 30),
+          unselectedIconTheme: IconThemeData(size: 30),
+        ),
       ),
       home:
-       
-   //   HomePage(userRepository: userRepository),
-
-          // AnalyticsPage()
+          //  SupportBotScreen()
           MultiBlocProvider(
         providers: [
           BlocProvider(

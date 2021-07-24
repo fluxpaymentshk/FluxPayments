@@ -122,7 +122,8 @@ class NotificationHandler {
     final BigPictureStyleInformation bigPictureStyleInformation =
         BigPictureStyleInformation(FilePathAndroidBitmap(bigPicturePath),
             largeIcon: FilePathAndroidBitmap(largeIconPath),
-            contentTitle: '<b>${pinpointMessage["pinpoint.notification.title"]}</b>',
+            contentTitle:
+                '<b>${pinpointMessage["pinpoint.notification.title"]}</b>',
             htmlFormatContentTitle: true,
             summaryText: '${pinpointMessage["pinpoint.notification.body"]}',
             htmlFormatSummaryText: true);
@@ -146,7 +147,8 @@ class NotificationHandler {
     final BigPictureStyleInformation bigPictureStyleInformation =
         BigPictureStyleInformation(FilePathAndroidBitmap(bigPicturePath),
             hideExpandedLargeIcon: true,
-            contentTitle: '<b>${pinpointMessage["pinpoint.notification.title"]}</b>',
+            contentTitle:
+                '<b>${pinpointMessage["pinpoint.notification.title"]}</b>',
             htmlFormatContentTitle: true,
             summaryText: '${pinpointMessage["pinpoint.notification.body"]}',
             htmlFormatSummaryText: true);

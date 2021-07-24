@@ -1,14 +1,21 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+<<<<<<< HEAD
 import 'package:flux_payments/screens/bill_payment.dart';
 import 'package:flux_payments/screens/gift_page.dart';
+=======
+>>>>>>> bb07dbe69930b02a9fef9b7c19f5a7e59c3352b2
 import 'package:flux_payments/screens/reward_partners.dart';
+import 'package:flux_payments/screens/support_bot_screen.dart';
+import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:tuple/tuple.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'home_page.dart';
-import 'pay_bills.dart';
 import 'profile_page.dart';
 
 class NavigatorPage extends StatefulWidget {
@@ -28,6 +35,11 @@ class NavigatorPage extends StatefulWidget {
 
 class _NavigatorPageState extends State<NavigatorPage> {
   late List<Tuple2> _pages = [];
+  bool isOpened = false;
+  double botScreenHeightRatio = 0.8;
+  double activeIconElevation = 4;
+  TextStyle navigationBarTextStyle = GoogleFonts.rubik(fontSize: 10,fontWeight: FontWeight.bold);
+
   @override
   void initState() {
     super.initState();
@@ -41,10 +53,11 @@ class _NavigatorPageState extends State<NavigatorPage> {
     ];
   }
 
-  // final List<Tuple2>
   int _selectedPage = 0;
 
   PageController _pageController = PageController();
+  final controller = SheetController();
+
   @override
   Widget build(BuildContext context) {
     print(_pages);
