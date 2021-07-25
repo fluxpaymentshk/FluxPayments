@@ -5,6 +5,7 @@ import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/clip_circle.dart';
 import 'package:flux_payments/widgets/draw_dashline.dart';
+import 'package:flux_payments/widgets/expand_widget.dart';
 import 'package:flux_payments/widgets/qr_code.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -256,7 +257,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                 width: size.width * 0.9,
                                 height: size.width * 0.9,
                                 child: 
-                        ExpandedSection(
+                        ExpandWidget(
                           child: generateQRCode(context, "testing"),
                           expand: isRedeemed,
                         ),
@@ -295,63 +296,5 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
         ],
       ),
     );
-  }
-}
-
-class ExpandedSection extends StatefulWidget {
-  final Widget? child;
-  final bool expand;
-  ExpandedSection({this.expand = false, this.child});
-
-  @override
-  _ExpandedSectionState createState() => _ExpandedSectionState();
-}
-
-class _ExpandedSectionState extends State<ExpandedSection>
-    with SingleTickerProviderStateMixin {
-  late AnimationController expandController;
-  late Animation<double> animation;
-
-  @override
-  void initState() {
-    super.initState();
-    prepareAnimations();
-    _runExpandCheck();
-  }
-
-  ///Setting up the animation
-  void prepareAnimations() {
-    expandController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 20000));
-    animation = CurvedAnimation(
-      parent: expandController,
-      curve: Curves.fastOutSlowIn,
-    );
-  }
-
-  void _runExpandCheck() {
-    if (widget.expand) {
-      expandController.forward();
-    } else {
-      expandController.reverse();
-    }
-  }
-
-  @override
-  void didUpdateWidget(ExpandedSection oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _runExpandCheck();
-  }
-
-  @override
-  void dispose() {
-    expandController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizeTransition(
-        axisAlignment: 1.0, sizeFactor: animation, child: widget.child);
   }
 }
