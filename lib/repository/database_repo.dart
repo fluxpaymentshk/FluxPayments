@@ -1,5 +1,7 @@
+import 'package:flux_payments/bloc/story_bloc/story_event.dart';
 import 'package:flux_payments/models/Favorite.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
+import 'package:flux_payments/models/Story.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/services/database_lambda.dart';
@@ -11,6 +13,8 @@ abstract class databaseRepo {
   Future<User> getUserDetails({required String? userID});
 
   Future <List<myCoupons>> getUserCoupons({required int? page, required List<myCoupons> coupons, required String? userID});
+
+  Future <List<Story>> getStory({required int? page, required List<Story> story});
 }
 
 class DatabaseRepo extends databaseRepo {
@@ -28,6 +32,11 @@ class DatabaseRepo extends databaseRepo {
   @override
   Future <List<myCoupons>> getUserCoupons({required int? page, required List<myCoupons> coupons, required String? userID}) async {
     return await _databaseLambdaService.getUserCouponsList(userID: userID);
+  }
+
+  @override
+  Future <List<Story>> getStory({required int? page, required List<Story> story}) async {
+    return await _databaseLambdaService.getStory();
   }
 
 }

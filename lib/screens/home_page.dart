@@ -1,5 +1,6 @@
 import 'dart:developer';
-
+import 'package:flux_payments/screens/storypage_view.dart';
+import 'package:story_view/story_view.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/material.dart';
@@ -373,6 +374,22 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.w500,
                         ),
                       )),
+                ),
+
+                Container(
+                  height: 80,
+                  child: GestureDetector(
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage(
+                          "https://images.unsplash.com/photo-1581803118522-7b72a50f7e9f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bWFufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
+                    ),
+                  
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => StoryPageView())),
+                  ),
                 ),
 
 //Horizontal list view builder.

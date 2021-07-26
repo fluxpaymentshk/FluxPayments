@@ -4,6 +4,7 @@ import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flux_payments/models/Favorite.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
+import 'package:flux_payments/models/Story.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/screens/coupons.dart';
@@ -320,6 +321,62 @@ Map<String, dynamic> result = {};
     }
     //print(userDetails[0].toString());
     return userDetails[0];
+  }
+
+  Future<List<Story>> getStory() async {
+    result = {};
+    List<Story> story = [];
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-story');
+      // print(
+      //     "---------------------------------------------------------------------------------$result");
+
+      List<String> schemaName = [];
+      result["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      result["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      res.forEach((ele) {
+        //print(ele);
+        //print('///////');
+        story.add(
+          // new User(
+          //   firstName: ele["firstName"],
+          //   uniqueID: userID!,
+          //   refreeID: ele["refreeID"],
+          //   email:ele["email"],
+          //   mobileNumber: ele["mobileNumber"],
+          //   referralID: ele["referralID"],
+          //   dateOfBirth: ele["dateOfBirth"],
+
+          //   )
+
+          Story.fromJson(ele),
+        );
+      });
+    } catch (e) {
+      print(e);
+    }
+    //print(userDetails[0].toString());
+    return story;
   }
 
   }

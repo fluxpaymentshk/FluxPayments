@@ -10,7 +10,7 @@ import 'package:flux_payments/bloc/favorite_bloc/favorite_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
-import 'package:flux_payments/models/Favorite.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/repository/database_repo.dart';
@@ -59,6 +59,13 @@ class _CouponsState extends State<Coupons> {
   // ];
 
   //var color = (Colors.deepPurple[50]);
+  List<List<Color>> colors = [
+    [Color(0xFFFDD819), Color(0xFFE80505)],
+    [Color(0xFFF0FF00), Color(0xFF58CFFB)],
+    [Color(0xFFFFF3B0), Color(0xFFCA26FF)],
+    [Color(0xFFFDEB71), Color(0xFFF8D800)],
+    [Color(0xFFFFCF71), Color(0xFF2376DD)],
+  ];
   List<Reward> fav = [];
   ScrollController controller = ScrollController();
   List<myCoupons> coupons = [];
@@ -137,6 +144,7 @@ class _CouponsState extends State<Coupons> {
 
           return SafeArea(
             child: Scaffold(
+              backgroundColor: Colors.white,
               body: SingleChildScrollView(
                 padding:
                     EdgeInsets.symmetric(vertical: 0, horizontal: width * 0.04),
@@ -379,35 +387,31 @@ class _CouponsState extends State<Coupons> {
                     SizedBox(
                       height: height * 0.01,
                     ),
-
-
-
-                    BlocBuilder<CouponsBloc, CouponsState>(
-                        builder: (context, state) {
-                      if (state is LoadingCoupons) {
-                        print("State is LoadingCoupons");
-                        return CircularProgressIndicator(
-                          strokeWidth: 5.0,
-                          color: Colors.black,
-                          //color: AppTheme.main,
-                        );
-                      } else if (state is LoadedCoupons) {
-                        print("State is LoadedCoupons");
-                        print(state.coupons[1].myCouponsID);
-                        return Container(
-                          color: Colors.black,
-                          height: 100,
-                        );
-                      } else{
-                        return Container(
-                          color: Colors.black,
-                          height: 100,
-                        );
-                      }
-                    }),
-
-
-
+                    // BlocBuilder<CouponsBloc, CouponsState>(
+                    //     builder: (context, state) {
+                    //   if (state is LoadingCoupons) {
+                    //     print("State is LoadingCoupons");
+                    //     return CircularProgressIndicator(
+                    //       strokeWidth: 5.0,
+                    //       color: Colors.black,
+                    //       //color: AppTheme.main,
+                    //     );
+                    //   } else if (state is LoadedCoupons) {
+                    //     print("State is LoadedCoupons");
+                    //     print(state.coupons[1].myCouponsID);
+                    //     coupons = state.coupons;
+                    //     return Container(
+                    //       //color: Colors.black,
+                    //       height: 100,
+                    //       child: Text(coupons[0].myCouponsID.toString()),
+                    //     );
+                    //   } else {
+                    //     return Container(
+                    //       color: Colors.black,
+                    //       height: 100,
+                    //     );
+                    //   }
+                    // }),
                     Container(
                       child: Text(
                         "My Coupon",
@@ -434,7 +438,7 @@ class _CouponsState extends State<Coupons> {
                           Expanded(
                               child: ListView.builder(
                                   controller: controller,
-                                  itemCount: 15,
+                                  itemCount: 5,
                                   physics: BouncingScrollPhysics(),
                                   itemBuilder: (context, index) {
                                     double scale = 1.0;
@@ -453,13 +457,10 @@ class _CouponsState extends State<Coupons> {
                                           ..scale(scale, scale),
                                         alignment: Alignment.bottomCenter,
                                         child: Align(
-                                          heightFactor: 0.6,
+                                          heightFactor: 0.33,
                                           alignment: Alignment.topCenter,
                                           child: card(
-                                            [
-                                              Color(0xFFFFCF71),
-                                              Color(0xFF2376DD)
-                                            ],
+                                            colors[index%5],
                                             height,
                                             width,
                                           ),
@@ -580,11 +581,12 @@ class _CouponsState extends State<Coupons> {
 
   Widget card(List<Color> linearGradientCard, double height, double width) {
     return CustomPaint(
-      foregroundPainter: TimelinePainter(context, height * 0.035, width * 0.1),
+      foregroundPainter: TimelinePainter(context, height * 0.42, width * 0.1),
       child: ClipPath(
-        clipper: DolDurmaClipper(height * 0.035, width * 0.1),
+        //clipper: DolDurmaClipper(height * 0.42, width * 0.1),
         child: Container(
-          height: height * 0.19,
+          height: height * 0.22 + width * 0.6,
+          //height: height * 0.19,
           width: width * 0.92,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(width * 0.03),
@@ -663,7 +665,22 @@ class _CouponsState extends State<Coupons> {
                     color: Colors.red,
                   ),
                 ),
-              )
+              ),
+              SizedBox(
+                height: height * 0.015,
+              ),
+              Center(
+                child: Container(
+                  color: Colors.white,
+                  //height: width*0.6,
+                  width: width * 0.6,
+                  child: QrImage(
+                    data: "1234567890",
+                    version: QrVersions.auto,
+                    //size: width*0.6,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -672,40 +689,40 @@ class _CouponsState extends State<Coupons> {
   }
 }
 
-class DolDurmaClipper extends CustomClipper<Path> {
-  DolDurmaClipper(this.right, this.holeRadius);
+// class DolDurmaClipper extends CustomClipper<Path> {
+//   DolDurmaClipper(this.right, this.holeRadius);
 
-  final double right;
-  final double holeRadius;
+//   final double right;
+//   final double holeRadius;
 
-  @override
-  Path getClip(Size size) {
-    final path = Path()
-      ..moveTo(0, 0)
-      ..lineTo(0.0, size.height - right - holeRadius)
-      ..arcToPoint(
-        Offset(0, size.height - right),
-        clockwise: true,
-        radius: Radius.circular(1),
-      )
-      ..lineTo(0.0, size.height)
-      ..lineTo(size.width, size.height)
-      ..lineTo(size.width, size.height - right)
-      ..arcToPoint(
-        Offset(size.width, size.height - right - holeRadius),
-        clockwise: true,
-        radius: Radius.circular(1),
-      );
+//   @override
+//   Path getClip(Size size) {
+//     final path = Path()
+//       ..moveTo(0, 0)
+//       ..lineTo(0.0, size.height - right - holeRadius)
+//       ..arcToPoint(
+//         Offset(0, size.height - right),
+//         clockwise: true,
+//         radius: Radius.circular(1),
+//       )
+//       ..lineTo(0.0, size.height)
+//       ..lineTo(size.width, size.height)
+//       ..lineTo(size.width, size.height - right)
+//       ..arcToPoint(
+//         Offset(size.width, size.height - right - holeRadius),
+//         clockwise: true,
+//         radius: Radius.circular(1),
+//       );
 
-    path.lineTo(size.width, 0.0);
+//     path.lineTo(size.width, 0.0);
 
-    path.close();
-    return path;
-  }
+//     path.close();
+//     return path;
+//   }
 
-  @override
-  bool shouldReclip(DolDurmaClipper oldClipper) => true;
-}
+//   @override
+//   bool shouldReclip(DolDurmaClipper oldClipper) => true;
+// }
 
 class TimelinePainter extends CustomPainter {
   TimelinePainter(
@@ -732,24 +749,40 @@ class TimelinePainter extends CustomPainter {
 
     canvas.drawPath(
         dashPath(path, dashArray: CircularIntervalList([15.0, 7.0])), paint);
+
+    final path1 = Path()
+      ..moveTo(0.0, size.height - right - holeRadius)
+      //..lineTo(0.0, size.height - right - holeRadius)
+      ..arcToPoint(
+        Offset(0, size.height - right),
+        clockwise: true,
+        radius: Radius.circular(1),
+      );
+    path1.close();
+    var paint1 = Paint();
+    paint1.color = Colors.white;
+    paint1.style = PaintingStyle.fill;
+    paint1.strokeWidth = 2;
+    canvas.drawPath(path1, paint1);
+
+    final path2 = Path()
+      ..moveTo(size.width, size.height - right)
+      //..lineTo(0.0, size.height - right - holeRadius)
+      ..arcToPoint(
+        Offset(size.width, size.height - right - holeRadius),
+        clockwise: true,
+        radius: Radius.circular(1),
+      );
+    path2.close();
+    var paint2 = Paint();
+    paint2.color = Colors.white;
+    paint2.style = PaintingStyle.fill;
+    paint2.strokeWidth = 2;
+    canvas.drawPath(path2, paint2);
   }
 
   @override
   bool shouldRepaint(CustomPainter delegate) {
     return false;
-  }
-}
-
-class FavContainerWidget extends StatefulWidget {
-  const FavContainerWidget({Key? key}) : super(key: key);
-
-  @override
-  _FavContainerWidgetState createState() => _FavContainerWidgetState();
-}
-
-class _FavContainerWidgetState extends State<FavContainerWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
