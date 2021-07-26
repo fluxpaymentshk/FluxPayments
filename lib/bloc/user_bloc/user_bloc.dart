@@ -6,12 +6,12 @@ import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
 import 'package:flux_payments/models/User.dart';
-import 'package:flux_payments/repository/database_repo.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserConfigRepository _userConfigRepository;
-  final DatabaseRepo _databaseRepository;
+  final DatabaseRepository _databaseRepository;
   UserBloc(this._userConfigRepository, this._databaseRepository)
       : super(UserInitialState());
 

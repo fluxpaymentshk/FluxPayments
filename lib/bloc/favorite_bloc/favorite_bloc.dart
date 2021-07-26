@@ -1,11 +1,12 @@
 import 'package:flux_payments/repository/database_repo.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 
 import 'favorite_event.dart';
 import 'favorite_state.dart';
 import 'package:bloc/bloc.dart';
 
 class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
-  final DatabaseRepo _databaseRepo;
+  final DatabaseRepository _databaseRepo;
   FavoritesBloc(this._databaseRepo) : super(FavoritesInitialState());
 
   @override

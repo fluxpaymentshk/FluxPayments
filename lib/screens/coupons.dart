@@ -10,6 +10,7 @@ import 'package:flux_payments/bloc/favorite_bloc/favorite_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/myCoupons.dart';
@@ -22,7 +23,7 @@ import 'package:path_drawing/path_drawing.dart';
 
 class Coupons extends StatefulWidget {
   static const routeName = '/coupons';
-  final DatabaseRepo? databaseRepo;
+  final DatabaseRepository? databaseRepo;
 
   const Coupons({
     Key? key,
@@ -115,7 +116,7 @@ class _CouponsState extends State<Coupons> {
     var userBloc = BlocProvider.of<UserBloc>(context);
     var favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
     var couponsBloc = BlocProvider.of<CouponsBloc>(context);
-    final DatabaseRepo databaseRepo = DatabaseRepo();
+    final DatabaseRepository databaseRepo = DatabaseRepository();
     userBloc.add(GetUserDetails(userID: 'fluxsam1'));
     favoritesBloc
         .add(GetFavorites(page: 0, userID: 'fluxsam1', favorites: fav));
