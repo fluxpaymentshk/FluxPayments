@@ -5,6 +5,7 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/bill_payment.dart';
+import 'package:flux_payments/screens/coupons.dart';
 import 'package:flux_payments/screens/gift_page.dart';
 import 'package:flux_payments/screens/reward_partners.dart';
 import 'package:flux_payments/screens/support_bot_screen.dart';
@@ -43,10 +44,11 @@ class _NavigatorPageState extends State<NavigatorPage> {
     _pages = [
       
       // Tuple2('payment', PayBills()),
-      Tuple2('payment', BillPayment(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
+      //Tuple2('payment', BillPayment(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
       Tuple2('home', HomePage(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
+      Tuple2('home1', HomePage(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
       // Tuple2('gift', giftPage()),
-      Tuple2("Rewards", RewardPartnerScreen())
+      Tuple2("Coupons", Coupons(databaseRepo: widget.databaseRepository,))
     ];
   }
 

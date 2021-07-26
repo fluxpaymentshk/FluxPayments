@@ -1,4 +1,5 @@
 import 'package:flux_payments/repository/database_repo.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 import 'story_event.dart';
 import 'story_state.dart';
 import 'package:bloc/bloc.dart';
@@ -6,7 +7,7 @@ import 'package:flux_payments/models/Story.dart';
 
 
 class StoryBloc extends Bloc<StoryEvent, StoryState> {
-  final DatabaseRepo _databaseRepo;
+  final DatabaseRepository _databaseRepo;
   StoryBloc(this._databaseRepo) : super(StoryInitialState());
 
   @override

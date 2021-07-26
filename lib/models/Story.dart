@@ -6,14 +6,14 @@ import 'package:flutter/foundation.dart';
 
 class Story extends Model {
   static const classType = const _StoryModelType();
-  double? title;
+  String? text;
   String? url;
   String? caption;
 
-  Story({required this.title,required this.url,required this.caption});
+  Story({required this.text,required this.url,required this.caption});
 
   Story.fromJson(Map<String, dynamic> json)
-      : title = json["title"],
+      : text = json["text"],
         url = json["url"],
         caption = json["caption"];
         
@@ -22,12 +22,12 @@ class Story extends Model {
 
   @override
   String getId() {
-    return title.toString();
+    return text.toString();
   }
 
   @override
   Map<String, dynamic> toJson() => {
-        'title': title,
+        'text': text,
         'url': url,
         'caption': caption,
       };

@@ -812,9 +812,13 @@ Map<String, dynamic> result = {};
     List<Story> story = [];
     try {
       result = await lambda.callLambda(
-          'aurora-serverless-function-story');
-      // print(
-      //     "---------------------------------------------------------------------------------$result");
+          'aurora-serverless-function-story', <String, dynamic>{
+        "userID": "dummy",
+      });
+          print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+          print(result);
+      print(
+          "---------------------------------------------------------------------------------$result");
 
       List<String> schemaName = [];
       result["columnMetadata"].forEach((e) {
@@ -859,7 +863,7 @@ Map<String, dynamic> result = {};
     } catch (e) {
       print(e);
     }
-    //print(userDetails[0].toString());
+    print(story[0].toString());
     return story;
   }
 
