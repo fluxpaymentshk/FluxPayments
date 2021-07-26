@@ -6,6 +6,7 @@ import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/clip_circle.dart';
 import 'package:flux_payments/widgets/draw_dashline.dart';
 import 'package:flux_payments/widgets/expand_widget.dart';
+import 'package:flux_payments/widgets/generate_map.dart';
 import 'package:flux_payments/widgets/qr_code.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -36,7 +37,8 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
     Size size = MediaQuery.of(context).size;
     double bottomUp = size.height * 0.005, holeRadius = size.width * 0.15;
     return Scaffold(
-      floatingActionButton: backButton(context, "couponDetailsButton",Color(0xffFAD7A1)),
+      floatingActionButton:
+          backButton(context, "couponDetailsButton", Color(0xffFAD7A1)),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: CustomScrollView(
         slivers: [
@@ -89,14 +91,14 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                         DashLineDrawer(context, bottomUp, holeRadius),
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(top:
-                          Radius.circular(5),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(5),
                         ),
                         color: Color(0xffE9E9FF),
                       ),
                       margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
                       height: MediaQuery.of(context).size.height * 0.27,
-                      padding: EdgeInsets.fromLTRB(12,12,12,12),
+                      padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -162,8 +164,8 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                 ),
                 AnimatedContainer(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(bottom:
-                      Radius.circular(5),
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(5),
                     ),
                     color: Color(0xffE9E9FF),
                   ),
@@ -179,7 +181,9 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          margin:EdgeInsets.only(bottom: 16,),
+                          margin: EdgeInsets.only(
+                            bottom: 16,
+                          ),
                           height: MediaQuery.of(context).size.height * 0.06,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,7 +222,6 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                       MediaQuery.of(context).size.height * 0.05,
                                   width:
                                       MediaQuery.of(context).size.width * 0.35,
-                                      
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(
@@ -251,17 +254,27 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                           ),
                         ),
                         if (isRedeemed)
-                        //   Center(
-                        //     child: 
-                        Container(
-                                width: size.width * 0.9,
-                                height: size.width * 0.9,
-                                child: 
-                        ExpandWidget(
-                          child: generateQRCode(context, "testing"),
-                          expand: isRedeemed,
-                        ),
-                        ),
+                          //   Center(
+                          //     child:
+                          Container(
+                            width: size.width * 0.9,
+                            height: size.width * 0.9,
+                            child: ExpandWidget(
+                              child: generateQRCode(context, "testing"),
+                              expand: isRedeemed,
+                            ),
+                          ),
+                        if (isRedeemed)
+                          //   Center(
+                          //     child:
+                          Container(
+                            width: size.width * 0.9,
+                            height: size.width * 0.9,
+                            child: ExpandWidget(
+                              child: GenerateMapWidget(),
+                              expand: isRedeemed,
+                            ),
+                          ),
                       ],
                     ),
                   ),

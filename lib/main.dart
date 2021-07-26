@@ -22,6 +22,7 @@ import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
+import 'package:flux_payments/widgets/generate_map.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -135,8 +136,7 @@ class _MyAppState extends State<MyApp> {
           unselectedIconTheme: IconThemeData(size: 30),
         ),
       ),
-      home:
-          //  SupportBotScreen()
+      home: 
           MultiBlocProvider(
         providers: [
           BlocProvider(

@@ -4,6 +4,8 @@
    <application
         android:label="flux_payments"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyCBzWBIKzt-l-RNSe_M_6V9NvxhdA04Tbo"/>
        <activity
       android:name="com.amazonaws.mobileconnectors.cognitoauth.activities.CustomTabsRedirectActivity">
       <intent-filter>
