@@ -230,44 +230,9 @@ class _HomePageState extends State<HomePage> {
                       }
                     }),
 
+                    
                     SizedBox(
-                      height: SizeConfig.heightMultiplier * 1,
-                    ),
-
-                    BlocBuilder<StoryBloc, StoryState>(
-                        builder: (context, state) {
-                      if (state is LoadingStory) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (state is LoadedStory) {
-                        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-                        print(state.story[0].text);
-                        return Container(
-                          height: SizeConfig.heightMultiplier * 10,
-                          child: GestureDetector(
-                            child: CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(
-                                  "https://images.unsplash.com/photo-1581803118522-7b72a50f7e9f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bWFufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-                            ),
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StoryPageView(state.story))),
-                          ),
-                        );
-                      } else if (state is ErrorStory) {
-                        return Text("Error Fetching Story");
-                      } else {
-                        return Container(
-                          child: Text("Unable to trigger event !"),
-                        );
-                      }
-                    }),
-
-                    SizedBox(
-                      height: SizeConfig.heightMultiplier * 1,
+                      height: SizeConfig.heightMultiplier * 1.5,
                     ),
 
                     BlocBuilder<PendingServiceBloc, PendingServiceState>(
@@ -291,8 +256,115 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                     ),
+
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 1,
+                    ),
+
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Stories",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                    ),
+
+                    BlocBuilder<StoryBloc, StoryState>(
+                        builder: (context, state) {
+                      if (state is LoadingStory) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (state is LoadedStory) {
+                        List<Story> story = state.story;
+                        final controller = StoryController();
+                        Map<String, List<StoryItem>> stories =
+                            Map<String, List<StoryItem>>();
+                            List<String> name = [];
+                            List<String> urls = [];
+
+                        for (int i = 0; i < story.length; i++) {
+                          urls.add(story[i].image.toString());
+                          var rewardPartner = stories[story[i].rewardPartnerID];
+                          rewardPartner != null
+                              ? rewardPartner.add(
+                                  story[i].text != null
+                                      ? StoryItem.text(
+                                          title: story[i].text!,
+                                          backgroundColor: Colors.blueGrey)
+                                      : StoryItem.pageImage(
+                                          url: story[i].url.toString(),
+                                          controller: controller,
+                                          caption: story[i].caption,
+                                        ),
+                                )
+                              : rewardPartner = story[i].text != null
+                                  ? [
+                                      StoryItem.text(
+                                          title: story[i].text!,
+                                          backgroundColor: Colors.blueGrey)
+                                    ]
+                                  : [
+                                      StoryItem.pageImage(
+                                        url: story[i].url.toString(),
+                                        controller: controller,
+                                        caption: story[i].caption,
+                                      ),
+                                    ];
+                          stories[story[i].rewardPartnerID.toString()] =
+                              rewardPartner;
+                              //name = stories.keys.toList();
+                               
+                        }
+                        name = stories.keys.toList();
+                        urls = urls.toSet().toList();
+                        
+
+
+                        return Container(
+                            //padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier * 1),
+                            height: SizeConfig.heightMultiplier * 8,
+                            width: SizeConfig.widthMultiplier * 90,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: name.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal:
+                                            SizeConfig.widthMultiplier * 1),
+                                    height: SizeConfig.heightMultiplier * 10,
+                                    child: GestureDetector(
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        // backgroundImage: NetworkImage(
+                                        //     "https://images.unsplash.com/photo-1581803118522-7b72a50f7e9f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bWFufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
+                                        backgroundImage: NetworkImage(urls[index]),
+                                      ),
+                                      onTap: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  StoryPageView(stories[name[index]]!.toList()))),
+                                    ),
+                                  );
+                                }));
+                      } else if (state is ErrorStory) {
+                        return Text("Error Fetching Story");
+                      } else {
+                        return Container(
+                          child: Text("Unable to trigger event !"),
+                        );
+                      }
+                    }),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(

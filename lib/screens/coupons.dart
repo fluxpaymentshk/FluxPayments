@@ -458,7 +458,7 @@ class _CouponsState extends State<Coupons> {
                                           ..scale(scale, scale),
                                         alignment: Alignment.bottomCenter,
                                         child: Align(
-                                          heightFactor: 0.33,
+                                          heightFactor: 0.15,
                                           alignment: Alignment.topCenter,
                                           child: card(
                                             colors[index%5],

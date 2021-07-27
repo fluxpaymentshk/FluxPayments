@@ -9,14 +9,18 @@ class Story extends Model {
   String? text;
   String? url;
   String? caption;
+  String? rewardPartnerID;
+  String? image;
 
   Story({required this.text,required this.url,required this.caption});
 
   Story.fromJson(Map<String, dynamic> json)
       : text = json["text"],
         url = json["url"],
-        caption = json["caption"];
-        
+        caption = json["caption"],
+        rewardPartnerID = json["rewardPartnerID"],
+        image = json["image"];
+
   @override
   getInstanceType() => classType;
 
@@ -30,6 +34,8 @@ class Story extends Model {
         'text': text,
         'url': url,
         'caption': caption,
+        'rewardPartnerID' : rewardPartnerID,
+        'image' : image,
       };
 }
 
