@@ -4,10 +4,13 @@ import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
+import 'package:flux_payments/models/Reward.dart';
 import 'package:flux_payments/models/RewardPartner.dart';
+import 'package:flux_payments/models/Story.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/banner.dart';
 import 'package:flux_payments/models/curatedList.dart';
+import 'package:flux_payments/models/myCoupons.dart';
 
 class DatabaseLambdaService {
   Map<String, dynamic> result = {};
@@ -17,8 +20,8 @@ class DatabaseLambdaService {
         region: 'ap-southeast-1',
         cognitoRegion: 'ap-southeast-1',
         clientConfiguration: <String, dynamic>{
-          'ConnectionTimeout': 60000,
-          'SocketTimeout': 60000
+          'ConnectionTimeout': 100000,
+          'SocketTimeout': 100000
         });
   }
 
@@ -623,5 +626,243 @@ class DatabaseLambdaService {
     } catch (e) {
       return throw Exception(e);
     }
+  }
+
+  Future<List<Reward>> getUserFavoritesList({@required String? userID}) async {
+    result = {};
+    List<User> userDetails = [];
+    List<Reward> fav = [];
+    try {
+      result = await lambda
+          .callLambda('aurora-serverless-function-favorites', <String, dynamic>{
+        "userID": userID,
+      });
+      print(
+          "---------------------------------------------------------------------------------$result");
+
+      List<String> schemaName = [];
+      result["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      result["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      res.forEach((ele) {
+        //print(ele);
+        //print('///////');
+        fav.add(
+          // new User(
+          //   firstName: ele["firstName"],
+          //   uniqueID: userID!,
+          //   refreeID: ele["refreeID"],
+          //   email:ele["email"],
+          //   mobileNumber: ele["mobileNumber"],
+          //   referralID: ele["referralID"],
+          //   dateOfBirth: ele["dateOfBirth"],
+
+          //   )
+
+          Reward.fromJson(ele),
+        );
+      });
+    } catch (e) {
+      print(e);
+    }
+    print(fav[0].name);
+    //return result;
+    return fav;
+  }
+
+  Future<List<myCoupons>> getUserCouponsList({@required String? userID}) async {
+    result = {};
+    List<User> userDetails = [];
+    List<myCoupons> coupons = [];
+    try {
+      result = await lambda
+          .callLambda('aurora-serverless-function-myCoupons', <String, dynamic>{
+        "userID": userID,
+      });
+      print(
+          "---------------------------------------------------------------------------------$result");
+
+      List<String> schemaName = [];
+      result["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      result["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      res.forEach((ele) {
+        //print(ele);
+        //print('///////');
+        coupons.add(
+          // new User(
+          //   firstName: ele["firstName"],
+          //   uniqueID: userID!,
+          //   refreeID: ele["refreeID"],
+          //   email:ele["email"],
+          //   mobileNumber: ele["mobileNumber"],
+          //   referralID: ele["referralID"],
+          //   dateOfBirth: ele["dateOfBirth"],
+
+          //   )
+
+          myCoupons.fromJson(ele),
+        );
+      });
+    } catch (e) {
+      print(e);
+    }
+    print(coupons);
+    //return result;
+    return coupons;
+  }
+
+  // Future<User> getUserDetails({@required String? userID}) async {
+  //   result = {};
+  //   List<User> userDetails = [];
+  //   try {
+  //     result = await lambda.callLambda(
+  //         'aurora-serverless-function-userDetails', <String, dynamic>{
+  //       "userID": userID,
+  //     });
+  //     // print(
+  //     //     "---------------------------------------------------------------------------------$result");
+
+  //     List<String> schemaName = [];
+  //     result["columnMetadata"].forEach((e) {
+  //       schemaName.add(e["name"]);
+  //     });
+
+  //     List<dynamic> res = [];
+
+  //     result["records"].forEach((e) {
+  //       int i = 0;
+  //       Map<String, dynamic> m = {};
+  //       m = {};
+  //       e.forEach((el) {
+  //         el.forEach((key, value) {
+  //           if (key == "isNull" && value == true)
+  //             m[schemaName[i]] = null;
+  //           else
+  //             m[schemaName[i]] = value;
+  //           i++;
+  //         });
+  //       });
+  //       res.add(m);
+  //     });
+  //     res.forEach((ele) {
+  //       //print(ele);
+  //       //print('///////');
+  //       userDetails.add(
+  //         // new User(
+  //         //   firstName: ele["firstName"],
+  //         //   uniqueID: userID!,
+  //         //   refreeID: ele["refreeID"],
+  //         //   email:ele["email"],
+  //         //   mobileNumber: ele["mobileNumber"],
+  //         //   referralID: ele["referralID"],
+  //         //   dateOfBirth: ele["dateOfBirth"],
+
+  //         //   )
+
+  //         User.fromJson(ele),
+  //       );
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   //print(userDetails[0].toString());
+  //   return userDetails[0];
+  // }
+
+  Future<List<Story>> getStory() async {
+    result = {};
+    List<Story> story = [];
+    try {
+      result = await lambda
+          .callLambda('aurora-serverless-function-story', <String, dynamic>{
+        "userID": "dummy",
+      });
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      print(result);
+      print(
+          "---------------------------------------------------------------------------------$result");
+
+      List<String> schemaName = [];
+      result["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      result["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      res.forEach((ele) {
+        //print(ele);
+        //print('///////');
+        story.add(
+          // new User(
+          //   firstName: ele["firstName"],
+          //   uniqueID: userID!,
+          //   refreeID: ele["refreeID"],
+          //   email:ele["email"],
+          //   mobileNumber: ele["mobileNumber"],
+          //   referralID: ele["referralID"],
+          //   dateOfBirth: ele["dateOfBirth"],
+
+          //   )
+
+          Story.fromJson(ele),
+        );
+      });
+    } catch (e) {
+      print(e);
+    }
+    print(story[0].toString());
+    return story;
   }
 }

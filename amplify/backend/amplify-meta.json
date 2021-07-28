@@ -1,4 +1,83 @@
 {
+<<<<<<< HEAD
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fluxpayments-staging-122415-authRole",
+      "UnauthRoleArn": "arn:aws:iam::277253331545:role/amplify-fluxpayments-staging-122415-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::277253331545:role/amplify-fluxpayments-staging-122415-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-fluxpayments-staging-122415-deployment",
+      "UnauthRoleName": "amplify-fluxpayments-staging-122415-unauthRole",
+      "StackName": "amplify-fluxpayments-staging-122415",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:277253331545:stack/amplify-fluxpayments-staging-122415/99a0dfb0-cdd4-11eb-baf7-0a0c63784dde",
+      "AmplifyAppId": "d3f9ec1eu50d4x",
+      "AuthTriggerTemplateURL": ""
+    }
+  },
+  "auth": {
+    "fluxpayments4f50e62b": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+<<<<<<< HEAD
+      "lastPushTimeStamp": "2021-06-22T09:54:25.316Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/auth/fluxpayments4f50e62b-cloudformation-template.yml",
+        "logicalId": "authfluxpayments4f50e62b"
+      },
+=======
+>>>>>>> db339270d1ccdaff7b5327c75e762117ffc81f9e
+      "output": {
+        "UserPoolId": "ap-southeast-1_8BuaAodDq",
+        "AppClientIDWeb": "1o0urbm0369ohq3e8viqts4oik",
+        "AppClientID": "26jbttrbggtphbmh9pttfh0aa5",
+        "HostedUIDomain": "fluxpayments-staging",
+        "IdentityPoolId": "ap-southeast-1:5ba0e7c3-a382-4455-9fb7-44b0631c26c0",
+        "UserPoolArn": "arn:aws:cognito-idp:ap-southeast-1:277253331545:userpool/ap-southeast-1_8BuaAodDq",
+        "IdentityPoolName": "fluxpayments4f50e62b_identitypool_4f50e62b__staging",
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"fluxapp://\"],\"LogoutURLs\":[\"fluxapp://\"]}",
+        "UserPoolName": "fluxpayments4f50e62b_userpool_4f50e62b"
+      },
+      "lastPushTimeStamp": "2021-06-28T09:51:40.718Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/auth/fluxpayments4f50e62b-cloudformation-template.yml",
+        "logicalId": "authfluxpayments4f50e62b"
+      }
+    }
+  },
+  "api": {
+    "FluxPayments": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "yowfehfnfzcbznklv4ranuqm4a",
+        "GraphQLAPIEndpointOutput": "https://d567q7lppfag7hcdafokav5pge.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-qkpqd5n4hjdwtfhsnysxngvloq"
+      },
+      "lastPushTimeStamp": "2021-06-28T09:51:40.725Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiFluxPayments"
+      },
+      "lastPushDirHash": "XzY+LJjKqWAykBKpIoZ3dH++V/M="
+    }
+  }
+=======
 	"providers": {
 		"awscloudformation": {
 			"AuthRoleName": "amplify-fluxpayments-staging-122415-authRole",
@@ -131,4 +210,9 @@
 			"lastPushDirHash": "zhXVuOtA2fRS2+PfTRRBObIiG/4="
 		}
 	}
+<<<<<<< HEAD
+>>>>>>> 4e0f6a03ddb241e33a142d13ba107fcf9fe19b87
+=======
+>>>>>>> b60c8188dba7a268422e86f357a5b825e2253cbb
+>>>>>>> 398c5099e71c42d5397ac53a9726fad4f3a39643
 }

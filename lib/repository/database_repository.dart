@@ -1,12 +1,24 @@
 
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
+import 'package:flux_payments/models/Reward.dart';
+import 'package:flux_payments/models/Story.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/banner.dart';
 import 'package:flux_payments/models/curatedList.dart';
+import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 
 abstract class databaseBaseRepository {
+  Future<void> getFavorites(
+      {required int? page, required List<Reward> favorites, required String? userID});
+
+
+  Future <List<myCoupons>> getUserCoupons({required int? page, required List<myCoupons> coupons, required String? userID});
+
+  Future <List<Story>> getStory({required int? page, required List<Story> story});
+
+
   Future<void> getCuratedList(
       {required int? page, required List<curatedList> curatedListData});
       Future<List<Map<String,dynamic>>>getRecentPayments({required String UserID});
@@ -43,6 +55,24 @@ abstract class databaseBaseRepository {
 
 class DatabaseRepository extends databaseBaseRepository {
   DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
+
+  @override
+  Future <List<Reward>> getFavorites({required int? page, required List<Reward> favorites, required String? userID}) async {
+    return await _databaseLambdaService.getUserFavoritesList(userID: userID);
+  }
+
+
+  @override
+  Future <List<myCoupons>> getUserCoupons({required int? page, required List<myCoupons> coupons, required String? userID}) async {
+    return await _databaseLambdaService.getUserCouponsList(userID: userID);
+  }
+
+  @override
+  Future <List<Story>> getStory({required int? page, required List<Story> story}) async {
+    return await _databaseLambdaService.getStory();
+  }
+
+
   @override
   Future<void> getCuratedList(
       {required int? page, required List<curatedList> curatedListData}) async {
