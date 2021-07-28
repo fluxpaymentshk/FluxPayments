@@ -12,8 +12,8 @@ import 'package:flux_payments/models/banner.dart';
 import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/models/myCoupons.dart';
 
-class DatabaseLambdaService{
-Map<String, dynamic> result = {};
+class DatabaseLambdaService {
+  Map<String, dynamic> result = {};
   late AWSLambda lambda;
   DatabaseLambdaService() {
     lambda = AWSLambda('ap-southeast-1:5ba0e7c3-a382-4455-9fb7-44b0631c26c0',
@@ -628,13 +628,13 @@ Map<String, dynamic> result = {};
     }
   }
 
-  Future <List<Reward>> getUserFavoritesList({@required String? userID}) async {
+  Future<List<Reward>> getUserFavoritesList({@required String? userID}) async {
     result = {};
     List<User> userDetails = [];
     List<Reward> fav = [];
     try {
-      result = await lambda.callLambda(
-          'aurora-serverless-function-favorites', <String, dynamic>{
+      result = await lambda
+          .callLambda('aurora-serverless-function-favorites', <String, dynamic>{
         "userID": userID,
       });
       print(
@@ -688,14 +688,13 @@ Map<String, dynamic> result = {};
     return fav;
   }
 
-
-  Future <List<myCoupons>> getUserCouponsList({@required String? userID}) async {
+  Future<List<myCoupons>> getUserCouponsList({@required String? userID}) async {
     result = {};
     List<User> userDetails = [];
     List<myCoupons> coupons = [];
     try {
-      result = await lambda.callLambda(
-          'aurora-serverless-function-myCoupons', <String, dynamic>{
+      result = await lambda
+          .callLambda('aurora-serverless-function-myCoupons', <String, dynamic>{
         "userID": userID,
       });
       print(
@@ -811,12 +810,12 @@ Map<String, dynamic> result = {};
     result = {};
     List<Story> story = [];
     try {
-      result = await lambda.callLambda(
-          'aurora-serverless-function-story', <String, dynamic>{
+      result = await lambda
+          .callLambda('aurora-serverless-function-story', <String, dynamic>{
         "userID": "dummy",
       });
-          print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-          print(result);
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      print(result);
       print(
           "---------------------------------------------------------------------------------$result");
 
@@ -866,5 +865,4 @@ Map<String, dynamic> result = {};
     print(story[0].toString());
     return story;
   }
-
-  }
+}

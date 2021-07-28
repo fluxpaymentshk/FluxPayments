@@ -604,6 +604,10 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.all(8.0),
                             child: LineChartGraph(
                               mp: state.graphData,
+                              height: SizeConfig.heightMultiplier * 40,
+                              width: SizeConfig.widthMultiplier * 90,
+                              user:user,
+                              popup:true,
                               //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
                             ),
                           );
