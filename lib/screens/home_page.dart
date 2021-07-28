@@ -1,5 +1,10 @@
 import 'dart:developer';
-
+import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
+import 'package:flux_payments/bloc/story_bloc/story_event.dart';
+import 'package:flux_payments/bloc/story_bloc/story_state.dart';
+import 'package:flux_payments/models/Story.dart';
+import 'package:flux_payments/screens/storypage_view.dart';
+import 'package:story_view/story_view.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +48,7 @@ import 'package:flux_payments/widgets/pending_payment_tile.dart';
 import 'package:flux_payments/widgets/recent_payment_tile.dart';
 import 'package:flux_payments/widgets/reward_partner_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/database_lambda.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -77,17 +83,20 @@ class _HomePageState extends State<HomePage> {
     List<curatedList> curatedListData = [];
     List<ExternalAdvertisers> ExadvertiseList = [];
     List<InternalAdvertisers> InadvertiseList = [];
+    List<Story> stories = [];
 
     var userBloc = BlocProvider.of<UserBloc>(context);
     var curatedListBloc = BlocProvider.of<CuratedListBloc>(context);
     var advertiserBloc = BlocProvider.of<AdvertiserBloc>(context);
     var bannerBloc = BlocProvider.of<BannerBloc>(context);
     var graphBloc = BlocProvider.of<GraphBloc>(context);
+    var storyBloc = BlocProvider.of<StoryBloc>(context);
 
     var pendingServiceBloc = BlocProvider.of<PendingServiceBloc>(context);
     var recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
 
     final DatabaseRepository databaseRepo = DatabaseRepository();
+    storyBloc.add(GetStory(page: 0, story: stories));
     bannerBloc.add(GetBannerEvent());
     userBloc.add(GetUserDetails(userID: 'flux-vid1'));
     graphBloc.add(GetGraphEvent(UserID: 'Flux-Monik'));
@@ -156,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      height: SizeConfig.heightMultiplier * 2.4,
+                      height: SizeConfig.heightMultiplier * 8,
                     ),
                     Container(
                       height: SizeConfig.heightMultiplier * 12,
@@ -193,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Spacer(),
                           Padding(
-                            padding:EdgeInsets.all(SizeConfig.heightMultiplier*2.0),
+                            padding: const EdgeInsets.all(9.0),
                             child: Container(
                               // height: SizeConfig.heightMultiplier*12,
                               // width: SizeConfig.widthMultiplier*100,
@@ -226,8 +235,9 @@ class _HomePageState extends State<HomePage> {
                       }
                     }),
 
+                    
                     SizedBox(
-                      height: SizeConfig.heightMultiplier * 2,
+                      height: SizeConfig.heightMultiplier * 1.5,
                     ),
 
                     BlocBuilder<PendingServiceBloc, PendingServiceState>(
@@ -251,8 +261,115 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                     ),
+
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 1,
+                    ),
+
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Stories",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                    ),
+
+                    BlocBuilder<StoryBloc, StoryState>(
+                        builder: (context, state) {
+                      if (state is LoadingStory) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (state is LoadedStory) {
+                        List<Story> story = state.story;
+                        final controller = StoryController();
+                        Map<String, List<StoryItem>> stories =
+                            Map<String, List<StoryItem>>();
+                            List<String> name = [];
+                            List<String> urls = [];
+
+                        for (int i = 0; i < story.length; i++) {
+                          urls.add(story[i].image.toString());
+                          var rewardPartner = stories[story[i].rewardPartnerID];
+                          rewardPartner != null
+                              ? rewardPartner.add(
+                                  story[i].text != null
+                                      ? StoryItem.text(
+                                          title: story[i].text!,
+                                          backgroundColor: Colors.blueGrey)
+                                      : StoryItem.pageImage(
+                                          url: story[i].url.toString(),
+                                          controller: controller,
+                                          caption: story[i].caption,
+                                        ),
+                                )
+                              : rewardPartner = story[i].text != null
+                                  ? [
+                                      StoryItem.text(
+                                          title: story[i].text!,
+                                          backgroundColor: Colors.blueGrey)
+                                    ]
+                                  : [
+                                      StoryItem.pageImage(
+                                        url: story[i].url.toString(),
+                                        controller: controller,
+                                        caption: story[i].caption,
+                                      ),
+                                    ];
+                          stories[story[i].rewardPartnerID.toString()] =
+                              rewardPartner;
+                              //name = stories.keys.toList();
+                               
+                        }
+                        name = stories.keys.toList();
+                        urls = urls.toSet().toList();
+                        
+
+
+                        return Container(
+                            //padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier * 1),
+                            height: SizeConfig.heightMultiplier * 8,
+                            width: SizeConfig.widthMultiplier * 90,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: name.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal:
+                                            SizeConfig.widthMultiplier * 1),
+                                    height: SizeConfig.heightMultiplier * 10,
+                                    child: GestureDetector(
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        // backgroundImage: NetworkImage(
+                                        //     "https://images.unsplash.com/photo-1581803118522-7b72a50f7e9f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bWFufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
+                                        backgroundImage: NetworkImage(urls[index]),
+                                      ),
+                                      onTap: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  StoryPageView(stories[name[index]]!.toList()))),
+                                    ),
+                                  );
+                                }));
+                      } else if (state is ErrorStory) {
+                        return Text("Error Fetching Story");
+                      } else {
+                        return Container(
+                          child: Text("Unable to trigger event !"),
+                        );
+                      }
+                    }),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -484,14 +601,9 @@ class _HomePageState extends State<HomePage> {
                       builder: (context, state) {
                         if (state is LoadGraphState) {
                           return Padding(
-                            padding: EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: LineChartGraph(
                               mp: state.graphData,
-                              height: SizeConfig.heightMultiplier * 40,
-                              width: SizeConfig.widthMultiplier * 90,
-                              user:user,
-                              popup:true,
-
                               //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
                             ),
                           );

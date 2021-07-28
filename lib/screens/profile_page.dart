@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/bill_bloc/bill_bloc.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/user_model.dart';
+import 'package:flux_payments/screens/coupons.dart';
+import 'package:flux_payments/screens/map.dart';
 import 'package:flux_payments/screens/pay_bills.dart';
 import 'package:flux_payments/services/user_details_services.dart';
 import 'package:flux_payments/services/database_lambda.dart';
@@ -24,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
     // UserDetailsServices().getUserCredentials(user);
   }
 
-  User user = User(firstName: '', uniqueID: '',refreeID: "ll");
+  User user = User(firstName: '', uniqueID: '', refreeID: "ll");
   DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
 
   @override
@@ -44,6 +46,15 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
+            heroTag: "btn1",
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MapScreen()));
+            },
+            child: Icon(Icons.map_outlined),
+          ),
+          SizedBox(height: 10,),
+          FloatingActionButton(
+            heroTag: "btn2",
             onPressed: () async {
              // _databaseLambdaService.CouponToTransaction();
               // Map<String, dynamic> c = await _databaseLambdaService.fetchCreditCardInfo(userID: "fluxsam1");
@@ -58,10 +69,12 @@ class _ProfilePageState extends State<ProfilePage> {
               // d.forEach((key, value) {
               //   if (key == "records") print(key + "--->" + value.toString());
               // });
-              Map<String, dynamic> d = await _databaseLambdaService.fetchUserWalletInfo(userID: "fluxsam1");
-              d.forEach((key, value) {
-                if (key == "records") print(key + "--->" + value.toString());
-              });
+              // Map<String, dynamic> d = await _databaseLambdaService.fetchUserWalletInfo(userID: "fluxsam1");
+              // d.forEach((key, value) {
+              //   if (key == "records") print(key + "--->" + value.toString());
+              // });
+              var data = await _databaseLambdaService.getUserFavoritesList(userID: 'fluxsam1');
+              print(data);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text("Fetched Records"),
@@ -73,6 +86,15 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SizedBox(height: 10),
           FloatingActionButton(
+            heroTag: "btn3",
+            onPressed: () async {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Coupons()));
+            },
+            child: Icon(Icons.verified_user),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            heroTag: "btn4",
             onPressed: () async {
               await Amplify.Auth.signOut();
               Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
