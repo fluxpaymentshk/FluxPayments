@@ -227,6 +227,7 @@ class _MyAppState extends State<MyApp> {
               create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
               child: HomePage(
                   userRepository: _userConfigRepository,
+                  databaseRepository:_databaseRepository,
                   email: userDetails["email"] ?? ""),
             ),
       },
