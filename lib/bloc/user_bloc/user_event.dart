@@ -16,3 +16,8 @@ class UserResetPasswordEvent extends UserEvent {
   const UserResetPasswordEvent(
       {@required this.email, this.code = "", this.newPassword = ""});
 }
+
+class GetUserDetails extends UserEvent {
+  final String? userID;
+  const GetUserDetails({@required this.userID});
+}

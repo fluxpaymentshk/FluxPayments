@@ -34,6 +34,9 @@ import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+// import 'package:flux_payments/screens/change_password.dart';
+// import 'package:flux_payments/screens/login_page.dart';
+// import 'package:flux_payments/screens/password_reset.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/banner_tile.dart';
@@ -43,12 +46,12 @@ import 'package:flux_payments/widgets/recent_payment_tile.dart';
 import 'package:flux_payments/widgets/reward_partner_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomePage extends StatefulWidget {
+class BillPayment extends StatefulWidget {
   static const routeName = '/home';
   final String email;
   final UserConfigRepository? userRepository;
   final DatabaseRepository? databaseRepository;
-  const HomePage(
+  const BillPayment(
       {Key? key,
       @required this.userRepository,
       @required this.databaseRepository,
@@ -56,10 +59,10 @@ class HomePage extends StatefulWidget {
       : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _BillPaymentState createState() => _BillPaymentState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BillPaymentState extends State<BillPayment> {
   //UserConfigRepository _userConfigRepository = new UserConfigRepository();
 
   DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
@@ -68,8 +71,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     //  SizeConfig().init(constraints);
     super.initState();
-    log("${SizeConfig.heightMultiplier}");
-    log("${SizeConfig.widthMultiplier}");
   }
 
   
@@ -85,43 +86,8 @@ class _HomePageState extends State<HomePage> {
     var bannerBloc = BlocProvider.of<BannerBloc>(context);
     var graphBloc = BlocProvider.of<GraphBloc>(context);
 
-<<<<<<< HEAD
-    log("-----${SizeConfig.heightMultiplier}");
-    log("---${SizeConfig.widthMultiplier}");
-
-    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-      SizeConfig().init(constraints);
-      return Flex(direction: Axis.horizontal, children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 8,
-                ),
-                Container(
-                  height: SizeConfig.heightMultiplier * 12,
-                  width: SizeConfig.widthMultiplier * 100,
-                  child: Center(
-                    //  child: Image.asset("assets/images/logo.png"),
-                    child: Text(
-                      "Flux.",
-                      style: TextStyle(
-                        foreground: Paint()
-                          ..shader = LinearGradient(
-                            colors: <Color>[AppTheme.main, Color(0xffA867EE)],
-                          ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                        fontSize: 60,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ),
-                ),
-=======
     var pendingServiceBloc = BlocProvider.of<PendingServiceBloc>(context);
     var recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
->>>>>>> b96a617a7f5fdc39bdc31981f54b9a48b2e77b50
 
     final DatabaseRepository databaseRepo = DatabaseRepository();
     bannerBloc.add(GetBannerEvent());
@@ -285,149 +251,148 @@ class _HomePageState extends State<HomePage> {
                           }
                         },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "For You",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(10.0),
+                      //   child: Align(
+                      //       alignment: Alignment.centerLeft,
+                      //       child: Text(
+                      //         "For You",
+                      //         style: TextStyle(
+                      //           fontSize: 20,
+                      //           fontWeight: FontWeight.w500,
+                      //         ),
+                      //       )),
+                      // ),
 
-                      //Horizontal list view builder.
+                      // //Horizontal list view builder.
 
-                      //  Container(
+                      // //  Container(
 
-                      //  ),
+                      // //  ),
 
-                      //////////////////////
+                      // //////////////////////
 
-                      BlocBuilder<CuratedListBloc, CuratedListState>(
-                        builder: (context, state) {
-                          if (state is LoadingCuratedList)
-                            return CircularProgressIndicator(
-                              strokeWidth: 5.0,
-                              color: AppTheme.main,
-                            );
-                          else if (state is LoadedCuratedList) {
-                            //currently done for only one page!!
-                            return Container(
-                              height: SizeConfig.heightMultiplier * 22,
+                      // BlocBuilder<CuratedListBloc, CuratedListState>(
+                      //   builder: (context, state) {
+                      //     if (state is LoadingCuratedList)
+                      //       return CircularProgressIndicator(
+                      //         strokeWidth: 5.0,
+                      //         color: AppTheme.main,
+                      //       );
+                      //     else if (state is LoadedCuratedList) {
+                      //       //currently done for only one page!!
+                      //       return Container(
+                      //         height: SizeConfig.heightMultiplier * 22,
 
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  itemCount: curatedListData.length,
-                                  itemBuilder: (context, int index) {
-                                    return rewardPartnerTile(
-                                        background:
-                                            curatedListData[index].background,
-                                        imageurl: curatedListData[index].icon,
-                                        desc: curatedListData[index].tagline,
-                                        i: index);
-                                  }),
+                      //         child: ListView.builder(
+                      //             scrollDirection: Axis.horizontal,
+                      //             physics: AlwaysScrollableScrollPhysics(),
+                      //             itemCount: curatedListData.length,
+                      //             itemBuilder: (context, int index) {
+                      //               return rewardPartnerTile(
+                      //                   background:
+                      //                       curatedListData[index].background,
+                      //                   imageurl: curatedListData[index].icon,
+                      //                   desc: curatedListData[index].tagline,
+                      //                   i: index);
+                      //             }),
 
-                              //   ),
-                            );
-                          } else {
-                            return Container(
-                                child: Text(
-                                    (state as ErrorCuratedist).message ?? ''));
-                          }
-                        },
-                      ),
+                      //         //   ),
+                      //       );
+                      //     } else {
+                      //       return Container(
+                      //           child: Text(
+                      //               (state as ErrorCuratedist).message ?? ''));
+                      //     }
+                      //   },
+                      // ),
 
-                      //  rewardPartnerTile(),
+                      // //  rewardPartnerTile(),
 
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "My Points",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(10.0),
+                      //   child: Align(
+                      //       alignment: Alignment.centerLeft,
+                      //       child: Text(
+                      //         "My Points",
+                      //         style: TextStyle(
+                      //           fontSize: 20,
+                      //           fontWeight: FontWeight.w500,
+                      //         ),
+                      //       )),
+                      // ),
 
-
-                      Container(
-                        height: SizeConfig.heightMultiplier * 32,
-                        width: SizeConfig.widthMultiplier * 94,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(SizeConfig.heightMultiplier * 2)),
-                          color: AppTheme.offWhite,
-                        ),
-                        child: Column(
-                          children: [
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  height: SizeConfig.heightMultiplier * 15,
-                                  width: SizeConfig.widthMultiplier * 65,
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          child: Image.asset(
-                                              "assets/images/coin.png")),
-                                      SizedBox(
-                                        width: SizeConfig.widthMultiplier * 2,
-                                      ),
-                                      Container(
-                                          child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height:
-                                                SizeConfig.heightMultiplier *
-                                                    1.5,
-                                          ),
-                                          Text(
-                                            state.user.fluxPoints.toString(),
-                                            style: TextStyle(
-                                              fontSize: 35,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Flux Points',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20.0, right: 8.0, bottom: 8.0),
-                              child: Center(
-                                child: Text(
-                                  'Congratulations! You are among top 5 % of highest point users.!',
-                                  style: TextStyle(
-                                    color: AppTheme.main,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Container(
+                      //   height: SizeConfig.heightMultiplier * 32,
+                      //   width: SizeConfig.widthMultiplier * 94,
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.all(
+                      //         Radius.circular(SizeConfig.heightMultiplier * 2)),
+                      //     color: AppTheme.offWhite,
+                      //   ),
+                      //   child: Column(
+                      //     children: [
+                      //       Center(
+                      //         child: Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Container(
+                      //             height: SizeConfig.heightMultiplier * 15,
+                      //             width: SizeConfig.widthMultiplier * 65,
+                      //             child: Row(
+                      //               children: [
+                      //                 Container(
+                      //                     child: Image.asset(
+                      //                         "assets/images/coin.png")),
+                      //                 SizedBox(
+                      //                   width: SizeConfig.widthMultiplier * 2,
+                      //                 ),
+                      //                 Container(
+                      //                     child: Column(
+                      //                   crossAxisAlignment:
+                      //                       CrossAxisAlignment.start,
+                      //                   children: [
+                      //                     SizedBox(
+                      //                       height:
+                      //                           SizeConfig.heightMultiplier *
+                      //                               1.5,
+                      //                     ),
+                      //                     Text(
+                      //                       state.user.fluxPoints.toString(),
+                      //                       style: TextStyle(
+                      //                         fontSize: 35,
+                      //                         fontWeight: FontWeight.bold,
+                      //                       ),
+                      //                     ),
+                      //                     Text(
+                      //                       'Flux Points',
+                      //                       style: TextStyle(
+                      //                         fontSize: 20,
+                      //                         fontWeight: FontWeight.w500,
+                      //                       ),
+                      //                     ),
+                      //                   ],
+                      //                 )),
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       Padding(
+                      //         padding: const EdgeInsets.only(
+                      //             left: 20.0, right: 8.0, bottom: 8.0),
+                      //         child: Center(
+                      //           child: Text(
+                      //             'Congratulations! You are among top 5 % of highest point users.!',
+                      //             style: TextStyle(
+                      //               color: AppTheme.main,
+                      //               fontSize: 12,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
 
                       Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -542,53 +507,53 @@ class _HomePageState extends State<HomePage> {
                       ),
 
                       //////////////////////////////###########################
-                      // Padding(
-                      //   padding: const EdgeInsets.all(10.0),
-                      //   child: Align(
-                      //       alignment: Alignment.centerLeft,
-                      //       child: Text(
-                      //         "My Recent Payment",
-                      //         style: TextStyle(
-                      //           fontSize: 20,
-                      //           fontWeight: FontWeight.w500,
-                      //         ),
-                      //       )),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "My Recent Payment",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )),
+                      ),
 
-                      // BlocBuilder<RecentPaymentBloc, RecentPaymentState>(
-                      //   builder: (context, state) {
-                      //     if (state is LoadingRecentPaymentState)
-                      //       return CircularProgressIndicator();
-                      //     else if (state is LoadRecentPaymentState) {
-                      //       return Container(
-                      //         height: SizeConfig.heightMultiplier * 9,
+                      BlocBuilder<RecentPaymentBloc, RecentPaymentState>(
+                        builder: (context, state) {
+                          if (state is LoadingRecentPaymentState)
+                            return CircularProgressIndicator();
+                          else if (state is LoadRecentPaymentState) {
+                            return Container(
+                              height: SizeConfig.heightMultiplier * 9,
 
-                      //         child: ListView.builder(
-                      //             // scrollDirection: Axis.vertical,
-                      //             physics: const ClampingScrollPhysics(),
-                      //             itemCount: state.RecentPaymentData.length,
-                      //             itemBuilder: (context, int index) {
-                      //               return recentPaymentTile(
-                      //                   name: state.RecentPaymentData[index]
-                      //                       ['name'],
-                      //                   paidOn: state.RecentPaymentData[index]
-                      //                       ['paidOn'],
-                      //                   imageurl: state.RecentPaymentData[index]
-                      //                       ['imageurl'],
-                      //                   amount: state.RecentPaymentData[index]
-                      //                       ['amount']);
-                      //             }),
+                              child: ListView.builder(
+                                  // scrollDirection: Axis.vertical,
+                                  physics: const ClampingScrollPhysics(),
+                                  itemCount: state.RecentPaymentData.length,
+                                  itemBuilder: (context, int index) {
+                                    return recentPaymentTile(
+                                        name: state.RecentPaymentData[index]
+                                            ['name'],
+                                        paidOn: state.RecentPaymentData[index]
+                                            ['paidOn'],
+                                        imageurl: state.RecentPaymentData[index]
+                                            ['imageurl'],
+                                        amount: state.RecentPaymentData[index]
+                                            ['amount']);
+                                  }),
 
-                      //         //   ),
-                      //       );
-                      //     } else if (state is ErrorRecentPaymentState)
-                      //       return Container(child: Text(state.message));
-                      //     else
-                      //       return Container(
-                      //           child: Text(
-                      //               'get recent payment details Event not Fired!'));
-                      //   },
-                      // ),
+                              //   ),
+                            );
+                          } else if (state is ErrorRecentPaymentState)
+                            return Container(child: Text(state.message));
+                          else
+                            return Container(
+                                child: Text(
+                                    'get recent payment details Event not Fired!'));
+                        },
+                      ),
                     
                       //#############################################
                     ],

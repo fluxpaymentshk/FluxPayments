@@ -2,6 +2,12 @@ import 'dart:developer';
 
 import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flux_payments/models/ExternalAdvertisers.dart';
+import 'package:flux_payments/models/InternalAdvertisers.dart';
+import 'package:flux_payments/models/RewardPartner.dart';
+import 'package:flux_payments/models/User.dart';
+import 'package:flux_payments/models/banner.dart';
+import 'package:flux_payments/models/curatedList.dart';
 
 class DatabaseLambdaService {
   Map<String, dynamic> result = {};
@@ -16,6 +22,118 @@ class DatabaseLambdaService {
         });
   }
 
+  Future<void> getCuratedList(
+      {@required int? page, required List<curatedList> curatedListData}) async {
+    result = {};
+    try {
+      List<String> schemaName = [];
+
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-function-curatedList',
+          <String, dynamic>{"page": page ?? 0});
+      result = re;
+
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      //  Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      // print(
+      //     "---------------------------------------------------------------------------------${res}");
+
+      res.forEach((ele) {
+        curatedListData.add(new curatedList(
+            background: ele["background"],
+            categoryID: ele["categoryID"],
+            icon: ele["icon"],
+            name: ele["icon"],
+            tagline: ele["tagline"]));
+      });
+      // return curatedListData;
+      //print("@@@@@@@@@@@@@@@@@@@@@@@@@            ");
+      //print(curatedListData[0].background);
+    } catch (e) {
+      print(e);
+      //   return [];
+    }
+  }
+
+  Future<User> getUserDetails({@required String? userID}) async {
+    result = {};
+    List<User> userDetails = [];
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-userDetails', <String, dynamic>{
+        "userID": userID,
+      });
+      print(
+          "---------------------------------------------------------------------------------$result");
+
+      List<String> schemaName = [];
+      result["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      result["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      res.forEach((ele) {
+        print(ele);
+        print('///////');
+        userDetails.add(
+          // new User(
+          //   firstName: ele["firstName"],
+          //   uniqueID: userID!,
+          //   refreeID: ele["refreeID"],
+          //   email:ele["email"],
+          //   mobileNumber: ele["mobileNumber"],
+          //   referralID: ele["referralID"],
+          //   dateOfBirth: ele["dateOfBirth"],
+
+          //   )
+
+          User.fromJson(ele),
+        );
+      });
+    } catch (e) {
+      print(e);
+    }
+    print(userDetails[0].toString());
+    return userDetails[0];
+  }
+
+/////////////////////////////////////////////
   Future<Map<String, dynamic>> updateFluxPoints(
       {@required String? userID,
       @required String? appEvent,
@@ -90,7 +208,7 @@ class DatabaseLambdaService {
     return result;
   }
 
-  Future<Map<String, dynamic>> getPaymentHistoryProviderWiseDetails(
+  Future<Map<String, Map<String, double>>> getPaymentHistoryProviderWiseDetails(
       {@required String? userID}) async {
     result = {};
     try {
@@ -132,10 +250,379 @@ class DatabaseLambdaService {
       });
       result = companyWiseData;
       log("$result");
+      print("####################");
+      print(result);
+
+      print("@@@@@@@@@@@@@@@@@@@@@@@@");
+
+      Map<String, Map<String, double>> mp = {};
+      //  Map<String, List<Map<String, double>>> mpnew = {};
+      print(result.keys);
+      result.forEach((key, value) {
+        //  mp.putIfAbsent(key, () => []);
+        if (value.length >= 1 &&
+            (value[0]["paidOn"].contains('2021-09') ||
+                value[0]["paidOn"].contains('2021-08') ||
+                value[0]["paidOn"].contains('2021-08'))) {
+          mp.putIfAbsent(
+              value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3),
+              () => {});
+
+          mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3)]![
+              key] = mp[value[0]["paidOn"]
+                  .substring(0, value[0]["paidOn"].length - 3)]![key]! +
+              value[0]["rewardPoints"];
+        }
+        //  mp[key]?.add({value[0]["paidOn"]: value[0]["rewardPoints"]});
+
+        // if (value.length >= 2)
+        //   mp[key]?.add({value[1]["paidOn"]: value[1]["rewardPoints"]});
+
+        if (value.length >= 2 &&
+            (value[1]["paidOn"].contains('2021-09') ||
+                value[1]["paidOn"].contains('2021-08') ||
+                value[1]["paidOn"].contains('2021-08'))) {
+          mp.putIfAbsent(
+              value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3),
+              () => {});
+
+          mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3)]![
+              key] = mp[value[1]["paidOn"]
+                  .substring(0, value[1]["paidOn"].length - 3)]![key]! +
+              value[1]["rewardPoints"];
+        }
+
+        if (value.length >= 3 &&
+            (value[2]["paidOn"].contains('2021-09') ||
+                value[2]["paidOn"].contains('2021-08') ||
+                value[2]["paidOn"].contains('2021-08'))) {
+          mp.putIfAbsent(
+              value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3),
+              () => {});
+
+          mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3)]![
+              key] = mp[value[2]["paidOn"]
+                  .substring(0, value[2]["paidOn"].length - 3)]![key]! +
+              value[2]["rewardPoints"];
+        }
+
+        // if (value.length >= 3)
+        //   mp[key]?.add({value[2]["paidOn"]: value[2]["rewardPoints"]});
+
+//to process cummulative data for respective month.
+        // value.forEach((el) {});
+      });
+      print('hehehehehehehhehehehehh');
+      print(mp);
+      return mp;
+      // mp.forEach((key, value) {
+      //   mp[key]?.forEach((ele) {
+      //     ele.forEach((key, value) {
+
+      //       if(mpnew[key]!.contains())
+      //     });
+      //   });
+      // });
+      return mp;
     } catch (e) {
       print(e);
+
+      throw new Exception();
     }
-    return result;
+    // return result;
+  }
+
+  Future<void> getExternalAdvertiserList(
+      {required int? page,
+      required List<ExternalAdvertisers> ExternalAdvertisersListData}) async {
+    result = {};
+    try {
+      List<String> schemaName = [];
+
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-externalAdvertisers',
+          <String, dynamic>{"page": page ?? 0});
+      result = re;
+
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      //  Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      print(
+          "---------------------------------------------------------------------------------${res}");
+
+      res.forEach((ele) {
+        ExternalAdvertisersListData.add(
+          //new ExternalAdvertisers(name: ele["name"], productName: ele["productName"],),
+          new ExternalAdvertisers.fromJson(ele),
+        );
+      });
+      // return curatedListData;
+      //print("@@@@@@@@@@@@@@@@@@@@@@@@@            ");
+      //print(curatedListData[0].background);
+    } catch (e) {
+      print(e);
+      //   return [];
+    }
+  }
+
+  Future<void> getInternalAdvertiserList(
+      {required int? page,
+      required List<InternalAdvertisers> internalAdvertisersListData}) async {
+    result = {};
+    try {
+      List<String> schemaName = [];
+
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-internalAdvertisers',
+          <String, dynamic>{"page": page ?? 0});
+      result = re;
+
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      //  Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      // print(
+      //     "---------------------------------------------------------------------------------${res}");
+
+      res.forEach((ele) {
+        internalAdvertisersListData.add(
+          //new ExternalAdvertisers(name: ele["name"], productName: ele["productName"],),
+          new InternalAdvertisers.fromJson(ele),
+        );
+      });
+      // return curatedListData;
+      //print("@@@@@@@@@@@@@@@@@@@@@@@@@            ");
+      //print(curatedListData[0].background);
+    } catch (e) {
+      print(e);
+      //   return [];
+    }
+  }
+
+  Future<Banner> getBannerDetails() async {
+    try {
+      result = {};
+      // try {
+      List<String> schemaName = [];
+      print(
+          '##############                Before        ##########################################################');
+      Map<String, dynamic> re = await lambda
+          .callLambda('aurora-serverless-banner', <String, dynamic>{});
+      print(
+          '##############                after        ##########################################################');
+
+      result = re;
+
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      //  Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      print(
+          '########################################################################');
+      print(
+          "---------------------------------------------------------------------------------${res}");
+
+      List<Banner> bannerList = [];
+      Banner banner = new Banner(
+          Logo: 'Logo',
+          bannerID: 1233.0,
+          buttonDesc: '',
+          dueDate: '',
+          heading: '');
+      res.forEach((ele) {
+        bannerList.add(
+          //new ExternalAdvertisers(name: ele["name"], productName: ele["productName"],),
+          banner = Banner.fromJson(ele),
+        );
+      });
+      //return bannerList[0];
+      return banner;
+      // return curatedListData;
+      //print("@@@@@@@@@@@@@@@@@@@@@@@@@            ");
+      //print(curatedListData[0].background);
+    } catch (e) {
+      print(e);
+
+      throw new Exception();
+      // return Banner(
+      //     Logo: null,
+      //     bannerID: null,
+      //     buttonDesc: null,
+      //     dueDate: null,
+      //     heading: null);
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getRecentPayment(
+      {@required String? userID}) async {
+    List<Map<String, dynamic>> recentPayments = [];
+    result = {};
+    try {
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-function-recentPayment', <String, dynamic>{
+        "userID": userID,
+      });
+      result = re;
+      List<String> schemaName = [];
+      re["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+      //  Map<String, List<Map<String, dynamic>>> companyWiseData = {};
+      re["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+
+      // Set<String> nameOfCompanies = {};
+      // res.forEach((element) {
+      //   nameOfCompanies.add(element["name"]);
+      // });
+
+      // nameOfCompanies.forEach((element) {
+      //   companyWiseData[element] = [];
+      // });
+      // res.forEach((element) {
+      //   companyWiseData[element["name"]]?.add(element);
+      // });
+      // result = companyWiseData;
+      // log("$result");
+      // print("####################");
+      // print(result);
+      Map<String, dynamic> mp = {};
+
+      res.forEach((ele) {
+        mp = {};
+        mp.addAll({
+          'paidOn': ele['paidOn'],
+          'imageurl': ele['logo'],
+          'amount': ele['amount'],
+          'name': ele['name']
+        });
+        recentPayments.add(mp);
+      });
+      print(recentPayments);
+      print('ggggggggggg');
+
+      return recentPayments;
+    } catch (e) {
+      print(e);
+
+      throw new Exception();
+    }
+    // return result;
+  }
+
+  Future<Map<String, dynamic>> getPendingServices(
+      {required String userID, required String todayDate}) async {
+    try {
+      Map<String, dynamic> pendingService = {};
+      List pendingServiceDetails = [];
+      result = {};
+      // try {
+      //List<String> schemaName = [];
+      print(
+          '##############                Beforeeeeeeeeeeeeeeee_____________________       ##########################################################');
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-function-pendingPayment',
+          <String, dynamic>{"UserID": userID, "todayDate": todayDate});
+      print(
+          '##############                after        ##########################################################');
+
+      result = re;
+      print(result);
+
+      result["records"][0].forEach((ele) {
+        ele.forEach((k, v) {
+          pendingServiceDetails.add(v);
+        });
+      });
+
+      pendingService.addAll({
+        'dueAmount': double.parse(pendingServiceDetails[0]),
+        'dueProviders': pendingServiceDetails[1]
+      });
+      // print(result["records"][0][1]);
+      print(pendingService);
+      return pendingService;
+
+      //to check all done or not!
+    } catch (e) {
+      return throw Exception(e);
+    }
   }
 
   Future<List<Map<String, dynamic>>> getCategories() async {

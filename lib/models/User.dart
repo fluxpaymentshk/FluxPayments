@@ -27,12 +27,12 @@ class User extends Model {
   final String id;
   final String? _firstName;
   final String? _lastName;
-  final TemporalDate? _dateOfBirth;
-  final String? _idCardNumber;
+  final String? _dateOfBirth;
+  final double? _idCardNumber;
   final String? _uniqueID;
   final String? _mobileNumber;
   final String? _email;
-  final int? _fluxPoints;
+  final double? _fluxPoints;
   final List<RewardTransaction>? _UserToRewardTransactions;
   final List<String>? _favorites;
   final List<ServiceTransaction>? _UserToServiceTransactions;
@@ -41,7 +41,10 @@ class User extends Model {
   final List<CreditCard>? _hasCreditCard;
   final List<UserWallet>? _hasWallets;
   final String? _refreeID;
+  final String? _referralID;
   final List<String>? _referredTo;
+
+  static var schema;
 
   @override
   getInstanceType() => classType;
@@ -68,11 +71,11 @@ class User extends Model {
     return _lastName;
   }
 
-  TemporalDate? get dateOfBirth {
+  String? get dateOfBirth {
     return _dateOfBirth;
   }
 
-  String? get idCardNumber {
+  double? get idCardNumber {
     return _idCardNumber;
   }
 
@@ -97,7 +100,7 @@ class User extends Model {
     return _email;
   }
 
-  int? get fluxPoints {
+  double? get fluxPoints {
     return _fluxPoints;
   }
 
@@ -142,6 +145,10 @@ class User extends Model {
     }
   }
 
+  String? get referralID {
+    return _referralID;
+  }
+
   List<String>? get referredTo {
     return _referredTo;
   }
@@ -164,6 +171,7 @@ class User extends Model {
       hasCreditCard,
       hasWallets,
       required refreeID,
+      referralID,
       referredTo})
       : _firstName = firstName,
         _lastName = lastName,
@@ -181,18 +189,19 @@ class User extends Model {
         _hasCreditCard = hasCreditCard,
         _hasWallets = hasWallets,
         _refreeID = refreeID,
-        _referredTo = referredTo;
+        _referredTo = referredTo,
+        _referralID=referralID;
 
   factory User(
       {String? id,
       required String firstName,
       String? lastName,
-      TemporalDate? dateOfBirth,
-      String? idCardNumber,
+      String? dateOfBirth,
+      double? idCardNumber,
       required String uniqueID,
       String? mobileNumber,
       String? email,
-      int? fluxPoints,
+      double? fluxPoints,
       List<RewardTransaction>? UserToRewardTransactions,
       List<String>? favorites,
       List<ServiceTransaction>? UserToServiceTransactions,
@@ -201,6 +210,7 @@ class User extends Model {
       List<CreditCard>? hasCreditCard,
       List<UserWallet>? hasWallets,
       required String refreeID,
+      String? referralID,
       List<String>? referredTo}) {
     return User._internal(
         id: id == null ? UUID.getUUID() : id,
@@ -236,7 +246,8 @@ class User extends Model {
         refreeID: refreeID,
         referredTo: referredTo != null
             ? List<String>.unmodifiable(referredTo)
-            : referredTo);
+            : referredTo,
+            referralID: referralID);
   }
 
   bool equals(Object other) {
@@ -267,6 +278,7 @@ class User extends Model {
         DeepCollectionEquality().equals(_hasCreditCard, other._hasCreditCard) &&
         DeepCollectionEquality().equals(_hasWallets, other._hasWallets) &&
         _refreeID == other._refreeID &&
+        _referralID == other._referralID&&
         DeepCollectionEquality().equals(_referredTo, other._referredTo);
   }
 
@@ -282,7 +294,7 @@ class User extends Model {
     buffer.write("firstName=" + "$_firstName" + ", ");
     buffer.write("lastName=" + "$_lastName" + ", ");
     buffer.write("dateOfBirth=" +
-        (_dateOfBirth != null ? _dateOfBirth!.format() : "null") +
+        (_dateOfBirth != null ? _dateOfBirth! : "null") +
         ", ");
     buffer.write("idCardNumber=" + "$_idCardNumber" + ", ");
     buffer.write("uniqueID=" + "$_uniqueID" + ", ");
@@ -295,6 +307,7 @@ class User extends Model {
         (_favorites != null ? _favorites!.toString() : "null") +
         ", ");
     buffer.write("refreeID=" + "$_refreeID" + ", ");
+      buffer.write("referralID=" + "$_referralID" + ", ");
     buffer.write("referredTo=" +
         (_referredTo != null ? _referredTo!.toString() : "null"));
     buffer.write("}");
@@ -306,12 +319,12 @@ class User extends Model {
       {String? id,
       String? firstName,
       String? lastName,
-      TemporalDate? dateOfBirth,
-      String? idCardNumber,
+      String? dateOfBirth,
+      double? idCardNumber,
       String? uniqueID,
       String? mobileNumber,
       String? email,
-      int? fluxPoints,
+      double? fluxPoints,
       List<RewardTransaction>? UserToRewardTransactions,
       List<String>? favorites,
       List<ServiceTransaction>? UserToServiceTransactions,
@@ -320,6 +333,7 @@ class User extends Model {
       List<CreditCard>? hasCreditCard,
       List<UserWallet>? hasWallets,
       String? refreeID,
+      String?referralID,
       List<String>? referredTo}) {
     return User(
         id: id ?? this.id,
@@ -341,16 +355,15 @@ class User extends Model {
         hasCreditCard: hasCreditCard ?? this.hasCreditCard,
         hasWallets: hasWallets ?? this.hasWallets,
         refreeID: refreeID ?? this.refreeID,
-        referredTo: referredTo ?? this.referredTo);
+        referredTo: referredTo ?? this.referredTo,
+        referralID: referralID??this.referralID);
   }
 
   User.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
+      : id = json['userID'],
         _firstName = json['firstName'],
         _lastName = json['lastName'],
-        _dateOfBirth = json['dateOfBirth'] != null
-            ? TemporalDate.fromString(json['dateOfBirth'])
-            : null,
+        _dateOfBirth = json['dateOfBirth'] ,
         _idCardNumber = json['idCardNumber'],
         _uniqueID = json['uniqueID'],
         _mobileNumber = json['mobileNumber'],
@@ -400,13 +413,14 @@ class User extends Model {
                 .toList()
             : null,
         _refreeID = json['refreeID'],
+        _referralID = json['referralID'],
         _referredTo = json['referredTo']?.cast<String>();
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'firstName': _firstName,
         'lastName': _lastName,
-        'dateOfBirth': _dateOfBirth?.format(),
+        'dateOfBirth': _dateOfBirth,
         'idCardNumber': _idCardNumber,
         'uniqueID': _uniqueID,
         'mobileNumber': _mobileNumber,
@@ -422,156 +436,167 @@ class User extends Model {
         'hasCreditCard': _hasCreditCard?.map((e) => e?.toJson())?.toList(),
         'hasWallets': _hasWallets?.map((e) => e?.toJson())?.toList(),
         'refreeID': _refreeID,
-        'referredTo': _referredTo
+        'referredTo': _referredTo,
+        'referralID':_referralID
       };
 
-  static final QueryField ID = QueryField(fieldName: "user.id");
-  static final QueryField FIRSTNAME = QueryField(fieldName: "firstName");
-  static final QueryField LASTNAME = QueryField(fieldName: "lastName");
-  static final QueryField DATEOFBIRTH = QueryField(fieldName: "dateOfBirth");
-  static final QueryField IDCARDNUMBER = QueryField(fieldName: "idCardNumber");
-  static final QueryField UNIQUEID = QueryField(fieldName: "uniqueID");
-  static final QueryField MOBILENUMBER = QueryField(fieldName: "mobileNumber");
-  static final QueryField EMAIL = QueryField(fieldName: "email");
-  static final QueryField FLUXPOINTS = QueryField(fieldName: "fluxPoints");
-  static final QueryField USERTOREWARDTRANSACTIONS = QueryField(
-      fieldName: "UserToRewardTransactions",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (RewardTransaction).toString()));
-  static final QueryField FAVORITES = QueryField(fieldName: "favorites");
-  static final QueryField USERTOSERVICETRANSACTIONS = QueryField(
-      fieldName: "UserToServiceTransactions",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (ServiceTransaction).toString()));
-  static final QueryField HASBANKACCOUNTS = QueryField(
-      fieldName: "hasBankAccounts",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (Bank).toString()));
-  static final QueryField HASDEBITCARDS = QueryField(
-      fieldName: "hasDebitCards",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (DebitCard).toString()));
-  static final QueryField HASCREDITCARD = QueryField(
-      fieldName: "hasCreditCard",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (CreditCard).toString()));
-  static final QueryField HASWALLETS = QueryField(
-      fieldName: "hasWallets",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (UserWallet).toString()));
-  static final QueryField REFREEID = QueryField(fieldName: "refreeID");
-  static final QueryField REFERREDTO = QueryField(fieldName: "referredTo");
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "User";
-    modelSchemaDefinition.pluralName = "Users";
+  // static final QueryField ID = QueryField(fieldName: "user.id");
+  // static final QueryField FIRSTNAME = QueryField(fieldName: "firstName");
+  // static final QueryField LASTNAME = QueryField(fieldName: "lastName");
+  // static final QueryField DATEOFBIRTH = QueryField(fieldName: "dateOfBirth");
+  // static final QueryField IDCARDNUMBER = QueryField(fieldName: "idCardNumber");
+  // static final QueryField UNIQUEID = QueryField(fieldName: "uniqueID");
+  // static final QueryField MOBILENUMBER = QueryField(fieldName: "mobileNumber");
+  // static final QueryField EMAIL = QueryField(fieldName: "email");
+  // static final QueryField FLUXPOINTS = QueryField(fieldName: "fluxPoints");
+  // static final QueryField USERTOREWARDTRANSACTIONS = QueryField(
+  //   fieldName: "UserToRewardTransactions",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (RewardTransaction).toString()));
+  // static final QueryField FAVORITES = QueryField(fieldName: "favorites");
+  // static final QueryField USERTOSERVICETRANSACTIONS = QueryField(
+  //   fieldName: "UserToServiceTransactions",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ServiceTransaction).toString()));
+  // static final QueryField HASBANKACCOUNTS = QueryField(
+  //   fieldName: "hasBankAccounts",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Bank).toString()));
+  // static final QueryField HASDEBITCARDS = QueryField(
+  //   fieldName: "hasDebitCards",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (DebitCard).toString()));
+  // static final QueryField HASCREDITCARD = QueryField(
+  //   fieldName: "hasCreditCard",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (CreditCard).toString()));
+  // static final QueryField HASWALLETS = QueryField(
+  //   fieldName: "hasWallets",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (UserWallet).toString()));
+  // static final QueryField REFREEID = QueryField(fieldName: "refreeID");
+  // // static final QueryField referredTo = QueryField(fieldName: "referredTo");
+  // static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  //   modelSchemaDefinition.name = "User";
+  //   modelSchemaDefinition.pluralName = "Users";
 
-    modelSchemaDefinition.authRules = [
-      AuthRule(authStrategy: AuthStrategy.PUBLIC, operations: [
-        ModelOperation.CREATE,
-        ModelOperation.UPDATE,
-        ModelOperation.DELETE,
-        ModelOperation.READ
-      ])
-    ];
+  //   modelSchemaDefinition.authRules = [
+  //     AuthRule(
+  //       authStrategy: AuthStrategy.PUBLIC,
+  //       operations: [
+  //         ModelOperation.CREATE,
+  //         ModelOperation.UPDATE,
+  //         ModelOperation.DELETE,
+  //         ModelOperation.READ
+  //       ])
+  //   ];
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.FIRSTNAME,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.FIRSTNAME,
+  //     isRequired: true,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.LASTNAME,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.LASTNAME,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.DATEOFBIRTH,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.date)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.DATEOFBIRTH,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.date)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.IDCARDNUMBER,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.IDCARDNUMBER,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.UNIQUEID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.UNIQUEID,
+  //     isRequired: true,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.MOBILENUMBER,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.MOBILENUMBER,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.EMAIL,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.EMAIL,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.FLUXPOINTS,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.FLUXPOINTS,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.int)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.USERTOREWARDTRANSACTIONS,
-        isRequired: false,
-        ofModelName: (RewardTransaction).toString(),
-        associatedKey: RewardTransaction.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.USERTOREWARDTRANSACTIONS,
+  //     isRequired: false,
+  //     ofModelName: (RewardTransaction).toString(),
+  //     associatedKey: RewardTransaction.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.FAVORITES,
-        isRequired: false,
-        isArray: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.collection,
-            ofModelName: describeEnum(ModelFieldTypeEnum.string))));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.FAVORITES,
+  //     isRequired: false,
+  //     isArray: true,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.string))
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.USERTOSERVICETRANSACTIONS,
-        isRequired: false,
-        ofModelName: (ServiceTransaction).toString(),
-        associatedKey: ServiceTransaction.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.USERTOSERVICETRANSACTIONS,
+  //     isRequired: false,
+  //     ofModelName: (ServiceTransaction).toString(),
+  //     associatedKey: ServiceTransaction.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.HASBANKACCOUNTS,
-        isRequired: false,
-        ofModelName: (Bank).toString(),
-        associatedKey: Bank.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.HASBANKACCOUNTS,
+  //     isRequired: false,
+  //     ofModelName: (Bank).toString(),
+  //     associatedKey: Bank.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.HASDEBITCARDS,
-        isRequired: false,
-        ofModelName: (DebitCard).toString(),
-        associatedKey: DebitCard.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.HASDEBITCARDS,
+  //     isRequired: false,
+  //     ofModelName: (DebitCard).toString(),
+  //     associatedKey: DebitCard.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.HASCREDITCARD,
-        isRequired: false,
-        ofModelName: (CreditCard).toString(),
-        associatedKey: CreditCard.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.HASCREDITCARD,
+  //     isRequired: false,
+  //     ofModelName: (CreditCard).toString(),
+  //     associatedKey: CreditCard.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.HASWALLETS,
-        isRequired: false,
-        ofModelName: (UserWallet).toString(),
-        associatedKey: UserWallet.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.HASWALLETS,
+  //     isRequired: false,
+  //     ofModelName: (UserWallet).toString(),
+  //     associatedKey: UserWallet.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.REFREEID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.REFREEID,
+  //     isRequired: true,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.REFERREDTO,
-        isRequired: false,
-        isArray: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.collection,
-            ofModelName: describeEnum(ModelFieldTypeEnum.string))));
-  });
+  //   // modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //   //   key: User.referredTo,
+  //   //   isRequired: false,
+  //   //   isArray: true,
+  //   //   ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.string))
+  //   // ));
+  // });
 }
 
 class _UserModelType extends ModelType<User> {

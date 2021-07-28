@@ -13,15 +13,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flux_payments/amplifyconfiguration.dart';
+import 'package:flux_payments/bloc/advertiser_bloc/advertiser_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
+import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
+import 'package:flux_payments/bloc/curated_list_bloc/curated_list_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/bloc/pending_service_bloc/pending_service_bloc.dart';
 import 'package:flux_payments/notification_handler.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/rewards_search_screen.dart';
+import 'package:flux_payments/screens/navigator_page.dart';
+
+import 'package:flux_payments/services/database_lambda.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'bloc/banner_bloc/banner_bloc.dart';
+import 'bloc/graph_bloc/graph_bloc.dart';
+import 'bloc/recent_payment_bloc/recent_payment_bloc.dart';
+
 
 List<types.Message> messages = [];
 
@@ -60,6 +73,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   LoginRepository _loginRepository = new LoginRepository();
   UserConfigRepository _userConfigRepository = new UserConfigRepository();
+   DatabaseRepository _databaseRepository = DatabaseRepository();
 
   bool _amplifyConfigured = false;
   bool isSignedIn = false;
@@ -133,59 +147,76 @@ class _MyAppState extends State<MyApp> {
           unselectedIconTheme: IconThemeData(size: 30),
         ),
       ),
-      home: RewardsSearchScreen(),
-      //     MultiBlocProvider(
-      //   providers: [
-      //     BlocProvider(
-      //       create: (_) => AuthBloc(_loginRepository),
-      //     ),
-      //     BlocProvider(
-      //       create: (_) => UserBloc(_userConfigRepository),
-      //     ),
-      //   ],
-      //   child: BlocBuilder<AuthBloc, AuthState>(
-      //     buildWhen: (prevSt, newSt) {
-      //       return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
-      //     },
-      //     builder: (ctx, st) {
-      //       log(_amplifyConfigured.toString());
-      //       log("Sign?:$isSignedIn");
-      //       return (!_amplifyConfigured)
-      //           ? Scaffold(
-      //               body: Center(
-      //                 child: CircularProgressIndicator(),
-      //               ),
-      //             )
-      //           : FutureBuilder<bool>(
-      //               future: currentUser(ctx),
-      //               builder: (context, snapshot) {
-      //                 if (!snapshot.hasData) {
-      //                   return Scaffold(
-      //                     body: Center(
-      //                       child: CircularProgressIndicator(),
-      //                     ),
-      //                   );
-      //                 }
-      //                 if (snapshot.hasData &&
-      //                     snapshot.data != null &&
-      //                     snapshot.data == false)
-      //                   return LoginPage(
-      //                     loginRepo: _loginRepository,
-      //                     userConfigRepository: _userConfigRepository,
-      //                   );
-      //                 return NavigatorPage(
-      //                     userRepository: _userConfigRepository);
-      //               });
-      //     },
-      //   ),
-      // ),
+      home:
+          //  SupportBotScreen()
+          MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AuthBloc(_loginRepository),
+          ),
+          BlocProvider(
+            create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
+          ),
+            BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
+                BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
+                     BlocProvider(create: (_)=>BannerBloc(_databaseRepository)),
+                     BlocProvider(create: (_)=>GraphBloc(_databaseRepository)),
+                      BlocProvider(create: (_)=>RecentPaymentBloc(_databaseRepository)),
+
+  BlocProvider(create: (_)=>PendingServiceBloc(_databaseRepository))
+
+        ],
+        child: BlocBuilder<AuthBloc, AuthState>(
+          buildWhen: (prevSt, newSt) {
+            return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
+          },
+          builder: (ctx, st) {
+            log(_amplifyConfigured.toString());
+            log("Sign?:$isSignedIn");
+            return (!_amplifyConfigured)
+                ? Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : FutureBuilder<bool>(
+                    future: currentUser(ctx),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Scaffold(
+                          body: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      if (snapshot.hasData &&
+                          snapshot.data != null &&
+                          snapshot.data == false)
+                        return LoginPage(
+                          loginRepo: _loginRepository,
+                          userConfigRepository: _userConfigRepository,
+                        );
+                      return NavigatorPage(
+                          userRepository: _userConfigRepository,databaseRepository: _databaseRepository,);
+                    });
+          },
+        ),
+      ),
+     
       routes: {
         LoginPage.routeName: (_) => MultiBlocProvider(
               providers: [
                 BlocProvider<AuthBloc>(
                   create: (_) => AuthBloc(_loginRepository),
                 ),
-                BlocProvider(create: (_) => UserBloc(_userConfigRepository)),
+                BlocProvider(create: (_) => UserBloc(_userConfigRepository,_databaseRepository)),
+                BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
+                BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
+                   BlocProvider(create: (_)=>BannerBloc(_databaseRepository)),
+                      BlocProvider(create: (_)=>GraphBloc(_databaseRepository)),
+                        BlocProvider(create: (_)=>RecentPaymentBloc(_databaseRepository)),
+                        BlocProvider(create: (_)=>PendingServiceBloc(_databaseRepository))
+
               ],
               child: LoginPage(
                 loginRepo: _loginRepository,
@@ -193,7 +224,7 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
         HomePage.routeName: (_) => BlocProvider<UserBloc>(
-              create: (_) => UserBloc(_userConfigRepository),
+              create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
               child: HomePage(
                   userRepository: _userConfigRepository,
                   email: userDetails["email"] ?? ""),

@@ -1,17 +1,37 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/src/chart/line_chart/line_chart_data.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
+import 'package:fl_chart/src/chart/base/axis_chart/axis_chart_data.dart'
+    as point;
 
 class LineChartGraph extends StatefulWidget {
+  final Map<String, Map<String, double>> mp;
+
   @override
+  const LineChartGraph({Key? key, required this.mp}) : super(key: key);
+  //mp=
   State<StatefulWidget> createState() => LineChartGraphState();
 }
 
 class LineChartGraphState extends State<LineChartGraph> {
+  // @override
+  //  LineChartGraphState({Key? key, required this.mp}) ;
+  //  Map<String, Map<String, double>> mp={};
   late bool isShowingMainData;
+  double maximum = 0, minimum = -1;
+  List<String> xaxis = ['2021-09', '2021-08', '2021-07'];
+  List<String> names = ['ICICI', 'HDFC', 'PNB'];
 
+  List<Color> color = [
+    Color(0xff27b6fc),
+    Color(0xffaa4cfc),
+    Color(0xff4af699),
+  ];
+  //final Map<String, Map<String, double>> mp;
   @override
   void initState() {
     super.initState();
@@ -160,6 +180,13 @@ class LineChartGraphState extends State<LineChartGraph> {
   }
 
   LineChartData sampleData1() {
+    widget.mp.forEach((key, value) {
+      widget.mp[key]!.forEach((key, value) {
+        maximum = max(maximum, value);
+        if (minimum == -1) minimum = value;
+        minimum = min(minimum, value);
+      });
+    });
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
@@ -182,13 +209,16 @@ class LineChartGraphState extends State<LineChartGraph> {
           ),
           margin: 10, // EXppppppppppppppppppppppp
           getTitles: (value) {
+            // widget.mp.forEach((key, value) {
+            //   xaxis.add(key);
+            // });
             switch (value.toInt()) {
               case 2:
-                return 'SEPT';
+                return xaxis[0];
               case 7:
-                return 'OCT';
+                return xaxis[1];
               case 12:
-                return 'DEC';
+                return xaxis[2];
             }
             return '';
           },
@@ -201,19 +231,91 @@ class LineChartGraphState extends State<LineChartGraph> {
             fontSize: 10,
             // wordSpacing: 0.0,
           ),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return '1m';
-              case 2:
-                return '2m';
-              case 3:
-                return '3m';
-              case 4:
-                return '5m';
-            }
-            return '';
-          },
+
+          interval: (minimum == 0) ? maximum / minimum : maximum / 10,
+          // margin: 10,
+//           getTitles: (value) {
+//             // List<String> yaxis = [];
+//             widget.mp.forEach((key, value) {
+//               widget.mp[key]!.forEach((key, value) {
+//                 maximum = max(maximum, value);
+//                 if (minimum == -1) minimum = value;
+//                 minimum = min(minimum, value);
+//               });
+//             });
+//             print(maximum);
+//             print('___________________');
+//             print(minimum);
+
+//             print((maximum).toString());
+//             print((minimum + 2 * (maximum - minimum) / 3).toInt().toString());
+//             print((minimum + (maximum - minimum) / 3).toInt().toString());
+//             print(minimum.toString());
+//             // maximum = 1500;
+//             // minimum = 1000;
+//             // if (value.toInt() == maximum.toInt()) {
+//             //   print("fifty");
+//             //   return (maximum).toString();
+//             // }
+
+//             //   if (value.toInt() ==
+//             //     ( (minimum + 2 * (maximum - minimum) / 3).toInt())   ) {
+//             //   print("fiftyy");
+//             //   return (((minimum + 2 * (maximum - minimum) / 3).toInt()).toString());
+//             // }
+
+//             //   if (value.toInt() ==
+//             //     ((minimum + (maximum - minimum) / 3).toInt()) ) {
+//             //   print("fiftyyy");
+//             //   return (minimum + (maximum - minimum) / 3).toInt().toString();
+//             // }
+
+//             //  if (value.toInt() == minimum.toInt()) {
+//             //  print("fiftyyyy");
+//             //   return minimum.toString();
+//             // }
+//             // switch (value.toInt()) {
+//             //   case 4:
+//             //     return (maximum).toString();
+//             //   case 3:
+//             //     return (minimum + 2 * (maximum - minimum) / 3).toInt().toString();
+//             //   case  (minimum + (maximum -minimum) / 3).toInt():
+//             //     return (minimum + (maximum -minimum) / 3).toInt().toString();
+//             //   case minimum:
+//             //     return minimum.toString();
+//             // }
+//             // switch (value.toInt()) {
+//             //   case 40:
+//             //     return '40';
+//             //   case 30:
+//             //     return '30';
+//             //   case 20:
+//             //     return '20';
+//             //   case 10:
+//             //     return '10';
+//             //   case 0:
+//             //     return '0';
+//             // }
+//             // switch (value.toInt()) {
+//             //   case 4:
+//             //     return '4m';
+//             //   case 3:
+//             //     return '3m';
+//             //   case 2:
+//             //     return '2m';
+//             //   case 1:
+//             //     return '1m';
+//             // }
+
+// if(minimum==0 && (value.toInt() % ((maximum - minimum) ~/ (10)) == 0))
+// {
+//               return value.toString();
+// }
+//             if (value.toInt() % ((maximum - minimum) ~/ (minimum*2)) == 0)
+//               return value.toString();
+//             return '';
+//           },
+
           margin: 8, //Exppppppppppppp
           reservedSize: 30, //Exppppppppppppppppp
         ),
@@ -236,86 +338,178 @@ class LineChartGraphState extends State<LineChartGraph> {
           ),
         ),
       ),
-      minX: 0,
+      //  minY: 0,
+      //maxY: maximum,
+      //maxY: 50,
       maxX: 14,
-      maxY: 4,
-      minY: 0,
+      minX: 0,
+      // minX: 0,
+      // maxX: 14,
+      // maxY: 4,
+      // minY: 0,
       lineBarsData: linesBarData1(),
     );
   }
 
   List<LineChartBarData> linesBarData1() {
-    final lineChartBarData1 = LineChartBarData(
-      spots: [
-        FlSpot(1, 1),
-        FlSpot(3, 1.5),
-        FlSpot(5, 1.4),
-        FlSpot(7, 3.4),
-        FlSpot(10, 2),
-        FlSpot(12, 2.2),
-        FlSpot(13, 1.8),
-      ],
-      isCurved: true,
-      colors: [
-        const Color(0xff4af699),
-      ],
-      barWidth: 3,
-      isStrokeCapRound: true,
-      dotData: FlDotData(
-        show: false,
-      ),
-      belowBarData: BarAreaData(
-        show: false,
-      ),
-    );
-    final lineChartBarData2 = LineChartBarData(
-      spots: [
-        FlSpot(1, 1),
-        FlSpot(3, 2.8),
-        FlSpot(7, 1.2),
-        FlSpot(10, 2.8),
-        FlSpot(12, 2.6),
-        FlSpot(13, 3.9),
-      ],
-      isCurved: true,
-      colors: [
-        const Color(0xffaa4cfc),
-      ],
-      barWidth: 3,
-      isStrokeCapRound: true,
-      dotData: FlDotData(
-        show: false,
-      ),
-      belowBarData: BarAreaData(show: false, colors: [
-        const Color(0x00aa4cfc),
-      ]),
-    );
-    final lineChartBarData3 = LineChartBarData(
-      spots: [
-        FlSpot(1, 2.8),
-        FlSpot(3, 1.9),
-        FlSpot(6, 3),
-        FlSpot(10, 1.3),
-        FlSpot(13, 2.5),
-      ],
-      isCurved: true,
-      colors: const [
-        Color(0xff27b6fc),
-      ],
-      barWidth: 3,
-      isStrokeCapRound: true,
-      dotData: FlDotData(
-        show: false,
-      ),
-      belowBarData: BarAreaData(
-        show: false,
-      ),
-    );
-    return [
-      lineChartBarData1,
-      lineChartBarData2,
-      lineChartBarData3,
-    ];
+    List<LineChartBarData> lineChartBarData = [];
+    //  widget.mp.forEach((key, value) {
+    //             xaxis.add(key);
+    //           });
+    //  int k = 1;
+
+    List<point.FlSpot>? spotss = [];
+    // int j = 0;
+    for (int j = 0; j < names.length; j++) {
+      int k = 2;
+      for (int i = 0; i < xaxis.length; i++) {
+        spotss!.add(FlSpot(
+            (i + (k)).toDouble(),
+            (widget.mp[xaxis[i]] == null)
+                ? 0
+                : widget.mp[xaxis[i]]![names[j]] ?? 0));
+        k += 5;
+      }
+      print(spotss);
+      print("ZZZZZZZZZZZZZZZ");
+      lineChartBarData.add(
+        LineChartBarData(
+          spots: spotss,
+          isCurved: true,
+          colors: [color[j]],
+          barWidth: 3,
+          isStrokeCapRound: true,
+          curveSmoothness: 0.35,
+          preventCurveOverShooting: true,
+          preventCurveOvershootingThreshold: 4.0,
+          dotData: FlDotData(
+            show: true,
+          ),
+          belowBarData: BarAreaData(
+            show: false,
+          ),
+        ),
+      );
+      spotss = [];
+    }
+
+    ////////////////////////////////////
+
+    // for (int i = 0; i < xaxis.length; i++) {
+    //   List<point.FlSpot>? spotss = [];
+    //   spotss.add(FlSpot(
+    //       (i).toDouble(),
+    //       (widget.mp[xaxis[i]] == null)
+    //           ? 0
+    //           : widget.mp[xaxis[i]]!['ICICI'] ?? 0));
+    //   spotss.add(FlSpot(
+    //       (i).toDouble(),
+    //       (widget.mp[xaxis[i]] == null)
+    //           ? 0
+    //           : widget.mp[xaxis[i]]!['HDFC'] ?? 0));
+
+    //   spotss.add(FlSpot(
+    //       i.toDouble(),
+    //       (widget.mp[xaxis[i]] == null)
+    //           ? 0
+    //           : widget.mp[xaxis[i]]!['PNB'] ?? 0));
+    //   print(xaxis);
+    //   //print(widget.mp[xaxis[i]]);
+    //   print(spotss);
+    //   print('#############');
+    //   lineChartBarData.add(
+    //     LineChartBarData(
+    //       spots: spotss,
+    //       isCurved: true,
+    //       colors: [color[i]],
+    //       barWidth: 3,
+    //       isStrokeCapRound: true,
+    //       dotData: FlDotData(
+    //         show: false,
+    //       ),
+    //       belowBarData: BarAreaData(
+    //         show: false,
+    //       ),
+    //     ),
+    //   );
+    // }
+    // final lineChartBarData1 = LineChartBarData(
+    //   spots: [
+    //     // FlSpot(1, 1),
+    //     // FlSpot(3, 1.5),
+    //     // FlSpot(5, 1.4),
+    //      FlSpot(2, 20),
+    //     FlSpot(7, 0),
+    //     FlSpot(12, 0),
+    //     // FlSpot(7, 3.4),
+    //     // FlSpot(10, 2),
+    //     // FlSpot(12, 2.2),
+    //     // FlSpot(13, 1.8),
+    //   ],
+    //   isCurved: true,
+    //   colors: [color[0]],
+    //   barWidth: 3,
+    //   isStrokeCapRound: true,
+    //   dotData: FlDotData(
+    //     show: false,
+    //   ),
+    //   belowBarData: BarAreaData(
+    //     show: false,
+    //   ),
+    // );
+    // final lineChartBarData2 = LineChartBarData(
+    //   spots: [
+    //     FlSpot(1, 1),
+    //     FlSpot(3, 2.8),
+    //     FlSpot(7, 1.2),
+    //     FlSpot(10, 2.8),
+    //     FlSpot(12, 2.6),
+    //     FlSpot(13, 3.9),
+    //   ],
+    //   isCurved: true,
+    //   colors: [
+    //     color[1],
+    //   ],
+    //   barWidth: 3,
+    //   isStrokeCapRound: true,
+    //   dotData: FlDotData(
+    //     show: false,
+    //   ),
+    //   belowBarData: BarAreaData(
+    //     show: false,
+    //     // colors: [
+    //     //   const Color(0x00aa4cfc),
+    //     // ]
+    //   ),
+    // );
+    // final lineChartBarData3 = LineChartBarData(
+    //   spots: [
+    //     FlSpot(1, 2.8),
+    //     FlSpot(3, 1.9),
+    //     FlSpot(6, 3),
+    //     FlSpot(10, 1.3),
+    //     FlSpot(13, 2.5),
+    //   ],
+    //   isCurved: true,
+    //   colors: [
+    //     color[2],
+    //   ],
+    //   barWidth: 3,
+    //   isStrokeCapRound: true,
+    //   dotData: FlDotData(
+    //     show: false,
+    //   ),
+    //   belowBarData: BarAreaData(
+    //     show: false,
+    //   ),
+    // );
+
+    // return [
+    //   lineChartBarData1,
+    //   lineChartBarData2,
+    //   lineChartBarData3,
+    // ];
+    return lineChartBarData;
   }
 
   // LineChartData sampleData2() {

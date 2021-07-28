@@ -29,7 +29,7 @@
 				"OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"fluxapp://\"],\"LogoutURLs\":[\"fluxapp://\"]}",
 				"UserPoolName": "fluxpayments4f50e62b_userpool_4f50e62b"
 			},
-			"lastPushTimeStamp": "2021-07-14T10:59:10.973Z",
+			"lastPushTimeStamp": "2021-07-18T14:45:53.389Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/auth/fluxpayments4f50e62b-cloudformation-template.yml",
 				"logicalId": "authfluxpayments4f50e62b"
@@ -60,7 +60,7 @@
 				"GraphQLAPIEndpointOutput": "https://d567q7lppfag7hcdafokav5pge.appsync-api.ap-southeast-1.amazonaws.com/graphql",
 				"GraphQLAPIKeyOutput": "da2-qkpqd5n4hjdwtfhsnysxngvloq"
 			},
-			"lastPushTimeStamp": "2021-07-14T10:59:10.990Z",
+			"lastPushTimeStamp": "2021-07-18T14:45:53.399Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/api/cloudformation-template.json",
 				"logicalId": "apiFluxPayments"
@@ -76,7 +76,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/analytics/pinpoint-cloudformation-template.json",
 				"logicalId": "analyticsfluxPaymentsPINPOINTS"
 			},
-			"lastPushTimeStamp": "2021-07-14T10:59:11.006Z",
+			"lastPushTimeStamp": "2021-07-18T14:45:53.421Z",
 			"output": {
 				"appName": "fluxPaymentsPINPOINTS-staging",
 				"Region": "us-west-2",
@@ -104,7 +104,7 @@
 					"Version": 1
 				}
 			},
-			"lastPushTimeStamp": "2021-07-14T10:59:17.615Z"
+			"lastPushTimeStamp": "2021-07-18T14:45:59.652Z"
 		}
 	},
 	"interactions": {
@@ -122,7 +122,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-fluxpayments-staging-122415-deployment/amplify-cfn-templates/interactions/FluxSupportBotMimi-cloudformation-template.json",
 				"logicalId": "interactionsFluxSupportBotMimi"
 			},
-			"lastPushTimeStamp": "2021-07-14T10:59:11.019Z",
+			"lastPushTimeStamp": "2021-07-18T14:45:53.444Z",
 			"output": {
 				"FunctionArn": "arn:aws:lambda:ap-southeast-1:277253331545:function:fluxpayments_cfnlambda_7af9ecfe-staging",
 				"Region": "ap-southeast-1",
