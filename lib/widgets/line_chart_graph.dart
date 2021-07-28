@@ -7,17 +7,29 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:fl_chart/src/chart/base/axis_chart/axis_chart_data.dart'
     as point;
+import 'package:flux_payments/models/User.dart';
+import 'package:flux_payments/screens/graph_screen.dart';
 
 class LineChartGraph extends StatefulWidget {
-  final Map<String, Map<String, double>> mp;
-
+  final Map<String, dynamic> mp;
+  final double height, width;
+  final bool popup;
+  final User user;
   @override
-  const LineChartGraph({Key? key, required this.mp}) : super(key: key);
+  const LineChartGraph(
+      {Key? key,
+      required this.mp,
+      required this.height,
+      required this.popup,
+      required this.width,
+      required this.user})
+      : super(key: key);
   //mp=
   State<StatefulWidget> createState() => LineChartGraphState();
 }
 
 class LineChartGraphState extends State<LineChartGraph> {
+  bool _weekly = false, _monthly = true, _yearly = false;
   // @override
   //  LineChartGraphState({Key? key, required this.mp}) ;
   //  Map<String, Map<String, double>> mp={};
@@ -40,142 +52,256 @@ class LineChartGraphState extends State<LineChartGraph> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.23,
-      // child: Container(),
-      child: Container(
-        //   height: SizeConfig.heightMultiplier * 50,
-        // width: SizeConfig.widthMultiplier * 90,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
-          // gradient: LinearGradient(
-          //   colors: [
-          //     Color(0xff2c274c),
-          //     Color(0xff46426c),
-          //   ],
-          color: AppTheme.offWhite,
-          // begin: Alignment.bottomCenter,
-          // end: Alignment.topCenter,
-          // ),
-        ),
-        child: Stack(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                const SizedBox(
-                  height: 37,
-                ),
-                // const Text(
-                //   'Unfold Shop 2018',
-                //   style: TextStyle(
-                //     color: Color(0xff827daa),
-                //     fontSize: 16,
-                //   ),
-                //   textAlign: TextAlign.center,
-                // ),
-                // const SizedBox(
-                //   height: 4,
-                // ),
-                // const Text(
-                //   'Monthly Sales',
-                //   style: TextStyle(
-                //       color: Colors.white,
-                //       fontSize: 32,
-                //       fontWeight: FontWeight.bold,
-                //       letterSpacing: 2),
-                //   textAlign: TextAlign.center,
-                // ),
-                // const SizedBox(
-                //   height: 37,
-                // ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0, left: 6.0),
-                    child: LineChart(
-                      //isShowingMainData ? sampleData1() : sampleData2(),
-                      sampleData1(),
+    return InkWell(
+      child: AspectRatio(
+        aspectRatio: widget.width / widget.height,
+        // child: Container(),
+        child: Container(
+          height: SizeConfig.heightMultiplier * 70,
+          //  width: SizeConfig.widthMultiplier * 84,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(18)),
+            // gradient: LinearGradient(
+            //   colors: [
+            //     Color(0xff2c274c),
+            //     Color(0xff46426c),
+            //   ],
+            color: AppTheme.offWhite,
+            // begin: Alignment.bottomCenter,
+            // end: Alignment.topCenter,
+            // ),
+          ),
+          child: Stack(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                //   mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  SizedBox(
+                    height: SizeConfig.heightMultiplier * 2,
+                  ),
+                  !widget.popup?
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: SizeConfig.widthMultiplier * 15,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 4.5,
+                          primary: _weekly ? AppTheme.main : AppTheme.offWhite,
+                          padding: EdgeInsets.symmetric(
+                              vertical: SizeConfig.widthMultiplier * 0.36),
+                              side: BorderSide(width: 1.5, color: AppTheme.main,),
+                              shape: new RoundedRectangleBorder(
+      borderRadius: new BorderRadius.circular(10.0),
+    ),
+                          // textStyle: TextStyle(
+                          //     fontSize: 15,
+                          //     color: _pressed?AppTheme.white:AppTheme.black,
+                          //     fontWeight: FontWeight.bold)
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _weekly = true;
+                            _monthly = false;
+                            _yearly = false;
+                          });
+                        },
+                        child: Text('Weekly',
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: _weekly ? AppTheme.white : AppTheme.main,
+                                fontWeight: FontWeight.w400)),
+                      ),
+                      Spacer(),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            elevation: 4.5,
+                          primary: _monthly ? AppTheme.main : AppTheme.offWhite,
+                          padding: EdgeInsets.symmetric(
+                              vertical: SizeConfig.widthMultiplier * 0.36),
+                         side: BorderSide(width: 1.5, color: AppTheme.main,),
+                         shape: new RoundedRectangleBorder(
+      borderRadius: new BorderRadius.circular(10.0),
+    ),
+                          // textStyle: TextStyle(
+                          //     fontSize: 15,
+                          //     color: _pressed?AppTheme.white:AppTheme.black,
+                          //     fontWeight: FontWeight.bold)
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _monthly = true;
+                            _yearly = false;
+                            _weekly = false;
+                          });
+                        },
+                        child: Text('Monthly',
+                            style: TextStyle(
+                                fontSize: 12,
+                                color:
+                                    _monthly ? AppTheme.white : AppTheme.main,
+                                fontWeight: FontWeight.w400)),
+                      ),
+                      Spacer(),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            elevation: 4.5,
+                          primary: _yearly ? AppTheme.main : AppTheme.offWhite,
+                          padding: EdgeInsets.symmetric(
+                              vertical: SizeConfig.widthMultiplier * 0.36),
+                         side: BorderSide(width: 1.5, color: AppTheme.main,),
+                         shape: new RoundedRectangleBorder(
+      borderRadius: new BorderRadius.circular(10.0),
+    ),
+                          // textStyle: TextStyle(
+                          //     fontSize: 15,
+                          //     color: _pressed?AppTheme.white:AppTheme.black,
+                          //     fontWeight: FontWeight.bold)
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _yearly = true;
+                            _monthly = false;
+                            _weekly = false;
+                          });
+                        },
+                        child: Text('Yearly',
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: _yearly ? AppTheme.white : AppTheme.main,
+                                fontWeight: FontWeight.w400)),
+                      ),
+                      Spacer(),
+                    ],
+                  )
+                  :Container(),
+                  SizedBox(
+                    height: SizeConfig.heightMultiplier * 4,
+                  ),
+                  // const Text(
+                  //   'Unfold Shop 2018',
+                  //   style: TextStyle(
+                  //     color: Color(0xff827daa),
+                  //     fontSize: 16,
+                  //   ),
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  // const SizedBox(
+                  //   height: 4,
+                  // ),
+                  // const Text(
+                  //   'Monthly Sales',
+                  //   style: TextStyle(
+                  //       color: Colors.white,
+                  //       fontSize: 32,
+                  //       fontWeight: FontWeight.bold,
+                  //       letterSpacing: 2),
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  // const SizedBox(
+                  //   height: 37,
+                  // ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 16.0, left: 6.0),
+                      child: LineChart(
+                        //isShowingMainData ? sampleData1() : sampleData2(),
+                        sampleData1(),
 
-                      swapAnimationDuration: const Duration(milliseconds: 250),
+                        swapAnimationDuration:
+                            const Duration(milliseconds: 250),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-                Center(
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 3,
-                              backgroundColor: Color(0xffaa4cfc),
-                            ),
-                            SizedBox(
-                              width: SizeConfig.widthMultiplier * 2,
-                            ),
-                            Text('HSBC Card'),
-                          ],
-                        ),
-                      ),
-                      Spacer(),
-                      Container(
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 3,
-                              backgroundColor: Color(0xffaa4cfc),
-                            ),
-                            SizedBox(
-                              width: SizeConfig.widthMultiplier * 2,
-                            ),
-                            Text('HSBC Card'),
-                          ],
-                        ),
-                      ),
-                      Spacer(),
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(6.0),
+                  Center(
+                    child: Row(
+                      children: [
+                        Spacer(),
+                        Container(
                           child: Row(
                             children: [
                               CircleAvatar(
                                 radius: 3,
-                                backgroundColor: Color(0xffaa4cfc),
+                                backgroundColor: color[0],
                               ),
                               SizedBox(
                                 width: SizeConfig.widthMultiplier * 2,
                               ),
-                              Text('HSBC Card'),
+                              Text(names[0]),
                             ],
                           ),
                         ),
-                      )
-                    ],
+                        Spacer(),
+                        Container(
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 3,
+                                backgroundColor: color[1],
+                              ),
+                              SizedBox(
+                                width: SizeConfig.widthMultiplier * 2,
+                              ),
+                              Text(names[1]),
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 3,
+                                  backgroundColor: color[2],
+                                ),
+                                SizedBox(
+                                  width: SizeConfig.widthMultiplier * 2,
+                                ),
+                                Text(names[2]),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
-            // IconButton(
-            //   icon: Icon(
-            //     Icons.refresh,
-            //     color: Colors.white.withOpacity(isShowingMainData ? 1.0 : 0.5),
-            //   ),
-            //   onPressed: () {
-            //     setState(() {
-            //       isShowingMainData = !isShowingMainData;
-            //     });
-            //   },
-            // )
-          ],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+              // IconButton(
+              //   icon: Icon(
+              //     Icons.refresh,
+              //     color: Colors.white.withOpacity(isShowingMainData ? 1.0 : 0.5),
+              //   ),
+              //   onPressed: () {
+              //     setState(() {
+              //       isShowingMainData = !isShowingMainData;
+              //     });
+              //   },
+              // )
+            ],
+          ),
         ),
       ),
+      onDoubleTap: () {
+        if (widget.popup) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (BuildContext context) {
+            return GraphScreen(graphData: widget.mp, user: widget.user);
+          }));
+        }
+      },
     );
   }
 

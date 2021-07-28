@@ -34,6 +34,7 @@ class NavigatorPage extends StatefulWidget {
 class _NavigatorPageState extends State<NavigatorPage> {
   late List<Tuple2> _pages = [];
   bool isOpened = false;
+  double headerHeight = 75;
   double botScreenHeightRatio = 0.8;
   double activeIconElevation = 4;
   TextStyle navigationBarTextStyle =
@@ -56,16 +57,19 @@ int _selectedPage = 0;
   PageController _pageController = PageController();
   final controller = SheetController();
 
+
   @override
   Widget build(BuildContext context) {
-    double headerHeight = MediaQuery.of(context).size.height * 0.08;
+    return
+    LayoutBuilder(builder: (context, constraints) {
+         SizeConfig().init(constraints); 
     return Scaffold(
       bottomNavigationBar: SafeArea(
         child: SlidingSheet(
             duration: const Duration(milliseconds: 900),
             controller: controller,
             color: Color(0xffF6F6FF),
-            elevation: 4,
+            elevation: 0,
             maxWidth: 500,
             cornerRadius: 21,
             cornerRadiusOnFullscreen: 0.0,
@@ -140,6 +144,7 @@ int _selectedPage = 0;
             }),
       ),
     );
+    });
   }
 
   Widget _bottomNavigationBarWidget(BuildContext context) {
@@ -215,4 +220,51 @@ int _selectedPage = 0;
       showUnselectedLabels: false,
     );
   }
+
+//  @override
+  // Widget build(BuildContext context) {
+  //   print(_pages);
+  //   print('//////////////');
+  //   return LayoutBuilder(builder: (context, constraints) {
+  //       SizeConfig().init(constraints);
+  //       return Scaffold(
+  //         body: PageView(
+  //           children: _pages.map<Widget>((Tuple2 page) => page.item2).toList(),
+  //           onPageChanged: (index) {
+  //             setState(() {
+  //               _selectedPage = index;
+  //             });
+  //           },
+  //           controller: _pageController,
+  //         ),
+  //         bottomNavigationBar: BottomNavigationBar(
+  //           items: const [
+  //             BottomNavigationBarItem(
+  //               icon: Icon(Icons.payment),
+  //               label: 'payment',
+  //             ),
+  //             BottomNavigationBarItem(
+  //               icon: Icon(Icons.home),
+  //               label: 'home',
+  //             ),
+  //             BottomNavigationBarItem(
+  //               icon: Icon(Icons.card_giftcard),
+  //               label: 'gift',
+  //             ),
+  //           ],
+  //           currentIndex: _selectedPage,
+  //           selectedItemColor: Colors.amber[800],
+  //           onTap: (index) {
+  //             setState(() {
+  //               _selectedPage = index;
+    
+  //               _pageController.animateToPage(_selectedPage,
+  //                   duration: Duration(milliseconds: 300), curve: Curves.linear);
+  //             });
+  //           },
+  //         ),
+  //       );
+  //     }
+  //   );
+  //  }
 }
