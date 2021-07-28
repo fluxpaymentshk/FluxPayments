@@ -30,6 +30,7 @@ import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
 import 'package:flux_payments/models/RewardPartner.dart';
+import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
@@ -73,9 +74,9 @@ class _BillPaymentState extends State<BillPayment> {
     super.initState();
   }
 
-  
   @override
   Widget build(BuildContext context) {
+    User user;
     List<curatedList> curatedListData = [];
     List<ExternalAdvertisers> ExadvertiseList = [];
     List<InternalAdvertisers> InadvertiseList = [];
@@ -113,16 +114,18 @@ class _BillPaymentState extends State<BillPayment> {
         _databaseLambdaService.getPendingServices(
             userID: 'Flux-Monik', todayDate: '2021-07-23');
         if (state is UserDetailsLoading) {
-          return CircularProgressIndicator(
-            strokeWidth: 5,
-            color: AppTheme.main,
+          return Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 4,
+              color: AppTheme.main,
+            ),
           );
         } else if (state is UserDetails) {
           print('hjjjjjjjjj');
-       
 
+          user = state.user;
           return Scaffold(
-          
+
               //     SizedBox(height: 10),
               //     FloatingActionButton(
               //       onPressed: () async {
@@ -134,441 +137,484 @@ class _BillPaymentState extends State<BillPayment> {
               //   ],
               // ),
 
-              body: 
-              //LayoutBuilder(builder: (context, constraints) {
-          //  SizeConfig().init(constraints);
-            // return FutureBuilder(
-            //     future:
-            //         //  _databaseLambdaService.getCuratedList(
-            //         //      page: 0, curatedListData: curatedListData)
-            //         // //_databaseLambdaService.getUserDetails(userID: 'flux-vid1')
-            //         // _databaseLambdaService.getPaymentHistoryProviderWiseDetails(
-            //         //     userID: 'flux-vid1')
-            //         // ,
-            //     builder: (context, snapshot) {
+              body:
+                  //LayoutBuilder(builder: (context, constraints) {
+                  //  SizeConfig().init(constraints);
+                  // return FutureBuilder(
+                  //     future:
+                  //         //  _databaseLambdaService.getCuratedList(
+                  //         //      page: 0, curatedListData: curatedListData)
+                  //         // //_databaseLambdaService.getUserDetails(userID: 'flux-vid1')
+                  //         // _databaseLambdaService.getPaymentHistoryProviderWiseDetails(
+                  //         //     userID: 'flux-vid1')
+                  //         // ,
+                  //     builder: (context, snapshot) {
 
-            //       if (snapshot.connectionState != snapshot.hasError) {
+                  //       if (snapshot.connectionState != snapshot.hasError) {
 
-             Flex(direction: Axis.vertical, children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier * 8,
-                      ),
-                      Container(
-                        height: SizeConfig.heightMultiplier * 12,
-                        width: SizeConfig.widthMultiplier * 100,
-                        child: Center(
-                          //  child: Image.asset("assets/images/logo.png"),
-                          child: Text(
-                            "Flux.",
-                            style: TextStyle(
-                              foreground: Paint()
-                                ..shader = LinearGradient(
-                                  colors: <Color>[
-                                    AppTheme.main,
-                                    Color(0xffA867EE)
-                                  ],
-                                ).createShader(
-                                    Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                              fontSize: 60,
-                              fontWeight: FontWeight.w900,
-                            ),
+                  Flex(direction: Axis.vertical, children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2.4,
+                    ),
+                    Container(
+                      height: SizeConfig.heightMultiplier * 12,
+                      width: SizeConfig.widthMultiplier * 100,
+                      child: Center(
+                        //  child: Image.asset("assets/images/logo.png"),
+                        child: Text(
+                          "Flux.",
+                          style: TextStyle(
+                            foreground: Paint()
+                              ..shader = LinearGradient(
+                                colors: <Color>[
+                                  AppTheme.main,
+                                  Color(0xffA867EE)
+                                ],
+                              ).createShader(
+                                  Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                            fontSize: 60,
+                            fontWeight: FontWeight.w900,
                           ),
                         ),
                       ),
+                    ),
 
-                      Container(
-                        height: SizeConfig.heightMultiplier * 12,
-                        width: SizeConfig.widthMultiplier * 97,
-                        //  decoration: BoxDecoration(color: AppTheme.main),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Hello ${state.user.firstName}!',
-                              style: AppTheme.display1,
-                            ),
-                            Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.all(9.0),
-                              child: Container(
-                                // height: SizeConfig.heightMultiplier*12,
-                                // width: SizeConfig.widthMultiplier*100,
+                    Container(
+                      height: SizeConfig.heightMultiplier * 12,
+                      width: SizeConfig.widthMultiplier * 97,
+                      //  decoration: BoxDecoration(color: AppTheme.main),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Hello ${state.user.firstName}!',
+                            style: AppTheme.display1,
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding: EdgeInsets.all(
+                                SizeConfig.heightMultiplier * 2.0),
+                            child: Container(
+                              // height: SizeConfig.heightMultiplier*12,
+                              // width: SizeConfig.widthMultiplier*100,
 
-                                child: Image.asset("assets/images/av.png"),
-                                //  child:NetworkImage(state.user.);
-                              ),
+                              child: Image.asset("assets/images/av.png"),
+                              //  child:NetworkImage(state.user.);
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier * 2,
-                      ),
-                      BlocBuilder<BannerBloc, BannerState>(
-                          builder: (context, state) {
-                        if (state is LoadBannerState) {
-                          return BannerTile(banner: state.banner);
-                        } else if (state is LoadingBannerState)
-                          return CircularProgressIndicator(
-                            color: AppTheme.main,
-                            strokeWidth: 1.0,
-                          );
-                        else if (state is BannerErrorState) {
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    BlocBuilder<BannerBloc, BannerState>(
+                        builder: (context, state) {
+                      if (state is LoadBannerState) {
+                        return BannerTile(banner: state.banner);
+                      } else if (state is LoadingBannerState)
+                        return CircularProgressIndicator(
+                          color: AppTheme.main,
+                          strokeWidth: 1.0,
+                        );
+                      else if (state is BannerErrorState) {
+                        return Container(
+                          child: Text((state).message ?? ''),
+                        );
+                      } else {
+                        return Container(child: Text('event Not generated'));
+                      }
+                    }),
+
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+
+                    BlocBuilder<PendingServiceBloc, PendingServiceState>(
+                      builder: (context, state) {
+                        if (state is LoadPendingService) {
+                          return PendingPaymentTile(
+                              amount:
+                                  state.pendingService["dueAmount"].toDouble(),
+                              serviceProviders:
+                                  state.pendingService["dueProviders"].toInt());
+                        } else if (State is LoadingPendingService) {
+                          return CircularProgressIndicator();
+                        } else if (state is PendingServiceError) {
                           return Container(
-                            child: Text((state).message ?? ''),
+                            child: Text(state.message),
                           );
                         } else {
-                          return Container(child: Text('event Not generated'));
+                          return Container(
+                            child: Text('Unable to trigger Event!'),
+                          );
                         }
-                      }),
+                      },
+                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(10.0),
+                    //   child: Align(
+                    //       alignment: Alignment.centerLeft,
+                    //       child: Text(
+                    //         "For You",
+                    //         style: TextStyle(
+                    //           fontSize: 20,
+                    //           fontWeight: FontWeight.w500,
+                    //         ),
+                    //       )),
+                    // ),
 
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier * 2,
-                      ),
+                    // //Horizontal list view builder.
 
-                      BlocBuilder<PendingServiceBloc, PendingServiceState>(
-                        builder: (context, state) {
-                          if (state is LoadPendingService) {
-                            return PendingPaymentTile(
-                                amount: state.pendingService["dueAmount"].toDouble(),
-                                serviceProviders: state
-                                    .pendingService["dueProviders"]
-                                    .toInt());
-                          } else if (State is LoadingPendingService) {
-                            return CircularProgressIndicator();
-                          } else if (state is PendingServiceError) {
-                            return Container(
-                              child: Text(state.message),
-                            );
-                          } else {
-                            return Container(
-                              child: Text('Unable to trigger Event!'),
-                            );
-                          }
-                        },
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.all(10.0),
-                      //   child: Align(
-                      //       alignment: Alignment.centerLeft,
-                      //       child: Text(
-                      //         "For You",
-                      //         style: TextStyle(
-                      //           fontSize: 20,
-                      //           fontWeight: FontWeight.w500,
-                      //         ),
-                      //       )),
-                      // ),
+                    // //  Container(
 
-                      // //Horizontal list view builder.
+                    // //  ),
 
-                      // //  Container(
+                    // //////////////////////
 
-                      // //  ),
+                    // BlocBuilder<CuratedListBloc, CuratedListState>(
+                    //   builder: (context, state) {
+                    //     if (state is LoadingCuratedList)
+                    //       return CircularProgressIndicator(
+                    //         strokeWidth: 5.0,
+                    //         color: AppTheme.main,
+                    //       );
+                    //     else if (state is LoadedCuratedList) {
+                    //       //currently done for only one page!!
+                    //       return Container(
+                    //         height: SizeConfig.heightMultiplier * 22,
 
-                      // //////////////////////
+                    //         child: ListView.builder(
+                    //             scrollDirection: Axis.horizontal,
+                    //             physics: AlwaysScrollableScrollPhysics(),
+                    //             itemCount: curatedListData.length,
+                    //             itemBuilder: (context, int index) {
+                    //               return rewardPartnerTile(
+                    //                   background:
+                    //                       curatedListData[index].background,
+                    //                   imageurl: curatedListData[index].icon,
+                    //                   desc: curatedListData[index].tagline,
+                    //                   i: index);
+                    //             }),
 
-                      // BlocBuilder<CuratedListBloc, CuratedListState>(
-                      //   builder: (context, state) {
-                      //     if (state is LoadingCuratedList)
-                      //       return CircularProgressIndicator(
-                      //         strokeWidth: 5.0,
-                      //         color: AppTheme.main,
-                      //       );
-                      //     else if (state is LoadedCuratedList) {
-                      //       //currently done for only one page!!
-                      //       return Container(
-                      //         height: SizeConfig.heightMultiplier * 22,
+                    //         //   ),
+                    //       );
+                    //     } else {
+                    //       return Container(
+                    //           child: Text(
+                    //               (state as ErrorCuratedist).message ?? ''));
+                    //     }
+                    //   },
+                    // ),
 
-                      //         child: ListView.builder(
-                      //             scrollDirection: Axis.horizontal,
-                      //             physics: AlwaysScrollableScrollPhysics(),
-                      //             itemCount: curatedListData.length,
-                      //             itemBuilder: (context, int index) {
-                      //               return rewardPartnerTile(
-                      //                   background:
-                      //                       curatedListData[index].background,
-                      //                   imageurl: curatedListData[index].icon,
-                      //                   desc: curatedListData[index].tagline,
-                      //                   i: index);
-                      //             }),
+                    // //  rewardPartnerTile(),
 
-                      //         //   ),
-                      //       );
-                      //     } else {
-                      //       return Container(
-                      //           child: Text(
-                      //               (state as ErrorCuratedist).message ?? ''));
-                      //     }
-                      //   },
-                      // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(10.0),
+                    //   child: Align(
+                    //       alignment: Alignment.centerLeft,
+                    //       child: Text(
+                    //         "My Points",
+                    //         style: TextStyle(
+                    //           fontSize: 20,
+                    //           fontWeight: FontWeight.w500,
+                    //         ),
+                    //       )),
+                    // ),
 
-                      // //  rewardPartnerTile(),
+                    // Container(
+                    //   height: SizeConfig.heightMultiplier * 32,
+                    //   width: SizeConfig.widthMultiplier * 94,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.all(
+                    //         Radius.circular(SizeConfig.heightMultiplier * 2)),
+                    //     color: AppTheme.offWhite,
+                    //   ),
+                    //   child: Column(
+                    //     children: [
+                    //       Center(
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.all(8.0),
+                    //           child: Container(
+                    //             height: SizeConfig.heightMultiplier * 15,
+                    //             width: SizeConfig.widthMultiplier * 65,
+                    //             child: Row(
+                    //               children: [
+                    //                 Container(
+                    //                     child: Image.asset(
+                    //                         "assets/images/coin.png")),
+                    //                 SizedBox(
+                    //                   width: SizeConfig.widthMultiplier * 2,
+                    //                 ),
+                    //                 Container(
+                    //                     child: Column(
+                    //                   crossAxisAlignment:
+                    //                       CrossAxisAlignment.start,
+                    //                   children: [
+                    //                     SizedBox(
+                    //                       height:
+                    //                           SizeConfig.heightMultiplier *
+                    //                               1.5,
+                    //                     ),
+                    //                     Text(
+                    //                       state.user.fluxPoints.toString(),
+                    //                       style: TextStyle(
+                    //                         fontSize: 35,
+                    //                         fontWeight: FontWeight.bold,
+                    //                       ),
+                    //                     ),
+                    //                     Text(
+                    //                       'Flux Points',
+                    //                       style: TextStyle(
+                    //                         fontSize: 20,
+                    //                         fontWeight: FontWeight.w500,
+                    //                       ),
+                    //                     ),
+                    //                   ],
+                    //                 )),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Padding(
+                    //         padding: const EdgeInsets.only(
+                    //             left: 20.0, right: 8.0, bottom: 8.0),
+                    //         child: Center(
+                    //           child: Text(
+                    //             'Congratulations! You are among top 5 % of highest point users.!',
+                    //             style: TextStyle(
+                    //               color: AppTheme.main,
+                    //               fontSize: 12,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
 
-                      // Padding(
-                      //   padding: const EdgeInsets.all(10.0),
-                      //   child: Align(
-                      //       alignment: Alignment.centerLeft,
-                      //       child: Text(
-                      //         "My Points",
-                      //         style: TextStyle(
-                      //           fontSize: 20,
-                      //           fontWeight: FontWeight.w500,
-                      //         ),
-                      //       )),
-                      // ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "What's New",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                    ),
 
-                      // Container(
-                      //   height: SizeConfig.heightMultiplier * 32,
-                      //   width: SizeConfig.widthMultiplier * 94,
-                      //   decoration: BoxDecoration(
-                      //     borderRadius: BorderRadius.all(
-                      //         Radius.circular(SizeConfig.heightMultiplier * 2)),
-                      //     color: AppTheme.offWhite,
-                      //   ),
-                      //   child: Column(
-                      //     children: [
-                      //       Center(
-                      //         child: Padding(
-                      //           padding: const EdgeInsets.all(8.0),
-                      //           child: Container(
-                      //             height: SizeConfig.heightMultiplier * 15,
-                      //             width: SizeConfig.widthMultiplier * 65,
-                      //             child: Row(
-                      //               children: [
-                      //                 Container(
-                      //                     child: Image.asset(
-                      //                         "assets/images/coin.png")),
-                      //                 SizedBox(
-                      //                   width: SizeConfig.widthMultiplier * 2,
-                      //                 ),
-                      //                 Container(
-                      //                     child: Column(
-                      //                   crossAxisAlignment:
-                      //                       CrossAxisAlignment.start,
-                      //                   children: [
-                      //                     SizedBox(
-                      //                       height:
-                      //                           SizeConfig.heightMultiplier *
-                      //                               1.5,
-                      //                     ),
-                      //                     Text(
-                      //                       state.user.fluxPoints.toString(),
-                      //                       style: TextStyle(
-                      //                         fontSize: 35,
-                      //                         fontWeight: FontWeight.bold,
-                      //                       ),
-                      //                     ),
-                      //                     Text(
-                      //                       'Flux Points',
-                      //                       style: TextStyle(
-                      //                         fontSize: 20,
-                      //                         fontWeight: FontWeight.w500,
-                      //                       ),
-                      //                     ),
-                      //                   ],
-                      //                 )),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       Padding(
-                      //         padding: const EdgeInsets.only(
-                      //             left: 20.0, right: 8.0, bottom: 8.0),
-                      //         child: Center(
-                      //           child: Text(
-                      //             'Congratulations! You are among top 5 % of highest point users.!',
-                      //             style: TextStyle(
-                      //               color: AppTheme.main,
-                      //               fontSize: 12,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
+                    BlocBuilder<AdvertiserBloc, AdvertiserState>(
+                      builder: (context, state) {
+                        if (state is ErrorExternalAdvertiser ||
+                            state is ErrorInternalAdvertiser)
+                          return Center(
+                            child: Container(
+                              child: Text((state as ErrorExternalAdvertiser)
+                                      .message ??
+                                  (state as ErrorInternalAdvertiser).message ??
+                                  ''),
+                            ),
+                          );
+                        if (state is LoadingExternalAdvertiser ||
+                            state is LoadingInternalAdvertiser) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: AppTheme.main,
+                              strokeWidth: 5.0,
+                            ),
+                          );
+                        } else if (state is LoadedExternalAdvertiser) {
+                          // advertiserBloc.add(GetInternalAdvertiserEvent(
+                          //     page: 0,
+                          //     internalAdvertiserList: InadvertiseList));
+                          //  if (state is LoadingExternalAdvertiser)
+                          return Container(
+                            margin: EdgeInsets.all(6.0),
+                            height: SizeConfig.heightMultiplier * 18,
 
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "What's New",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )),
-                      ),
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: AlwaysScrollableScrollPhysics(),
+                                itemCount: ExadvertiseList.length,
+                                itemBuilder: (context, int index) {
+                                  return advertiserTile(
+                                      i: index,
+                                      imageurl:
+                                          ExadvertiseList[index].productPic ??
+                                              '',
+                                      desc: ExadvertiseList[index]
+                                              .shortDescription ??
+                                          '');
+                                }),
 
-                      BlocBuilder<AdvertiserBloc, AdvertiserState>(
-                        builder: (context, state) {
-                          if (state is ErrorExternalAdvertiser ||
-                              state is ErrorInternalAdvertiser)
-                            return Center(
-                              child: Container(
-                                child: Text((state as ErrorExternalAdvertiser)
-                                        .message ??
-                                    (state as ErrorInternalAdvertiser)
-                                        .message ??
-                                    ''),
-                              ),
-                            );
-                          if (state is LoadingExternalAdvertiser ||
-                              state is LoadingInternalAdvertiser) {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: AppTheme.main,
-                                strokeWidth: 5.0,
-                              ),
-                            );
-                          } else if (state is LoadedExternalAdvertiser) {
-                            // advertiserBloc.add(GetInternalAdvertiserEvent(
-                            //     page: 0,
-                            //     internalAdvertiserList: InadvertiseList));
-                            //  if (state is LoadingExternalAdvertiser)
-                            return Container(
-                              margin: EdgeInsets.all(6.0),
-                              height: SizeConfig.heightMultiplier * 18,
+                            //   ),
+                          );
+                        } else {
+                          // To Configure it
+                          //  advertiserBloc.add(GetInternalAdvertiserEvent(
+                          //     page: 0,
+                          //     internalAdvertiserList: InadvertiseList));
+                          //  if (state is LoadingExternalAdvertiser)
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    ),
 
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  itemCount: ExadvertiseList.length,
-                                  itemBuilder: (context, int index) {
-                                    return advertiserTile(
-                                        i: index,
-                                        imageurl:
-                                            ExadvertiseList[index].productPic ??
-                                                '',
-                                        desc: ExadvertiseList[index]
-                                                .shortDescription ??
-                                            '');
-                                  }),
+                    //   Spacer(),
 
-                              //   ),
-                            );
-                          } else {
-                            // To Configure it
-                            //  advertiserBloc.add(GetInternalAdvertiserEvent(
-                            //     page: 0,
-                            //     internalAdvertiserList: InadvertiseList));
-                            //  if (state is LoadingExternalAdvertiser)
-                            return CircularProgressIndicator();
-                          }
-                        },
-                      ),
+                    //   Container(child: Flexible(fit: FlexFit.loose,child: LineChartSample1())),
 
-                      //   Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Paid With Flux",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                    ),
 
-                      //   Container(child: Flexible(fit: FlexFit.loose,child: LineChartSample1())),
+                    BlocBuilder<GraphBloc, GraphState>(
+                      builder: (context, state) {
+                        if (state is LoadGraphState) {
+                          return Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: LineChartGraph(
+                              mp: state.graphData,
+                              height: SizeConfig.heightMultiplier * 40,
+                              width: SizeConfig.widthMultiplier * 90,
+                              popup: true,
+                              user: user,
+                              //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
+                            ),
+                          );
+                        } else if (state is LoadingGraphState) {
+                          return CircularProgressIndicator();
+                        } else if (state is ErrorGraphState) {
+                          return Container(
+                            child: Text(state.message),
+                          );
+                        } else {
+                          return Container(
+                            child: Text('event not fired!'),
+                          );
+                        }
+                      },
+                    ),
 
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Paid With Flux",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )),
-                      ),
+                    //////////////////////////////###########################
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "My Recent Payment",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                    ),
 
-                      BlocBuilder<GraphBloc, GraphState>(
-                        builder: (context, state) {
-                          if (state is LoadGraphState) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: LineChartGraph(
-                                mp: state.graphData,
-                                //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
-                              ),
-                            );
-                          } else if (state is LoadingGraphState) {
-                            return CircularProgressIndicator();
-                          } else if (state is ErrorGraphState) {
-                            return Container(
-                              child: Text(state.message),
-                            );
-                          } else {
-                            return Container(
-                              child: Text('event not fired!'),
-                            );
-                          }
-                        },
-                      ),
+                    BlocBuilder<RecentPaymentBloc, RecentPaymentState>(
+                      builder: (context, state) {
+                        if (state is LoadingRecentPaymentState)
+                          return CircularProgressIndicator();
+                        else if (state is LoadRecentPaymentState) {
+                          return Container(
+                            height: SizeConfig.heightMultiplier * 9,
+                            child:
+                                // ListView.builder(
+                                // scrollDirection: Axis.vertical,
+                                //physics: const ClampingScrollPhysics(),
+                                //itemCount: state.RecentPaymentData.length,
+                                //itemBuilder: (context, int index) {
+                                //   return
+                                SingleChildScrollView(
+                                  child: Column(
+                                                              children: [
+                                  recentPaymentTile(
+                                      name: state.RecentPaymentData[0]['name'],
+                                      paidOn: state.RecentPaymentData[0]
+                                          ['paidOn'],
+                                      imageurl: state.RecentPaymentData[0]
+                                          ['imageurl'],
+                                      amount: state.RecentPaymentData[0]
+                                          ['amount']),
+                                            recentPaymentTile(
+                                      name: state.RecentPaymentData[0]['name'],
+                                      paidOn: state.RecentPaymentData[0]
+                                          ['paidOn'],
+                                      imageurl: state.RecentPaymentData[0]
+                                          ['imageurl'],
+                                      amount: state.RecentPaymentData[0]
+                                          ['amount']),
+                                            recentPaymentTile(
+                                      name: state.RecentPaymentData[0]['name'],
+                                      paidOn: state.RecentPaymentData[0]
+                                          ['paidOn'],
+                                      imageurl: state.RecentPaymentData[0]
+                                          ['imageurl'],
+                                      amount: state.RecentPaymentData[0]
+                                          ['amount']),
+                                            recentPaymentTile(
+                                      name: state.RecentPaymentData[0]['name'],
+                                      paidOn: state.RecentPaymentData[0]
+                                          ['paidOn'],
+                                      imageurl: state.RecentPaymentData[0]
+                                          ['imageurl'],
+                                      amount: state.RecentPaymentData[0]
+                                          ['amount']),
+                                            recentPaymentTile(
+                                      name: state.RecentPaymentData[0]['name'],
+                                      paidOn: state.RecentPaymentData[0]
+                                          ['paidOn'],
+                                      imageurl: state.RecentPaymentData[0]
+                                          ['imageurl'],
+                                      amount: state.RecentPaymentData[0]
+                                          ['amount']),
+                                                              ],
+                                                            ),
+                                ),
+                          );
+                          //   }),
 
-                      //////////////////////////////###########################
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "My Recent Payment",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )),
-                      ),
+                          //   ),
+                          //);
+                        } else if (state is ErrorRecentPaymentState)
+                          return Container(child: Text(state.message));
+                        else
+                          return Container(
+                              child: Text(
+                                  'get recent payment details Event not Fired!'));
+                      },
+                    ),
 
-                      BlocBuilder<RecentPaymentBloc, RecentPaymentState>(
-                        builder: (context, state) {
-                          if (state is LoadingRecentPaymentState)
-                            return CircularProgressIndicator();
-                          else if (state is LoadRecentPaymentState) {
-                            return Container(
-                              height: SizeConfig.heightMultiplier * 9,
-
-                              child: ListView.builder(
-                                  // scrollDirection: Axis.vertical,
-                                  physics: const ClampingScrollPhysics(),
-                                  itemCount: state.RecentPaymentData.length,
-                                  itemBuilder: (context, int index) {
-                                    return recentPaymentTile(
-                                        name: state.RecentPaymentData[index]
-                                            ['name'],
-                                        paidOn: state.RecentPaymentData[index]
-                                            ['paidOn'],
-                                        imageurl: state.RecentPaymentData[index]
-                                            ['imageurl'],
-                                        amount: state.RecentPaymentData[index]
-                                            ['amount']);
-                                  }),
-
-                              //   ),
-                            );
-                          } else if (state is ErrorRecentPaymentState)
-                            return Container(child: Text(state.message));
-                          else
-                            return Container(
-                                child: Text(
-                                    'get recent payment details Event not Fired!'));
-                        },
-                      ),
-                    
-                      //#############################################
-                    ],
-                  ),
+                    //#############################################
+                  ],
                 ),
               ),
-            ])
-            //   } else {
-            //     return Center(
-            //         child: CircularProgressIndicator(
-            //       strokeWidth: 4.0,
-            //     ));
-            //   }
-            // });
-          // })
+            ),
+          ])
+              //   } else {
+              //     return Center(
+              //         child: CircularProgressIndicator(
+              //       strokeWidth: 4.0,
+              //     ));
+              //   }
+              // });
+              // })
 
               //  Column(
               //   children: [
