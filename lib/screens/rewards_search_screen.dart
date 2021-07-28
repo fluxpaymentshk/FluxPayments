@@ -5,6 +5,7 @@ import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/screens/coupon_details.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/back_button.dart';
+import 'package:flux_payments/widgets/drop_down_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RewardsSearchScreen extends StatefulWidget {
@@ -103,7 +104,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                         ),
                         Container(
                           margin: EdgeInsets.all(8),
-                          height: MediaQuery.of(context).size.height * 0.05,
+                          height: 40,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
@@ -122,38 +123,47 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                     });
                                   }
                                 },
-                                child: Container(
-                                  padding: EdgeInsets.all(4),
-                                  // width: 40,
-                                  decoration: BoxDecoration(
-                                    gradient: selectedCategories.contains(
-                                            futureData.data?[index]
-                                                ["rewardCategoryID"])
-                                        ? RadialGradient(
-                                            center: Alignment(0.8, 0.8),
-                                            colors: [
-                                              Color(0xffB772EE),
-                                              Color(0xff7041EE),
-                                            ],
-                                            radius: 2,
-                                          )
-                                        : null,
-                                    color: Color(0xffE9E9FF),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                  // height: 5,
-                                  margin: EdgeInsets.all(8),
-                                  child: Text(
-                                    futureData.data?[index]["name"],
-                                    style: GoogleFonts.montserrat(
-                                      color: selectedCategories.contains(
+                                child: Center(
+                                  child: Container(
+                                    padding: EdgeInsets.all(2),
+                                    // width: 40,
+                                    decoration: BoxDecoration(
+                                      boxShadow: <BoxShadow>[
+                                        BoxShadow(
+                                          color: Colors.grey.shade400,
+                                          spreadRadius: 1,
+                                          offset: Offset(1, 1),
+                                        ),
+                                      ],
+                                      gradient: selectedCategories.contains(
                                               futureData.data?[index]
                                                   ["rewardCategoryID"])
-                                          ? Colors.white
-                                          : AppTheme.main,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
+                                          ? RadialGradient(
+                                              center: Alignment(0.8, 0.8),
+                                              colors: [
+                                                Color(0xffB772EE),
+                                                Color(0xff7041EE),
+                                              ],
+                                              radius: 2,
+                                            )
+                                          : null,
+                                      color: Color(0xffE9E9FF),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                    ),
+                                    // height: 5,
+                                    margin: EdgeInsets.all(8),
+                                    child: Text(
+                                      futureData.data?[index]["name"],
+                                      style: GoogleFonts.montserrat(
+                                        color: selectedCategories.contains(
+                                                futureData.data?[index]
+                                                    ["rewardCategoryID"])
+                                            ? Colors.white
+                                            : AppTheme.main,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -168,44 +178,24 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.only(left: 20),
-                                child: DropdownButton(
-                                  icon: Container(
-                                    height: 24,
-                                    child: FloatingActionButton(
-                                      onPressed: null,
-                                      shape: CircleBorder(
-                                        side: BorderSide(
-                                          color: AppTheme.main,
-                                          width: 3,
-                                        ),
+                              Flexible(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color(0xffE9E9FF),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                        color: Colors.grey.shade300,
+                                        spreadRadius: 1,
+                                        offset: Offset(1, 1),
                                       ),
-                                      backgroundColor: Colors.white,
-                                      mini: true,
-                                      child: Icon(
-                                        Icons.arrow_downward_outlined,
-                                        color: AppTheme.main,
-                                        size: 16,
-                                      ),
-                                    ),
+                                    ],
                                   ),
-                                  // CircleAvatar(
-                                  //   child: Icon(
-                                  //     Icons.arrow_downward,
-                                  //     color: AppTheme.main,
-                                  //   ),
-                                  //   backgroundColor: Colors.white,
-                                  // ),
-                                  hint: Text(
-                                    "Sort",
-                                    style: GoogleFonts.montserrat(
-                                      color: AppTheme.main,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  items: [],
+                                  margin: EdgeInsets.only(left: 20),
+                                  padding: EdgeInsets.all(8),
+                                  height: 50,
+                                  child: DropDownButton(),
                                 ),
                               ),
                               Container(
@@ -264,7 +254,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                       width: double.infinity,
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.25,
+                                              0.3,
                                       // color: Colors.red,
                                       child: Card(
                                         elevation: 6,
@@ -280,7 +270,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.165,
+                                                  0.2,
                                               child: Card(
                                                 elevation: 3,
                                                 margin: EdgeInsets.zero,
@@ -339,76 +329,81 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                 ),
                                               ),
                                             ),
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 10, top: 3),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.06,
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          "BurgerKing",
-                                                          style: GoogleFonts
-                                                              .montserrat(
-                                                            color:
-                                                                AppTheme.main,
-                                                            fontSize: 10,
+                                            Expanded(
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 10, top: 3),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Container(
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.06,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            "BurgerKing",
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                              color:
+                                                                  AppTheme.main,
+                                                              fontSize: 10,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 2,
-                                                        ),
-                                                        Text(
-                                                          "BurgerKing",
-                                                          style: GoogleFonts
-                                                              .montserrat(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.bold,
+                                                          SizedBox(
+                                                            height: 2,
                                                           ),
-                                                        ),
-                                                        // Text("BurgerKing"),
-                                                      ],
+                                                          Text(
+                                                            "BurgerKing",
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          // Text("BurgerKing"),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Flexible(
-                                                    child: Container(
-                                                      width: 150,
-                                                      child: ListTile(
-                                                        minVerticalPadding: 1,
-                                                        horizontalTitleGap: 1,
-                                                        leading: Image.asset(
-                                                          "assets/images/coin.png",
-                                                          height: 40,
-                                                        ),
-                                                        title: Text(
-                                                          "200",
-                                                          style: GoogleFonts
-                                                              .montserrat(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 25,
-                                                            color:
-                                                                AppTheme.main,
+                                                    Flexible(
+                                                      child: Container(
+                                                        width: 150,
+                                                        child: ListTile(
+                                                          minVerticalPadding: 1,
+                                                          horizontalTitleGap: 1,
+                                                          leading: Image.asset(
+                                                            "assets/images/coin.png",
+                                                            height: 40,
+                                                          ),
+                                                          title: Text(
+                                                            "200",
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 25,
+                                                              color:
+                                                                  AppTheme.main,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],

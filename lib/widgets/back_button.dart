@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flux_payments/config/theme.dart';
 
-Widget backButton(BuildContext context, String tag,[Color? color]) {
+Widget backButton(BuildContext context, String tag, [Color? color]) {
   return Container(
     color: Colors.transparent,
     width: 35,
@@ -18,7 +18,7 @@ Widget backButton(BuildContext context, String tag,[Color? color]) {
           width: 2.5,
         ),
       ),
-      backgroundColor:color?? Colors.white,
+      backgroundColor: color ?? Colors.white,
       mini: true,
       child: Icon(
         Icons.arrow_back_outlined,

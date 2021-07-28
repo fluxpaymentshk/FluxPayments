@@ -174,8 +174,9 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                   duration: Duration(milliseconds: 500),
                   height: !isRedeemed
                       ? MediaQuery.of(context).size.height * 0.085
-                      : MediaQuery.of(context).size.height * 0.52,
+                      : MediaQuery.of(context).size.height * 0.6,
                   child: SingleChildScrollView(
+                    primary: false,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
@@ -228,23 +229,28 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                         8,
                                       ),
                                     ),
-                                    gradient: RadialGradient(
-                                      center: Alignment(0.6, 0.5),
-                                      colors: [
-                                        Color(0xffB772EE),
-                                        Color(0xff7041EE),
-                                      ],
-                                      radius: 2.5,
-                                    ),
+                                    border: Border.all(color: AppTheme.main),
+                                    gradient: isRedeemed
+                                        ? null
+                                        : RadialGradient(
+                                            center: Alignment(0.6, 0.5),
+                                            colors: [
+                                              Color(0xffB772EE),
+                                              Color(0xff7041EE),
+                                            ],
+                                            radius: 2.5,
+                                          ),
                                   ),
                                   child: Center(
                                     child: Text(
-                                      "Redeem Now",
+                                      isRedeemed ? "Redeemed" : "Redeem Now",
                                       style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16,
                                         // height: 20,
-                                        color: Colors.white,
+                                        color: isRedeemed
+                                            ? AppTheme.main
+                                            : Colors.white,
                                       ),
                                     ),
                                   ),
@@ -264,45 +270,48 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                               expand: isRedeemed,
                             ),
                           ),
-                        if (isRedeemed)
-                          //   Center(
-                          //     child:
-                          Container(
-                            width: size.width * 0.9,
-                            height: size.width * 0.9,
-                            child: ExpandWidget(
-                              child: GenerateMapWidget(),
-                              expand: isRedeemed,
-                            ),
-                          ),
                       ],
                     ),
                   ),
                 ),
-                Divider(
-                  color: AppTheme.main,
-                  indent: 16,
-                  endIndent: 16,
-                ),
-                // SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    "Terms & Condition",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
+                if (isRedeemed)
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: size.height * 0.05),
+                      width: size.width * 0.9,
+                      height: size.height * 0.7,
+                      child: ExpandWidget(
+                        child: GenerateMapWidget(),
+                        expand: isRedeemed,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 1, 16, 16),
-                  child: Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis cursus enim tempor enim eu, pretium aliquet. Integer morbi volutpat sit porttitor justo malesuada. Aliquam dignissim cursus tincidunt tempus habitasse. Maecenas mollis elementum arcu, etiam a. Sed aliquam nunc in lectus. Aliquet eget sapien nisl odio massa aliquet. Et maecenas tellus porta tortor turpis quis a. Bibendum in tempor at arcu eget nec. Convallis lectus tristique nulla volutpat. Varius sagittis, elementum tortor adipiscing hendrerit.Facilisis suspendisse at maecenas tristique dui ultricies placerat. In lectus eu lectus gravida vulputate. Ultrices nisl nibh dis gravida morbi iaculis pellentesque fermentum. Sed convallis non etiam diam mauris sem lacus. Vitae duis eu iaculis dictumst. Pulvinar amet, sed sollicitudin mi. Amet, semper pretium diam ornare mi aliquam, ultrices viverra enim. Risus lacus auctor morbi elementum elementum nullam tincidunt amet. Nec vitae facilisis nisl sit. Metus aliquet velit orci ultricies. At tellus mauris quis enim. Tincidunt a lacus, in id velit, nibh vel congue quis. Aliquam convallis turpis neque elit. Rutrum nisl donec felis tortor, id.Quam diam sit feugiat et in. Dictum condimentum eget lacus aliquet vitae tincidunt duis. Ultrices mattis nunc viverra ultricies sed. At facilisi imperdiet pretium vulputate tincidunt ultrices cursus faucibus amet. Aliquam venenatis tortor vitae vestibulum aliquam elit tellus sed. Pulvinar est condimentum at sem. Condimentum tincidunt leo, ipsum maecenas enim duis. Nisi netus id etiam sed eget condimentum aliquet. Cursus nisl, sed non nulla ac posuere eleifend. At pharetra, volutpat massa hac lobortis. Natoque magna sociis duis duis nec elementum ultrices amet. Fames diam massa tincidunt libero sed ultrices lorem habitant.Ac interdum aliquam amet consectetur vulputate. Ut viverra etiam fringilla massa aliquet vitae sit. Varius orci urna nascetur tortor. Sapien magna interdum at tincidunt ullamcorper. Mattis non tristique orci neque risus. Neque, ac id condimentum arcu suspendisse. Sagitti",
-                    style: GoogleFonts.montserrat(fontSize: 10),
+                if (!isRedeemed)
+                  Divider(
+                    color: AppTheme.main,
+                    indent: 16,
+                    endIndent: 16,
                   ),
-                )
+                // SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                if (!isRedeemed)
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      "Terms & Condition",
+                      style: GoogleFonts.montserrat(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                if (!isRedeemed)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 1, 16, 16),
+                    child: Text(
+                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis cursus enim tempor enim eu, pretium aliquet. Integer morbi volutpat sit porttitor justo malesuada. Aliquam dignissim cursus tincidunt tempus habitasse. Maecenas mollis elementum arcu, etiam a. Sed aliquam nunc in lectus. Aliquet eget sapien nisl odio massa aliquet. Et maecenas tellus porta tortor turpis quis a. Bibendum in tempor at arcu eget nec. Convallis lectus tristique nulla volutpat. Varius sagittis, elementum tortor adipiscing hendrerit.Facilisis suspendisse at maecenas tristique dui ultricies placerat. In lectus eu lectus gravida vulputate. Ultrices nisl nibh dis gravida morbi iaculis pellentesque fermentum. Sed convallis non etiam diam mauris sem lacus. Vitae duis eu iaculis dictumst. Pulvinar amet, sed sollicitudin mi. Amet, semper pretium diam ornare mi aliquam, ultrices viverra enim. Risus lacus auctor morbi elementum elementum nullam tincidunt amet. Nec vitae facilisis nisl sit. Metus aliquet velit orci ultricies. At tellus mauris quis enim. Tincidunt a lacus, in id velit, nibh vel congue quis. Aliquam convallis turpis neque elit. Rutrum nisl donec felis tortor, id.Quam diam sit feugiat et in. Dictum condimentum eget lacus aliquet vitae tincidunt duis. Ultrices mattis nunc viverra ultricies sed. At facilisi imperdiet pretium vulputate tincidunt ultrices cursus faucibus amet. Aliquam venenatis tortor vitae vestibulum aliquam elit tellus sed. Pulvinar est condimentum at sem. Condimentum tincidunt leo, ipsum maecenas enim duis. Nisi netus id etiam sed eget condimentum aliquet. Cursus nisl, sed non nulla ac posuere eleifend. At pharetra, volutpat massa hac lobortis. Natoque magna sociis duis duis nec elementum ultrices amet. Fames diam massa tincidunt libero sed ultrices lorem habitant.Ac interdum aliquam amet consectetur vulputate. Ut viverra etiam fringilla massa aliquet vitae sit. Varius orci urna nascetur tortor. Sapien magna interdum at tincidunt ullamcorper. Mattis non tristique orci neque risus. Neque, ac id condimentum arcu suspendisse. Sagitti",
+                      style: GoogleFonts.montserrat(fontSize: 10),
+                    ),
+                  )
               ],
             ),
           ),

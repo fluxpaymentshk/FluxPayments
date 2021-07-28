@@ -176,4 +176,21 @@ class DatabaseLambdaService {
     // print("======================================+$response");
     return response;
   }
+
+  Future<List<Map<String, dynamic>>> searchFavorites(String query) async {
+    Map<String, dynamic> r = {};
+    List<Map<String, dynamic>> rp = [];
+    try {
+      result = await lambda
+          .callLambda('aurora-serverless-rewardCategory', <String, dynamic>{
+        "query": query,
+      });
+      print(
+          "---------------------------------------------------------------------------------$result");
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+    return getOrganizedData(result);
+  }
 }

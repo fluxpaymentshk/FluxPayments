@@ -14,16 +14,13 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flux_payments/amplifyconfiguration.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
-import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/notification_handler.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/home_page.dart';
-import 'package:flux_payments/screens/navigator_page.dart';
-import 'package:flux_payments/widgets/generate_map.dart';
-
+import 'package:flux_payments/screens/rewards_search_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 List<types.Message> messages = [];
@@ -136,52 +133,52 @@ class _MyAppState extends State<MyApp> {
           unselectedIconTheme: IconThemeData(size: 30),
         ),
       ),
-      home: 
-          MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => AuthBloc(_loginRepository),
-          ),
-          BlocProvider(
-            create: (_) => UserBloc(_userConfigRepository),
-          ),
-        ],
-        child: BlocBuilder<AuthBloc, AuthState>(
-          buildWhen: (prevSt, newSt) {
-            return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
-          },
-          builder: (ctx, st) {
-            log(_amplifyConfigured.toString());
-            log("Sign?:$isSignedIn");
-            return (!_amplifyConfigured)
-                ? Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : FutureBuilder<bool>(
-                    future: currentUser(ctx),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Scaffold(
-                          body: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      if (snapshot.hasData &&
-                          snapshot.data != null &&
-                          snapshot.data == false)
-                        return LoginPage(
-                          loginRepo: _loginRepository,
-                          userConfigRepository: _userConfigRepository,
-                        );
-                      return NavigatorPage(
-                          userRepository: _userConfigRepository);
-                    });
-          },
-        ),
-      ),
+      home: RewardsSearchScreen(),
+      //     MultiBlocProvider(
+      //   providers: [
+      //     BlocProvider(
+      //       create: (_) => AuthBloc(_loginRepository),
+      //     ),
+      //     BlocProvider(
+      //       create: (_) => UserBloc(_userConfigRepository),
+      //     ),
+      //   ],
+      //   child: BlocBuilder<AuthBloc, AuthState>(
+      //     buildWhen: (prevSt, newSt) {
+      //       return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
+      //     },
+      //     builder: (ctx, st) {
+      //       log(_amplifyConfigured.toString());
+      //       log("Sign?:$isSignedIn");
+      //       return (!_amplifyConfigured)
+      //           ? Scaffold(
+      //               body: Center(
+      //                 child: CircularProgressIndicator(),
+      //               ),
+      //             )
+      //           : FutureBuilder<bool>(
+      //               future: currentUser(ctx),
+      //               builder: (context, snapshot) {
+      //                 if (!snapshot.hasData) {
+      //                   return Scaffold(
+      //                     body: Center(
+      //                       child: CircularProgressIndicator(),
+      //                     ),
+      //                   );
+      //                 }
+      //                 if (snapshot.hasData &&
+      //                     snapshot.data != null &&
+      //                     snapshot.data == false)
+      //                   return LoginPage(
+      //                     loginRepo: _loginRepository,
+      //                     userConfigRepository: _userConfigRepository,
+      //                   );
+      //                 return NavigatorPage(
+      //                     userRepository: _userConfigRepository);
+      //               });
+      //     },
+      //   ),
+      // ),
       routes: {
         LoginPage.routeName: (_) => MultiBlocProvider(
               providers: [
