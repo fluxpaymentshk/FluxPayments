@@ -85,43 +85,8 @@ class _HomePageState extends State<HomePage> {
     var bannerBloc = BlocProvider.of<BannerBloc>(context);
     var graphBloc = BlocProvider.of<GraphBloc>(context);
 
-<<<<<<< HEAD
-    log("-----${SizeConfig.heightMultiplier}");
-    log("---${SizeConfig.widthMultiplier}");
-
-    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-      SizeConfig().init(constraints);
-      return Flex(direction: Axis.horizontal, children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 8,
-                ),
-                Container(
-                  height: SizeConfig.heightMultiplier * 12,
-                  width: SizeConfig.widthMultiplier * 100,
-                  child: Center(
-                    //  child: Image.asset("assets/images/logo.png"),
-                    child: Text(
-                      "Flux.",
-                      style: TextStyle(
-                        foreground: Paint()
-                          ..shader = LinearGradient(
-                            colors: <Color>[AppTheme.main, Color(0xffA867EE)],
-                          ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                        fontSize: 60,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ),
-                ),
-=======
     var pendingServiceBloc = BlocProvider.of<PendingServiceBloc>(context);
     var recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
->>>>>>> b96a617a7f5fdc39bdc31981f54b9a48b2e77b50
 
     final DatabaseRepository databaseRepo = DatabaseRepository();
     bannerBloc.add(GetBannerEvent());

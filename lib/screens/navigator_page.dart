@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-<<<<<<< HEAD
 import 'package:flux_payments/screens/rewards_screen.dart';
-=======
 import 'package:flux_payments/screens/bill_payment.dart';
 import 'package:flux_payments/screens/gift_page.dart';
 import 'package:flux_payments/screens/reward_partners.dart';
->>>>>>> b96a617a7f5fdc39bdc31981f54b9a48b2e77b50
 import 'package:flux_payments/screens/support_bot_screen.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:tuple/tuple.dart';
@@ -46,29 +43,21 @@ class _NavigatorPageState extends State<NavigatorPage> {
   void initState() {
     super.initState();
     _pages = [
-<<<<<<< HEAD
-      Tuple2('payment', ProfilePage()),
-      Tuple2('home', HomePage(userRepository: widget.userRepository)),
-      Tuple2("Rewards", RewardsScreen())
-=======
       
       // Tuple2('payment', PayBills()),
       Tuple2('payment', BillPayment(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
       Tuple2('home', HomePage(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
       // Tuple2('gift', giftPage()),
-      Tuple2("Rewards", RewardPartnerScreen())
->>>>>>> b96a617a7f5fdc39bdc31981f54b9a48b2e77b50
+      Tuple2("Rewards", RewardsScreen())
     ];
   }
-
-  int _selectedPage = 0;
+int _selectedPage = 0;
 
   PageController _pageController = PageController();
   final controller = SheetController();
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     double headerHeight = MediaQuery.of(context).size.height * 0.08;
     return Scaffold(
       bottomNavigationBar: SafeArea(
@@ -123,50 +112,107 @@ class _NavigatorPageState extends State<NavigatorPage> {
                     MediaQuery.of(context).size.height * botScreenHeightRatio,
                 child: SupportBotScreen(),
               );
-=======
-    print(_pages);
-    print('//////////////');
-    return LayoutBuilder(builder: (context, constraints) {
-        SizeConfig().init(constraints);
-        return Scaffold(
-          body: PageView(
-            children: _pages.map<Widget>((Tuple2 page) => page.item2).toList(),
-            onPageChanged: (index) {
-              setState(() {
-                _selectedPage = index;
-              });
->>>>>>> b96a617a7f5fdc39bdc31981f54b9a48b2e77b50
             },
-            controller: _pageController,
+            headerBuilder: (context, state) {
+              log(state.extent.toString());
+              if (isOpened)
+                return Container(
+                  height: headerHeight,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(21),
+                    color: Color(0xffF2F2FF),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: IconButton(
+                    icon: ImageIcon(
+                      AssetImage(
+                        "assets/icons/down_icon.png",
+                      ),
+                    ),
+                    onPressed: controller.collapse,
+                  ),
+                );
+              return Container(
+                height: headerHeight,
+                child: _bottomNavigationBarWidget(context),
+              );
+            }),
+      ),
+    );
+  }
+
+  Widget _bottomNavigationBarWidget(BuildContext context) {
+    return BottomNavigationBar(
+      backgroundColor: Color(0xffF6F6FF),
+      items: const [
+        BottomNavigationBarItem(
+          icon: ImageIcon(
+            AssetImage("assets/icons/my_bills.png"),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.payment),
-                label: 'payment',
+          activeIcon: Material(
+            elevation: 3,
+            shape: CircleBorder(),
+            child: CircleAvatar(
+              child: ImageIcon(
+                AssetImage("assets/icons/my_bills.png"),
+                color: Color(0xff7041EE),
+                size: 30,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.card_giftcard),
-                label: 'gift',
-              ),
-            ],
-            currentIndex: _selectedPage,
-            selectedItemColor: Colors.amber[800],
-            onTap: (index) {
-              setState(() {
-                _selectedPage = index;
-    
-                _pageController.animateToPage(_selectedPage,
-                    duration: Duration(milliseconds: 300), curve: Curves.linear);
-              });
-            },
+              backgroundColor: Colors.white,
+            ),
           ),
+          label: 'MY BILLS',
+        ),
+        BottomNavigationBarItem(
+          icon: ImageIcon(
+            AssetImage("assets/icons/home.png"),
+          ),
+          activeIcon: Material(
+            elevation: 3,
+            shape: CircleBorder(),
+            child: CircleAvatar(
+              child: ImageIcon(
+                AssetImage("assets/icons/home.png"),
+                color: Color(0xff7041EE),
+                size: 30,
+              ),
+              backgroundColor: Colors.white,
+            ),
+          ),
+          label: 'HOME',
+        ),
+        BottomNavigationBarItem(
+          icon: ImageIcon(
+            AssetImage("assets/icons/favorites.png"),
+          ),
+          activeIcon: Material(
+            elevation: 3,
+            shape: CircleBorder(),
+            child: CircleAvatar(
+              child: ImageIcon(
+                AssetImage("assets/icons/favorites.png"),
+                color: Color(0xff7041EE),
+                size: 30,
+              ),
+              backgroundColor: Colors.white,
+            ),
+          ),
+          label: 'REWARDS',
+        ),
+      ],
+      currentIndex: _selectedPage,
+      onTap: (index) {
+        setState(
+          () {
+            _selectedPage = index;
+            _pageController.jumpToPage(
+              _selectedPage,
+            );
+          },
         );
-      }
+      },
+      showUnselectedLabels: false,
     );
   }
 }
