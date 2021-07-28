@@ -1,24 +1,66 @@
-//@dart=2.9
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flux_payments/amplifyconfiguration.dart';
+import 'package:flux_payments/bloc/advertiser_bloc/advertiser_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
+import 'package:flux_payments/bloc/curated_list_bloc/curated_list_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/bloc/pending_service_bloc/pending_service_bloc.dart';
+import 'package:flux_payments/notification_handler.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/home_page.dart';
-import 'package:flux_payments/screens/login_page.dart';
-import 'package:flux_payments/routes/modal_routes.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
-// import 'package:dart_mssql/dart_mssql.dart';
 
-void main() async {
+import 'package:flux_payments/services/database_lambda.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'bloc/banner_bloc/banner_bloc.dart';
+import 'bloc/graph_bloc/graph_bloc.dart';
+import 'bloc/recent_payment_bloc/recent_payment_bloc.dart';
+
+
+List<types.Message> messages = [];
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await dotenv.load(fileName: ".env");
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//     statusBarColor: Colors.transparent,
+//  ));
+  NotificationHandler? _notificationHandler = NotificationHandler();
+
+  try {
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  } catch (e) {
+    print(e);
+  }
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    log("${message.data}");
+    if (message.data != null) {
+      log("hey");
+      _notificationHandler.firebaseMessagingForegroundHandler(message);
+    }
+  });
+
   runApp(MyApp());
 }
 
@@ -30,6 +72,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   LoginRepository _loginRepository = new LoginRepository();
   UserConfigRepository _userConfigRepository = new UserConfigRepository();
+   DatabaseRepository _databaseRepository = DatabaseRepository();
 
   bool _amplifyConfigured = false;
   bool isSignedIn = false;
@@ -38,14 +81,14 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _configureAmplify();
-    ModalRoutes.loginRepo = _loginRepository;
-    ModalRoutes.userConfigRepository = _userConfigRepository;
   }
 
   void _configureAmplify() async {
     if (!mounted) return;
     AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
-    Amplify.addPlugins([authPlugin]);
+    AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
+    AmplifyAPI amplifyAPI = AmplifyAPI();
+    Amplify.addPlugins([authPlugin, amplifyAPI, analyticsPlugin]);
 
     try {
       await Amplify.configure(amplifyconfig);
@@ -90,16 +133,38 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flux Payments',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+   
+   textTheme: GoogleFonts.montserratTextTheme(
+      Theme.of(context).textTheme,
+    ),
+        primaryColor: Color(0xff7041EE),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Color(0xff7041EE),
+          unselectedItemColor: Color(0xff7041EE),
+          selectedLabelStyle:
+              TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+          selectedIconTheme: IconThemeData(size: 30),
+          unselectedIconTheme: IconThemeData(size: 30),
+        ),
       ),
-      home: MultiBlocProvider(
+      home:
+          //  SupportBotScreen()
+          MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (_) => AuthBloc(_loginRepository),
           ),
           BlocProvider(
-            create: (_) => UserBloc(_userConfigRepository),
+            create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
           ),
+            BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
+                BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
+                     BlocProvider(create: (_)=>BannerBloc(_databaseRepository)),
+                     BlocProvider(create: (_)=>GraphBloc(_databaseRepository)),
+                      BlocProvider(create: (_)=>RecentPaymentBloc(_databaseRepository)),
+
+  BlocProvider(create: (_)=>PendingServiceBloc(_databaseRepository))
+
         ],
         child: BlocBuilder<AuthBloc, AuthState>(
           buildWhen: (prevSt, newSt) {
@@ -132,18 +197,26 @@ class _MyAppState extends State<MyApp> {
                           userConfigRepository: _userConfigRepository,
                         );
                       return NavigatorPage(
-                          userRepository: _userConfigRepository);
+                          userRepository: _userConfigRepository,databaseRepository: _databaseRepository,);
                     });
           },
         ),
       ),
+     
       routes: {
         LoginPage.routeName: (_) => MultiBlocProvider(
               providers: [
                 BlocProvider<AuthBloc>(
                   create: (_) => AuthBloc(_loginRepository),
                 ),
-                BlocProvider(create: (_) => UserBloc(_userConfigRepository)),
+                BlocProvider(create: (_) => UserBloc(_userConfigRepository,_databaseRepository)),
+                BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
+                BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
+                   BlocProvider(create: (_)=>BannerBloc(_databaseRepository)),
+                      BlocProvider(create: (_)=>GraphBloc(_databaseRepository)),
+                        BlocProvider(create: (_)=>RecentPaymentBloc(_databaseRepository)),
+                        BlocProvider(create: (_)=>PendingServiceBloc(_databaseRepository))
+
               ],
               child: LoginPage(
                 loginRepo: _loginRepository,
@@ -151,7 +224,7 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
         HomePage.routeName: (_) => BlocProvider<UserBloc>(
-              create: (_) => UserBloc(_userConfigRepository),
+              create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
               child: HomePage(
                   userRepository: _userConfigRepository,
                   email: userDetails["email"] ?? ""),

@@ -8,7 +8,7 @@ import 'package:flux_payments/screens/pay_bills.dart';
 import 'package:flux_payments/services/user_details_services.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 
-import 'login_page.dart';
+import 'auth_Screens/login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key? key}) : super(key: key);
@@ -96,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Name : ' +
-                            (user.firstName ?? 'firstName') +
+                            (user.firstName) +
                             ' ' +
                             (user.lastName ?? 'lastName'),
                         style: TextStyle(
@@ -172,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'uniqueID : \n' + (user.uniqueID ?? 'xxxx-xxx-xxx'),
+                        'uniqueID : \n' + (user.uniqueID),
                         style: TextStyle(
                           fontSize: 20,
                         ),

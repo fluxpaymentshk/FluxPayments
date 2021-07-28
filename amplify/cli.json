@@ -23,7 +23,8 @@
             "cleangeneratedmodelsdirectory": true,
             "retaincasestyle": true,
             "addtimestampfields": true,
-            "handlelistnullabilitytransparently": true
+            "handlelistnullabilitytransparently": true,
+            "enableDartNullSafety":true
         },
         "appsync": {
             "generategraphqlpermissions": true

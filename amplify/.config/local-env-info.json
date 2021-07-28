@@ -1,9 +1,13 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "projectPath": "C:\\Users\\Samkit\\Desktop\\Flux\\FluxPayments",
 =======
   "projectPath": "E:\\vscode_files\\FluxPayments",
 >>>>>>> db339270d1ccdaff7b5327c75e762117ffc81f9e
+=======
+  "projectPath": "E:/vscode_files/FluxPayments",
+>>>>>>> 4e0f6a03ddb241e33a142d13ba107fcf9fe19b87
   "defaultEditor": "vscode",
   "envName": "staging"
 }

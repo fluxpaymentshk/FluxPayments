@@ -7,21 +7,23 @@ class ShowRewardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(title: Text("Partner's Rewards"),),
+      appBar: AppBar(
+        title: Text("Partner's Rewards"),
+      ),
       body: Container(
         child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) {
-          return Card(
-            child: ListTile(
-              title: Text(
-                listOfRewards?[index].name ?? "Name of reward",
-              ),
-              subtitle: Text(listOfRewards?[index].shopID ?? "Shop id "),
-              trailing: Text(listOfRewards?[index].category ?? "Category"),
-            ),
-          );
-        }),
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              return Card(
+                child: ListTile(
+                  title: Text(
+                    listOfRewards?[index].name ?? "Name of reward",
+                  ),
+                  subtitle: Text(listOfRewards?[index].shopID ?? "Shop id "),
+                  trailing: Text(listOfRewards?[index].category ?? "Category"),
+                ),
+              );
+            }),
       ),
     );
   }

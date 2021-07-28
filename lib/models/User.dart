@@ -1,6 +1,5 @@
-// @dart=2.9
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -26,23 +25,26 @@ import 'package:flutter/foundation.dart';
 class User extends Model {
   static const classType = const _UserModelType();
   final String id;
-  final String firstName;
-  final String lastName;
-  final TemporalDate dateOfBirth;
-  final String idCardNumber;
-  final String uniqueID;
-  final String mobileNumber;
-  final String email;
-  final int fluxPoints;
-  final List<RewardTransaction> UserToRewardTransactions;
-  final List<String> favorites;
-  final List<ServiceTransaction> UserToServiceTransactions;
-  final List<Bank> hasBankAccounts;
-  final List<DebitCard> hasDebitCards;
-  final List<CreditCard> hasCreditCard;
-  final List<UserWallet> hasWallets;
-  final String refreeID;
-  final List<String> referredTo;
+  final String? _firstName;
+  final String? _lastName;
+  final String? _dateOfBirth;
+  final double? _idCardNumber;
+  final String? _uniqueID;
+  final String? _mobileNumber;
+  final String? _email;
+  final double? _fluxPoints;
+  final List<RewardTransaction>? _UserToRewardTransactions;
+  final List<String>? _favorites;
+  final List<ServiceTransaction>? _UserToServiceTransactions;
+  final List<Bank>? _hasBankAccounts;
+  final List<DebitCard>? _hasDebitCards;
+  final List<CreditCard>? _hasCreditCard;
+  final List<UserWallet>? _hasWallets;
+  final String? _refreeID;
+  final String? _referralID;
+  final List<String>? _referredTo;
+
+  static var schema;
 
   @override
   getInstanceType() => classType;
@@ -52,45 +54,164 @@ class User extends Model {
     return id;
   }
 
+  String get firstName {
+    try {
+      return _firstName!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String? get lastName {
+    return _lastName;
+  }
+
+  String? get dateOfBirth {
+    return _dateOfBirth;
+  }
+
+  double? get idCardNumber {
+    return _idCardNumber;
+  }
+
+  String get uniqueID {
+    try {
+      return _uniqueID!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String? get mobileNumber {
+    return _mobileNumber;
+  }
+
+  String? get email {
+    return _email;
+  }
+
+  double? get fluxPoints {
+    return _fluxPoints;
+  }
+
+  List<RewardTransaction>? get UserToRewardTransactions {
+    return _UserToRewardTransactions;
+  }
+
+  List<String>? get favorites {
+    return _favorites;
+  }
+
+  List<ServiceTransaction>? get UserToServiceTransactions {
+    return _UserToServiceTransactions;
+  }
+
+  List<Bank>? get hasBankAccounts {
+    return _hasBankAccounts;
+  }
+
+  List<DebitCard>? get hasDebitCards {
+    return _hasDebitCards;
+  }
+
+  List<CreditCard>? get hasCreditCard {
+    return _hasCreditCard;
+  }
+
+  List<UserWallet>? get hasWallets {
+    return _hasWallets;
+  }
+
+  String get refreeID {
+    try {
+      return _refreeID!;
+    } catch (e) {
+      throw new DataStoreException(
+          DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: DataStoreExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
+    }
+  }
+
+  String? get referralID {
+    return _referralID;
+  }
+
+  List<String>? get referredTo {
+    return _referredTo;
+  }
+
   const User._internal(
-      {@required this.id,
-      @required this.firstName,
-      this.lastName,
-      this.dateOfBirth,
-      this.idCardNumber,
-      @required this.uniqueID,
-      this.mobileNumber,
-      this.email,
-      this.fluxPoints,
-      this.UserToRewardTransactions,
-      this.favorites,
-      this.UserToServiceTransactions,
-      this.hasBankAccounts,
-      this.hasDebitCards,
-      this.hasCreditCard,
-      this.hasWallets,
-      @required this.refreeID,
-      this.referredTo});
+      {required this.id,
+      required firstName,
+      lastName,
+      dateOfBirth,
+      idCardNumber,
+      required uniqueID,
+      mobileNumber,
+      email,
+      fluxPoints,
+      UserToRewardTransactions,
+      favorites,
+      UserToServiceTransactions,
+      hasBankAccounts,
+      hasDebitCards,
+      hasCreditCard,
+      hasWallets,
+      required refreeID,
+      referralID,
+      referredTo})
+      : _firstName = firstName,
+        _lastName = lastName,
+        _dateOfBirth = dateOfBirth,
+        _idCardNumber = idCardNumber,
+        _uniqueID = uniqueID,
+        _mobileNumber = mobileNumber,
+        _email = email,
+        _fluxPoints = fluxPoints,
+        _UserToRewardTransactions = UserToRewardTransactions,
+        _favorites = favorites,
+        _UserToServiceTransactions = UserToServiceTransactions,
+        _hasBankAccounts = hasBankAccounts,
+        _hasDebitCards = hasDebitCards,
+        _hasCreditCard = hasCreditCard,
+        _hasWallets = hasWallets,
+        _refreeID = refreeID,
+        _referredTo = referredTo,
+        _referralID=referralID;
 
   factory User(
-      {String id,
-      @required String firstName,
-      String lastName,
-      TemporalDate dateOfBirth,
-      String idCardNumber,
-      @required String uniqueID,
-      String mobileNumber,
-      String email,
-      int fluxPoints,
-      List<RewardTransaction> UserToRewardTransactions,
-      List<String> favorites,
-      List<ServiceTransaction> UserToServiceTransactions,
-      List<Bank> hasBankAccounts,
-      List<DebitCard> hasDebitCards,
-      List<CreditCard> hasCreditCard,
-      List<UserWallet> hasWallets,
-      @required String refreeID,
-      List<String> referredTo}) {
+      {String? id,
+      required String firstName,
+      String? lastName,
+      String? dateOfBirth,
+      double? idCardNumber,
+      required String uniqueID,
+      String? mobileNumber,
+      String? email,
+      double? fluxPoints,
+      List<RewardTransaction>? UserToRewardTransactions,
+      List<String>? favorites,
+      List<ServiceTransaction>? UserToServiceTransactions,
+      List<Bank>? hasBankAccounts,
+      List<DebitCard>? hasDebitCards,
+      List<CreditCard>? hasCreditCard,
+      List<UserWallet>? hasWallets,
+      required String refreeID,
+      String? referralID,
+      List<String>? referredTo}) {
     return User._internal(
         id: id == null ? UUID.getUUID() : id,
         firstName: firstName,
@@ -102,26 +223,31 @@ class User extends Model {
         email: email,
         fluxPoints: fluxPoints,
         UserToRewardTransactions: UserToRewardTransactions != null
-            ? List.unmodifiable(UserToRewardTransactions)
+            ? List<RewardTransaction>.unmodifiable(UserToRewardTransactions)
             : UserToRewardTransactions,
-        favorites: favorites != null ? List.unmodifiable(favorites) : favorites,
+        favorites: favorites != null
+            ? List<String>.unmodifiable(favorites)
+            : favorites,
         UserToServiceTransactions: UserToServiceTransactions != null
-            ? List.unmodifiable(UserToServiceTransactions)
+            ? List<ServiceTransaction>.unmodifiable(UserToServiceTransactions)
             : UserToServiceTransactions,
         hasBankAccounts: hasBankAccounts != null
-            ? List.unmodifiable(hasBankAccounts)
+            ? List<Bank>.unmodifiable(hasBankAccounts)
             : hasBankAccounts,
         hasDebitCards: hasDebitCards != null
-            ? List.unmodifiable(hasDebitCards)
+            ? List<DebitCard>.unmodifiable(hasDebitCards)
             : hasDebitCards,
         hasCreditCard: hasCreditCard != null
-            ? List.unmodifiable(hasCreditCard)
+            ? List<CreditCard>.unmodifiable(hasCreditCard)
             : hasCreditCard,
-        hasWallets:
-            hasWallets != null ? List.unmodifiable(hasWallets) : hasWallets,
+        hasWallets: hasWallets != null
+            ? List<UserWallet>.unmodifiable(hasWallets)
+            : hasWallets,
         refreeID: refreeID,
-        referredTo:
-            referredTo != null ? List.unmodifiable(referredTo) : referredTo);
+        referredTo: referredTo != null
+            ? List<String>.unmodifiable(referredTo)
+            : referredTo,
+            referralID: referralID);
   }
 
   bool equals(Object other) {
@@ -133,26 +259,27 @@ class User extends Model {
     if (identical(other, this)) return true;
     return other is User &&
         id == other.id &&
-        firstName == other.firstName &&
-        lastName == other.lastName &&
-        dateOfBirth == other.dateOfBirth &&
-        idCardNumber == other.idCardNumber &&
-        uniqueID == other.uniqueID &&
-        mobileNumber == other.mobileNumber &&
-        email == other.email &&
-        fluxPoints == other.fluxPoints &&
-        DeepCollectionEquality()
-            .equals(UserToRewardTransactions, other.UserToRewardTransactions) &&
-        DeepCollectionEquality().equals(favorites, other.favorites) &&
+        _firstName == other._firstName &&
+        _lastName == other._lastName &&
+        _dateOfBirth == other._dateOfBirth &&
+        _idCardNumber == other._idCardNumber &&
+        _uniqueID == other._uniqueID &&
+        _mobileNumber == other._mobileNumber &&
+        _email == other._email &&
+        _fluxPoints == other._fluxPoints &&
         DeepCollectionEquality().equals(
-            UserToServiceTransactions, other.UserToServiceTransactions) &&
+            _UserToRewardTransactions, other._UserToRewardTransactions) &&
+        DeepCollectionEquality().equals(_favorites, other._favorites) &&
+        DeepCollectionEquality().equals(
+            _UserToServiceTransactions, other._UserToServiceTransactions) &&
         DeepCollectionEquality()
-            .equals(hasBankAccounts, other.hasBankAccounts) &&
-        DeepCollectionEquality().equals(hasDebitCards, other.hasDebitCards) &&
-        DeepCollectionEquality().equals(hasCreditCard, other.hasCreditCard) &&
-        DeepCollectionEquality().equals(hasWallets, other.hasWallets) &&
-        refreeID == other.refreeID &&
-        DeepCollectionEquality().equals(referredTo, other.referredTo);
+            .equals(_hasBankAccounts, other._hasBankAccounts) &&
+        DeepCollectionEquality().equals(_hasDebitCards, other._hasDebitCards) &&
+        DeepCollectionEquality().equals(_hasCreditCard, other._hasCreditCard) &&
+        DeepCollectionEquality().equals(_hasWallets, other._hasWallets) &&
+        _refreeID == other._refreeID &&
+        _referralID == other._referralID&&
+        DeepCollectionEquality().equals(_referredTo, other._referredTo);
   }
 
   @override
@@ -164,48 +291,50 @@ class User extends Model {
 
     buffer.write("User {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("firstName=" + "$firstName" + ", ");
-    buffer.write("lastName=" + "$lastName" + ", ");
+    buffer.write("firstName=" + "$_firstName" + ", ");
+    buffer.write("lastName=" + "$_lastName" + ", ");
     buffer.write("dateOfBirth=" +
-        (dateOfBirth != null ? dateOfBirth.format() : "null") +
+        (_dateOfBirth != null ? _dateOfBirth! : "null") +
         ", ");
-    buffer.write("idCardNumber=" + "$idCardNumber" + ", ");
-    buffer.write("uniqueID=" + "$uniqueID" + ", ");
-    buffer.write("mobileNumber=" + "$mobileNumber" + ", ");
-    buffer.write("email=" + "$email" + ", ");
+    buffer.write("idCardNumber=" + "$_idCardNumber" + ", ");
+    buffer.write("uniqueID=" + "$_uniqueID" + ", ");
+    buffer.write("mobileNumber=" + "$_mobileNumber" + ", ");
+    buffer.write("email=" + "$_email" + ", ");
     buffer.write("fluxPoints=" +
-        (fluxPoints != null ? fluxPoints.toString() : "null") +
+        (_fluxPoints != null ? _fluxPoints!.toString() : "null") +
         ", ");
     buffer.write("favorites=" +
-        (favorites != null ? favorites.toString() : "null") +
+        (_favorites != null ? _favorites!.toString() : "null") +
         ", ");
-    buffer.write("refreeID=" + "$refreeID" + ", ");
-    buffer.write(
-        "referredTo=" + (referredTo != null ? referredTo.toString() : "null"));
+    buffer.write("refreeID=" + "$_refreeID" + ", ");
+      buffer.write("referralID=" + "$_referralID" + ", ");
+    buffer.write("referredTo=" +
+        (_referredTo != null ? _referredTo!.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
   }
 
   User copyWith(
-      {String id,
-      String firstName,
-      String lastName,
-      TemporalDate dateOfBirth,
-      String idCardNumber,
-      String uniqueID,
-      String mobileNumber,
-      String email,
-      int fluxPoints,
-      List<RewardTransaction> UserToRewardTransactions,
-      List<String> favorites,
-      List<ServiceTransaction> UserToServiceTransactions,
-      List<Bank> hasBankAccounts,
-      List<DebitCard> hasDebitCards,
-      List<CreditCard> hasCreditCard,
-      List<UserWallet> hasWallets,
-      String refreeID,
-      List<String> referredTo}) {
+      {String? id,
+      String? firstName,
+      String? lastName,
+      String? dateOfBirth,
+      double? idCardNumber,
+      String? uniqueID,
+      String? mobileNumber,
+      String? email,
+      double? fluxPoints,
+      List<RewardTransaction>? UserToRewardTransactions,
+      List<String>? favorites,
+      List<ServiceTransaction>? UserToServiceTransactions,
+      List<Bank>? hasBankAccounts,
+      List<DebitCard>? hasDebitCards,
+      List<CreditCard>? hasCreditCard,
+      List<UserWallet>? hasWallets,
+      String? refreeID,
+      String?referralID,
+      List<String>? referredTo}) {
     return User(
         id: id ?? this.id,
         firstName: firstName ?? this.firstName,
@@ -226,230 +355,248 @@ class User extends Model {
         hasCreditCard: hasCreditCard ?? this.hasCreditCard,
         hasWallets: hasWallets ?? this.hasWallets,
         refreeID: refreeID ?? this.refreeID,
-        referredTo: referredTo ?? this.referredTo);
+        referredTo: referredTo ?? this.referredTo,
+        referralID: referralID??this.referralID);
   }
 
   User.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        firstName = json['firstName'],
-        lastName = json['lastName'],
-        dateOfBirth = json['dateOfBirth'] != null
-            ? TemporalDate.fromString(json['dateOfBirth'])
-            : null,
-        idCardNumber = json['idCardNumber'],
-        uniqueID = json['uniqueID'],
-        mobileNumber = json['mobileNumber'],
-        email = json['email'],
-        fluxPoints = json['fluxPoints'],
-        UserToRewardTransactions = json['UserToRewardTransactions'] is List
+      : id = json['userID'],
+        _firstName = json['firstName'],
+        _lastName = json['lastName'],
+        _dateOfBirth = json['dateOfBirth'] ,
+        _idCardNumber = json['idCardNumber'],
+        _uniqueID = json['uniqueID'],
+        _mobileNumber = json['mobileNumber'],
+        _email = json['email'],
+        _fluxPoints = json['fluxPoints'],
+        _UserToRewardTransactions = json['UserToRewardTransactions'] is List
             ? (json['UserToRewardTransactions'] as List)
+                .where((e) => e?['serializedData'] != null)
                 .map((e) => RewardTransaction.fromJson(
-                    new Map<String, dynamic>.from(e)))
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
-        favorites = json['favorites']?.cast<String>(),
-        UserToServiceTransactions = json['UserToServiceTransactions'] is List
+        _favorites = json['favorites']?.cast<String>(),
+        _UserToServiceTransactions = json['UserToServiceTransactions'] is List
             ? (json['UserToServiceTransactions'] as List)
+                .where((e) => e?['serializedData'] != null)
                 .map((e) => ServiceTransaction.fromJson(
-                    new Map<String, dynamic>.from(e)))
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
-        hasBankAccounts = json['hasBankAccounts'] is List
+        _hasBankAccounts = json['hasBankAccounts'] is List
             ? (json['hasBankAccounts'] as List)
-                .map((e) => Bank.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => Bank.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
-        hasDebitCards = json['hasDebitCards'] is List
+        _hasDebitCards = json['hasDebitCards'] is List
             ? (json['hasDebitCards'] as List)
-                .map(
-                    (e) => DebitCard.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => DebitCard.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
-        hasCreditCard = json['hasCreditCard'] is List
+        _hasCreditCard = json['hasCreditCard'] is List
             ? (json['hasCreditCard'] as List)
-                .map((e) =>
-                    CreditCard.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => CreditCard.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
-        hasWallets = json['hasWallets'] is List
+        _hasWallets = json['hasWallets'] is List
             ? (json['hasWallets'] as List)
-                .map((e) =>
-                    UserWallet.fromJson(new Map<String, dynamic>.from(e)))
+                .where((e) => e?['serializedData'] != null)
+                .map((e) => UserWallet.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
-        refreeID = json['refreeID'],
-        referredTo = json['referredTo']?.cast<String>();
+        _refreeID = json['refreeID'],
+        _referralID = json['referralID'],
+        _referredTo = json['referredTo']?.cast<String>();
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'firstName': firstName,
-        'lastName': lastName,
-        'dateOfBirth': dateOfBirth?.format(),
-        'idCardNumber': idCardNumber,
-        'uniqueID': uniqueID,
-        'mobileNumber': mobileNumber,
-        'email': email,
-        'fluxPoints': fluxPoints,
+        'firstName': _firstName,
+        'lastName': _lastName,
+        'dateOfBirth': _dateOfBirth,
+        'idCardNumber': _idCardNumber,
+        'uniqueID': _uniqueID,
+        'mobileNumber': _mobileNumber,
+        'email': _email,
+        'fluxPoints': _fluxPoints,
         'UserToRewardTransactions':
-            UserToRewardTransactions?.map((e) => e?.toJson())?.toList(),
-        'favorites': favorites,
+            _UserToRewardTransactions?.map((e) => e?.toJson())?.toList(),
+        'favorites': _favorites,
         'UserToServiceTransactions':
-            UserToServiceTransactions?.map((e) => e?.toJson())?.toList(),
-        'hasBankAccounts': hasBankAccounts?.map((e) => e?.toJson())?.toList(),
-        'hasDebitCards': hasDebitCards?.map((e) => e?.toJson())?.toList(),
-        'hasCreditCard': hasCreditCard?.map((e) => e?.toJson())?.toList(),
-        'hasWallets': hasWallets?.map((e) => e?.toJson())?.toList(),
-        'refreeID': refreeID,
-        'referredTo': referredTo
+            _UserToServiceTransactions?.map((e) => e?.toJson())?.toList(),
+        'hasBankAccounts': _hasBankAccounts?.map((e) => e?.toJson())?.toList(),
+        'hasDebitCards': _hasDebitCards?.map((e) => e?.toJson())?.toList(),
+        'hasCreditCard': _hasCreditCard?.map((e) => e?.toJson())?.toList(),
+        'hasWallets': _hasWallets?.map((e) => e?.toJson())?.toList(),
+        'refreeID': _refreeID,
+        'referredTo': _referredTo,
+        'referralID':_referralID
       };
 
-  static final QueryField ID = QueryField(fieldName: "user.id");
-  static final QueryField FIRSTNAME = QueryField(fieldName: "firstName");
-  static final QueryField LASTNAME = QueryField(fieldName: "lastName");
-  static final QueryField DATEOFBIRTH = QueryField(fieldName: "dateOfBirth");
-  static final QueryField IDCARDNUMBER = QueryField(fieldName: "idCardNumber");
-  static final QueryField UNIQUEID = QueryField(fieldName: "uniqueID");
-  static final QueryField MOBILENUMBER = QueryField(fieldName: "mobileNumber");
-  static final QueryField EMAIL = QueryField(fieldName: "email");
-  static final QueryField FLUXPOINTS = QueryField(fieldName: "fluxPoints");
-  static final QueryField USERTOREWARDTRANSACTIONS = QueryField(
-      fieldName: "UserToRewardTransactions",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (RewardTransaction).toString()));
-  static final QueryField FAVORITES = QueryField(fieldName: "favorites");
-  static final QueryField USERTOSERVICETRANSACTIONS = QueryField(
-      fieldName: "UserToServiceTransactions",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (ServiceTransaction).toString()));
-  static final QueryField HASBANKACCOUNTS = QueryField(
-      fieldName: "hasBankAccounts",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (Bank).toString()));
-  static final QueryField HASDEBITCARDS = QueryField(
-      fieldName: "hasDebitCards",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (DebitCard).toString()));
-  static final QueryField HASCREDITCARD = QueryField(
-      fieldName: "hasCreditCard",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (CreditCard).toString()));
-  static final QueryField HASWALLETS = QueryField(
-      fieldName: "hasWallets",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (UserWallet).toString()));
-  static final QueryField REFREEID = QueryField(fieldName: "refreeID");
-  static final QueryField REFERREDTO = QueryField(fieldName: "referredTo");
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "User";
-    modelSchemaDefinition.pluralName = "Users";
+  // static final QueryField ID = QueryField(fieldName: "user.id");
+  // static final QueryField FIRSTNAME = QueryField(fieldName: "firstName");
+  // static final QueryField LASTNAME = QueryField(fieldName: "lastName");
+  // static final QueryField DATEOFBIRTH = QueryField(fieldName: "dateOfBirth");
+  // static final QueryField IDCARDNUMBER = QueryField(fieldName: "idCardNumber");
+  // static final QueryField UNIQUEID = QueryField(fieldName: "uniqueID");
+  // static final QueryField MOBILENUMBER = QueryField(fieldName: "mobileNumber");
+  // static final QueryField EMAIL = QueryField(fieldName: "email");
+  // static final QueryField FLUXPOINTS = QueryField(fieldName: "fluxPoints");
+  // static final QueryField USERTOREWARDTRANSACTIONS = QueryField(
+  //   fieldName: "UserToRewardTransactions",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (RewardTransaction).toString()));
+  // static final QueryField FAVORITES = QueryField(fieldName: "favorites");
+  // static final QueryField USERTOSERVICETRANSACTIONS = QueryField(
+  //   fieldName: "UserToServiceTransactions",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ServiceTransaction).toString()));
+  // static final QueryField HASBANKACCOUNTS = QueryField(
+  //   fieldName: "hasBankAccounts",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Bank).toString()));
+  // static final QueryField HASDEBITCARDS = QueryField(
+  //   fieldName: "hasDebitCards",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (DebitCard).toString()));
+  // static final QueryField HASCREDITCARD = QueryField(
+  //   fieldName: "hasCreditCard",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (CreditCard).toString()));
+  // static final QueryField HASWALLETS = QueryField(
+  //   fieldName: "hasWallets",
+  //   fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (UserWallet).toString()));
+  // static final QueryField REFREEID = QueryField(fieldName: "refreeID");
+  // // static final QueryField referredTo = QueryField(fieldName: "referredTo");
+  // static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  //   modelSchemaDefinition.name = "User";
+  //   modelSchemaDefinition.pluralName = "Users";
 
-    modelSchemaDefinition.authRules = [
-      AuthRule(authStrategy: AuthStrategy.PUBLIC, operations: [
-        ModelOperation.CREATE,
-        ModelOperation.UPDATE,
-        ModelOperation.DELETE,
-        ModelOperation.READ
-      ])
-    ];
+  //   modelSchemaDefinition.authRules = [
+  //     AuthRule(
+  //       authStrategy: AuthStrategy.PUBLIC,
+  //       operations: [
+  //         ModelOperation.CREATE,
+  //         ModelOperation.UPDATE,
+  //         ModelOperation.DELETE,
+  //         ModelOperation.READ
+  //       ])
+  //   ];
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.FIRSTNAME,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.FIRSTNAME,
+  //     isRequired: true,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.LASTNAME,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.LASTNAME,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.DATEOFBIRTH,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.date)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.DATEOFBIRTH,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.date)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.IDCARDNUMBER,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.IDCARDNUMBER,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.UNIQUEID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.UNIQUEID,
+  //     isRequired: true,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.MOBILENUMBER,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.MOBILENUMBER,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.EMAIL,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.EMAIL,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.FLUXPOINTS,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.FLUXPOINTS,
+  //     isRequired: false,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.int)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.USERTOREWARDTRANSACTIONS,
-        isRequired: false,
-        ofModelName: (RewardTransaction).toString(),
-        associatedKey: RewardTransaction.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.USERTOREWARDTRANSACTIONS,
+  //     isRequired: false,
+  //     ofModelName: (RewardTransaction).toString(),
+  //     associatedKey: RewardTransaction.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.FAVORITES,
-        isRequired: false,
-        isArray: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.collection,
-            ofModelName: describeEnum(ModelFieldTypeEnum.string))));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.FAVORITES,
+  //     isRequired: false,
+  //     isArray: true,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.string))
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.USERTOSERVICETRANSACTIONS,
-        isRequired: false,
-        ofModelName: (ServiceTransaction).toString(),
-        associatedKey: ServiceTransaction.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.USERTOSERVICETRANSACTIONS,
+  //     isRequired: false,
+  //     ofModelName: (ServiceTransaction).toString(),
+  //     associatedKey: ServiceTransaction.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.HASBANKACCOUNTS,
-        isRequired: false,
-        ofModelName: (Bank).toString(),
-        associatedKey: Bank.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.HASBANKACCOUNTS,
+  //     isRequired: false,
+  //     ofModelName: (Bank).toString(),
+  //     associatedKey: Bank.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.HASDEBITCARDS,
-        isRequired: false,
-        ofModelName: (DebitCard).toString(),
-        associatedKey: DebitCard.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.HASDEBITCARDS,
+  //     isRequired: false,
+  //     ofModelName: (DebitCard).toString(),
+  //     associatedKey: DebitCard.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.HASCREDITCARD,
-        isRequired: false,
-        ofModelName: (CreditCard).toString(),
-        associatedKey: CreditCard.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.HASCREDITCARD,
+  //     isRequired: false,
+  //     ofModelName: (CreditCard).toString(),
+  //     associatedKey: CreditCard.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.HASWALLETS,
-        isRequired: false,
-        ofModelName: (UserWallet).toString(),
-        associatedKey: UserWallet.USERID));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+  //     key: User.HASWALLETS,
+  //     isRequired: false,
+  //     ofModelName: (UserWallet).toString(),
+  //     associatedKey: UserWallet.USERID
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.REFREEID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+  //   modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //     key: User.REFREEID,
+  //     isRequired: true,
+  //     ofType: ModelFieldType(ModelFieldTypeEnum.string)
+  //   ));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: User.REFERREDTO,
-        isRequired: false,
-        isArray: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.collection,
-            ofModelName: describeEnum(ModelFieldTypeEnum.string))));
-  });
+  //   // modelSchemaDefinition.addField(ModelFieldDefinition.field(
+  //   //   key: User.referredTo,
+  //   //   isRequired: false,
+  //   //   isArray: true,
+  //   //   ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.string))
+  //   // ));
+  // });
 }
 
 class _UserModelType extends ModelType<User> {
