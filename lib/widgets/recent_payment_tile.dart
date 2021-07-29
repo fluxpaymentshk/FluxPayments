@@ -6,9 +6,13 @@ class recentPaymentTile extends StatelessWidget {
   final String name, paidOn, imageurl;
   final double amount;
   recentPaymentTile(
-      {required this.name, required this.paidOn,required this.imageurl,required this.amount, Key? key})
+      {required this.name,
+      required this.paidOn,
+      required this.imageurl,
+      required this.amount,
+      Key? key})
       : super(key: key);
- 
+
   final List<List<Color>> colors = [
     [
       Color(0xff5a3f78),
@@ -34,7 +38,9 @@ class recentPaymentTile extends StatelessWidget {
     return Container(
       height: SizeConfig.heightMultiplier * 8,
       width: SizeConfig.widthMultiplier * 92,
-      padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1,),
+      padding: EdgeInsets.all(
+        SizeConfig.heightMultiplier * 1,
+      ),
       margin: EdgeInsets.all(SizeConfig.heightMultiplier * 0.6),
       decoration: BoxDecoration(
         borderRadius:

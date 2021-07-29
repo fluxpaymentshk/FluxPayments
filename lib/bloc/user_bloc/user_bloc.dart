@@ -68,9 +68,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (event is GetUserDetails) {
       try {
         yield UserDetailsLoading();
-        User user= await _databaseRepository.getUserDetails(userID: event.userID);
-        yield UserDetails( user:user);
-        
+        User user =
+            await _databaseRepository.getUserDetails(userID: event.userID);
+        yield UserDetails(user: user);
       } catch (e) {
         yield UserDetailsError("unable to fetch User Details!");
       }

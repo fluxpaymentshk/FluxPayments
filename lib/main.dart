@@ -1,5 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
+import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
+import 'package:flux_payments/repository/database_repo.dart';
+
+import './screens/coupons.dart';
 
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_api/amplify_api.dart';
@@ -27,14 +32,12 @@ import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/rewards_search_screen.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
-
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'bloc/coupons_bloc/coupons_bloc.dart';
 import 'bloc/banner_bloc/banner_bloc.dart';
 import 'bloc/graph_bloc/graph_bloc.dart';
 import 'bloc/recent_payment_bloc/recent_payment_bloc.dart';
-
 
 List<types.Message> messages = [];
 
@@ -73,7 +76,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   LoginRepository _loginRepository = new LoginRepository();
   UserConfigRepository _userConfigRepository = new UserConfigRepository();
-   DatabaseRepository _databaseRepository = DatabaseRepository();
+  DatabaseRepository _databaseRepository = DatabaseRepository();
 
   bool _amplifyConfigured = false;
   bool isSignedIn = false;
@@ -155,16 +158,17 @@ class _MyAppState extends State<MyApp> {
             create: (_) => AuthBloc(_loginRepository),
           ),
           BlocProvider(
-            create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
+            create: (_) => UserBloc(_userConfigRepository, _databaseRepository),
           ),
-            BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
-                BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
-                     BlocProvider(create: (_)=>BannerBloc(_databaseRepository)),
-                     BlocProvider(create: (_)=>GraphBloc(_databaseRepository)),
-                      BlocProvider(create: (_)=>RecentPaymentBloc(_databaseRepository)),
-
-  BlocProvider(create: (_)=>PendingServiceBloc(_databaseRepository))
-
+          BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
+          BlocProvider(create: (_) => CuratedListBloc(_databaseRepository)),
+          BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
+          BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
+          BlocProvider(create: (_) => RecentPaymentBloc(_databaseRepository)),
+          BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
+          BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
+          BlocProvider(create: (_) => StoryBloc(_databaseRepository)),
+          BlocProvider(create: (_) => PendingServiceBloc(_databaseRepository))
         ],
         child: BlocBuilder<AuthBloc, AuthState>(
           buildWhen: (prevSt, newSt) {
@@ -197,26 +201,34 @@ class _MyAppState extends State<MyApp> {
                           userConfigRepository: _userConfigRepository,
                         );
                       return NavigatorPage(
-                          userRepository: _userConfigRepository,databaseRepository: _databaseRepository,);
+                        userRepository: _userConfigRepository,
+                        databaseRepository: _databaseRepository,
+                      );
                     });
           },
         ),
       ),
-     
       routes: {
         LoginPage.routeName: (_) => MultiBlocProvider(
               providers: [
                 BlocProvider<AuthBloc>(
                   create: (_) => AuthBloc(_loginRepository),
                 ),
-                BlocProvider(create: (_) => UserBloc(_userConfigRepository,_databaseRepository)),
-                BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
-                BlocProvider(create: (_)=>CuratedListBloc(_databaseRepository)),
-                   BlocProvider(create: (_)=>BannerBloc(_databaseRepository)),
-                      BlocProvider(create: (_)=>GraphBloc(_databaseRepository)),
-                        BlocProvider(create: (_)=>RecentPaymentBloc(_databaseRepository)),
-                        BlocProvider(create: (_)=>PendingServiceBloc(_databaseRepository))
-
+                BlocProvider(
+                    create: (_) =>
+                        UserBloc(_userConfigRepository, _databaseRepository)),
+                BlocProvider(
+                    create: (_) => AdvertiserBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => CuratedListBloc(_databaseRepository)),
+                BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
+                BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => RecentPaymentBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => PendingServiceBloc(_databaseRepository)),
+                BlocProvider<StoryBloc>(
+                    create: (_) => StoryBloc(_databaseRepository)),
               ],
               child: LoginPage(
                 loginRepo: _loginRepository,
@@ -224,12 +236,31 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
         HomePage.routeName: (_) => BlocProvider<UserBloc>(
-              create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
+              create: (_) =>
+                  UserBloc(_userConfigRepository, _databaseRepository),
               child: HomePage(
                   userRepository: _userConfigRepository,
-                  databaseRepository:_databaseRepository,
+                  databaseRepository: _databaseRepository,
                   email: userDetails["email"] ?? ""),
             ),
+        Coupons.routeName: (_) => MultiBlocProvider(
+                providers: [
+                  BlocProvider<UserBloc>(
+                    create: (_) =>
+                        UserBloc(_userConfigRepository, _databaseRepository),
+                  ),
+                  BlocProvider<FavoritesBloc>(
+                      create: (_) => FavoritesBloc(_databaseRepository)),
+                  BlocProvider<CouponsBloc>(
+                      create: (_) => CouponsBloc(_databaseRepository)),
+                ],
+                child: Coupons(
+                  databaseRepo: _databaseRepository,
+                ))
+        // Coupons.routeName: (_) => BlocProvider<UserBloc>(
+        //   create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
+        //   child: Coupons(databaseRepo: _databaseRepository,),
+        // ),
       },
     );
   }

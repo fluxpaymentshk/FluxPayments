@@ -542,8 +542,8 @@ class _BillPaymentState extends State<BillPayment> {
                                 //itemBuilder: (context, int index) {
                                 //   return
                                 SingleChildScrollView(
-                                  child: Column(
-                                                              children: [
+                              child: Column(
+                                children: [
                                   recentPaymentTile(
                                       name: state.RecentPaymentData[0]['name'],
                                       paidOn: state.RecentPaymentData[0]
@@ -552,7 +552,7 @@ class _BillPaymentState extends State<BillPayment> {
                                           ['imageurl'],
                                       amount: state.RecentPaymentData[0]
                                           ['amount']),
-                                            recentPaymentTile(
+                                  recentPaymentTile(
                                       name: state.RecentPaymentData[0]['name'],
                                       paidOn: state.RecentPaymentData[0]
                                           ['paidOn'],
@@ -560,7 +560,7 @@ class _BillPaymentState extends State<BillPayment> {
                                           ['imageurl'],
                                       amount: state.RecentPaymentData[0]
                                           ['amount']),
-                                            recentPaymentTile(
+                                  recentPaymentTile(
                                       name: state.RecentPaymentData[0]['name'],
                                       paidOn: state.RecentPaymentData[0]
                                           ['paidOn'],
@@ -568,7 +568,7 @@ class _BillPaymentState extends State<BillPayment> {
                                           ['imageurl'],
                                       amount: state.RecentPaymentData[0]
                                           ['amount']),
-                                            recentPaymentTile(
+                                  recentPaymentTile(
                                       name: state.RecentPaymentData[0]['name'],
                                       paidOn: state.RecentPaymentData[0]
                                           ['paidOn'],
@@ -576,7 +576,7 @@ class _BillPaymentState extends State<BillPayment> {
                                           ['imageurl'],
                                       amount: state.RecentPaymentData[0]
                                           ['amount']),
-                                            recentPaymentTile(
+                                  recentPaymentTile(
                                       name: state.RecentPaymentData[0]['name'],
                                       paidOn: state.RecentPaymentData[0]
                                           ['paidOn'],
@@ -584,9 +584,9 @@ class _BillPaymentState extends State<BillPayment> {
                                           ['imageurl'],
                                       amount: state.RecentPaymentData[0]
                                           ['amount']),
-                                                              ],
-                                                            ),
-                                ),
+                                ],
+                              ),
+                            ),
                           );
                           //   }),
 

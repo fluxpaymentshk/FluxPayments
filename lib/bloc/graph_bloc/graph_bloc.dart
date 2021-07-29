@@ -18,7 +18,7 @@ class GraphBloc extends Bloc<GraphEvent, GraphState> {
 
         yield LoadGraphState(graphData: mp);
       } catch (e) {
-        yield ErrorGraphState( message: 'Unable to plot Graph data!');
+        yield ErrorGraphState(message: 'Unable to plot Graph data!');
       }
     }
   }

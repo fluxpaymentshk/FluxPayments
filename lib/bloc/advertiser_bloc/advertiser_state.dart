@@ -33,6 +33,6 @@ class LoadedExternalAdvertiser extends AdvertiserState {
 }
 
 class ErrorExternalAdvertiser extends AdvertiserState {
-    final String? message;
+  final String? message;
   const ErrorExternalAdvertiser(this.message);
 }

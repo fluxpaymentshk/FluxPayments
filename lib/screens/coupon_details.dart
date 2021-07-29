@@ -2,16 +2,23 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flux_payments/config/theme.dart';
+import 'package:flux_payments/models/Rewards.dart';
+import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/clip_circle.dart';
 import 'package:flux_payments/widgets/draw_dashline.dart';
+import 'package:flux_payments/widgets/error_snackBar.dart';
 import 'package:flux_payments/widgets/expand_widget.dart';
 import 'package:flux_payments/widgets/generate_map.dart';
 import 'package:flux_payments/widgets/qr_code.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CouponDetailScreen extends StatefulWidget {
-  const CouponDetailScreen({Key? key}) : super(key: key);
+  final double? fluxPoints;
+  final Rewards? rewardInfo;
+  const CouponDetailScreen(
+      {Key? key, @required this.fluxPoints, @required this.rewardInfo})
+      : super(key: key);
 
   @override
   _CouponDetailScreenState createState() => _CouponDetailScreenState();
@@ -123,7 +130,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            "Free plant-based whopper",
+                            widget.rewardInfo?.shortDescription ?? "",
                             style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -133,7 +140,8 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                             height: 8,
                           ),
                           Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis cursus enim tempor enim eu, pretium aliquet. Integer morbi volutpat sit porttitor justo malesuada. Aliquam dignissim cursus tincidunt tempus habitasse. Maecenas mollis elementum arcu, etiam a. ",
+                            widget.rewardInfo?.longDescription ?? "",
+                            // "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis cursus enim tempor enim eu, pretium aliquet. Integer morbi volutpat sit porttitor justo malesuada. Aliquam dignissim cursus tincidunt tempus habitasse. Maecenas mollis elementum arcu, etiam a. ",
                             style: GoogleFonts.montserrat(
                               fontSize: 13,
                             ),
@@ -200,7 +208,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                     height: 40,
                                   ),
                                   title: Text(
-                                    "20000",
+                                    widget.rewardInfo?.amount.toString() ?? "",
                                     style: GoogleFonts.montserrat(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 25,
@@ -212,11 +220,34 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                 ),
                               ),
                               InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    isRedeemed = !isRedeemed;
-                                    log("11222 $isRedeemed");
-                                  });
+                                onTap: () async {
+                                  if (widget.fluxPoints! >=
+                                      (widget.rewardInfo?.amount?.toInt() ??
+                                          0)) {
+                                    await DatabaseLambdaService()
+                                        .updateFluxPoints(
+                                      userID: "Flux-Monik",
+                                      appEvent: FluxPointServiceType
+                                          .ServiceTransaction,
+                                      servicePoints: (widget.rewardInfo?.amount??0) * -1.0,
+                                    );
+                                    setState(() {
+                                      isRedeemed = !isRedeemed;
+                                      log("11222 $isRedeemed");
+                                    });
+                                  } else {
+                                    log("NOT enough poits");
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                        "Not enough points",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Colors.red,
+                                      // behavior: SnackBarBehavior.floating,
+                                      duration: Duration(seconds: 5),
+                                    ));
+                                  }
                                 },
                                 child: Container(
                                   height:
@@ -281,7 +312,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                       width: size.width * 0.9,
                       height: size.height * 0.7,
                       child: ExpandWidget(
-                        child: GenerateMapWidget(),
+                        child: GenerateMapWidget(longitude: widget.rewardInfo?.longitude,latitude: widget.rewardInfo?.latitude,title: widget.rewardInfo?.name,),
                         expand: isRedeemed,
                       ),
                     ),
@@ -308,7 +339,8 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 1, 16, 16),
                     child: Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis cursus enim tempor enim eu, pretium aliquet. Integer morbi volutpat sit porttitor justo malesuada. Aliquam dignissim cursus tincidunt tempus habitasse. Maecenas mollis elementum arcu, etiam a. Sed aliquam nunc in lectus. Aliquet eget sapien nisl odio massa aliquet. Et maecenas tellus porta tortor turpis quis a. Bibendum in tempor at arcu eget nec. Convallis lectus tristique nulla volutpat. Varius sagittis, elementum tortor adipiscing hendrerit.Facilisis suspendisse at maecenas tristique dui ultricies placerat. In lectus eu lectus gravida vulputate. Ultrices nisl nibh dis gravida morbi iaculis pellentesque fermentum. Sed convallis non etiam diam mauris sem lacus. Vitae duis eu iaculis dictumst. Pulvinar amet, sed sollicitudin mi. Amet, semper pretium diam ornare mi aliquam, ultrices viverra enim. Risus lacus auctor morbi elementum elementum nullam tincidunt amet. Nec vitae facilisis nisl sit. Metus aliquet velit orci ultricies. At tellus mauris quis enim. Tincidunt a lacus, in id velit, nibh vel congue quis. Aliquam convallis turpis neque elit. Rutrum nisl donec felis tortor, id.Quam diam sit feugiat et in. Dictum condimentum eget lacus aliquet vitae tincidunt duis. Ultrices mattis nunc viverra ultricies sed. At facilisi imperdiet pretium vulputate tincidunt ultrices cursus faucibus amet. Aliquam venenatis tortor vitae vestibulum aliquam elit tellus sed. Pulvinar est condimentum at sem. Condimentum tincidunt leo, ipsum maecenas enim duis. Nisi netus id etiam sed eget condimentum aliquet. Cursus nisl, sed non nulla ac posuere eleifend. At pharetra, volutpat massa hac lobortis. Natoque magna sociis duis duis nec elementum ultrices amet. Fames diam massa tincidunt libero sed ultrices lorem habitant.Ac interdum aliquam amet consectetur vulputate. Ut viverra etiam fringilla massa aliquet vitae sit. Varius orci urna nascetur tortor. Sapien magna interdum at tincidunt ullamcorper. Mattis non tristique orci neque risus. Neque, ac id condimentum arcu suspendisse. Sagitti",
+                      widget.rewardInfo?.termsncond ?? "",
+                      // "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis cursus enim tempor enim eu, pretium aliquet. Integer morbi volutpat sit porttitor justo malesuada. Aliquam dignissim cursus tincidunt tempus habitasse. Maecenas mollis elementum arcu, etiam a. Sed aliquam nunc in lectus. Aliquet eget sapien nisl odio massa aliquet. Et maecenas tellus porta tortor turpis quis a. Bibendum in tempor at arcu eget nec. Convallis lectus tristique nulla volutpat. Varius sagittis, elementum tortor adipiscing hendrerit.Facilisis suspendisse at maecenas tristique dui ultricies placerat. In lectus eu lectus gravida vulputate. Ultrices nisl nibh dis gravida morbi iaculis pellentesque fermentum. Sed convallis non etiam diam mauris sem lacus. Vitae duis eu iaculis dictumst. Pulvinar amet, sed sollicitudin mi. Amet, semper pretium diam ornare mi aliquam, ultrices viverra enim. Risus lacus auctor morbi elementum elementum nullam tincidunt amet. Nec vitae facilisis nisl sit. Metus aliquet velit orci ultricies. At tellus mauris quis enim. Tincidunt a lacus, in id velit, nibh vel congue quis. Aliquam convallis turpis neque elit. Rutrum nisl donec felis tortor, id.Quam diam sit feugiat et in. Dictum condimentum eget lacus aliquet vitae tincidunt duis. Ultrices mattis nunc viverra ultricies sed. At facilisi imperdiet pretium vulputate tincidunt ultrices cursus faucibus amet. Aliquam venenatis tortor vitae vestibulum aliquam elit tellus sed. Pulvinar est condimentum at sem. Condimentum tincidunt leo, ipsum maecenas enim duis. Nisi netus id etiam sed eget condimentum aliquet. Cursus nisl, sed non nulla ac posuere eleifend. At pharetra, volutpat massa hac lobortis. Natoque magna sociis duis duis nec elementum ultrices amet. Fames diam massa tincidunt libero sed ultrices lorem habitant.Ac interdum aliquam amet consectetur vulputate. Ut viverra etiam fringilla massa aliquet vitae sit. Varius orci urna nascetur tortor. Sapien magna interdum at tincidunt ullamcorper. Mattis non tristique orci neque risus. Neque, ac id condimentum arcu suspendisse. Sagitti",
                       style: GoogleFonts.montserrat(fontSize: 10),
                     ),
                   )

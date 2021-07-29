@@ -5,22 +5,26 @@ import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_state.d
 import 'package:flux_payments/repository/favorite_search_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 
-class FavoriteSearchBloc
-    extends Bloc<FavoriteSearchEvent, FavoriteSearchState> {
-  final FavoriteSearchRepository _favoriteSearchRepository;
-  FavoriteSearchBloc(this._favoriteSearchRepository)
-      : super(FavoriteSearchInitial());
+class CouponsSearchBloc extends Bloc<CouponsSearchEvent, CouponsSearchState> {
+  final CouponsSearchRepository _CouponsSearchRepository;
+  CouponsSearchBloc(this._CouponsSearchRepository)
+      : super(CouponsSearchInitial());
 
   @override
-  Stream<FavoriteSearchState> mapEventToState(
-      FavoriteSearchEvent event) async* {
+  Stream<CouponsSearchState> mapEventToState(CouponsSearchEvent event) async* {
     var request;
-    yield (FavoriteSearchInitial());
-    if (event is LoadFavoriteSearch) {
+    yield (CouponsSearchInitial());
+    log("hueeue");
+    if (event is LoadCouponsSearch) {
       try {
-        await _favoriteSearchRepository.getSearchResult(event.query ?? "");
+        log("fjeh2");
+        request = await _CouponsSearchRepository.getSearchRewardResult();
+        log("{{{}}}");
+        log("hfhhe12");
+        yield (CouponsSearchStateDone(request));
       } catch (e) {
-        yield (FavoriteSearchError("Error"));
+        print(e);
+        yield (CouponsSearchError("Error"));
       }
     }
   }

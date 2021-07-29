@@ -3,9 +3,11 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 
 class advertiserTile extends StatelessWidget {
-  advertiserTile({required this.i,required this.imageurl,required this.desc,Key? key}) : super(key: key);
-   final int i;
-   final String imageurl, desc;
+  advertiserTile(
+      {required this.i, required this.imageurl, required this.desc, Key? key})
+      : super(key: key);
+  final int i;
+  final String imageurl, desc;
   final List<List<Color>> colors = [
     // [
     //   Color(0xff5a3f78),
@@ -29,30 +31,27 @@ class advertiserTile extends StatelessWidget {
   Widget build(BuildContext context) {
     //  const height=SizeConfig.heightMultiplier;
     return Container(
-
-     
-                        height: SizeConfig.heightMultiplier * 18,
-                        width: SizeConfig.widthMultiplier * 85,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(SizeConfig.heightMultiplier * 2)),
+      height: SizeConfig.heightMultiplier * 18,
+      width: SizeConfig.widthMultiplier * 85,
+      decoration: BoxDecoration(
+        borderRadius:
+            BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier * 2)),
 //color: Colors.red,
-                          //   color: AppTheme.brownishPink,
-                        ),
+        //   color: AppTheme.brownishPink,
+      ),
       child: Stack(
-        
         children: [
           Positioned.fill(
-            top:SizeConfig.heightMultiplier*90/100,
-            right:SizeConfig.heightMultiplier*120*5/100 ,
-            left: SizeConfig.heightMultiplier*90*2/100,
+            top: SizeConfig.heightMultiplier * 90 / 100,
+            right: SizeConfig.heightMultiplier * 120 * 5 / 100,
+            left: SizeConfig.heightMultiplier * 90 * 2 / 100,
             child: Container(
-        //      height: SizeConfig.heightMultiplier * 22,
-      //        width: SizeConfig.widthMultiplier * 90,
-          //       height: SizeConfig.heightMultiplier * 12,
-          //  width: SizeConfig.widthMultiplier * 10,
+              //      height: SizeConfig.heightMultiplier * 22,
+              //        width: SizeConfig.widthMultiplier * 90,
+              //       height: SizeConfig.heightMultiplier * 12,
+              //  width: SizeConfig.widthMultiplier * 10,
               decoration: BoxDecoration(
-               // color: Colors.purple[200],
+                  // color: Colors.purple[200],
                   borderRadius: BorderRadius.all(
                       Radius.circular(SizeConfig.heightMultiplier * 2)),
                   boxShadow: [
@@ -62,24 +61,22 @@ class advertiserTile extends StatelessWidget {
                     ),
                   ],
                   gradient: LinearGradient(
-                   end: Alignment.topLeft,
-                   begin: Alignment.bottomRight,
-                   colors: colors[i%3])),
-            
-              child: 
-          //   Container(color: Colors.amber,height: 10,),
-              Container(
-                margin: EdgeInsets.only(right: SizeConfig.widthMultiplier*18),
-               width:SizeConfig.widthMultiplier*10,
-               height: SizeConfig.heightMultiplier*5,
-                             decoration: BoxDecoration(
+                      end: Alignment.topLeft,
+                      begin: Alignment.bottomRight,
+                      colors: colors[i % 3])),
 
-                   borderRadius: BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier*2)),
+              child:
+                  //   Container(color: Colors.amber,height: 10,),
+                  Container(
+                margin: EdgeInsets.only(right: SizeConfig.widthMultiplier * 18),
+                width: SizeConfig.widthMultiplier * 10,
+                height: SizeConfig.heightMultiplier * 5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(SizeConfig.heightMultiplier * 2)),
 
-              //  color: AppTheme.brownishPink,
-
+                  //  color: AppTheme.brownishPink,
                 ),
-            
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, top: 8.0),
                   child: Column(
@@ -88,20 +85,20 @@ class advertiserTile extends StatelessWidget {
                       SizedBox(
                         height: SizeConfig.heightMultiplier * 2,
                       ),
-                    
                       Padding(
-                padding: const EdgeInsets.only(top: 8.7, left: 4.2,right:4.2),
-                child: Container(
-                  child: Text(
-                //'3X point when redeem point on your Birthday month',
-                  desc,
-                style: TextStyle(
-                  color: AppTheme.white,
-                  fontSize: 15,
-                ),
-                  ),
-                ),
-              ),
+                        padding: const EdgeInsets.only(
+                            top: 8.7, left: 4.2, right: 4.2),
+                        child: Container(
+                          child: Text(
+                            //'3X point when redeem point on your Birthday month',
+                            desc,
+                            style: TextStyle(
+                              color: AppTheme.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: SizeConfig.heightMultiplier * 2,
                       ),
@@ -115,12 +112,12 @@ class advertiserTile extends StatelessWidget {
           // Spacer(),
 
           Positioned.fill(
-            bottom: SizeConfig.heightMultiplier*1.8*90/100,
-            left: SizeConfig.widthMultiplier*50,
+            bottom: SizeConfig.heightMultiplier * 1.8 * 90 / 100,
+            left: SizeConfig.widthMultiplier * 50,
             //left:180,
-            child: 
-            //Image.asset("assets/images/wallet.png"),
-            Image.network(imageurl),
+            child:
+                //Image.asset("assets/images/wallet.png"),
+                Image.network(imageurl),
           ),
         ],
       ),

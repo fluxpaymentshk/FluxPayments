@@ -6,6 +6,7 @@ import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/rewards_screen.dart';
 import 'package:flux_payments/screens/bill_payment.dart';
+import 'package:flux_payments/screens/coupons.dart';
 import 'package:flux_payments/screens/gift_page.dart';
 import 'package:flux_payments/screens/reward_partners.dart';
 import 'package:flux_payments/screens/support_bot_screen.dart';
@@ -44,106 +45,117 @@ class _NavigatorPageState extends State<NavigatorPage> {
   void initState() {
     super.initState();
     _pages = [
-      
       // Tuple2('payment', PayBills()),
-      Tuple2('payment', BillPayment(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
-      Tuple2('home', HomePage(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
+      //Tuple2('payment', BillPayment(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
+      Tuple2(
+          'home',
+          BillPayment(
+              userRepository: widget.userRepository,
+              databaseRepository: widget.databaseRepository)),
+      Tuple2(
+          'home1',
+          HomePage(
+              userRepository: widget.userRepository,
+              databaseRepository: widget.databaseRepository)),
       // Tuple2('gift', giftPage()),
-      Tuple2("Rewards", RewardsScreen())
+      Tuple2(
+          "Coupons",
+          Coupons(
+            databaseRepo: widget.databaseRepository,
+          ))
     ];
   }
-int _selectedPage = 0;
+
+  int _selectedPage = 0;
 
   PageController _pageController = PageController();
   final controller = SheetController();
 
-
   @override
   Widget build(BuildContext context) {
-    return
-    LayoutBuilder(builder: (context, constraints) {
-         SizeConfig().init(constraints); 
-    return Scaffold(
-      bottomNavigationBar: SafeArea(
-        child: SlidingSheet(
-            duration: const Duration(milliseconds: 900),
-            controller: controller,
-            color: Color(0xffF6F6FF),
-            elevation: 0,
-            maxWidth: 500,
-            cornerRadius: 21,
-            cornerRadiusOnFullscreen: 0.0,
-            closeOnBackdropTap: true,
-            closeOnBackButtonPressed: true,
-            isBackdropInteractable: true,
-            snapSpec: SnapSpec(
-              snap: true,
-              positioning: SnapPositioning.relativeToAvailableSpace,
-              snappings: [SnapSpec.headerFooterSnap, 0.9],
-              onSnap: (state, snap) {
-                print('Snapped to $snap');
-                if (snap != null && snap >= 0.5) {
+    return LayoutBuilder(builder: (context, constraints) {
+      SizeConfig().init(constraints);
+      return Scaffold(
+        bottomNavigationBar: SafeArea(
+          child: SlidingSheet(
+              duration: const Duration(milliseconds: 900),
+              controller: controller,
+              color: Color(0xffF6F6FF),
+              elevation: 0,
+              maxWidth: 500,
+              cornerRadius: 21,
+              cornerRadiusOnFullscreen: 0.0,
+              closeOnBackdropTap: true,
+              closeOnBackButtonPressed: true,
+              isBackdropInteractable: true,
+              snapSpec: SnapSpec(
+                snap: true,
+                positioning: SnapPositioning.relativeToAvailableSpace,
+                snappings: [SnapSpec.headerFooterSnap, 0.9],
+                onSnap: (state, snap) {
+                  print('Snapped to $snap');
+                  if (snap != null && snap >= 0.5) {
+                    setState(() {
+                      isOpened = true;
+                    });
+                  } else {
+                    setState(() {
+                      isOpened = false;
+                    });
+                  }
+                },
+              ),
+              parallaxSpec: const ParallaxSpec(
+                enabled: true,
+                amount: 0.35,
+                endExtent: 0.6,
+              ),
+              liftOnScrollHeaderElevation: 12.0,
+              liftOnScrollFooterElevation: 12.0,
+              body: PageView(
+                children:
+                    _pages.map<Widget>((Tuple2 page) => page.item2).toList(),
+                onPageChanged: (index) {
                   setState(() {
-                    isOpened = true;
+                    _selectedPage = index;
                   });
-                } else {
-                  setState(() {
-                    isOpened = false;
-                  });
-                }
+                },
+                controller: _pageController,
+              ),
+              builder: (BuildContext context, SheetState state) {
+                return Container(
+                  height:
+                      MediaQuery.of(context).size.height * botScreenHeightRatio,
+                  child: SupportBotScreen(),
+                );
               },
-            ),
-            parallaxSpec: const ParallaxSpec(
-              enabled: true,
-              amount: 0.35,
-              endExtent: 0.6,
-            ),
-            liftOnScrollHeaderElevation: 12.0,
-            liftOnScrollFooterElevation: 12.0,
-            body: PageView(
-              children:
-                  _pages.map<Widget>((Tuple2 page) => page.item2).toList(),
-              onPageChanged: (index) {
-                setState(() {
-                  _selectedPage = index;
-                });
-              },
-              controller: _pageController,
-            ),
-            builder: (BuildContext context, SheetState state) {
-              return Container(
-                height:
-                    MediaQuery.of(context).size.height * botScreenHeightRatio,
-                child: SupportBotScreen(),
-              );
-            },
-            headerBuilder: (context, state) {
-              log(state.extent.toString());
-              if (isOpened)
+              headerBuilder: (context, state) {
+                log(state.extent.toString());
+                if (isOpened)
+                  return Container(
+                    height: headerHeight,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(21),
+                      color: Color(0xffF2F2FF),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: IconButton(
+                      icon: ImageIcon(
+                        AssetImage(
+                          "assets/icons/down_icon.png",
+                        ),
+                      ),
+                      onPressed: controller.collapse,
+                    ),
+                  );
                 return Container(
                   height: headerHeight,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(21),
-                    color: Color(0xffF2F2FF),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: IconButton(
-                    icon: ImageIcon(
-                      AssetImage(
-                        "assets/icons/down_icon.png",
-                      ),
-                    ),
-                    onPressed: controller.collapse,
-                  ),
+                  child: _bottomNavigationBarWidget(context),
                 );
-              return Container(
-                height: headerHeight,
-                child: _bottomNavigationBarWidget(context),
-              );
-            }),
-      ),
-    );
+              }),
+        ),
+      );
     });
   }
 
@@ -257,7 +269,7 @@ int _selectedPage = 0;
   //           onTap: (index) {
   //             setState(() {
   //               _selectedPage = index;
-    
+
   //               _pageController.animateToPage(_selectedPage,
   //                   duration: Duration(milliseconds: 300), curve: Curves.linear);
   //             });

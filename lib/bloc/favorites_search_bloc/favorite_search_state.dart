@@ -1,16 +1,23 @@
-abstract class FavoriteSearchState {
-  const FavoriteSearchState();
+import 'package:flux_payments/models/Rewards.dart';
+
+abstract class CouponsSearchState {
+  const CouponsSearchState();
 }
 
-class FavoriteSearchInitial extends FavoriteSearchState {
-  const FavoriteSearchInitial();
+class CouponsSearchInitial extends CouponsSearchState {
+  const CouponsSearchInitial();
 }
 
-class FavoriteSearchStateLoading extends FavoriteSearchState {
-  const FavoriteSearchStateLoading();
+class CouponsSearchStateLoading extends CouponsSearchState {
+  const CouponsSearchStateLoading();
 }
 
-class FavoriteSearchError extends FavoriteSearchState {
+class CouponsSearchError extends CouponsSearchState {
   final String message;
-  const FavoriteSearchError(this.message);
+  const CouponsSearchError(this.message);
+}
+
+class CouponsSearchStateDone extends CouponsSearchState {
+  final List<Rewards> result;
+  const CouponsSearchStateDone(this.result);
 }

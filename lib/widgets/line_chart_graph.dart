@@ -80,103 +80,124 @@ class LineChartGraphState extends State<LineChartGraph> {
                   SizedBox(
                     height: SizeConfig.heightMultiplier * 2,
                   ),
-                  !widget.popup?
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 15,
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 4.5,
-                          primary: _weekly ? AppTheme.main : AppTheme.offWhite,
-                          padding: EdgeInsets.symmetric(
-                              vertical: SizeConfig.widthMultiplier * 0.36),
-                              side: BorderSide(width: 1.5, color: AppTheme.main,),
-                              shape: new RoundedRectangleBorder(
-      borderRadius: new BorderRadius.circular(10.0),
-    ),
-                          // textStyle: TextStyle(
-                          //     fontSize: 15,
-                          //     color: _pressed?AppTheme.white:AppTheme.black,
-                          //     fontWeight: FontWeight.bold)
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _weekly = true;
-                            _monthly = false;
-                            _yearly = false;
-                          });
-                        },
-                        child: Text('Weekly',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: _weekly ? AppTheme.white : AppTheme.main,
-                                fontWeight: FontWeight.w400)),
-                      ),
-                      Spacer(),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            elevation: 4.5,
-                          primary: _monthly ? AppTheme.main : AppTheme.offWhite,
-                          padding: EdgeInsets.symmetric(
-                              vertical: SizeConfig.widthMultiplier * 0.36),
-                         side: BorderSide(width: 1.5, color: AppTheme.main,),
-                         shape: new RoundedRectangleBorder(
-      borderRadius: new BorderRadius.circular(10.0),
-    ),
-                          // textStyle: TextStyle(
-                          //     fontSize: 15,
-                          //     color: _pressed?AppTheme.white:AppTheme.black,
-                          //     fontWeight: FontWeight.bold)
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _monthly = true;
-                            _yearly = false;
-                            _weekly = false;
-                          });
-                        },
-                        child: Text('Monthly',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color:
-                                    _monthly ? AppTheme.white : AppTheme.main,
-                                fontWeight: FontWeight.w400)),
-                      ),
-                      Spacer(),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            elevation: 4.5,
-                          primary: _yearly ? AppTheme.main : AppTheme.offWhite,
-                          padding: EdgeInsets.symmetric(
-                              vertical: SizeConfig.widthMultiplier * 0.36),
-                         side: BorderSide(width: 1.5, color: AppTheme.main,),
-                         shape: new RoundedRectangleBorder(
-      borderRadius: new BorderRadius.circular(10.0),
-    ),
-                          // textStyle: TextStyle(
-                          //     fontSize: 15,
-                          //     color: _pressed?AppTheme.white:AppTheme.black,
-                          //     fontWeight: FontWeight.bold)
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _yearly = true;
-                            _monthly = false;
-                            _weekly = false;
-                          });
-                        },
-                        child: Text('Yearly',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: _yearly ? AppTheme.white : AppTheme.main,
-                                fontWeight: FontWeight.w400)),
-                      ),
-                      Spacer(),
-                    ],
-                  )
-                  :Container(),
+                  !widget.popup
+                      ? Row(
+                          children: [
+                            SizedBox(
+                              width: SizeConfig.widthMultiplier * 15,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 4.5,
+                                primary:
+                                    _weekly ? AppTheme.main : AppTheme.offWhite,
+                                padding: EdgeInsets.symmetric(
+                                    vertical:
+                                        SizeConfig.widthMultiplier * 0.36),
+                                side: BorderSide(
+                                  width: 1.5,
+                                  color: AppTheme.main,
+                                ),
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(10.0),
+                                ),
+                                // textStyle: TextStyle(
+                                //     fontSize: 15,
+                                //     color: _pressed?AppTheme.white:AppTheme.black,
+                                //     fontWeight: FontWeight.bold)
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _weekly = true;
+                                  _monthly = false;
+                                  _yearly = false;
+                                });
+                              },
+                              child: Text('Weekly',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: _weekly
+                                          ? AppTheme.white
+                                          : AppTheme.main,
+                                      fontWeight: FontWeight.w400)),
+                            ),
+                            Spacer(),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 4.5,
+                                primary: _monthly
+                                    ? AppTheme.main
+                                    : AppTheme.offWhite,
+                                padding: EdgeInsets.symmetric(
+                                    vertical:
+                                        SizeConfig.widthMultiplier * 0.36),
+                                side: BorderSide(
+                                  width: 1.5,
+                                  color: AppTheme.main,
+                                ),
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(10.0),
+                                ),
+                                // textStyle: TextStyle(
+                                //     fontSize: 15,
+                                //     color: _pressed?AppTheme.white:AppTheme.black,
+                                //     fontWeight: FontWeight.bold)
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _monthly = true;
+                                  _yearly = false;
+                                  _weekly = false;
+                                });
+                              },
+                              child: Text('Monthly',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: _monthly
+                                          ? AppTheme.white
+                                          : AppTheme.main,
+                                      fontWeight: FontWeight.w400)),
+                            ),
+                            Spacer(),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 4.5,
+                                primary:
+                                    _yearly ? AppTheme.main : AppTheme.offWhite,
+                                padding: EdgeInsets.symmetric(
+                                    vertical:
+                                        SizeConfig.widthMultiplier * 0.36),
+                                side: BorderSide(
+                                  width: 1.5,
+                                  color: AppTheme.main,
+                                ),
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(10.0),
+                                ),
+                                // textStyle: TextStyle(
+                                //     fontSize: 15,
+                                //     color: _pressed?AppTheme.white:AppTheme.black,
+                                //     fontWeight: FontWeight.bold)
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _yearly = true;
+                                  _monthly = false;
+                                  _weekly = false;
+                                });
+                              },
+                              child: Text('Yearly',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: _yearly
+                                          ? AppTheme.white
+                                          : AppTheme.main,
+                                      fontWeight: FontWeight.w400)),
+                            ),
+                            Spacer(),
+                          ],
+                        )
+                      : Container(),
                   SizedBox(
                     height: SizeConfig.heightMultiplier * 4,
                   ),

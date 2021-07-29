@@ -190,7 +190,7 @@ class User extends Model {
         _hasWallets = hasWallets,
         _refreeID = refreeID,
         _referredTo = referredTo,
-        _referralID=referralID;
+        _referralID = referralID;
 
   factory User(
       {String? id,
@@ -247,7 +247,7 @@ class User extends Model {
         referredTo: referredTo != null
             ? List<String>.unmodifiable(referredTo)
             : referredTo,
-            referralID: referralID);
+        referralID: referralID);
   }
 
   bool equals(Object other) {
@@ -278,7 +278,7 @@ class User extends Model {
         DeepCollectionEquality().equals(_hasCreditCard, other._hasCreditCard) &&
         DeepCollectionEquality().equals(_hasWallets, other._hasWallets) &&
         _refreeID == other._refreeID &&
-        _referralID == other._referralID&&
+        _referralID == other._referralID &&
         DeepCollectionEquality().equals(_referredTo, other._referredTo);
   }
 
@@ -307,7 +307,7 @@ class User extends Model {
         (_favorites != null ? _favorites!.toString() : "null") +
         ", ");
     buffer.write("refreeID=" + "$_refreeID" + ", ");
-      buffer.write("referralID=" + "$_referralID" + ", ");
+    buffer.write("referralID=" + "$_referralID" + ", ");
     buffer.write("referredTo=" +
         (_referredTo != null ? _referredTo!.toString() : "null"));
     buffer.write("}");
@@ -333,7 +333,7 @@ class User extends Model {
       List<CreditCard>? hasCreditCard,
       List<UserWallet>? hasWallets,
       String? refreeID,
-      String?referralID,
+      String? referralID,
       List<String>? referredTo}) {
     return User(
         id: id ?? this.id,
@@ -356,14 +356,14 @@ class User extends Model {
         hasWallets: hasWallets ?? this.hasWallets,
         refreeID: refreeID ?? this.refreeID,
         referredTo: referredTo ?? this.referredTo,
-        referralID: referralID??this.referralID);
+        referralID: referralID ?? this.referralID);
   }
 
   User.fromJson(Map<String, dynamic> json)
       : id = json['userID'],
         _firstName = json['firstName'],
         _lastName = json['lastName'],
-        _dateOfBirth = json['dateOfBirth'] ,
+        _dateOfBirth = json['dateOfBirth'],
         _idCardNumber = json['idCardNumber'],
         _uniqueID = json['uniqueID'],
         _mobileNumber = json['mobileNumber'],
@@ -437,7 +437,7 @@ class User extends Model {
         'hasWallets': _hasWallets?.map((e) => e?.toJson())?.toList(),
         'refreeID': _refreeID,
         'referredTo': _referredTo,
-        'referralID':_referralID
+        'referralID': _referralID
       };
 
   // static final QueryField ID = QueryField(fieldName: "user.id");

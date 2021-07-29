@@ -6,7 +6,6 @@ import 'package:flux_payments/repository/database_repository.dart';
 import 'curated_list_state.dart';
 
 class CuratedListBloc extends Bloc<CuratedListEvent, CuratedListState> {
- 
   final DatabaseRepository _databaseRepository;
   CuratedListBloc(this._databaseRepository) : super(InitialState());
 

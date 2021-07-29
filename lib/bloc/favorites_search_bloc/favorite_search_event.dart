@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 
-abstract class FavoriteSearchEvent {}
+abstract class CouponsSearchEvent {}
 
-class LoadFavoriteSearch extends FavoriteSearchEvent {
-  final String? query;
-  LoadFavoriteSearch({@required this.query});
+class LoadCouponsSearch extends CouponsSearchEvent {
+  // final String? query;
+  LoadCouponsSearch();
 }

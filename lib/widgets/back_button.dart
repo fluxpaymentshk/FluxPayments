@@ -7,7 +7,7 @@ Widget backButton(BuildContext context, String tag, [Color? color]) {
     width: 35,
     height: 35,
     margin: const EdgeInsets.symmetric(
-      vertical: 18.0,
+      vertical: 5.0,
       horizontal: 1,
     ),
     child: FloatingActionButton(

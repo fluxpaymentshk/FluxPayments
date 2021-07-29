@@ -7,7 +7,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class GenerateMapWidget extends StatefulWidget {
-  const GenerateMapWidget({Key? key}) : super(key: key);
+  final double? longitude;
+  final double? latitude;
+  final String? title;
+  const GenerateMapWidget(
+      {Key? key,
+      @required this.longitude,
+      @required this.latitude,
+      @required this.title})
+      : super(key: key);
 
   @override
   _GenerateMapWidgetState createState() => _GenerateMapWidgetState();
@@ -34,20 +42,23 @@ class _GenerateMapWidgetState extends State<GenerateMapWidget> {
   @override
   Widget build(BuildContext context) {
     CameraPosition _kGooglePlex = CameraPosition(
-      target: LatLng(30.3398, 76.3869),
+      target: LatLng(
+        widget.latitude!,
+        widget.longitude!,
+      ),
       zoom: zoomScale,
       // bearing: 20,
       // tilt: 50,
     );
     return Container(
       height: 600,
-      width: double.infinity,
+      width: 600,
       child: GoogleMap(
         markers: {
           Marker(
-            markerId: MarkerId("Shop Marker"),
-            infoWindow: InfoWindow(title: "Shop"),
-            position: LatLng(30.32, 76.4067599),
+            markerId: MarkerId(widget.title! + "Marker"),
+            infoWindow: InfoWindow(title: "FLUX: " + widget.title!),
+            position: LatLng(widget.latitude!, widget.longitude!),
           ),
         }, //_marker,
         mapType: MapType.normal,
@@ -62,9 +73,8 @@ class _GenerateMapWidgetState extends State<GenerateMapWidget> {
           }
         },
         compassEnabled: true,
-        myLocationEnabled: true,
-        myLocationButtonEnabled: true,
         trafficEnabled: false,
+        indoorViewEnabled: true,
         buildingsEnabled: true,
       ),
     );
