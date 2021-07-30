@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
+import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.dart';
 import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
+import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/repository/database_repo.dart';
+import 'package:flux_payments/repository/favorite_search_repository.dart';
 
 import './screens/coupons.dart';
 
@@ -80,13 +83,17 @@ class _MyAppState extends State<MyApp> {
 
   bool _amplifyConfigured = false;
   bool isSignedIn = false;
+   List<Map<String,dynamic>> categories=[];
 
   @override
   void initState() {
     super.initState();
     _configureAmplify();
+    
   }
-
+  Future<List<RewardCategory>> getCategories()async{
+    return await DatabaseLambdaService().getCategories();
+  }
   void _configureAmplify() async {
     if (!mounted) return;
     AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
@@ -133,6 +140,7 @@ class _MyAppState extends State<MyApp> {
   var userBloc;
   @override
   Widget build(BuildContext context) {
+    getCategories();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flux Payments',
@@ -151,63 +159,70 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       home:
-          //  SupportBotScreen()
-          MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => AuthBloc(_loginRepository),
-          ),
-          BlocProvider(
-            create: (_) => UserBloc(_userConfigRepository, _databaseRepository),
-          ),
-          BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
-          BlocProvider(create: (_) => CuratedListBloc(_databaseRepository)),
-          BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
-          BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
-          BlocProvider(create: (_) => RecentPaymentBloc(_databaseRepository)),
-          BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
+      FutureBuilder<List<RewardCategory>>(
+        future:getCategories(),
+        builder:(context,snapshot)=>snapshot.hasData? MultiBlocProvider(providers: [
+             BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
           BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
-          BlocProvider(create: (_) => StoryBloc(_databaseRepository)),
-          BlocProvider(create: (_) => PendingServiceBloc(_databaseRepository))
-        ],
-        child: BlocBuilder<AuthBloc, AuthState>(
-          buildWhen: (prevSt, newSt) {
-            return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
-          },
-          builder: (ctx, st) {
-            log(_amplifyConfigured.toString());
-            log("Sign?:$isSignedIn");
-            return (!_amplifyConfigured)
-                ? Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : FutureBuilder<bool>(
-                    future: currentUser(ctx),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Scaffold(
-                          body: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      if (snapshot.hasData &&
-                          snapshot.data != null &&
-                          snapshot.data == false)
-                        return LoginPage(
-                          loginRepo: _loginRepository,
-                          userConfigRepository: _userConfigRepository,
-                        );
-                      return NavigatorPage(
-                        userRepository: _userConfigRepository,
-                        databaseRepository: _databaseRepository,
-                      );
-                    });
-          },
-        ),
-      ),
+          BlocProvider(create: (_)=>CouponsSearchBloc(CouponsSearchRepository()))
+      ],child: RewardsSearchScreen(categories: snapshot.data,),):CircularProgressIndicator(),),
+          //  SupportBotScreen()
+      //     MultiBlocProvider(
+      //   providers: [
+      //     BlocProvider(
+      //       create: (_) => AuthBloc(_loginRepository),
+      //     ),
+      //     BlocProvider(
+      //       create: (_) => UserBloc(_userConfigRepository, _databaseRepository),
+      //     ),
+      //     BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
+      //     BlocProvider(create: (_) => CuratedListBloc(_databaseRepository)),
+      //     BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
+      //     BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
+      //     BlocProvider(create: (_) => RecentPaymentBloc(_databaseRepository)),
+      //     BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
+      //     BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
+      //     BlocProvider(create: (_) => StoryBloc(_databaseRepository)),
+      //     BlocProvider(create: (_) => PendingServiceBloc(_databaseRepository))
+      //   ],
+      //   child: BlocBuilder<AuthBloc, AuthState>(
+      //     buildWhen: (prevSt, newSt) {
+      //       return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
+      //     },
+      //     builder: (ctx, st) {
+      //       log(_amplifyConfigured.toString());
+      //       log("Sign?:$isSignedIn");
+      //       return (!_amplifyConfigured)
+      //           ? Scaffold(
+      //               body: Center(
+      //                 child: CircularProgressIndicator(),
+      //               ),
+      //             )
+      //           : FutureBuilder<bool>(
+      //               future: currentUser(ctx),
+      //               builder: (context, snapshot) {
+      //                 if (!snapshot.hasData) {
+      //                   return Scaffold(
+      //                     body: Center(
+      //                       child: CircularProgressIndicator(),
+      //                     ),
+      //                   );
+      //                 }
+      //                 if (snapshot.hasData &&
+      //                     snapshot.data != null &&
+      //                     snapshot.data == false)
+      //                   return LoginPage(
+      //                     loginRepo: _loginRepository,
+      //                     userConfigRepository: _userConfigRepository,
+      //                   );
+      //                 return NavigatorPage(
+      //                   userRepository: _userConfigRepository,
+      //                   databaseRepository: _databaseRepository,
+      //                 );
+      //               });
+      //     },
+      //   ),
+      // ),
       routes: {
         LoginPage.routeName: (_) => MultiBlocProvider(
               providers: [

@@ -64,7 +64,7 @@ class ModelProvider implements ModelProviderInterface {
     ExternalAdvertisers.schema,
     InternalAdvertisers.schema,
     Reward.schema,
-    RewardCategory.schema,
+    // RewardCategory.schema,
     RewardPartner.schema,
     RewardTransaction.schema,
     Service.schema,

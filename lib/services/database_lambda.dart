@@ -4,6 +4,7 @@ import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
+import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/Reward.dart';
 import 'package:flux_payments/models/RewardPartner.dart';
 import 'package:flux_payments/models/Rewards.dart';
@@ -12,6 +13,7 @@ import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/banner.dart';
 import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/models/myCoupons.dart';
+import 'package:flux_payments/models/RewardCategory.dart';
 
 enum FluxPointServiceType { ServiceTransaction, referral }
 
@@ -650,16 +652,20 @@ class DatabaseLambdaService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getCategories() async {
+  Future<List<RewardCategory>> getCategories() async {
     result = {};
-    List<Map<String, dynamic>> rp = [];
+    List<RewardCategory> rp = [];
     try {
       result = await lambda
           .callLambda('aurora-serverless-rewardCategory', <String, dynamic>{});
       print(
-          "---------------------------------------------------------------------------------$result");
+          "---------------------------------------------------------------------------------${getOrganizedData(result)}");
       List<String> categories = [];
-      rp = getOrganizedData(result);
+      getOrganizedData(result).forEach((element) {
+        rp.add(RewardCategory.fromJson(element));
+        log("______________________________________________________________________");
+        log("${rp[rp.length - 1].toJson()}");
+      });
       log("$rp");
     } catch (e) {
       print(e);
@@ -701,12 +707,12 @@ class DatabaseLambdaService {
       print(
           "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
       // print(r);
-      r["columnMetadata"].forEach((element) {
-        print(element["name"] + "  " + element["typeName"]);
-      });
+      // r["columnMetadata"].forEach((element) {
+      //   print(element["name"] + "  " + element["typeName"]);
+      // });
       // print(
       //     "---------------------------------------------------------------------------------${getOrganizedData(r)}");
-      getOrganizedData(r);
+      // getOrganizedData(r);
     } catch (e) {
       print(e);
       throw e;

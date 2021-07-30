@@ -16,26 +16,30 @@ class Rewards extends Model {
   String? mapLink;
   double? latitude;
   double? longitude;
+  double? distance;
 
-  Rewards(
-      {this.rewardID,
-      this.name,
-      this.categoryID,
-      this.shortDescription,
-      this.longDescription,
-      this.amount,
-      this.image,
-      this.rewardPartnerID,
-      this.termsncond,
-      this.shopID,
-      this.address,
-      this.mapLink,
-      this.latitude,
-      this.longitude});
+  Rewards({
+    this.rewardID,
+    this.name,
+    this.categoryID,
+    this.shortDescription,
+    this.longDescription,
+    this.amount,
+    this.image,
+    this.rewardPartnerID,
+    this.termsncond,
+    this.shopID,
+    this.address,
+    this.mapLink,
+    this.latitude,
+    this.longitude,
+    this.distance,
+  });
 
   Rewards.fromJson(Map<String, dynamic> json)
       : rewardID = json["rewardID"],
         name = json["name"],
+        categoryID=json["categoryID"],
         shortDescription = json["shortDescription"],
         longDescription = json["longDescription"],
         amount = json["amount"],
@@ -60,6 +64,7 @@ class Rewards extends Model {
   Map<String, dynamic> toJson() => {
         "rewardID": rewardID,
         "name": name,
+        "categoryID":categoryID,
         "shortDescription": shortDescription,
         "longDescription": longDescription,
         "amount": amount,

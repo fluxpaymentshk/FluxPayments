@@ -11,6 +11,7 @@ import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.da
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
+import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/favorite_search_repository.dart';
 import 'package:flux_payments/screens/rewards_search_screen.dart';
@@ -96,7 +97,7 @@ class _CouponsState extends State<Coupons> {
   //   }
   //   print(fav.length);
   // }
-  List<Map<String, dynamic>> categories = [];
+  List<RewardCategory> categories = [];
   @override
   void initState() {
     super.initState();

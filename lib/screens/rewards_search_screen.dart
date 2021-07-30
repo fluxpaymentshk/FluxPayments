@@ -1,18 +1,25 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_event.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_state.dart';
 import 'package:flux_payments/config/theme.dart';
+import 'package:flux_payments/models/Rewards.dart';
 import 'package:flux_payments/screens/coupon_details.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/drop_down_button.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flux_payments/models/RewardCategory.dart';
+import 'dart:math' show cos, sqrt, asin;
+
+import 'package:location/location.dart';
 
 class RewardsSearchScreen extends StatefulWidget {
-  final List<Map<String, dynamic>>? categories;
+  final List<RewardCategory>? categories;
   const RewardsSearchScreen({Key? key, this.categories}) : super(key: key);
 
   @override
@@ -27,40 +34,69 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
     colors: <Color>[Color(0xFF7041EE), Color(0xffE9D9FB)],
   ).createShader(Rect.fromLTWH(100.0, 0.0, 200.0, 70.0));
   List<String> selectedCategories = [];
+  List<Rewards> r = [];
+  late List<RewardCategory>? categories;
 
-  late List<Map<String, dynamic>>? categories;
-
+  late bool _serviceEnabled;
+  late PermissionStatus _permissionGranted;
+  LocationData _locationData =
+      LocationData.fromMap({"longitde": 0.0, "latitude": 0.0});
+  late var couponsSearchBloc;
+  Location location = Location();
   @override
   void initState() {
     categories = widget.categories;
     print("1.1");
     DatabaseLambdaService().getRewards();
+    setLocation();
     print("2.1");
     getFluxPoints();
-    // couponsSearchBloc = BlocProvider.of<CouponsSearchBloc>(context);
-    // couponsSearchBloc.add(LoadCouponsSearch());
+    couponsSearchBloc = BlocProvider.of<CouponsSearchBloc>(context);
+    couponsSearchBloc.add(LoadCouponsSearch());
     super.initState();
+  }
+
+  Future<void> setLocation() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    _locationData = await location.getLocation();
+    log("$_locationData");
   }
 
   Future<double> getFluxPoints() async {
     Map<String, dynamic> res =
         await DatabaseLambdaService().getFluxPoints("Flux-Monik");
-    double r = res["records"][0][0]["longValue"];
+    double r = res["records"] == null ? 0 : res["records"][0][0]["longValue"];
     print("$r");
     return r;
   }
 
+  String _choosenVal = "Sort";
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var couponsSearchBloc = BlocProvider.of<CouponsSearchBloc>(context);
-    couponsSearchBloc.add(LoadCouponsSearch());
+    // var couponsSearchBloc = BlocProvider.of<CouponsSearchBloc>(context);
+    // couponsSearchBloc.add(LoadCouponsSearch());
     print("ji");
+
     return Scaffold(
       floatingActionButton: backButton(context, "button1"),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: ListView(
-        padding: EdgeInsets.zero,
+        padding: EdgeInsets.only(top:18),
         children: [
           Align(
             alignment: Alignment.center,
@@ -151,16 +187,18 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                               return InkWell(
                                 onTap: () {
                                   if (selectedCategories.contains(
-                                      categories?[index]["rewardCategoryID"])) {
+                                      categories?[index].rewardCategoryID)) {
                                     setState(() {
                                       selectedCategories.remove(
-                                          categories?[index]
-                                              ["rewardCategoryID"]);
+                                          categories?[index].rewardCategoryID);
+                                      //   r = filterAccordingToCategory(
+                                      // r, selectedCategories);
                                     });
                                   } else {
                                     setState(() {
-                                      selectedCategories.add(categories?[index]
-                                          ["rewardCategoryID"]);
+                                      selectedCategories.add(
+                                          categories?[index].rewardCategoryID ??
+                                              "");
                                     });
                                   }
                                 },
@@ -178,7 +216,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                       ],
                                       gradient: selectedCategories.contains(
                                               categories?[index]
-                                                  ["rewardCategoryID"])
+                                                  .rewardCategoryID)
                                           ? RadialGradient(
                                               center: Alignment(0.8, 0.8),
                                               colors: [
@@ -195,11 +233,11 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                     // height: 5,
                                     margin: EdgeInsets.all(8),
                                     child: Text(
-                                      categories?[index]["name"],
+                                      categories?[index].name ?? "",
                                       style: GoogleFonts.montserrat(
                                         color: selectedCategories.contains(
                                                 categories?[index]
-                                                    ["rewardCategoryID"])
+                                                    .rewardCategoryID)
                                             ? Colors.white
                                             : AppTheme.main,
                                         fontSize: 12,
@@ -214,286 +252,442 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                           ),
                           // color: Colors.pink,
                         ),
-                        Container(
-                          // height: 500,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffE9E9FF),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                        color: Colors.grey.shade300,
-                                        spreadRadius: 1,
-                                        offset: Offset(1, 1),
-                                      ),
-                                    ],
-                                  ),
-                                  margin: EdgeInsets.only(left: 20),
-                                  padding: EdgeInsets.all(8),
-                                  height: 50,
-                                  child: DropDownButton(),
-                                ),
-                              ),
-                              Container(
-                                width: 200,
-                                height: 80,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    ListTile(
-                                      minVerticalPadding: 1,
-                                      horizontalTitleGap: 1,
-                                      // dense: true,
-                                      leading: Image.asset(
-                                        "assets/images/coin.png",
-                                        height: 40,
-                                      ),
-                                      title: Text(
-                                        snapshot.data.toString(),
-                                        style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 25,
-                                          color: AppTheme.main,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      "My Points",
-                                      style: GoogleFonts.montserrat(
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 20,
-                                        color: AppTheme.main,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                         BlocBuilder<CouponsSearchBloc, CouponsSearchState>(
-                            builder: (context, state) {
-                          if (state is CouponsSearchInitial ||
-                              state is CouponsSearchStateLoading) {
-                            return Center(
-                              child: Container(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          }
-                          if (state is CouponsSearchError) {
-                            return Center(
-                              child: Container(
-                                child: Text("rrr"),
-                              ),
-                            );
-                          }
-                          if (state is CouponsSearchStateDone) {
-                            print("${state.result}");
-                            return Container(
-                              height: MediaQuery.of(context).size.height * 0.6,
-                              color: Colors.transparent,
-                              child: ListView.builder(
-                                  itemCount: state.result.length,
-                                  itemBuilder: (context, i) {
-                                    state.result.forEach((element) {
-                                      // print("${element.name}");
-                                      print(element.toJson());
-                                      // print("${element.categoryID}");
-                                      // print("${element.image}");
-                                      print("-----");
-                                    });
-                                    return InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CouponDetailScreen(
-                                              fluxPoints: snapshot.data,
-                                              rewardInfo: state.result[i],
+                          builder: (context, state) {
+                            if (state is CouponsSearchInitial ||
+                                state is CouponsSearchStateLoading) {
+                              return Center(
+                                child: Container(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                            if (state is CouponsSearchError) {
+                              return Center(
+                                child: Container(
+                                  child: Text("rrr"),
+                                ),
+                              );
+                            }
+                            if (state is CouponsSearchStateDone) {
+                              List<Rewards> original = state.result;
+                              print("${state.result}");
+                              original = insertDistance(state.result);
+                              r = original;
+                              return Column(
+                                children: [
+                                  Container(
+                                    // height: 500,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Color(0xffE9E9FF),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5)),
+                                              boxShadow: <BoxShadow>[
+                                                BoxShadow(
+                                                  color: Colors.grey.shade300,
+                                                  spreadRadius: 1,
+                                                  offset: Offset(1, 1),
+                                                ),
+                                              ],
                                             ),
+                                            margin: EdgeInsets.only(left: 20),
+                                            padding: EdgeInsets.all(8),
+                                            height: 50,
+                                            child: DropdownButton<String>(
+                                              selectedItemBuilder: (context) {
+                                                // setState(() {
+                                                //   print("hi");
+                                                // });
+                                                log(_choosenVal);
+                                                if (_choosenVal == "Sort") {
+                                                  r = selectedCategories
+                                                              .length ==
+                                                          0
+                                                      ? original
+                                                      : filterAccordingToCategory(
+                                                          r,
+                                                          selectedCategories);
+                                                } else if (_choosenVal ==
+                                                    "Nearest Store") {
+                                                  r = sortAccordingToDistance(
+                                                     selectedCategories
+                                                              .length ==
+                                                          0
+                                                      ?r: filterAccordingToCategory(
+                                                          r,
+                                                          selectedCategories));
+                                                } else if (_choosenVal ==
+                                                    "Least Flux Points") {
+                                                  r = sortAccordingToFluxPoints(
+                                                    selectedCategories
+                                                              .length ==
+                                                          0
+                                                      ? r: filterAccordingToCategory(
+                                                          r,
+                                                          selectedCategories));
+                                                } else if (_choosenVal ==
+                                                    "My favorite brand") {}
+                                                return [
+                                                  Text("Sort"),
+                                                  Text("Nearest Store"),
+                                                  Text("Least Flux Points"),
+                                                  Text("My favorite brand"),
+                                                ];
+                                              },
+                                              value: _choosenVal,
+                                              menuMaxHeight: 2000,
+                                              style: GoogleFonts.montserrat(
+                                                color: AppTheme.main,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15,
+                                              ),
+                                              dropdownColor: Color(0xffE9E9FF),
+                                              onChanged: (String? s) {
+                                                setState(() {
+                                                  _choosenVal = s ?? "";
+                                                });
+                                              },
+                                              // iconSize:30,
+                                              iconEnabledColor: AppTheme.main,
+                                              icon: ImageIcon(
+                                                AssetImage(
+                                                  "assets/images/drop_down.png",
+                                                ),
+                                              ),
+                                              //       Container(
+                                              //   height: 24,
+                                              //   child: FloatingActionButton(
+                                              //     onPressed: null,
+                                              //     shape: CircleBorder(
+                                              //       side: BorderSide(
+                                              //         color: AppTheme.main,
+                                              //         width: 3,
+                                              //       ),
+                                              //     ),
+                                              //     backgroundColor: Colors.white,
+                                              //     mini: true,
+                                              //     child: Icon(
+                                              //       Icons.arrow_downward_outlined,
+                                              //       color: AppTheme.main,
+                                              //       size: 16,
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                              hint: Text(
+                                                "Sort",
+                                                style: GoogleFonts.montserrat(
+                                                  color: AppTheme.main,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              items: <String>[
+                                                "Sort",
+                                                "Nearest Store",
+                                                "Least Flux Points",
+                                                "My favorite brand"
+                                              ].map<DropdownMenuItem<String>>(
+                                                  (String s) {
+                                                return DropdownMenuItem(
+                                                  child: Text(s),
+                                                  value: s,
+                                                );
+                                              }).toList(),
+                                              isDense: false,
+                                            ), //DropDownButton(),
                                           ),
-                                        );
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.all(12),
-                                        width: double.infinity,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.3,
-                                        // color: Colors.red,
-                                        child: Card(
-                                          elevation: 6,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(5),
-                                            ),
-                                          ),
+                                        ),
+                                        Container(
+                                          width: 200,
+                                          height: 80,
                                           child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Container(
+                                              ListTile(
+                                                minVerticalPadding: 1,
+                                                horizontalTitleGap: 1,
+                                                // dense: true,
+                                                leading: Image.asset(
+                                                  "assets/images/coin.png",
+                                                  height: 40,
+                                                ),
+                                                title: Text(
+                                                  snapshot.data.toString(),
+                                                  style: GoogleFonts.montserrat(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25,
+                                                    color: AppTheme.main,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                "My Points",
+                                                style: GoogleFonts.montserrat(
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 20,
+                                                  color: AppTheme.main,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // return
+                                  Builder(
+                                    builder: (context) => Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.6,
+                                      color: Colors.transparent,
+                                      child: ListView.builder(
+                                          itemCount: r.length,
+                                          itemBuilder: (context, i) {
+                                            log("${r.length}");
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CouponDetailScreen(
+                                                      fluxPoints: snapshot.data,
+                                                      rewardInfo: r[i],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.all(12),
                                                 width: double.infinity,
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    0.2,
+                                                    0.3,
+                                                // color: Colors.red,
                                                 child: Card(
-                                                  elevation: 3,
-                                                  margin: EdgeInsets.zero,
+                                                  elevation: 6,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.all(
                                                       Radius.circular(5),
                                                     ),
                                                   ),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(
-                                                          5,
-                                                        ),
-                                                      ),
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                          state.result[i]
-                                                              .image!, // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLPQ-uicwyjCt0Va0FsnbI6cPzmVUmjM3HTA&usqp=CAU",
-                                                          scale: 0.01,
-                                                          // fit: BoxFit.fill,
-                                                        ),
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                      // shape: BoxShape.circle,
-                                                    ),
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      child: Container(
-                                                        margin:
-                                                            EdgeInsets.all(15),
-                                                        padding:
-                                                            EdgeInsets.all(2),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Color(0xffE9E9FF),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(
-                                                              2,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          "Valid until 01-Jun-2021",
-                                                          style: GoogleFonts
-                                                              .montserrat(
-                                                                  fontSize: 10,
-                                                                  color:
-                                                                      AppTheme
-                                                                          .main,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 10, top: 3),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                  child: Column(
                                                     children: [
                                                       Container(
+                                                        width: double.infinity,
                                                         height: MediaQuery.of(
                                                                     context)
                                                                 .size
                                                                 .height *
-                                                            0.06,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              state.result[i]
-                                                                  .name!,
-                                                              style: GoogleFonts
-                                                                  .montserrat(
-                                                                color: AppTheme
-                                                                    .main,
-                                                                fontSize: 10,
+                                                            0.2,
+                                                        child: Card(
+                                                          elevation: 3,
+                                                          margin:
+                                                              EdgeInsets.zero,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  5),
+                                                            ),
+                                                          ),
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                  5,
+                                                                ),
                                                               ),
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    NetworkImage(
+                                                                  r[i].image!, // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLPQ-uicwyjCt0Va0FsnbI6cPzmVUmjM3HTA&usqp=CAU",
+                                                                  scale: 0.01,
+                                                                  // fit: BoxFit.fill,
+                                                                ),
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                              ),
+                                                              // shape: BoxShape.circle,
                                                             ),
-                                                            SizedBox(
-                                                              height: 2,
-                                                            ),
-                                                            SizedBox(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  0.5,
-                                                              child: Text(
-                                                                state.result[i]
-                                                                    .shortDescription!,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: GoogleFonts
-                                                                    .montserrat(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
+                                                            child: Align(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .topRight,
+                                                              child: Container(
+                                                                margin:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            15),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(2),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Color(
+                                                                      0xffE9E9FF),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .all(
+                                                                    Radius
+                                                                        .circular(
+                                                                      2,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                child: Text(
+                                                                  "Valid until 01-Jun-2021",
+                                                                  style: GoogleFonts.montserrat(
+                                                                      fontSize:
+                                                                          10,
+                                                                      color: AppTheme
+                                                                          .main,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
                                                                 ),
                                                               ),
                                                             ),
-                                                            // Text("BurgerKing"),
-                                                          ],
+                                                          ),
                                                         ),
                                                       ),
-                                                      Flexible(
+                                                      Expanded(
                                                         child: Container(
-                                                          width: 150,
-                                                          child: ListTile(
-                                                            minVerticalPadding:
-                                                                1,
-                                                            horizontalTitleGap:
-                                                                1,
-                                                            leading:
-                                                                Image.asset(
-                                                              "assets/images/coin.png",
-                                                              height: 40,
-                                                            ),
-                                                            title: Text(
-                                                              state.result[i]
-                                                                  .amount
-                                                                  .toString(),
-                                                              style: GoogleFonts
-                                                                  .montserrat(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 25,
-                                                                color: AppTheme
-                                                                    .main,
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            left: 10,
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Container(
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    0.08,
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      r[i].name!,
+                                                                      style: GoogleFonts
+                                                                          .montserrat(
+                                                                        color: AppTheme
+                                                                            .main,
+                                                                        fontSize:
+                                                                            10,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 2,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.5,
+                                                                      child:
+                                                                          Text(
+                                                                        r[i].shortDescription!,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style: GoogleFonts
+                                                                            .montserrat(
+                                                                          color:
+                                                                              Colors.black,
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Flexible(
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          Icon(
+                                                                            Icons.location_on,
+                                                                            size:
+                                                                                12,
+                                                                            color:
+                                                                                AppTheme.main,
+                                                                          ),
+                                                                          Text(
+                                                                            " " +
+                                                                                r[i].distance.toString() +
+                                                                                " km from your location.",
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style:
+                                                                                GoogleFonts.montserrat(
+                                                                              color: AppTheme.main,
+                                                                              fontSize: 12,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ),
+                                                              Flexible(
+                                                                child:
+                                                                    Container(
+                                                                  width: 150,
+                                                                  child:
+                                                                      ListTile(
+                                                                    minVerticalPadding:
+                                                                        1,
+                                                                    horizontalTitleGap:
+                                                                        1,
+                                                                    leading: Image
+                                                                        .asset(
+                                                                      "assets/images/coin.png",
+                                                                      height:
+                                                                          40,
+                                                                    ),
+                                                                    title: Text(
+                                                                      r[i]
+                                                                          .amount
+                                                                          .toString(),
+                                                                      style: GoogleFonts
+                                                                          .montserrat(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        fontSize:
+                                                                            25,
+                                                                        color: AppTheme
+                                                                            .main,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
@@ -501,16 +695,17 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                   ),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                            );
-                          }
-                          return Text("error");
-                        }),
+                                            );
+                                          }),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            return Text("error");
+                            // ;
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -521,5 +716,55 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
         ],
       ),
     );
+  }
+
+  filterAccordingToCategory(
+      List<Rewards> rewardsList, List<String> selectedCategories) {
+    List<Rewards> filteredList = [];
+    log("************$selectedCategories");
+    rewardsList.forEach((element) {
+      log("------${element.toJson()}");
+      if (selectedCategories.contains(element.categoryID)) {
+        filteredList.add(element);
+        log("+++${element.toJson()}");
+      }
+    });
+
+    return filteredList;
+  }
+
+  sortAccordingToDistance(List<Rewards> rewardsList) {
+    List<Rewards> sortedRewardsList = rewardsList;
+    sortedRewardsList
+        .sort((Rewards a, Rewards b) => (a.distance! < b.distance!) ? 0 : 1);
+    return sortedRewardsList;
+  }
+
+  sortAccordingToFluxPoints(List<Rewards> rewardsList) {
+    List<Rewards> sortedRewardsList = rewardsList;
+    sortedRewardsList
+        .sort((Rewards a, Rewards b) => (a.amount! < b.amount!) ? 0 : 1);
+    return sortedRewardsList;
+  }
+
+  insertDistance(List<Rewards> reward) {
+    var usrLoc_Long = _locationData.longitude ?? 0.0;
+    var usrLoc_Lat = _locationData.latitude ?? 0.0;
+    var p = 0.017453292519943295;
+    var c = cos;
+    reward.forEach((element) {
+      var a = 0.5 -
+          c((element.latitude! - usrLoc_Lat) * p) / 2 +
+          c(usrLoc_Lat * p) *
+              c(element.latitude! * p) *
+              (1 - c((element.longitude! - usrLoc_Long) * p)) /
+              2;
+      element.distance =
+          double.parse((12742 * asin(sqrt(a))).toStringAsFixed(3));
+    });
+    log("LAt: $usrLoc_Lat    LOng: $usrLoc_Long");
+    log("rLat: ${reward[0].latitude}   rLong: ${reward[0].longitude}");
+    log("&--766---^---&---${reward[0].distance}");
+    return reward;
   }
 }

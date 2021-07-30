@@ -14,6 +14,12 @@ class _DropDownButtonState extends State<DropDownButton> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
+      selectedItemBuilder: (context) {
+        // setState(() {
+        //   print("hi");
+        // });
+        return [];
+      },
       value: _choosenVal,
       menuMaxHeight: 200,
       style: GoogleFonts.montserrat(
