@@ -15,29 +15,37 @@ class LineChartGraph extends StatefulWidget {
   final double height, width;
   final bool popup;
   final User user;
+  // final int order;
   @override
-  const LineChartGraph(
-      {Key? key,
-      required this.mp,
-      required this.height,
-      required this.popup,
-      required this.width,
-      required this.user})
-      : super(key: key);
+  const LineChartGraph({
+    Key? key,
+    required this.mp,
+    required this.height,
+    required this.popup,
+    required this.width,
+    required this.user,
+    //required this.order
+  }) : super(key: key);
   //mp=
   State<StatefulWidget> createState() => LineChartGraphState();
 }
 
 class LineChartGraphState extends State<LineChartGraph> {
   bool _weekly = false, _monthly = true, _yearly = false;
+  String currDate = "";
   // @override
   //  LineChartGraphState({Key? key, required this.mp}) ;
-  //  Map<String, Map<String, double>> mp={};
-  late bool isShowingMainData;
-  double maximum = 0, minimum = -1;
-  List<String> xaxis = ['2021-09', '2021-08', '2021-07'];
-  List<String> names = ['ICICI', 'HDFC', 'PNB'];
+  //  Map<String, Map<String, do
+  //uble>> mp={};
 
+  late bool isShowingMainData;
+  Map<String, Map<String, double>> organizedData = {};
+  double maximum = 0, minimum = -1;
+  // List<String> xaxis = ['2021-09', '2021-08', '2021-07'];
+  // List<String> names = ['ICICI', 'HDFC', 'PNB'];
+
+  List<String> xaxis = [];
+  List<String> names = [];
   List<Color> color = [
     Color(0xff27b6fc),
     Color(0xffaa4cfc),
@@ -46,8 +54,391 @@ class LineChartGraphState extends State<LineChartGraph> {
   //final Map<String, Map<String, double>> mp;
   @override
   void initState() {
+    //  order = widget.order;
+
+    List<dynamic> temp =
+        represent(result: widget.mp, xaxis: xaxis, names: names);
+    organizedData = temp[2];
+    xaxis = temp[0];
+    names = temp[1];
+
+//    print(xaxis);
+    print(temp);
+    print('bbbbbbbbbbbbbbbbbbbbbbbb');
+
     super.initState();
     isShowingMainData = true;
+  }
+
+  DateTime getCurrentDate() {
+    var date = new DateTime.now().toString();
+
+    var dateParse = DateTime.parse(date);
+
+    var formattedDate = "${dateParse.year}-${dateParse.month}-${dateParse.day}";
+
+    setState(() {
+      currDate = formattedDate.toString();
+    });
+    return dateParse;
+  }
+
+  String getRightFormat(DateTime dateParse) {
+    return "${dateParse.year}-${(dateParse.month).toString().length == 1 ? "0${dateParse.month}" : dateParse.month}-${(dateParse.day).toString().length == 1 ? "0${dateParse.day}" : dateParse.day}";
+  }
+
+  List<dynamic> represent(
+      {required Map<String, dynamic> result,
+      required List<String> xaxis,
+      required List<String> names}) {
+    List<String> xaxiss = [], namess = [];
+    List<dynamic> ans = [];
+
+    var dateParse = getCurrentDate();
+
+    result.keys.forEach((element) {
+      if (namess.length != 3) namess.add(element);
+    });
+
+    Map<String, Map<String, double>> mp = {};
+    print('***********************************');
+    print(_monthly);
+    if (_monthly) {
+      if (dateParse.month == 1) {
+        xaxiss.add("${dateParse.year - 1}-${11}");
+        xaxiss.add("${dateParse.year - 1}-${12}");
+        xaxiss.add("${dateParse.year}-${01}");
+      } else if (dateParse.month == 2) {
+        xaxiss.add("${dateParse.year - 1}-${12}");
+        xaxiss.add("${dateParse.year}-${01}");
+        xaxiss.add("${dateParse.year}-${02}");
+      } else {
+        xaxiss.add(
+            "${dateParse.year}-${(dateParse.month - 2).toString().length == 1 ? "0${dateParse.month - 2}" : dateParse.month - 2}");
+        xaxiss.add(
+            "${dateParse.year}-${(dateParse.month - 1).toString().length == 1 ? "0${dateParse.month - 1}" : dateParse.month - 1}");
+
+        xaxiss.add(
+            "${dateParse.year}-${(dateParse.month).toString().length == 1 ? "0${dateParse.month}" : dateParse.month}");
+      }
+      // setState(() {
+      //   xaxis = xaxiss;
+      //   names = namess;
+      // });
+      ans.add(xaxiss);
+      ans.add(namess);
+      xaxis = xaxiss;
+      names = namess;
+
+      print(xaxis);
+      print("egegegegeg");
+
+      result.forEach((key, value) {
+        //  mp.putIfAbsent(key, () => []);
+        if (value.length >= 1 &&
+            (value[0]["paidOn"].contains(xaxis[2]) ||
+                value[0]["paidOn"].contains(xaxis[1]) ||
+                value[0]["paidOn"].contains(xaxis[0]))) {
+          mp.putIfAbsent(
+              value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3),
+              () => {});
+
+          mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3)]![
+              key] = mp[value[0]["paidOn"]
+                  .substring(0, value[0]["paidOn"].length - 3)]![key]! +
+              value[0]["rewardPoints"];
+        }
+        //  mp[key]?.add({value[0]["paidOn"]: value[0]["rewardPoints"]});
+
+        // if (value.length >= 2)
+        //   mp[key]?.add({value[1]["paidOn"]: value[1]["rewardPoints"]});
+
+        if (value.length >= 2 &&
+            (value[1]["paidOn"].contains(xaxis[2]) ||
+                value[1]["paidOn"].contains(xaxis[1]) ||
+                value[1]["paidOn"].contains(xaxis[0]))) {
+          mp.putIfAbsent(
+              value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3),
+              () => {});
+
+          mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3)]![
+              key] = mp[value[1]["paidOn"]
+                  .substring(0, value[1]["paidOn"].length - 3)]![key]! +
+              value[1]["rewardPoints"];
+        }
+
+        if (value.length >= 3 &&
+            (value[2]["paidOn"].contains(xaxis[2]) ||
+                value[2]["paidOn"].contains(xaxis[1]) ||
+                value[2]["paidOn"].contains(xaxis[0]))) {
+          mp.putIfAbsent(
+              value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3),
+              () => {});
+
+          mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3)]![
+              key] = mp[value[2]["paidOn"]
+                  .substring(0, value[2]["paidOn"].length - 3)]![key]! +
+              value[2]["rewardPoints"];
+        }
+
+        // if (value.length >= 3)
+        //   mp[key]?.add({value[2]["paidOn"]: value[2]["rewardPoints"]});
+
+//to process cummulative data for respective month.
+        // value.forEach((el) {});
+      });
+
+      ans.add(mp);
+    }
+    if (_yearly) {
+      // if(dateParse.month==1)
+      //    {
+      xaxiss.add("${dateParse.year - 2}");
+      xaxiss.add("${dateParse.year - 1}");
+      xaxiss.add("${dateParse.year}");
+
+      //  }
+      // xaxis = xaxiss;
+      xaxis = xaxiss;
+      names = namess;
+      print(xaxis);
+      print("egegegegegyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+      result.forEach((key, value) {
+        //  mp.putIfAbsent(key, () => []);
+        if (value.length >= 1 &&
+            (value[0]["paidOn"].contains(xaxis[2]) ||
+                value[0]["paidOn"].contains(xaxis[1]) ||
+                value[0]["paidOn"].contains(xaxis[0]))) {
+          mp.putIfAbsent(
+              value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 6),
+              () => {});
+
+          mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 6)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 6)]![
+              key] = mp[value[0]["paidOn"]
+                  .substring(0, value[0]["paidOn"].length - 6)]![key]! +
+              value[0]["rewardPoints"];
+        }
+        //  mp[key]?.add({value[0]["paidOn"]: value[0]["rewardPoints"]});
+
+        // if (value.length >= 2)
+        //   mp[key]?.add({value[1]["paidOn"]: value[1]["rewardPoints"]});
+
+        if (value.length >= 2 &&
+            (value[1]["paidOn"].contains(xaxis[2]) ||
+                value[1]["paidOn"].contains(xaxis[1]) ||
+                value[1]["paidOn"].contains(xaxis[0]))) {
+          mp.putIfAbsent(
+              value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 6),
+              () => {});
+
+          mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 6)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 6)]![
+              key] = mp[value[1]["paidOn"]
+                  .substring(0, value[1]["paidOn"].length - 6)]![key]! +
+              value[1]["rewardPoints"];
+        }
+
+        if (value.length >= 3 &&
+            (value[2]["paidOn"].contains(xaxis[2]) ||
+                value[2]["paidOn"].contains(xaxis[1]) ||
+                value[2]["paidOn"].contains(xaxis[0]))) {
+          mp.putIfAbsent(
+              value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 6),
+              () => {});
+
+          mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 6)]!
+              .putIfAbsent(key, () => 0);
+
+          mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 6)]![
+              key] = mp[value[2]["paidOn"]
+                  .substring(0, value[2]["paidOn"].length - 6)]![key]! +
+              value[2]["rewardPoints"];
+        }
+
+        // if (value.length >= 3)
+        //   mp[key]?.add({value[2]["paidOn"]: value[2]["rewardPoints"]});
+
+//to process cummulative data for respective month.
+        // value.forEach((el) {});
+      });
+      // setState(() {
+      //   xaxis = xaxiss;
+      //   names = namess;
+      //   print(
+      //       "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjkkkkkkkkkkkkkkkkkk");
+      // });
+      ans.add(xaxiss);
+      ans.add(names);
+      ans.add(mp);
+      print(mp);
+    }
+
+    if (_weekly) {
+      DateTime today = DateTime.now();
+      DateTime oneWeekAgo = today.subtract(const Duration(days: 7));
+      DateTime twoWeekAgo = today.subtract(const Duration(days: 14));
+      DateTime threeWeekAgo = today.subtract(const Duration(days: 21));
+
+      var dateParse = DateTime.parse(today.toString());
+
+      var todayDate = getRightFormat(dateParse);
+
+      dateParse = DateTime.parse(oneWeekAgo.toString());
+      var oneWeekAgoDate = getRightFormat(dateParse);
+
+      dateParse = DateTime.parse(twoWeekAgo.toString());
+      var twoWeekAgoDate = getRightFormat(dateParse);
+
+      // dateParse = DateTime.parse(threeWeekAgo.toString());
+      // var threeWeekAgoDate = getRightFormat(dateParse);
+
+      //xaxiss.add(threeWeekAgoDate);
+      xaxiss.add(twoWeekAgoDate);
+      xaxiss.add(oneWeekAgoDate);
+      xaxiss.add(todayDate);
+
+      result.forEach((key, value) {
+        //  mp.putIfAbsent(key, () => []);
+
+        if (value.length >= 1) {
+          xaxiss.forEach((el) {
+            var end = DateTime.parse(el);
+            var start = DateTime.parse(value[0]["paidOn"]);
+            //Duration difference = end.difference(start);
+            if (end.difference(start).inDays <= 7) {
+              mp.putIfAbsent(todayDate, () => {});
+              mp[todayDate]!.putIfAbsent(key, () => 0);
+              mp[todayDate]![key] =
+                  mp[todayDate]![key]! + value[0]["rewardPoints"];
+            }
+          });
+
+          //   var end = DateTime.parse(todayDate);
+        }
+        if (value.length >= 2) {
+          xaxiss.forEach((el) {
+            var end = DateTime.parse(el);
+            var start = DateTime.parse(value[0]["paidOn"]);
+            //Duration difference = end.difference(start);
+            if (end.difference(start).inDays <= 7) {
+              mp.putIfAbsent(todayDate, () => {});
+              mp[todayDate]!.putIfAbsent(key, () => 0);
+              mp[todayDate]![key] =
+                  mp[todayDate]![key]! + value[0]["rewardPoints"];
+            }
+          });
+
+          //   var end = DateTime.parse(todayDate);
+        }
+        if (value.length >= 3) {
+          xaxiss.forEach((el) {
+            var end = DateTime.parse(el);
+            var start = DateTime.parse(value[0]["paidOn"]);
+            //Duration difference = end.difference(start);
+            if (end.difference(start).inDays <= 7) {
+              mp.putIfAbsent(todayDate, () => {});
+              mp[todayDate]!.putIfAbsent(key, () => 0);
+              mp[todayDate]![key] =
+                  mp[todayDate]![key]! + value[0]["rewardPoints"];
+            }
+          });
+
+          //   var end = DateTime.parse(todayDate);
+        }
+
+        //###############################
+        // if (value.length >= 1 &&
+        //     (value[0]["paidOn"].compare(xaxis[2]) ||
+        //         value[0]["paidOn"].contains(xaxis[1]) ||
+        //         value[0]["paidOn"].contains(xaxis[0]))) {
+        //   mp.putIfAbsent(
+        //       value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 6),
+        //       () => {});
+
+        //   mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 6)]!
+        //       .putIfAbsent(key, () => 0);
+
+        //   mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 6)]![
+        //       key] = mp[value[0]["paidOn"]
+        //           .substring(0, value[0]["paidOn"].length - 6)]![key]! +
+        //       value[0]["rewardPoints"];
+        // }
+        // //  mp[key]?.add({value[0]["paidOn"]: value[0]["rewardPoints"]});
+
+        // // if (value.length >= 2)
+        // //   mp[key]?.add({value[1]["paidOn"]: value[1]["rewardPoints"]});
+
+        // if (value.length >= 2 &&
+        //     (value[1]["paidOn"].contains(xaxis[2]) ||
+        //         value[1]["paidOn"].contains(xaxis[1]) ||
+        //         value[1]["paidOn"].contains(xaxis[0]))) {
+        //   mp.putIfAbsent(
+        //       value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 6),
+        //       () => {});
+
+        //   mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 6)]!
+        //       .putIfAbsent(key, () => 0);
+
+        //   mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 6)]![
+        //       key] = mp[value[1]["paidOn"]
+        //           .substring(0, value[1]["paidOn"].length - 6)]![key]! +
+        //       value[1]["rewardPoints"];
+        // }
+
+        // if (value.length >= 3 &&
+        //     (value[2]["paidOn"].contains(xaxis[2]) ||
+        //         value[2]["paidOn"].contains(xaxis[1]) ||
+        //         value[2]["paidOn"].contains(xaxis[0]))) {
+        //   mp.putIfAbsent(
+        //       value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 6),
+        //       () => {});
+
+        //   mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 6)]!
+        //       .putIfAbsent(key, () => 0);
+
+        //   mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 6)]![
+        //       key] = mp[value[2]["paidOn"]
+        //           .substring(0, value[2]["paidOn"].length - 6)]![key]! +
+        //       value[2]["rewardPoints"];
+        // }
+
+        // if (value.length >= 3)
+        //   mp[key]?.add({value[2]["paidOn"]: value[2]["rewardPoints"]});
+
+//to process cummulative data for respective month.
+        // value.forEach((el) {});
+      });
+
+      // setState(() {
+      //   xaxis = xaxiss;
+      //   names = namess;
+      // });
+      ans.add(xaxiss);
+      ans.add(namess);
+      ans.add(mp);
+      xaxis = xaxiss;
+      names = namess;
+
+      print(xaxis);
+      print("ewkwkwkwkwkwkwklyyyyyyyyyyyyyy");
+    }
+    print("*********************************************************");
+
+    return ans;
   }
 
   @override
@@ -80,103 +471,163 @@ class LineChartGraphState extends State<LineChartGraph> {
                   SizedBox(
                     height: SizeConfig.heightMultiplier * 2,
                   ),
-                  !widget.popup?
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 15,
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 4.5,
-                          primary: _weekly ? AppTheme.main : AppTheme.offWhite,
-                          padding: EdgeInsets.symmetric(
-                              vertical: SizeConfig.widthMultiplier * 0.36),
-                              side: BorderSide(width: 1.5, color: AppTheme.main,),
-                              shape: new RoundedRectangleBorder(
-      borderRadius: new BorderRadius.circular(10.0),
-    ),
-                          // textStyle: TextStyle(
-                          //     fontSize: 15,
-                          //     color: _pressed?AppTheme.white:AppTheme.black,
-                          //     fontWeight: FontWeight.bold)
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _weekly = true;
-                            _monthly = false;
-                            _yearly = false;
-                          });
-                        },
-                        child: Text('Weekly',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: _weekly ? AppTheme.white : AppTheme.main,
-                                fontWeight: FontWeight.w400)),
-                      ),
-                      Spacer(),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            elevation: 4.5,
-                          primary: _monthly ? AppTheme.main : AppTheme.offWhite,
-                          padding: EdgeInsets.symmetric(
-                              vertical: SizeConfig.widthMultiplier * 0.36),
-                         side: BorderSide(width: 1.5, color: AppTheme.main,),
-                         shape: new RoundedRectangleBorder(
-      borderRadius: new BorderRadius.circular(10.0),
-    ),
-                          // textStyle: TextStyle(
-                          //     fontSize: 15,
-                          //     color: _pressed?AppTheme.white:AppTheme.black,
-                          //     fontWeight: FontWeight.bold)
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _monthly = true;
-                            _yearly = false;
-                            _weekly = false;
-                          });
-                        },
-                        child: Text('Monthly',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color:
-                                    _monthly ? AppTheme.white : AppTheme.main,
-                                fontWeight: FontWeight.w400)),
-                      ),
-                      Spacer(),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            elevation: 4.5,
-                          primary: _yearly ? AppTheme.main : AppTheme.offWhite,
-                          padding: EdgeInsets.symmetric(
-                              vertical: SizeConfig.widthMultiplier * 0.36),
-                         side: BorderSide(width: 1.5, color: AppTheme.main,),
-                         shape: new RoundedRectangleBorder(
-      borderRadius: new BorderRadius.circular(10.0),
-    ),
-                          // textStyle: TextStyle(
-                          //     fontSize: 15,
-                          //     color: _pressed?AppTheme.white:AppTheme.black,
-                          //     fontWeight: FontWeight.bold)
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _yearly = true;
-                            _monthly = false;
-                            _weekly = false;
-                          });
-                        },
-                        child: Text('Yearly',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: _yearly ? AppTheme.white : AppTheme.main,
-                                fontWeight: FontWeight.w400)),
-                      ),
-                      Spacer(),
-                    ],
-                  )
-                  :Container(),
+                  !widget.popup
+                      ? Container(
+                          height: SizeConfig.heightMultiplier * 3.6,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: SizeConfig.widthMultiplier * 30,
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 4.5,
+                                  primary: _weekly
+                                      ? AppTheme.main
+                                      : AppTheme.offWhite,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          SizeConfig.widthMultiplier * 0.36),
+                                  side: BorderSide(
+                                    width: 1.5,
+                                    color: AppTheme.main,
+                                  ),
+                                  shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0),
+                                  ),
+                                  // textStyle: TextStyle(
+                                  //     fontSize: 15,
+                                  //     color: _pressed?AppTheme.white:AppTheme.black,
+                                  //     fontWeight: FontWeight.bold)
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _weekly = true;
+                                    _monthly = false;
+                                    _yearly = false;
+                                    List<dynamic> temp = represent(
+                                        result: widget.mp,
+                                        xaxis: xaxis,
+                                        names: names);
+
+                                    print('wekkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+                                    print(temp);
+                                    organizedData = temp[2];
+                                    xaxis = temp[0];
+                                    names = temp[1];
+                                    // widget.order = 1;
+                                  });
+                                },
+                                child: Text('Weekly',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: _weekly
+                                            ? AppTheme.white
+                                            : AppTheme.main,
+                                        fontWeight: FontWeight.w400)),
+                              ),
+                              Spacer(),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 4.5,
+                                  primary: _monthly
+                                      ? AppTheme.main
+                                      : AppTheme.offWhite,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          SizeConfig.widthMultiplier * 0.36),
+                                  side: BorderSide(
+                                    width: 1.5,
+                                    color: AppTheme.main,
+                                  ),
+                                  shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0),
+                                  ),
+                                  // textStyle: TextStyle(
+                                  //     fontSize: 15,
+                                  //     color: _pressed?AppTheme.white:AppTheme.black,
+                                  //     fontWeight: FontWeight.bold)
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _monthly = true;
+                                    _yearly = false;
+                                    _weekly = false;
+                                    List<dynamic> temp = represent(
+                                        result: widget.mp,
+                                        xaxis: xaxis,
+                                        names: names);
+
+                                    print('monthlyyyyyyyyyyyyyyyy');
+                                    print(temp);
+                                    organizedData = temp[2];
+                                    xaxis = temp[0];
+                                    names = temp[1];
+                                  });
+                                },
+                                child: Text('Monthly',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: _monthly
+                                            ? AppTheme.white
+                                            : AppTheme.main,
+                                        fontWeight: FontWeight.w400)),
+                              ),
+                              Spacer(),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 4.5,
+                                  primary: _yearly
+                                      ? AppTheme.main
+                                      : AppTheme.offWhite,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          SizeConfig.widthMultiplier * 0.36),
+                                  side: BorderSide(
+                                    width: 1.5,
+                                    color: AppTheme.main,
+                                  ),
+                                  shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0),
+                                  ),
+                                  // textStyle: TextStyle(
+                                  //     fontSize: 15,
+                                  //     color: _pressed?AppTheme.white:AppTheme.black,
+                                  //     fontWeight: FontWeight.bold)
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _yearly = true;
+                                    _monthly = false;
+                                    _weekly = false;
+                                    List<dynamic> temp = represent(
+                                        result: widget.mp,
+                                        xaxis: xaxis,
+                                        names: names);
+
+                                    print('yearlyyyyyyyyyyyyyyyyyyyy');
+                                    print(temp);
+                                    organizedData = temp[2];
+                                    xaxis = temp[0];
+                                    names = temp[1];
+                                  });
+                                },
+                                child: Text('Yearly',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: _yearly
+                                            ? AppTheme.white
+                                            : AppTheme.main,
+                                        fontWeight: FontWeight.w400)),
+                              ),
+                              Spacer(),
+                            ],
+                          ),
+                        )
+                      : Container(),
                   SizedBox(
                     height: SizeConfig.heightMultiplier * 4,
                   ),
@@ -306,8 +757,10 @@ class LineChartGraphState extends State<LineChartGraph> {
   }
 
   LineChartData sampleData1() {
-    widget.mp.forEach((key, value) {
-      widget.mp[key]!.forEach((key, value) {
+    print("hyyyyyyyyyyyyyyyyyyyyyyyyy");
+    print(xaxis);
+    organizedData.forEach((key, value) {
+      organizedData[key]!.forEach((key, value) {
         maximum = max(maximum, value);
         if (minimum == -1) minimum = value;
         minimum = min(minimum, value);
@@ -335,7 +788,7 @@ class LineChartGraphState extends State<LineChartGraph> {
           ),
           margin: 10, // EXppppppppppppppppppppppp
           getTitles: (value) {
-            // widget.mp.forEach((key, value) {
+            // organizedData.forEach((key, value) {
             //   xaxis.add(key);
             // });
             switch (value.toInt()) {
@@ -362,8 +815,8 @@ class LineChartGraphState extends State<LineChartGraph> {
           // margin: 10,
 //           getTitles: (value) {
 //             // List<String> yaxis = [];
-//             widget.mp.forEach((key, value) {
-//               widget.mp[key]!.forEach((key, value) {
+//             organizedData.forEach((key, value) {
+//               organizedData[key]!.forEach((key, value) {
 //                 maximum = max(maximum, value);
 //                 if (minimum == -1) minimum = value;
 //                 minimum = min(minimum, value);
@@ -479,7 +932,7 @@ class LineChartGraphState extends State<LineChartGraph> {
 
   List<LineChartBarData> linesBarData1() {
     List<LineChartBarData> lineChartBarData = [];
-    //  widget.mp.forEach((key, value) {
+    //  organizedData.forEach((key, value) {
     //             xaxis.add(key);
     //           });
     //  int k = 1;
@@ -491,9 +944,9 @@ class LineChartGraphState extends State<LineChartGraph> {
       for (int i = 0; i < xaxis.length; i++) {
         spotss!.add(FlSpot(
             (i + (k)).toDouble(),
-            (widget.mp[xaxis[i]] == null)
+            (organizedData[xaxis[i]] == null)
                 ? 0
-                : widget.mp[xaxis[i]]![names[j]] ?? 0));
+                : organizedData[xaxis[i]]![names[j]] ?? 0));
         k += 5;
       }
       print(spotss);
@@ -525,22 +978,22 @@ class LineChartGraphState extends State<LineChartGraph> {
     //   List<point.FlSpot>? spotss = [];
     //   spotss.add(FlSpot(
     //       (i).toDouble(),
-    //       (widget.mp[xaxis[i]] == null)
+    //       (organizedData[xaxis[i]] == null)
     //           ? 0
-    //           : widget.mp[xaxis[i]]!['ICICI'] ?? 0));
+    //           : organizedData[xaxis[i]]!['ICICI'] ?? 0));
     //   spotss.add(FlSpot(
     //       (i).toDouble(),
-    //       (widget.mp[xaxis[i]] == null)
+    //       (organizedData[xaxis[i]] == null)
     //           ? 0
-    //           : widget.mp[xaxis[i]]!['HDFC'] ?? 0));
+    //           : organizedData[xaxis[i]]!['HDFC'] ?? 0));
 
     //   spotss.add(FlSpot(
     //       i.toDouble(),
-    //       (widget.mp[xaxis[i]] == null)
+    //       (organizedData[xaxis[i]] == null)
     //           ? 0
-    //           : widget.mp[xaxis[i]]!['PNB'] ?? 0));
+    //           : organizedData[xaxis[i]]!['PNB'] ?? 0));
     //   print(xaxis);
-    //   //print(widget.mp[xaxis[i]]);
+    //   //print(organizedData[xaxis[i]]);
     //   print(spotss);
     //   print('#############');
     //   lineChartBarData.add(

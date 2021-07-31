@@ -7,7 +7,7 @@ class GraphInitialState extends GraphState {
 }
 
 class LoadGraphState extends GraphState {
-  final Map<String, Map<String, double>> graphData;
+  final Map<String, dynamic> graphData;
   const LoadGraphState({required this.graphData});
 }
 

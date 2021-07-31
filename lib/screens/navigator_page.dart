@@ -34,7 +34,7 @@ class NavigatorPage extends StatefulWidget {
 class _NavigatorPageState extends State<NavigatorPage> {
   late List<Tuple2> _pages = [];
   bool isOpened = false;
-  double headerHeight = 75;
+  double headerHeight = 60;
   double botScreenHeightRatio = 0.8;
   double activeIconElevation = 4;
   TextStyle navigationBarTextStyle = GoogleFonts.rubik(fontSize: 10,fontWeight: FontWeight.bold);
@@ -45,9 +45,9 @@ class _NavigatorPageState extends State<NavigatorPage> {
     _pages = [
       
       // Tuple2('payment', PayBills()),
-      //Tuple2('payment', BillPayment(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
+      Tuple2('payment', BillPayment(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
       Tuple2('home', HomePage(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
-      Tuple2('home1', HomePage(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
+      //Tuple2('home1', HomePage(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
       // Tuple2('gift', giftPage()),
       Tuple2("Coupons", Coupons(databaseRepo: widget.databaseRepository,))
     ];
@@ -163,7 +163,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
               child: ImageIcon(
                 AssetImage("assets/icons/my_bills.png"),
                 color: Color(0xff7041EE),
-                size: 30,
+                size: 20,
               ),
               backgroundColor: Colors.white,
             ),
@@ -181,7 +181,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
               child: ImageIcon(
                 AssetImage("assets/icons/home.png"),
                 color: Color(0xff7041EE),
-                size: 30,
+                size: 20,
               ),
               backgroundColor: Colors.white,
             ),
@@ -189,6 +189,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
           label: 'HOME',
         ),
         BottomNavigationBarItem(
+         
           icon: ImageIcon(
             AssetImage("assets/icons/favorites.png"),
           ),
@@ -199,7 +200,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
               child: ImageIcon(
                 AssetImage("assets/icons/favorites.png"),
                 color: Color(0xff7041EE),
-                size: 30,
+                size: 20,
               ),
               backgroundColor: Colors.white,
             ),

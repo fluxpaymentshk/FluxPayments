@@ -85,7 +85,7 @@ class DatabaseRepository extends databaseBaseRepository {
   }
 
   @override
-  Future< Map<String, Map<String, double>>> getPaymentHistoryProviderWiseDetails(
+  Future< Map<String, dynamic>> getPaymentHistoryProviderWiseDetails(
       {required String? userID}) async {
     return await _databaseLambdaService.getPaymentHistoryProviderWiseDetails(
         userID: userID);
