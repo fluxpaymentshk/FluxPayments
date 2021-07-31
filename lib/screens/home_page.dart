@@ -601,11 +601,12 @@ class _HomePageState extends State<HomePage> {
                       builder: (context, state) {
                         if (state is LoadGraphState) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(SizeConfig.heightMultiplier*1),
                             child: LineChartGraph(
+                           
                               mp: state.graphData,
                               height: SizeConfig.heightMultiplier * 40,
-                              width: SizeConfig.widthMultiplier * 90,
+                              width: SizeConfig.widthMultiplier * 85,
                               user:user,
                               popup:true,
                               //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
@@ -624,7 +625,7 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                     ),
-
+                    SizedBox(height:SizeConfig.heightMultiplier*10),
                     //////////////////////////////###########################
                     // Padding(
                     //   padding: const EdgeInsets.all(10.0),

@@ -1,23 +1,24 @@
-
 import 'package:flutter/material.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
 
-class GraphScreen extends StatefulWidget {
-  final Map<String, dynamic> graphData;
+class DetailedPayment extends StatefulWidget {
+  final Map<String, dynamic> paymentData;
   final User user;
-  const GraphScreen({Key? key, required this.graphData, required this.user})
+  const DetailedPayment(
+      {Key? key, required this.paymentData, required this.user})
       : super(key: key);
 
   @override
-  _GraphScreenState createState() => _GraphScreenState();
+  _DetailedPaymentState createState() => _DetailedPaymentState();
 }
 
-class _GraphScreenState extends State<GraphScreen> {
+class _DetailedPaymentState extends State<DetailedPayment> {
   @override
   Widget build(BuildContext context) {
+    bool? _isChecked = false;
     return Scaffold(
       body: Flex(
         direction: Axis.vertical,
@@ -31,8 +32,9 @@ class _GraphScreenState extends State<GraphScreen> {
                       alignment: Alignment.topLeft,
                       child: InkWell(
                         child: Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical:SizeConfig.heightMultiplier * 2,horizontal:SizeConfig.heightMultiplier * 1 ),
+                          padding: EdgeInsets.symmetric(
+                              vertical: SizeConfig.heightMultiplier * 2,
+                              horizontal: SizeConfig.heightMultiplier * 1),
                           // color: Colors.amber,
                           // height: SizeConfig.heightMultiplier*12,
                           // width: SizeConfig.widthMultiplier*100,
@@ -115,7 +117,7 @@ class _GraphScreenState extends State<GraphScreen> {
                   child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Paid With Flux",
+                        "My Cards",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
@@ -123,16 +125,70 @@ class _GraphScreenState extends State<GraphScreen> {
                       )),
                 ),
                 Container(
-                  padding: EdgeInsets.all(15.0),
-                  child: LineChartGraph(
-                  
-                    mp: widget.graphData,
-                    height: SizeConfig.heightMultiplier * 65,
-                    width: SizeConfig.widthMultiplier * 92,
-                    user: widget.user,
-                    popup: false,
-                  ),
+                  height: SizeConfig.heightMultiplier * 5,
+                  color: Colors.amber,
+                  width: SizeConfig.widthMultiplier * 40,
                 ),
+                Padding(
+                  padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Detailed Bill",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )),
+                ),
+
+// Container(
+//  width: SizeConfig.widthMultiplier*90,
+//  height: SizeConfig.heightMultiplier*10,
+//   padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*3),
+//   //width: SizeConfig.widthMultiplier*80,
+//     decoration: BoxDecoration(
+//       border: Border.all(color: AppTheme.main,),
+//     borderRadius: BorderRadius.all( Radius.circular(SizeConfig.heightMultiplier * 2)),
+//     ),
+//     child: CheckboxListTile(
+//       tileColor:Colors.amber,
+//       controlAffinity: ListTileControlAffinity.leading,
+//       title: const Text('Woolha.com'),
+//       subtitle: const Text('A programming blog'),
+//       secondary: const Icon(Icons.web),
+//       activeColor: Colors.red,
+//       checkColor: Colors.yellow,
+//       selected: _isChecked,
+//       value: _isChecked,
+//       onChanged: (bool? value) {
+//         setState(() {
+//           _isChecked = value;
+//         });
+//       },
+//     ),
+//   ),
+
+                buildCheckbox(true),
+                // CheckboxListTile(
+                //   controlAffinity: ListTileControlAffinity.leading,
+                //   value: _isChecked,
+                //   onChanged: (bool? value) {
+                //     setState(() {
+                //       _isChecked = value;
+                //     });
+                //   },
+                // )
+                // Container(
+                //   padding: EdgeInsets.all(15.0),
+                //   child: LineChartGraph(
+                //     mp: widget.paymentData,
+                //     height: SizeConfig.heightMultiplier * 65,
+                //     width: SizeConfig.widthMultiplier * 92,
+                //     user: widget.user,
+                //     popup: false,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -140,4 +196,13 @@ class _GraphScreenState extends State<GraphScreen> {
       ),
     );
   }
+
+  Widget buildCheckbox(bool? val) => Checkbox(
+      value: val,
+      onChanged: (value) {
+        setState(() {
+        val = value;   
+        });
+       
+      });
 }
