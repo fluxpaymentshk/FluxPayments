@@ -11,23 +11,40 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          fluxLogo(context),
-          Expanded(
-              child: Container(
-            child: Column(
-              children: [
-                SvgPicture.asset('assets/icons/loading.svg'),
-                Text(
-                  "This will take a few minutes!\nWe are proceeding to the third party website.",
-                  style: GoogleFonts.montserrat(fontSize: 15),
-                )
-              ],
-            ),
-          ))
-        ],
+          backgroundColor:Colors.white,
+      body: Container(
+          height:MediaQuery.of(context).size.height*1,
+          margin:EdgeInsets.only(top:10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            fluxLogo(context),
+            Expanded(
+                child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+    //             Stack(children: [
+    // Container(
+    //     width: 200,
+    //     height: 200,
+    //     child: SvgPicture.asset(
+    //      'assets/icons/loading.svg',
+    //       fit: BoxFit.cover,
+    //     ),),],),
+                  Image.asset("assets/icons/loader.png"),
+                  Container(
+                    child: Text(
+                      "This will take a few minutes!\nWe are proceeding to the third party website.",
+                      textAlign:TextAlign.center,
+                      style: GoogleFonts.montserrat(fontSize: 15),
+                    ),
+                  )
+                ],
+              ),
+            ))
+          ],
+        ),
       ),
     ));
   }
