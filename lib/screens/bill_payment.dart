@@ -35,7 +35,7 @@ import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-import 'package:flux_payments/screens/detailed_payment.dart';
+import 'package:flux_payments/screens/service_provider_cat.dart';
 // import 'package:flux_payments/screens/change_password.dart';
 // import 'package:flux_payments/screens/login_page.dart';
 // import 'package:flux_payments/screens/password_reset.dart';
@@ -535,7 +535,14 @@ class _BillPaymentState extends State<BillPayment> {
                         else if (state is LoadRecentPaymentState) {
                           return InkWell(
                             child: Container(
-                              height: SizeConfig.heightMultiplier * 60,
+                                margin: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*3,vertical: SizeConfig.heightMultiplier*5,),
+                                   
+                                     decoration: BoxDecoration(
+        borderRadius:
+            BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier * 2)),
+         border: Border.all(color: AppTheme.main, width: 1.0),
+      ),
+                              height: SizeConfig.heightMultiplier * 47,
                               child:
                                   // ListView.builder(
                                   // scrollDirection: Axis.vertical,
@@ -543,8 +550,13 @@ class _BillPaymentState extends State<BillPayment> {
                                   //itemCount: state.RecentPaymentData.length,
                                   //itemBuilder: (context, int index) {
                                   //   return
+    
                                   Column(
+                               
                                 children: [
+                                    SizedBox(
+                                    height: SizeConfig.heightMultiplier * 0.7,
+                                  ),
                                   if (state.RecentPaymentData.length > 0)
                                     recentPaymentTile(
                                         name: state.RecentPaymentData[0]
@@ -555,6 +567,9 @@ class _BillPaymentState extends State<BillPayment> {
                                             ['imageurl'],
                                         amount: state.RecentPaymentData[0]
                                             ['amount']),
+                                            if (state.RecentPaymentData.length > 1)
+                                           Divider( indent:SizeConfig.widthMultiplier*3.5,endIndent:SizeConfig.widthMultiplier*3.5,color:Color(0xff979797),thickness: 0.8,),
+     
                                   if (state.RecentPaymentData.length > 1)
                                     recentPaymentTile(
                                         name: state.RecentPaymentData[1]
@@ -565,6 +580,10 @@ class _BillPaymentState extends State<BillPayment> {
                                             ['imageurl'],
                                         amount: state.RecentPaymentData[1]
                                             ['amount']),
+                                             if (state.RecentPaymentData.length > 2)
+                                             Divider( indent:SizeConfig.widthMultiplier*3.5,endIndent:SizeConfig.widthMultiplier*3.5,color:Color(0xff979797),thickness: 0.8,),
+     
+
                                   if (state.RecentPaymentData.length > 2)
                                     recentPaymentTile(
                                         name: state.RecentPaymentData[2]
@@ -575,6 +594,9 @@ class _BillPaymentState extends State<BillPayment> {
                                             ['imageurl'],
                                         amount: state.RecentPaymentData[2]
                                             ['amount']),
+                                             if (state.RecentPaymentData.length > 3)
+                                             Divider( indent:SizeConfig.widthMultiplier*3.5,endIndent:SizeConfig.widthMultiplier*3.5,color:Color(0xff979797),thickness: 0.8,),
+     
                                   if (state.RecentPaymentData.length > 3)
                                     recentPaymentTile(
                                         name: state.RecentPaymentData[3]
@@ -585,6 +607,9 @@ class _BillPaymentState extends State<BillPayment> {
                                             ['imageurl'],
                                         amount: state.RecentPaymentData[3]
                                             ['amount']),
+                                              if (state.RecentPaymentData.length > 4)
+                                             Divider( indent:SizeConfig.widthMultiplier*3.5,endIndent:SizeConfig.widthMultiplier*3.5,color:Color(0xff979797),thickness: 0.8,),
+     
                                   if (state.RecentPaymentData.length > 4)
                                     recentPaymentTile(
                                         name: state.RecentPaymentData[4]
@@ -596,7 +621,7 @@ class _BillPaymentState extends State<BillPayment> {
                                         amount: state.RecentPaymentData[4]
                                             ['amount']),
                                   SizedBox(
-                                    height: SizeConfig.heightMultiplier * 3,
+                                    height: SizeConfig.heightMultiplier * 0.7,
                                   ),
                                 ],
                               ),
@@ -604,12 +629,13 @@ class _BillPaymentState extends State<BillPayment> {
                             onDoubleTap: () {
                               Navigator.push(context, MaterialPageRoute(
                                   builder: (BuildContext context) {
-                                return DetailedPayment(
+                                return ServiceProviderCategory(
                                     paymentData: {}, user: user);
                                 // return GraphScreen(graphData: widget.mp, user: widget.user);
                               }));
                             },
                           );
+                      
                         } else if (state is ErrorRecentPaymentState)
                           return Container(child: Text(state.message));
                         else
@@ -618,7 +644,7 @@ class _BillPaymentState extends State<BillPayment> {
                                   'get recent payment details Event not Fired!'));
                       },
                     ),
-
+SizedBox(height: SizeConfig.heightMultiplier*7,)
                     //#############################################
                   ],
                 ),
