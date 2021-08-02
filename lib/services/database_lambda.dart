@@ -741,7 +741,6 @@ class DatabaseLambdaService {
 
   Future<List<myCoupons>> getUserCouponsList({@required String? userID}) async {
     result = {};
-    List<User> userDetails = [];
     List<myCoupons> coupons = [];
     try {
       result = await lambda
@@ -794,6 +793,7 @@ class DatabaseLambdaService {
     } catch (e) {
       print(e);
     }
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     print(coupons);
     //return result;
     return coupons;
