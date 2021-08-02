@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.dart';
+import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
 import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/repository/database_repo.dart';
@@ -83,17 +84,18 @@ class _MyAppState extends State<MyApp> {
 
   bool _amplifyConfigured = false;
   bool isSignedIn = false;
-   List<Map<String,dynamic>> categories=[];
+  List<Map<String, dynamic>> categories = [];
 
   @override
   void initState() {
     super.initState();
     _configureAmplify();
-    
   }
-  Future<List<RewardCategory>> getCategories()async{
+
+  Future<List<RewardCategory>> getCategories() async {
     return await DatabaseLambdaService().getCategories();
   }
+
   void _configureAmplify() async {
     if (!mounted) return;
     AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
@@ -158,15 +160,31 @@ class _MyAppState extends State<MyApp> {
           unselectedIconTheme: IconThemeData(size: 30),
         ),
       ),
-      home:
+      home: 
       FutureBuilder<List<RewardCategory>>(
-        future:getCategories(),
-        builder:(context,snapshot)=>snapshot.hasData? MultiBlocProvider(providers: [
-             BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
-          BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
-          BlocProvider(create: (_)=>CouponsSearchBloc(CouponsSearchRepository()))
-      ],child: RewardsSearchScreen(categories: snapshot.data,),):CircularProgressIndicator(),),
-          //  SupportBotScreen()
+        future: getCategories(),
+        builder: (context, snapshot) => snapshot.hasData
+            ? MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                      create: (_) => FavoritesBloc(_databaseRepository)),
+                  BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
+                  BlocProvider(
+                    create: (_) => CouponsSearchBloc(
+                      CouponsSearchRepository(),
+                    ),
+                  ),
+                  BlocProvider(
+                    create: (_) => FluxPointsBloc(_databaseRepository),
+                  ),
+                ],
+                child: RewardsSearchScreen(
+                  categories: snapshot.data,
+                ),
+              )
+            : CircularProgressIndicator(),
+      ),
+      //  SupportBotScreen()
       //     MultiBlocProvider(
       //   providers: [
       //     BlocProvider(

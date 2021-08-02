@@ -145,7 +145,13 @@ class DatabaseLambdaService {
   Future<Map<String, dynamic>> updateFluxPoints(
       {@required String? userID,
       @required FluxPointServiceType? appEvent,
-      @required double? servicePoints}) async {
+      @required double? servicePoints,
+      required String? rewardTransID,
+      required double? amount,
+      required String? timestamp,
+      required String? rewardPartnerID,
+      required String? rewardID,
+      required String? shopID}) async {
     result = {};
     try {
       log("$servicePoints");
@@ -162,13 +168,22 @@ class DatabaseLambdaService {
       });
       print(
           "---------------------------------------------------------------------------------$result");
+      addUserRewardTransaction(
+        rewardTransID: rewardTransID,
+        userID: userID,
+        amount: amount,
+        timestamp: timestamp,
+        rewardPartnerID: rewardPartnerID,
+        rewardID: rewardID,
+        shopID: shopID,
+      );
     } catch (e) {
       print(e);
     }
     return result;
   }
 
-  Future<Map<String, dynamic>> getFluxPoints(String userID) async {
+  Future<double> getFluxPoints(String userID) async {
     Map<String, dynamic> res = {};
     try {
       res = await lambda
@@ -181,7 +196,7 @@ class DatabaseLambdaService {
     } catch (e) {
       print(e);
     }
-    return res;
+    return res["records"][0][0]["longValue"];
   }
 
   Future<Map<String, dynamic>> getUserBillProviderDetails(
@@ -677,7 +692,7 @@ class DatabaseLambdaService {
     List<String> schema = [];
     List re = result["records"];
     result["columnMetadata"].forEach((e) {
-      schema.add(e["name"]);
+      schema.add(e["label"]);
     });
     List<Map<String, dynamic>> response = [];
     re.forEach((element) {
@@ -710,8 +725,7 @@ class DatabaseLambdaService {
       // r["columnMetadata"].forEach((element) {
       //   print(element["name"] + "  " + element["typeName"]);
       // });
-      // print(
-      //     "---------------------------------------------------------------------------------${getOrganizedData(r)}");
+      log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!---------------------------------------------------------------------------------${getOrganizedData(r)}");
       // getOrganizedData(r);
     } catch (e) {
       print(e);
@@ -961,5 +975,58 @@ class DatabaseLambdaService {
     }
     print(story[0].toString());
     return story;
+  }
+
+  Future<void> addUserRewardTransaction(
+      {required String? rewardTransID,
+      required double? amount,
+      required String? timestamp,
+      required String? userID,
+      required String? rewardPartnerID,
+      required String? rewardID,
+      required String? shopID}) async {
+    result = {};
+    try {
+      log("@@@");
+      var r = await lambda.callLambda(
+          'aurora-serverless-function-addRewardTransaction', <String, dynamic>{
+        "rewardTransID": rewardTransID,
+        "amount": amount,
+        "timestamp": timestamp,
+        "userID": userID,
+        "rewardPartnerID": rewardPartnerID,
+        "rewardID": rewardID,
+        "shopID": shopID,
+      });
+    } catch (e) {
+      print(e);
+
+      // throw Exception(e);
+    }
+  }
+
+  Future<bool> getCouponInfo({
+    required String? userID,
+    required String? rewardID,
+  }) async {
+    result = {};
+    try {
+      var r = await lambda.callLambda(
+          'aurora-serverless-function-getRewardsUserTransactionInfo',
+          <String, dynamic>{
+            "userID": userID,
+            "rewardID": rewardID,
+          });
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      // print(result);
+      log("11111---------------------------------------------------------------------------------${getOrganizedData(r)}");
+      log("${getOrganizedData(r).length}");
+      if (getOrganizedData(r).length == 0) return false;
+      return true;
+    } catch (e) {
+      print(e);
+
+      throw Exception(e);
+    }
   }
 }

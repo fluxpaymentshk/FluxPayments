@@ -12,11 +12,15 @@ class Rewards extends Model {
   String? rewardPartnerID;
   String? termsncond;
   String? shopID;
+  String? shopName;
   String? address;
   String? mapLink;
   double? latitude;
   double? longitude;
   double? distance;
+  String? rewardPartnerName;
+  String? expiryDate;
+  String? bannerImage;
 
   Rewards({
     this.rewardID,
@@ -29,17 +33,21 @@ class Rewards extends Model {
     this.rewardPartnerID,
     this.termsncond,
     this.shopID,
+    this.shopName,
     this.address,
     this.mapLink,
     this.latitude,
     this.longitude,
     this.distance,
+    this.rewardPartnerName,
+    this.expiryDate,
+    this.bannerImage,
   });
 
   Rewards.fromJson(Map<String, dynamic> json)
       : rewardID = json["rewardID"],
         name = json["name"],
-        categoryID=json["categoryID"],
+        categoryID = json["categoryID"],
         shortDescription = json["shortDescription"],
         longDescription = json["longDescription"],
         amount = json["amount"],
@@ -47,10 +55,14 @@ class Rewards extends Model {
         rewardPartnerID = json["rewardPartnerID"],
         termsncond = json["termsncond"],
         shopID = json['shopID'],
+        shopName = json['shopName'],
         address = json["address"],
         mapLink = json["mapLink"],
         longitude = json["longitude"],
-        latitude = json["latitude"];
+        latitude = json["latitude"],
+        rewardPartnerName = json["rewardPartnerName"],
+        expiryDate = json["expiryDate"],
+        bannerImage = json["bannerImage"];
 
   @override
   getInstanceType() => classType;
@@ -64,7 +76,7 @@ class Rewards extends Model {
   Map<String, dynamic> toJson() => {
         "rewardID": rewardID,
         "name": name,
-        "categoryID":categoryID,
+        "categoryID": categoryID,
         "shortDescription": shortDescription,
         "longDescription": longDescription,
         "amount": amount,
@@ -72,10 +84,14 @@ class Rewards extends Model {
         "rewardPartnerID": rewardPartnerID,
         "termsncond": termsncond,
         "shopID": shopID,
+        "shopName": shopName,
         "address": address,
         "mapLink": mapLink,
         "longitude": longitude,
-        "latitude": latitude
+        "latitude": latitude,
+        "rewardPartnerName": rewardPartnerName,
+        "expiryDate": expiryDate,
+        "bannerImage": bannerImage,
       };
 }
 

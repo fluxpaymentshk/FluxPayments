@@ -8,6 +8,7 @@ import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_event.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_state.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.dart';
+import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
@@ -215,10 +216,18 @@ class _CouponsState extends State<Coupons> {
                                 print("_+++__________++++++++++++++_________");
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) =>
+                                    builder: (context) => MultiBlocProvider(
+                                      providers: [
                                         BlocProvider<CouponsSearchBloc>(
-                                      create: (_) => CouponsSearchBloc(
-                                          _couponSearchRepository),
+                                          create: (_) => CouponsSearchBloc(
+                                              _couponSearchRepository),
+                                        ),
+                                        BlocProvider(
+                                          create: (_) => FluxPointsBloc(
+                                            widget.databaseRepo!,
+                                          ),
+                                        ),
+                                      ],
                                       child: RewardsSearchScreen(
                                         categories: categories,
                                       ),

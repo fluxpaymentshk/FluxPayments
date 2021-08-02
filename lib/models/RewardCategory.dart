@@ -1,12 +1,11 @@
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 
 class RewardCategory extends Model {
-   static const classType = const _RewardCategoryModelType();
+  static const classType = const _RewardCategoryModelType();
   final String? rewardCategoryID;
   final String? name;
   final String? icon;
   final String? description;
-
 
   RewardCategory({
     this.rewardCategoryID,
