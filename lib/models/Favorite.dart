@@ -10,13 +10,14 @@ class Favorites extends Model {
   String? userID;
   String? rewardID;
 
-  Favorites({required this.favoriteID,required this.userID,required this.rewardID});
+  Favorites(
+      {required this.favoriteID, required this.userID, required this.rewardID});
 
   Favorites.fromJson(Map<String, dynamic> json)
       : favoriteID = json["favoriteID"],
         userID = json["userID"],
         rewardID = json["rewardID"];
-        
+
   @override
   getInstanceType() => classType;
 
@@ -42,7 +43,6 @@ class _FavoritesModelType extends ModelType<Favorites> {
     return Favorites.fromJson(jsonData);
   }
 }
-
 
 // class Favorites {
 //   int? favoriteID;

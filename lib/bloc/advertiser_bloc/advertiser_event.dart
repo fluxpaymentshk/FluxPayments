@@ -8,12 +8,13 @@ abstract class AdvertiserEvent {
 class GetExternalAdvertiserEvent extends AdvertiserEvent {
   final List<ExternalAdvertisers> externalAdvertiserList;
   final int page;
-  const GetExternalAdvertiserEvent({required int this.page,required this.externalAdvertiserList});
+  const GetExternalAdvertiserEvent(
+      {required int this.page, required this.externalAdvertiserList});
 }
-
 
 class GetInternalAdvertiserEvent extends AdvertiserEvent {
   final List<InternalAdvertisers> internalAdvertiserList;
   final int page;
-  const GetInternalAdvertiserEvent({required int this.page,required this.internalAdvertiserList});
+  const GetInternalAdvertiserEvent(
+      {required int this.page, required this.internalAdvertiserList});
 }

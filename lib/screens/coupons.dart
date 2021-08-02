@@ -7,10 +7,16 @@ import 'package:flux_payments/bloc/coupons_bloc/coupons_state.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_event.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_state.dart';
+import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.dart';
+import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
+import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/repository/database_repository.dart';
+import 'package:flux_payments/repository/favorite_search_repository.dart';
+import 'package:flux_payments/screens/rewards_search_screen.dart';
+import 'package:flux_payments/services/database_lambda.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/myCoupons.dart';
@@ -92,10 +98,11 @@ class _CouponsState extends State<Coupons> {
   //   }
   //   print(fav.length);
   // }
-
+  List<RewardCategory> categories = [];
   @override
   void initState() {
     super.initState();
+    getCategoryList();
     //getfavdata();
     controller.addListener(() {
       setState(() {
@@ -111,12 +118,18 @@ class _CouponsState extends State<Coupons> {
     });
   }
 
+  void getCategoryList() async {
+    categories = await DatabaseLambdaService().getCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
     var userBloc = BlocProvider.of<UserBloc>(context);
     var favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
     var couponsBloc = BlocProvider.of<CouponsBloc>(context);
     final DatabaseRepository databaseRepo = DatabaseRepository();
+    final CouponsSearchRepository _couponSearchRepository =
+        CouponsSearchRepository();
     userBloc.add(GetUserDetails(userID: 'fluxsam1'));
     favoritesBloc
         .add(GetFavorites(page: 0, userID: 'fluxsam1', favorites: fav));
@@ -198,19 +211,46 @@ class _CouponsState extends State<Coupons> {
                               borderRadius: BorderRadius.circular(width * 0.03),
                               color: color,
                             ),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintStyle: TextStyle(
-                                  color: color1,
-                                  fontSize: height * 0.024,
+                            child: GestureDetector(
+                              onTap: () {
+                                print("_+++__________++++++++++++++_________");
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => MultiBlocProvider(
+                                      providers: [
+                                        BlocProvider<CouponsSearchBloc>(
+                                          create: (_) => CouponsSearchBloc(
+                                              _couponSearchRepository),
+                                        ),
+                                        BlocProvider(
+                                          create: (_) => FluxPointsBloc(
+                                            widget.databaseRepo!,
+                                          ),
+                                        ),
+                                      ],
+                                      child: RewardsSearchScreen(
+                                        categories: categories,
+                                        favorites: fav,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: TextField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  hintStyle: TextStyle(
+                                    color: color1,
+                                    fontSize: height * 0.024,
+                                  ),
+                                  hintText: "Search for my favorite brand",
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    size: height * 0.045,
+                                    color: color1,
+                                  ),
+                                  border: InputBorder.none,
                                 ),
-                                hintText: "Search for my favorite brand",
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  size: height * 0.045,
-                                  color: color1,
-                                ),
-                                border: InputBorder.none,
                               ),
                             ),
                           ),
@@ -461,7 +501,7 @@ class _CouponsState extends State<Coupons> {
                                           heightFactor: 0.15,
                                           alignment: Alignment.topCenter,
                                           child: card(
-                                            colors[index%5],
+                                            colors[index % 5],
                                             height,
                                             width,
                                           ),

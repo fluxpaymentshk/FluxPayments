@@ -6,7 +6,7 @@ class rewardPartnerTile extends StatelessWidget {
   rewardPartnerTile(
       {this.background, this.i, this.imageurl, this.desc, Key? key})
       : super(key: key);
- final  String? imageurl, desc, background;
+  final String? imageurl, desc, background;
   final int? i;
   final List<List<Color>> colors = [
     [
@@ -49,115 +49,106 @@ class rewardPartnerTile extends StatelessWidget {
                 end: Alignment.topLeft,
                 begin: Alignment.bottomRight,
                 colors: colors[i! % 4])),
-        child: 
-        (imageurl!=null)
-        ?Stack(
-          children: [
-            //  SizedBox(height:SizeConfig.heightMultiplier * 2,),
-          
-           
-            Padding(
-              padding: const EdgeInsets.only(top: 8.7, left: 4.2, right: 4.2),
-              child: Container(
-                child: Text(
-                  //'Hot juicy chicken with KFC',
-                  desc??'',
-                  style: TextStyle(
-                    color: AppTheme.white,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-            ),
-           Positioned.fill(
+        child: (imageurl != null)
+            ? Stack(
+                children: [
+                  //  SizedBox(height:SizeConfig.heightMultiplier * 2,),
 
-              top: SizeConfig.heightMultiplier * 9.1,
-              
-              // bottom:0,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 3.6),
-                child: Container(
-                  decoration: new BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(SizeConfig.heightMultiplier * 2)),
-                      image: new DecorationImage(
-                        fit: BoxFit.cover,
-                        alignment: FractionalOffset.topCenter,
-                        image: new NetworkImage(
-                            //"https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/kfc.png"
-                            imageurl!,
-                      )),
-                ),
-              ),
-            )
-            )
-          
-          ],
-        )
-        : (background!=null)
-        ?Stack(
-          children: [
-            //  SizedBox(height:SizeConfig.heightMultiplier * 2,),
-            Positioned.fill(
-
-              top
-              :0,
-              // bottom:0,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 3.6),
-                child: Container(
-                  decoration: new BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(SizeConfig.heightMultiplier * 2)),
-                      image: new DecorationImage(
-                        fit: BoxFit.cover,
-                        alignment: FractionalOffset.topCenter,
-                        image: new NetworkImage(
-                            //"https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/kfc.png"
-                           background!,
-                      )),
-                ),
-              ),
-            )
-            ),
-           
-            Padding(
-              padding: const EdgeInsets.only(top: 8.7, left: 4.2, right: 4.2),
-              child: Container(
-                child: Text(
-                  //'Hot juicy chicken with KFC',
-                  desc??'',
-                  style: TextStyle(
-                    color: AppTheme.white,
-                    fontSize: 15,
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8.7, left: 4.2, right: 4.2),
+                    child: Container(
+                      child: Text(
+                        //'Hot juicy chicken with KFC',
+                        desc ?? '',
+                        style: TextStyle(
+                          color: AppTheme.white,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-         
-           
-          ],
-        ):Stack(
-          children: [
-            //  SizedBox(height:SizeConfig.heightMultiplier * 2,),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.7, left: 4.2, right: 4.2),
-              child: Container(
-                child: Text(
-                  //'Hot juicy chicken with KFC',
-                  desc??'',
-                  style: TextStyle(
-                    color: AppTheme.white,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-            ),
-         
-           
-          ],
-        ),
+                  Positioned.fill(
+                      top: SizeConfig.heightMultiplier * 9.1,
 
+                      // bottom:0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 3.6),
+                        child: Container(
+                          decoration: new BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(
+                                SizeConfig.heightMultiplier * 2)),
+                            image: new DecorationImage(
+                                fit: BoxFit.cover,
+                                alignment: FractionalOffset.topCenter,
+                                image: new NetworkImage(
+                                  //"https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/kfc.png"
+                                  imageurl!,
+                                )),
+                          ),
+                        ),
+                      ))
+                ],
+              )
+            : (background != null)
+                ? Stack(
+                    children: [
+                      //  SizedBox(height:SizeConfig.heightMultiplier * 2,),
+                      Positioned.fill(
+                          top: 0,
+                          // bottom:0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 3.6),
+                            child: Container(
+                              decoration: new BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    SizeConfig.heightMultiplier * 2)),
+                                image: new DecorationImage(
+                                    fit: BoxFit.cover,
+                                    alignment: FractionalOffset.topCenter,
+                                    image: new NetworkImage(
+                                      //"https://amplify-fluxpayments-staging-122415-deployment.s3.ap-southeast-1.amazonaws.com/rewardPartner/kfc.png"
+                                      background!,
+                                    )),
+                              ),
+                            ),
+                          )),
+
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 8.7, left: 4.2, right: 4.2),
+                        child: Container(
+                          child: Text(
+                            //'Hot juicy chicken with KFC',
+                            desc ?? '',
+                            style: TextStyle(
+                              color: AppTheme.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Stack(
+                    children: [
+                      //  SizedBox(height:SizeConfig.heightMultiplier * 2,),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 8.7, left: 4.2, right: 4.2),
+                        child: Container(
+                          child: Text(
+                            //'Hot juicy chicken with KFC',
+                            desc ?? '',
+                            style: TextStyle(
+                              color: AppTheme.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
       ),
     );
   }

@@ -80,29 +80,25 @@ class AppTheme {
     height: SizeConfig.heightMultiplier / 10,
     color: Color(0xff000000),
   );
-   static final TextStyle display2bold = GoogleFonts.montserrat(
-  
+  static final TextStyle display2bold = GoogleFonts.montserrat(
     fontWeight: FontWeight.w700,
     fontSize: SizeConfig.heightMultiplier * 3.2,
     letterSpacing: SizeConfig.widthMultiplier / 10,
     height: SizeConfig.heightMultiplier / 10,
     color: Color(0xffffffff),
   );
-   static final TextStyle display2 = GoogleFonts.montserrat(
-  
+  static final TextStyle display2 = GoogleFonts.montserrat(
     fontWeight: FontWeight.w400,
     fontSize: SizeConfig.heightMultiplier * 2.3,
     letterSpacing: SizeConfig.widthMultiplier / 10,
     height: SizeConfig.heightMultiplier / 10,
     color: Color(0xffffffff),
   );
-    static final TextStyle display3 = GoogleFonts.montserrat(
-  
+  static final TextStyle display3 = GoogleFonts.montserrat(
     fontWeight: FontWeight.w400,
     fontSize: SizeConfig.heightMultiplier * 1.5,
     letterSpacing: SizeConfig.widthMultiplier / 10,
     height: SizeConfig.heightMultiplier / 10,
     color: Color(0xffffffff),
   );
- 
 }

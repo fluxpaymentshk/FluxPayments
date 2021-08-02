@@ -9,5 +9,6 @@ class GetFavorites extends FavoritesEvent {
   final List<Reward> favorites;
   final int page;
   final String userID;
-  const GetFavorites({required this.page, required this.favorites,required this.userID});
+  const GetFavorites(
+      {required this.page, required this.favorites, required this.userID});
 }

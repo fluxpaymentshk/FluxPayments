@@ -4,13 +4,18 @@ import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
+import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/Reward.dart';
 import 'package:flux_payments/models/RewardPartner.dart';
+import 'package:flux_payments/models/Rewards.dart';
 import 'package:flux_payments/models/Story.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/banner.dart';
 import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/models/myCoupons.dart';
+import 'package:flux_payments/models/RewardCategory.dart';
+
+enum FluxPointServiceType { ServiceTransaction, referral }
 
 class DatabaseLambdaService {
   Map<String, dynamic> result = {};
@@ -139,14 +144,23 @@ class DatabaseLambdaService {
 /////////////////////////////////////////////
   Future<Map<String, dynamic>> updateFluxPoints(
       {@required String? userID,
-      @required String? appEvent,
-      @required int? servicePoints}) async {
+      @required FluxPointServiceType? appEvent,
+      @required double? servicePoints,
+      required String? rewardTransID,
+      required double? amount,
+      required String? timestamp,
+      required String? rewardPartnerID,
+      required String? rewardID,
+      required String? shopID}) async {
     result = {};
     try {
+      log("$servicePoints");
       result = await lambda.callLambda(
           'aurora-serverless-function-FluxPoints', <String, dynamic>{
         "userID": userID,
-        "appEvent": appEvent,
+        "appEvent": appEvent == FluxPointServiceType.ServiceTransaction
+            ? "serviceTransaction"
+            : "referral",
         "servicePoints": servicePoints
       }).then((value) {
         log("$value");
@@ -154,10 +168,35 @@ class DatabaseLambdaService {
       });
       print(
           "---------------------------------------------------------------------------------$result");
+      addUserRewardTransaction(
+        rewardTransID: rewardTransID,
+        userID: userID,
+        amount: amount,
+        timestamp: timestamp,
+        rewardPartnerID: rewardPartnerID,
+        rewardID: rewardID,
+        shopID: shopID,
+      );
     } catch (e) {
       print(e);
     }
     return result;
+  }
+
+  Future<double> getFluxPoints(String userID) async {
+    Map<String, dynamic> res = {};
+    try {
+      res = await lambda
+          .callLambda('aurora-serverless-getFluxPoints', <String, dynamic>{
+        "userID": userID,
+      });
+      // log("---------------------------------------------------------------------------------${getOrganizedData(result)}");
+      var r = res["records"][0][0]["longValue"];
+      log("$r");
+    } catch (e) {
+      print(e);
+    }
+    return res["records"][0][0]["longValue"];
   }
 
   Future<Map<String, dynamic>> getUserBillProviderDetails(
@@ -262,10 +301,9 @@ class DatabaseLambdaService {
       //  Map<String, List<Map<String, double>>> mpnew = {};
       //## print(result.keys);
 
-     
       //## print('hehehehehehehhehehehehh');
-     //## print(mp);
-     // return mp;
+      //## print(mp);
+      // return mp;
       return result;
       // mp.forEach((key, value) {
       //   mp[key]?.forEach((ele) {
@@ -275,7 +313,7 @@ class DatabaseLambdaService {
       //     });
       //   });
       // });
- //     return mp;
+      //     return mp;
     } catch (e) {
       print(e);
 
@@ -569,6 +607,78 @@ class DatabaseLambdaService {
     }
   }
 
+  Future<List<RewardCategory>> getCategories() async {
+    result = {};
+    List<RewardCategory> rp = [];
+    try {
+      result = await lambda
+          .callLambda('aurora-serverless-rewardCategory', <String, dynamic>{});
+      print(
+          "---------------------------------------------------------------------------------${getOrganizedData(result)}");
+      List<String> categories = [];
+      getOrganizedData(result).forEach((element) {
+        rp.add(RewardCategory.fromJson(element));
+        log("______________________________________________________________________");
+        log("${rp[rp.length - 1].toJson()}");
+      });
+      log("$rp");
+    } catch (e) {
+      print(e);
+    }
+    return rp;
+  }
+
+  List<Map<String, dynamic>> getOrganizedData(Map<String, dynamic> result) {
+    List<String> schema = [];
+    List re = result["records"];
+    result["columnMetadata"].forEach((e) {
+      schema.add(e["label"]);
+    });
+    List<Map<String, dynamic>> response = [];
+    re.forEach((element) {
+      int i = 0;
+      Map<String, dynamic> m = {};
+      // log("$element");
+      element.forEach((e) {
+        // log("----$e");
+        // print(e);
+        m[schema[i]] = e["stringValue"] ?? e["doubleValue"];
+        i++;
+      });
+      response.add(m);
+    });
+    // print("======================================+$response");
+    return response;
+  }
+
+  Future<List<Rewards>> getRewards() async {
+    Map<String, dynamic> r = {};
+    List<Rewards> rl = [];
+    try {
+      r = await lambda
+          .callLambda('aurora-serverless-GetRewards', <String, dynamic>{
+        // "query": query,
+      });
+      print(
+          "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+      // print(r);
+      // r["columnMetadata"].forEach((element) {
+      //   print(element["name"] + "  " + element["typeName"]);
+      // });
+      log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!---------------------------------------------------------------------------------${getOrganizedData(r)}");
+      // getOrganizedData(r);
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+    getOrganizedData(r).forEach((element) {
+      rl.add(Rewards.fromJson(element));
+      print(rl[rl.length - 1].toJson());
+    });
+    log("$rl");
+    return rl;
+  }
+
   Future<List<Reward>> getUserFavoritesList({@required String? userID}) async {
     result = {};
     List<User> userDetails = [];
@@ -805,5 +915,58 @@ class DatabaseLambdaService {
     }
     print(story[0].toString());
     return story;
+  }
+
+  Future<void> addUserRewardTransaction(
+      {required String? rewardTransID,
+      required double? amount,
+      required String? timestamp,
+      required String? userID,
+      required String? rewardPartnerID,
+      required String? rewardID,
+      required String? shopID}) async {
+    result = {};
+    try {
+      log("@@@");
+      var r = await lambda.callLambda(
+          'aurora-serverless-function-addRewardTransaction', <String, dynamic>{
+        "rewardTransID": rewardTransID,
+        "amount": amount,
+        "timestamp": timestamp,
+        "userID": userID,
+        "rewardPartnerID": rewardPartnerID,
+        "rewardID": rewardID,
+        "shopID": shopID,
+      });
+    } catch (e) {
+      print(e);
+
+      // throw Exception(e);
+    }
+  }
+
+  Future<bool> getCouponInfo({
+    required String? userID,
+    required String? rewardID,
+  }) async {
+    result = {};
+    try {
+      var r = await lambda.callLambda(
+          'aurora-serverless-function-getRewardsUserTransactionInfo',
+          <String, dynamic>{
+            "userID": userID,
+            "rewardID": rewardID,
+          });
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      // print(result);
+      log("11111---------------------------------------------------------------------------------${getOrganizedData(r)}");
+      log("${getOrganizedData(r).length}");
+      if (getOrganizedData(r).length == 0) return false;
+      return true;
+    } catch (e) {
+      print(e);
+
+      throw Exception(e);
+    }
   }
 }

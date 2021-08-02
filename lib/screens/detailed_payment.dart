@@ -201,8 +201,7 @@ class _DetailedPaymentState extends State<DetailedPayment> {
       value: val,
       onChanged: (value) {
         setState(() {
-        val = value;   
+          val = value;
         });
-       
       });
 }

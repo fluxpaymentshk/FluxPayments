@@ -14,8 +14,9 @@ class AdvertiserBloc extends Bloc<AdvertiserEvent, AdvertiserState> {
       try {
         yield LoadingExternalAdvertiser();
 
-        await _databaseRepository
-            .getExternalAdvertiserList( externalAdvertisersListData: event.externalAdvertiserList,page:event.page);
+        await _databaseRepository.getExternalAdvertiserList(
+            externalAdvertisersListData: event.externalAdvertiserList,
+            page: event.page);
         yield LoadedExternalAdvertiser(
             externalAdvertiser: event.externalAdvertiserList);
       } catch (e) {
@@ -27,8 +28,9 @@ class AdvertiserBloc extends Bloc<AdvertiserEvent, AdvertiserState> {
       try {
         yield LoadingInternalAdvertiser();
 
-        await _databaseRepository
-            .getInternalAdvertiserList( internalAdvertisersListData: event.internalAdvertiserList, page: event.page);
+        await _databaseRepository.getInternalAdvertiserList(
+            internalAdvertisersListData: event.internalAdvertiserList,
+            page: event.page);
         yield LoadedInternalAdvertiser(
             internalAdvertiser: event.internalAdvertiserList);
       } catch (e) {

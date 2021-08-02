@@ -9,5 +9,6 @@ class GetCoupons extends CouponsEvent {
   final List<myCoupons> coupons;
   final int page;
   final String userID;
-  const GetCoupons({required this.page, required this.coupons,required this.userID});
+  const GetCoupons(
+      {required this.page, required this.coupons, required this.userID});
 }

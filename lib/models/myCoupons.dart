@@ -12,7 +12,12 @@ class myCoupons extends Model {
   String? userID;
   String? rewardPartnerID;
 
-  myCoupons({required this.myCouponsID,required this.isTransactionComp, this.rewardPartnerID, required this.userID,required this.Amount});
+  myCoupons(
+      {required this.myCouponsID,
+      required this.isTransactionComp,
+      this.rewardPartnerID,
+      required this.userID,
+      required this.Amount});
 
   myCoupons.fromJson(Map<String, dynamic> json)
       : myCouponsID = json["myCouponsID"],
@@ -20,7 +25,7 @@ class myCoupons extends Model {
         rewardPartnerID = json["rewardPartnerID"],
         userID = json["userID"],
         Amount = json["Amount"];
-        
+
   @override
   getInstanceType() => classType;
 
@@ -48,7 +53,6 @@ class _CouponsModelType extends ModelType<myCoupons> {
     return myCoupons.fromJson(jsonData);
   }
 }
-
 
 // class Couponss {
 //   int? CouponsID;

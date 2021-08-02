@@ -8,7 +8,7 @@
 			"name": "FluxPayments",
 			"request": "launch",
 			"type": "dart",
-			"args": ["--no-sound-null-safety"],
+			"args": ["--no-sound-null-safety","-v"],
 		},
 		{
 			"name": "FluxPayments (profile mode)",

@@ -8,19 +8,28 @@ import 'package:flux_payments/services/database_lambda.dart';
 
 abstract class databaseRepo {
   Future<void> getFavorites(
-      {required int? page, required List<Reward> favorites, required String? userID});
+      {required int? page,
+      required List<Reward> favorites,
+      required String? userID});
 
   Future<User> getUserDetails({required String? userID});
 
-  Future <List<myCoupons>> getUserCoupons({required int? page, required List<myCoupons> coupons, required String? userID});
+  Future<List<myCoupons>> getUserCoupons(
+      {required int? page,
+      required List<myCoupons> coupons,
+      required String? userID});
 
-  Future <List<Story>> getStory({required int? page, required List<Story> story});
+  Future<List<Story>> getStory(
+      {required int? page, required List<Story> story});
 }
 
 class DatabaseRepo extends databaseRepo {
   DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
   @override
-  Future <List<Reward>> getFavorites({required int? page, required List<Reward> favorites, required String? userID}) async {
+  Future<List<Reward>> getFavorites(
+      {required int? page,
+      required List<Reward> favorites,
+      required String? userID}) async {
     return await _databaseLambdaService.getUserFavoritesList(userID: userID);
   }
 
@@ -30,13 +39,16 @@ class DatabaseRepo extends databaseRepo {
   }
 
   @override
-  Future <List<myCoupons>> getUserCoupons({required int? page, required List<myCoupons> coupons, required String? userID}) async {
+  Future<List<myCoupons>> getUserCoupons(
+      {required int? page,
+      required List<myCoupons> coupons,
+      required String? userID}) async {
     return await _databaseLambdaService.getUserCouponsList(userID: userID);
   }
 
   @override
-  Future <List<Story>> getStory({required int? page, required List<Story> story}) async {
+  Future<List<Story>> getStory(
+      {required int? page, required List<Story> story}) async {
     return await _databaseLambdaService.getStory();
   }
-
 }
