@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 class myCoupons extends Model {
+  //aaaaaa
   static const classType = const _CouponsModelType();
   String? myCouponsID;
   bool? isTransactionComp;
