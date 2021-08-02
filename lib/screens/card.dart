@@ -20,11 +20,11 @@ class _CouponCardState extends State<CouponCard> {
     double height = size.height;
     double width = size.width;
     return CustomPaint(
-      foregroundPainter: TimelinePainter(context, height * 0.42, width * 0.1),
+      foregroundPainter: TimelinePainter(context, height * 0.04, width * 0.1),
       child: ClipPath(
-        clipper: DolDurmaClipper(height * 0.42, width * 0.1),
+        //clipper: DolDurmaClipper(height * 0.42, width * 0.1),
         child: Container(
-          height: height * 0.22 + width * 0.6,
+          height: height * 0.2,
           //height: height * 0.19,
           width: width * 0.92,
           decoration: BoxDecoration(
@@ -191,35 +191,35 @@ class TimelinePainter extends CustomPainter {
     canvas.drawPath(
         dashPath(path, dashArray: CircularIntervalList([15.0, 7.0])), paint);
 
-    // final path1 = Path()
-    //   ..moveTo(0.0, size.height - right - holeRadius)
-    //   //..lineTo(0.0, size.height - right - holeRadius)
-    //   ..arcToPoint(
-    //     Offset(0, size.height - right),
-    //     clockwise: true,
-    //     radius: Radius.circular(1),
-    //   );
-    // path1.close();
-    // var paint1 = Paint();
-    // paint1.color = Colors.white;
-    // paint1.style = PaintingStyle.fill;
-    // paint1.strokeWidth = 2;
-    // canvas.drawPath(path1, paint1);
+    final path1 = Path()
+      ..moveTo(0.0, size.height - right - holeRadius)
+      //..lineTo(0.0, size.height - right - holeRadius)
+      ..arcToPoint(
+        Offset(0, size.height - right),
+        clockwise: true,
+        radius: Radius.circular(1),
+      );
+    path1.close();
+    var paint1 = Paint();
+    paint1.color = Colors.white;
+    paint1.style = PaintingStyle.fill;
+    paint1.strokeWidth = 2;
+    canvas.drawPath(path1, paint1);
 
-    // final path2 = Path()
-    //   ..moveTo(size.width, size.height - right)
-    //   //..lineTo(0.0, size.height - right - holeRadius)
-    //   ..arcToPoint(
-    //     Offset(size.width, size.height - right - holeRadius),
-    //     clockwise: true,
-    //     radius: Radius.circular(1),
-    //   );
-    // path2.close();
-    // var paint2 = Paint();
-    // paint2.color = Colors.white;
-    // paint2.style = PaintingStyle.fill;
-    // paint2.strokeWidth = 2;
-    // canvas.drawPath(path2, paint2);
+    final path2 = Path()
+      ..moveTo(size.width, size.height - right)
+      //..lineTo(0.0, size.height - right - holeRadius)
+      ..arcToPoint(
+        Offset(size.width, size.height - right - holeRadius),
+        clockwise: true,
+        radius: Radius.circular(1),
+      );
+    path2.close();
+    var paint2 = Paint();
+    paint2.color = Colors.white;
+    paint2.style = PaintingStyle.fill;
+    paint2.strokeWidth = 2;
+    canvas.drawPath(path2, paint2);
   }
 
   @override

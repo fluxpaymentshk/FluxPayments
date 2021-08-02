@@ -81,6 +81,7 @@ class _CouponsState extends State<Coupons> {
   bool loadAllFav = false;
   var color1 = Color(0xFF7041EE);
   var color = Color(0xFFE9E9FF);
+  bool show = true;
   var bordercolor = (Colors.grey[700])!;
   final Shader linearGradientText = LinearGradient(
     colors: <Color>[Color(0xFF7041EE), Color(0xffE9D9FB)],
@@ -98,23 +99,26 @@ class _CouponsState extends State<Coupons> {
   @override
   void initState() {
     super.initState();
-    //getfavdata();
     controller.addListener(() {
-      if (controller.offset > height * 0.18 * 0.6) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CouponsList(coupons,)));
-      }
-    //   setState(() {
-    //     double value = controller.offset / (height * 0.18 * 0.6);
-    //     topContainer = value;
-    //     if (controller.offset > 1) {
-    //       //Navigator.of(context).push(MaterialPageRoute(builder: (context) => CouponsList(coupons,)));
-    //       //expand = false;
-    //     } else {
-    //       //expand = true;
-    //     }
-    //     //closeTopContainer = controller.offset > 100;
-    //   });
-     });
+      // if (controller.offset > height * 0.18 * 0.6) {
+      //   Navigator.of(context).push(MaterialPageRoute(
+      //       builder: (context) => CouponsList(
+      //             coupons,
+      //           )));
+      // }
+
+      //   setState(() {
+      //     double value = controller.offset / (height * 0.18 * 0.6);
+      //     topContainer = value;
+      //     if (controller.offset > 1) {
+      //       //Navigator.of(context).push(MaterialPageRoute(builder: (context) => CouponsList(coupons,)));
+      //       //expand = false;
+      //     } else {
+      //       //expand = true;
+      //     }
+      //     //closeTopContainer = controller.offset > 100;
+      //   });
+    });
   }
 
   @override
@@ -158,239 +162,243 @@ class _CouponsState extends State<Coupons> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ExpandedSection(
-                      expand: expand,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Flux.",
-                              style: GoogleFonts.montserrat(
-                                fontSize: height * 0.07,
-                                fontWeight: FontWeight.bold,
-                                foreground: Paint()
-                                  ..shader = linearGradientText,
-                                // textStyle:
-                                //     TextStyle(color: Colors.blue, letterSpacing: .5),
-                              ),
+                    // ExpandedSection(
+                    //   expand: expand,
+                    //   child:
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Flux.",
+                            style: GoogleFonts.montserrat(
+                              fontSize: height * 0.07,
+                              fontWeight: FontWeight.bold,
+                              foreground: Paint()..shader = linearGradientText,
+                              // textStyle:
+                              //     TextStyle(color: Colors.blue, letterSpacing: .5),
                             ),
                           ),
-                          // Material(
-                          //   elevation: 5,
-                          //   child:
-                          Container(
-                            height: height * 0.06,
-                            width: width * 0.91,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.01,
-                                vertical: height * 0.002),
-                            margin: EdgeInsets.fromLTRB(0, height * 0.01, 0, 0),
-                            decoration: BoxDecoration(
-                              boxShadow:
-                                  //kElevationToShadow[4],
-                                  [
-                                BoxShadow(
-                                  color: Colors.grey.shade500,
-                                  blurRadius: width * 0.005,
-                                  spreadRadius: width * 0.0005,
-                                  offset: Offset(width * 0.007, height * 0.005),
-                                ),
-                              ],
-                              border: Border.all(
+                        ),
+                        // Material(
+                        //   elevation: 5,
+                        //   child:
+                        Container(
+                          height: height * 0.06,
+                          width: width * 0.91,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.01,
+                              vertical: height * 0.002),
+                          margin: EdgeInsets.fromLTRB(0, height * 0.01, 0, 0),
+                          decoration: BoxDecoration(
+                            boxShadow:
+                                //kElevationToShadow[4],
+                                [
+                              BoxShadow(
+                                color: Colors.grey.shade500,
+                                blurRadius: width * 0.005,
+                                spreadRadius: width * 0.0005,
+                                offset: Offset(width * 0.007, height * 0.005),
+                              ),
+                            ],
+                            border: Border.all(
+                              color: color1,
+                            ),
+                            borderRadius: BorderRadius.circular(width * 0.03),
+                            color: color,
+                          ),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(
+                                color: color1,
+                                fontSize: height * 0.024,
+                              ),
+                              hintText: "Search for my favorite brand",
+                              prefixIcon: Icon(
+                                Icons.search,
+                                size: height * 0.045,
                                 color: color1,
                               ),
-                              borderRadius: BorderRadius.circular(width * 0.03),
-                              color: color,
-                            ),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintStyle: TextStyle(
-                                  color: color1,
-                                  fontSize: height * 0.024,
-                                ),
-                                hintText: "Search for my favorite brand",
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  size: height * 0.045,
-                                  color: color1,
-                                ),
-                                border: InputBorder.none,
-                              ),
+                              border: InputBorder.none,
                             ),
                           ),
-                          //),
-                          SizedBox(
-                            height: height * 0.02,
-                          ),
-                          Container(
-                            child: Text(
-                              "Category",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: height * 0.03,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        ),
+                        //),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        Container(
+                          child: Text(
+                            "Category",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: height * 0.03,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
-                            height: height * 0.015,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              catagories(
-                                "Food",
-                                "assets/images/food.svg",
-                                height,
-                                width,
-                              ),
-                              catagories(
-                                "Fashion",
-                                "assets/images/fashion.svg",
-                                height,
-                                width,
-                              ),
-                              catagories(
-                                "Fitness",
-                                "assets/images/fitness.svg",
-                                height,
-                                width,
-                              ),
-                              catagories(
-                                "Entertainment",
-                                "assets/images/entertainment.svg",
-                                height,
-                                width,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: height * 0.015,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              catagories(
-                                "Museum",
-                                "assets/images/museum.svg",
-                                height,
-                                width,
-                              ),
-                              catagories(
-                                "Logistics",
-                                "assets/images/logistics.svg",
-                                height,
-                                width,
-                              ),
-                              catagories(
-                                "Travel",
-                                "assets/images/travel.svg",
-                                height,
-                                width,
-                              ),
-                              catagories(
-                                "Grocery",
-                                "assets/images/grocery.svg",
-                                height,
-                                width,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: height * 0.02,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                child: Text(
-                                  "Favorites",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: height * 0.03,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              // IconButton(
-                              //     onPressed: () {
-                              //       setState(() {
-                              //         loadAllFav = !loadAllFav;
-                              //       });
-                              //     },
-                              //     icon: Icon(loadAllFav
-                              //         ? Icons.upload
-                              //         : Icons.download))
-                            ],
-                          ),
-                          SizedBox(
-                            height: height * 0.018,
-                          ),
-                          BlocBuilder<FavoritesBloc, FavoritesState>(
-                            builder: (context, state) {
-                              if (state is LoadingFavorites) {
-                                print("State is LoadindFavorites");
-                                return CircularProgressIndicator(
-                                  strokeWidth: 5.0,
+                        ),
+                        SizedBox(
+                          height: height * 0.015,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            catagories(
+                              "Food",
+                              "assets/images/food.svg",
+                              height,
+                              width,
+                            ),
+                            catagories(
+                              "Fashion",
+                              "assets/images/fashion.svg",
+                              height,
+                              width,
+                            ),
+                            catagories(
+                              "Fitness",
+                              "assets/images/fitness.svg",
+                              height,
+                              width,
+                            ),
+                            catagories(
+                              "Entertainment",
+                              "assets/images/entertainment.svg",
+                              height,
+                              width,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * 0.015,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            catagories(
+                              "Museum",
+                              "assets/images/museum.svg",
+                              height,
+                              width,
+                            ),
+                            catagories(
+                              "Logistics",
+                              "assets/images/logistics.svg",
+                              height,
+                              width,
+                            ),
+                            catagories(
+                              "Travel",
+                              "assets/images/travel.svg",
+                              height,
+                              width,
+                            ),
+                            catagories(
+                              "Grocery",
+                              "assets/images/grocery.svg",
+                              height,
+                              width,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              child: Text(
+                                "Favorites",
+                                style: TextStyle(
                                   color: Colors.black,
-                                  //color: AppTheme.main,
-                                );
-                              } else if (state is LoadedFavorites) {
-                                print("State is LoadedFavorites");
-                                fav = state.favorites;
-                                if (fav.length < 10) {
-                                  fav = fav.sublist(0, fav.length);
-                                } else {
-                                  fav = fav.sublist(0, 10);
-                                }
-                                return Container(
-                                  //height: fav.length > 5 && loadAllFav ? height * 0.318 : height * 0.21,
-                                  height: fav.length > 5 && loadAllFav
-                                      ? height * 0.259
-                                      : height * 0.148,
-                                  padding: EdgeInsets.fromLTRB(
-                                      width * 0.01,
-                                      height * 0.016,
-                                      width * 0.01,
-                                      height * 0.01),
-                                  decoration: BoxDecoration(
-                                    color: color,
-                                    borderRadius:
-                                        BorderRadius.circular(width * 0.03),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      favContainer(0, min(fav.length, 5)),
-                                      SizedBox(
-                                        height: height * 0.01,
-                                      ),
-                                      if (fav.length >= 5 && loadAllFav)
-                                        favContainer(5, min(fav.length, 10)),
-                                      // IconButton(onPressed: (){
-                                      //   setState(() {
-                                      //     loadAllFav =! loadAllFav;
-                                      //   });
-                                      // }, icon: Icon(Icons.file_upload))
-                                    ],
-                                  ),
-                                );
+                                  fontSize: height * 0.03,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            // IconButton(
+                            //     onPressed: () {
+                            //       setState(() {
+                            //         loadAllFav = !loadAllFav;
+                            //       });
+                            //     },
+                            //     icon: Icon(loadAllFav
+                            //         ? Icons.upload
+                            //         : Icons.download))
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * 0.018,
+                        ),
+                        BlocBuilder<FavoritesBloc, FavoritesState>(
+                          builder: (context, state) {
+                            if (state is LoadingFavorites) {
+                              print("State is LoadindFavorites");
+                              return CircularProgressIndicator(
+                                strokeWidth: 5.0,
+                                color: Colors.black,
+                                //color: AppTheme.main,
+                              );
+                            } else if (state is LoadedFavorites) {
+                              print("State is LoadedFavorites");
+                              fav = state.favorites;
+                              if (fav.length < 10) {
+                                fav = fav.sublist(0, fav.length);
                               } else {
-                                return Container(
-                                  child: Text(
-                                      (state as ErrorFavorites).message ?? ''),
-                                );
+                                fav = fav.sublist(0, 10);
                               }
-                            },
-                          ),
+                              return
+                                  //fav.length == 0 ? Text("Please mark some favorites !") :
+                                  Container(
+                                //height: fav.length > 5 && loadAllFav ? height * 0.318 : height * 0.21,
+                                height: fav.length > 5 && loadAllFav
+                                    ? height * 0.259
+                                    : height * 0.148,
+                                padding: EdgeInsets.fromLTRB(
+                                    width * 0.01,
+                                    height * 0.016,
+                                    width * 0.01,
+                                    height * 0.01),
+                                decoration: BoxDecoration(
+                                  color: color,
+                                  borderRadius:
+                                      BorderRadius.circular(width * 0.03),
+                                ),
+                                child: Column(
+                                  children: [
+                                    favContainer(0, min(fav.length, 5)),
+                                    SizedBox(
+                                      height: height * 0.01,
+                                    ),
+                                    if (fav.length >= 5 && loadAllFav)
+                                      favContainer(5, min(fav.length, 10)),
+                                    // IconButton(onPressed: (){
+                                    //   setState(() {
+                                    //     loadAllFav =! loadAllFav;
+                                    //   });
+                                    // }, icon: Icon(Icons.file_upload))
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return Container(
+                                child: Text("No Favorites found !"
+                                    //(state as ErrorFavorites).message
+                                    ??
+                                    ''),
+                              );
+                            }
+                          },
+                        ),
 
-                          SizedBox(
-                            height: height * 0.018,
-                          ),
-                        ],
-                      ),
+                        SizedBox(
+                          height: height * 0.018,
+                        ),
+                      ],
                     ),
+                    //),
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -408,8 +416,6 @@ class _CouponsState extends State<Coupons> {
                       SizedBox(
                         height: height * 0.02,
                       ),
-
-
                     BlocBuilder<CouponsBloc, CouponsState>(
                         builder: (context, state) {
                       if (state is LoadingCoupons) {
@@ -424,54 +430,65 @@ class _CouponsState extends State<Coupons> {
                         print(state.coupons);
                         coupons = state.coupons;
                         return Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      height: 200,
-                      //! Change height
-                      //height: !expand ? height * 0.2 : height * 0.18 * 14 * 0.7 + height * 0.18,
-                      //height: expand ? height * 0.3 : height,
-                      child: Flex(
-                        direction: Axis.vertical,
-                        children: [
-                          Expanded(
-                              child: ListView.builder(
-                                  controller: controller,
-                                  itemCount: 5,
-                                  physics: BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    double scale = 1.0;
-                                    if (topContainer > 0.5) {
-                                      scale = index + 0.5 - topContainer;
-                                      if (scale < 0) {
-                                        scale = 0;
-                                      } else if (scale > 1) {
-                                        scale = 1;
-                                      }
-                                    }
-                                    return Opacity(
-                                      opacity: scale,
-                                      child: Transform(
-                                        transform: Matrix4.identity()
-                                          ..scale(scale, scale),
-                                        alignment: Alignment.bottomCenter,
-                                        child: Align(
-                                          heightFactor: 0.135,
-                                          alignment: Alignment.topCenter,
-                                          child: CouponCard(coupons[index], colors[index%5]),
-                                          // child: card(
-                                          //   coupons[index],
-                                          //   colors[index%5],
-                                          //   height,
-                                          //   width,
-                                          // ),
-                                        ),
-                                      ),
-                                    );
-                                  })),
-                        ],
-                      ),
-                    );
-
-
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          height: min(height * 0.25 * 0.55 * coupons.length,
+                              height * 0.3),
+                          //! Change height
+                          //height: !expand ? height * 0.2 : height * 0.18 * 14 * 0.7 + height * 0.18,
+                          //height: expand ? height * 0.3 : height,
+                          child: Flex(
+                            direction: Axis.vertical,
+                            children: [
+                              Expanded(
+                                  child: ListView.builder(
+                                      controller: controller,
+                                      itemCount: 5,
+                                      physics: BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        double scale = 1.0;
+                                        if (topContainer > 0.5) {
+                                          scale = index + 0.5 - topContainer;
+                                          if (scale < 0) {
+                                            scale = 0;
+                                          } else if (scale > 1) {
+                                            scale = 1;
+                                          }
+                                        }
+                                        return Opacity(
+                                          opacity: scale,
+                                          child: Transform(
+                                            transform: Matrix4.identity()
+                                              ..scale(scale, scale),
+                                            alignment: Alignment.bottomCenter,
+                                            child: Align(
+                                              heightFactor: 0.55,
+                                              alignment: Alignment.topCenter,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CouponsList(
+                                                                coupons,
+                                                              )));
+                                                },
+                                                child: CouponCard(
+                                                    coupons[index],
+                                                    colors[index % 5]),
+                                              ),
+                                              // child: card(
+                                              //   coupons[index],
+                                              //   colors[index%5],
+                                              //   height,
+                                              //   width,
+                                              // ),
+                                            ),
+                                          ),
+                                        );
+                                      })),
+                            ],
+                          ),
+                        );
                       } else {
                         return Container(
                           color: Colors.black,
@@ -479,9 +496,9 @@ class _CouponsState extends State<Coupons> {
                         );
                       }
                     }),
-                    
-                    
-                    
+                    SizedBox(
+                      height: height * 0.01,
+                    )
                   ],
                 ),
               ),
@@ -590,7 +607,8 @@ class _CouponsState extends State<Coupons> {
     );
   }
 
-  Widget card(myCoupons coupon, List<Color> linearGradientCard, double height, double width) {
+  Widget card(myCoupons coupon, List<Color> linearGradientCard, double height,
+      double width) {
     return CustomPaint(
       foregroundPainter: TimelinePainter(context, height * 0.42, width * 0.1),
       child: ClipPath(

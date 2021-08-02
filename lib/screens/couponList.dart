@@ -13,6 +13,9 @@ class CouponsList extends StatefulWidget {
 }
 
 class _CouponsListState extends State<CouponsList> {
+  late DragStartDetails startVerticalDragDetails;
+  late DragUpdateDetails updateVerticalDragDetails;
+
   double topContainer = 0;
   ScrollController controller = ScrollController();
   var height;
@@ -31,33 +34,38 @@ class _CouponsListState extends State<CouponsList> {
 
   @override
   Widget build(BuildContext context) {
+
     Size size = MediaQuery.of(context).size;
     setState(() {
       height = size.height;
       width = size.width;
     });
     return Scaffold(
-      body: GestureDetector(
-        onVerticalDragStart: (details){
-          Navigator.of(context).pop();
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(
-              vertical: height * 0.03, horizontal: width * 0.04),
+      body: Container(
+        padding:EdgeInsets.fromLTRB(width * 0.04, height * 0.02, width * 0.04, height * 0.03), 
+          // padding: EdgeInsets.symmetric(
+          //     vertical: height * 0.03, horizontal: width * 0.04),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "My Coupon",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: height * 0.03,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                children: [
+                  IconButton(onPressed: (){
+                    Navigator.of(context).pop();
+                  }, icon: Icon(Icons.arrow_back)),
+                  Text(
+                    "My Coupon",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: height * 0.03,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
               Container(
-                margin: EdgeInsets.fromLTRB(0, height * 0.03, 0, 0),
-                height: height * 0.85,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                height: height * 0.84,
                 //! Change height
                 //height: !expand ? height * 0.2 : height * 0.18 * 14 * 0.7 + height * 0.18,
                 //height: expand ? height * 0.3 : height,
@@ -67,8 +75,8 @@ class _CouponsListState extends State<CouponsList> {
                     Expanded(
                         child: ListView.builder(
                             controller: controller,
-                            //itemCount: widget.coupons.length,
-                            itemCount: 1,
+                            itemCount: widget.coupons.length,
+                            //itemCount: 1,
                             physics: BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               double scale = 1.0;
@@ -87,7 +95,7 @@ class _CouponsListState extends State<CouponsList> {
                                     ..scale(scale, scale),
                                   alignment: Alignment.bottomCenter,
                                   child: Align(
-                                    heightFactor: 0.2,
+                                    heightFactor: 0.55,
                                     alignment: Alignment.topCenter,
                                     child: GestureDetector(
                                       onTap: () {
@@ -115,7 +123,6 @@ class _CouponsListState extends State<CouponsList> {
             ],
           ),
         ),
-      ),
     );
   }
 }

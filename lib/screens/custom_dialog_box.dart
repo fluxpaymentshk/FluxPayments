@@ -22,7 +22,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        elevation: 0,
+        elevation: 500,
         backgroundColor: Colors.transparent,
         child: Container(
           height: height * 0.6,

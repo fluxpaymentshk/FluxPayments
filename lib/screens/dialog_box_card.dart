@@ -19,12 +19,12 @@ class _DialogBoxCardState extends State<DialogBoxCard> {
     double height = size.height;
     double width = size.width;
     return CustomPaint(
-      foregroundPainter: TimelinePainter(context, height * 0.42, width * 0.1),
+      foregroundPainter: TimelinePainter(context, height * 0.44, width * 0.1),
       child: ClipPath(
-        clipper: DolDurmaClipper(height * 0.42, width * 0.1),
+        clipper: DolDurmaClipper(height * 0.44, width * 0.1),
         child: Container(
-          height: height * 0.22 + width * 0.6,
-          //height: height * 0.19,
+          //height: height * 0.22 + width * 0.6,
+          height: height * 0.19,
           width: width * 0.92,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(width * 0.03),
@@ -108,18 +108,18 @@ class _DialogBoxCardState extends State<DialogBoxCard> {
               SizedBox(
                 height: height * 0.015,
               ),
-              // Center(
-              //   child: Container(
-              //     color: Colors.white,
-              //     //height: width*0.6,
-              //     width: width * 0.6,
-              //     child: QrImage(
-              //       data: "1234567890",
-              //       version: QrVersions.auto,
-              //       //size: width*0.6,
-              //     ),
-              //   ),
-              // ),
+              Center(
+                child: Container(
+                  color: Colors.white,
+                  //height: width*0.6,
+                  width: width * 0.6,
+                  child: QrImage(
+                    data: "1234567890",
+                    version: QrVersions.auto,
+                    //size: width*0.6,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
