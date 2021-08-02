@@ -71,7 +71,25 @@ class AppTheme {
 //static const Color asd= linear-gradient(135deg, 0xFFFFCF71 0%, 0xFF2376DD 100%);
 //static const Color asd= linear-gradient(135deg, 0xFFFFD3A5 0%, 0xFFFD6585 100%);
 //static const Color asd= linear-gradient(135deg, 0xFFFFF3B0 0%, 0xFFCA26FF 100%);
-
+  static  final List<List<Color>> imageBackgroundGradientColors = [
+    [
+      Color(0xff5a3f78),
+      Color(0xffec7174),
+    ],
+    [
+      Color(0xffddaa5d),
+      Color(0xff55bfe0),
+    ],
+    [
+      Color(0xff53de93),
+      Color(0xfff4afe1),
+    ],
+    [
+      Color(0xffbb59c4),
+      Color(0xff0ee5fb),
+    ]
+  ];
+  
   static final TextStyle display1 = GoogleFonts.montserrat(
     // h4 -> display1
     fontWeight: FontWeight.w400,

@@ -16,6 +16,7 @@ import 'package:flux_payments/widgets/qr_code.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
+import 'dart:math' show Random;
 
 class CouponDetailScreen extends StatefulWidget {
   final double? fluxPoints;
@@ -43,13 +44,13 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
     Rect.fromLTWH(1.0, 20.0, 20.0, 80.0),
   );
   bool isRedeemed = false;
-
   late Rewards rewards;
   @override
   void initState() {
     rewards = widget.rewardInfo!;
     super.initState();
   }
+    var randomIndexColor;
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +58,10 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
     Size size = MediaQuery.of(context).size;
     double bottomUp = size.height * 0.005, holeRadius = size.width * 0.15;
     return Scaffold(
-      floatingActionButton:
-          backButton(context, "couponDetailsButton", Color(0xffFAD7A1)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
+      
+      // floatingActionButton:
+      //     backButton(context, "couponDetailsButton", Color(0xffFAD7A1)),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: FutureBuilder<bool>(
           future: DatabaseLambdaService()
               .getCouponInfo(userID: 'Flux-Monik', rewardID: rewards.rewardID),
@@ -73,6 +75,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
             }
             log("${snapshot.data}");
             isRedeemed = snapshot.data!;
+            randomIndexColor=Random().nextInt(AppTheme.imageBackgroundGradientColors.length);
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -81,6 +84,8 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                   floating: false,
                   backgroundColor: Color(0xffFAD7A1),
                   pinned: true,
+                  actionsIconTheme: IconThemeData(color: AppTheme.main),
+                  automaticallyImplyLeading: false,
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
                     background: Stack(
@@ -97,18 +102,33 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                             gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
-                              colors: [Color(0xffFAD7A1), Color(0xffE96D71)],
+                              colors: AppTheme.imageBackgroundGradientColors[randomIndexColor] //[Color(0xffFAD7A1), Color(0xffE96D71)],
                             ),
                           ),
                           // child: ,
                         ),
                         Positioned(
-                          right: -40,
-                          bottom: 0,
-                          child: Image.network(
-                            rewards.image ?? "",
-                            scale: 2,
+                          right: -10,
+                          bottom: -30,
+                          child: Container(
+                            height:MediaQuery.of(context).size.height*0.4,
+                            width:MediaQuery.of(context).size.width*0.7,
+                            child: Image.network(
+                              rewards.image ?? "",
+                              scale: 2,
+                              fit:BoxFit.cover,
+                            ),
                           ),
+                        ),
+                         Positioned(
+                         left:10,
+                          bottom: MediaQuery.of(context).size.height*0.2,
+                          child: Container(height:MediaQuery.of(context).size.height*0.15,width:MediaQuery.of(context).size.width*0.4,child: Image.network(rewards.rewardPartnerLogo??"",fit: BoxFit.contain,))
+                        ),
+                        Positioned(
+                         left:10,
+                          top: 20,
+                          child: backButton(context, "coupon$randomIndexColor",AppTheme.imageBackgroundGradientColors[randomIndexColor][0]),
                         ),
                       ],
                     ),

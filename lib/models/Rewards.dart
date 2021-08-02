@@ -21,6 +21,7 @@ class Rewards extends Model {
   String? rewardPartnerName;
   String? expiryDate;
   String? bannerImage;
+  String? rewardPartnerLogo;
 
   Rewards({
     this.rewardID,
@@ -42,6 +43,7 @@ class Rewards extends Model {
     this.rewardPartnerName,
     this.expiryDate,
     this.bannerImage,
+    this.rewardPartnerLogo,
   });
 
   Rewards.fromJson(Map<String, dynamic> json)
@@ -62,7 +64,8 @@ class Rewards extends Model {
         latitude = json["latitude"],
         rewardPartnerName = json["rewardPartnerName"],
         expiryDate = json["expiryDate"],
-        bannerImage = json["bannerImage"];
+        bannerImage = json["bannerImage"],
+        rewardPartnerLogo=json["rewardPartnerLogo"];
 
   @override
   getInstanceType() => classType;
@@ -92,6 +95,7 @@ class Rewards extends Model {
         "rewardPartnerName": rewardPartnerName,
         "expiryDate": expiryDate,
         "bannerImage": bannerImage,
+        "rewardPartnerLogo":rewardPartnerLogo
       };
 }
 
