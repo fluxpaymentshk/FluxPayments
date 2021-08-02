@@ -230,6 +230,7 @@ class _CouponsState extends State<Coupons> {
                                       ],
                                       child: RewardsSearchScreen(
                                         categories: categories,
+                                        favorites: fav,
                                       ),
                                     ),
                                   ),

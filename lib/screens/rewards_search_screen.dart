@@ -10,6 +10,7 @@ import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
 import 'package:flux_payments/bloc/flux_points_bloc/flux_point_event.dart';
 import 'package:flux_payments/bloc/flux_points_bloc/flux_point_state.dart';
 import 'package:flux_payments/config/theme.dart';
+import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/Rewards.dart';
 import 'package:flux_payments/screens/coupon_details.dart';
 import 'package:flux_payments/services/database_lambda.dart';
@@ -23,7 +24,9 @@ import 'package:location/location.dart';
 
 class RewardsSearchScreen extends StatefulWidget {
   final List<RewardCategory>? categories;
-  const RewardsSearchScreen({Key? key, this.categories}) : super(key: key);
+  final List<Reward>? favorites;
+  const RewardsSearchScreen({Key? key, this.categories, this.favorites})
+      : super(key: key);
 
   @override
   _RewardsSearchScreenState createState() => _RewardsSearchScreenState();
@@ -46,7 +49,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
       LocationData.fromMap({"longitde": 0.0, "latitude": 0.0});
   late var couponsSearchBloc;
   Location location = Location();
-  List<String> favorites = ['PizzaHut'.toLowerCase(), 'Nike'.toLowerCase()];
+  List<String> favorites = []; //['REWPAR_1', 'Nike'];
   int j = 0;
   @override
   void initState() {
@@ -55,6 +58,9 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
     DatabaseLambdaService().getRewards();
     setLocation();
     print("2.1");
+    widget.favorites!.forEach((element) {
+      favorites.add(element.rewardpartnerID!);
+    });
     // getFluxPoints();
     couponsSearchBloc = BlocProvider.of<CouponsSearchBloc>(context);
     couponsSearchBloc.add(LoadCouponsSearch());
@@ -92,6 +98,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
   String _choosenVal = "Sort";
   @override
   Widget build(BuildContext context) {
+    log("${widget.favorites}");
     var fluxPointsBloc = BlocProvider.of<FluxPointsBloc>(context);
     Size size = MediaQuery.of(context).size;
     // var couponsSearchBloc = BlocProvider.of<CouponsSearchBloc>(context);
@@ -360,7 +367,11 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                         selectedCategories
                                                                     .length ==
                                                                 0
-                                                            ?r.length!=original.length?original: r
+                                                            ? r.length !=
+                                                                    original
+                                                                        .length
+                                                                ? original
+                                                                : r
                                                             : filterAccordingToCategory(
                                                                 r,
                                                                 selectedCategories,
@@ -386,14 +397,16 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                         selectedCategories
                                                                     .length ==
                                                                 0
-                                                            ? sortAccordingToDistance(
-                                                                selectedCategories
-                                                                            .length ==
-                                                                        0
-                                                                    ?r.length!=original.length?original: r
-                                                                    : filterAccordingToCategory(
-                                                                        r,
-                                                                        selectedCategories))
+                                                            ? sortAccordingToDistance(selectedCategories
+                                                                        .length ==
+                                                                    0
+                                                                ? r.length !=
+                                                                        original
+                                                                            .length
+                                                                    ? original
+                                                                    : r
+                                                                : filterAccordingToCategory(
+                                                                    r, selectedCategories))
                                                             : filterAccordingToCategory(
                                                                 r,
                                                                 selectedCategories,
@@ -405,10 +418,13 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                         selectedCategories
                                                                     .length ==
                                                                 0
-                                                            ?r.length!=original.length?original: r
+                                                            ? r.length !=
+                                                                    original
+                                                                        .length
+                                                                ? original
+                                                                : r
                                                             : filterAccordingToCategory(
-                                                                r,
-                                                                selectedCategories));
+                                                                r, selectedCategories));
                                               } else if (_choosenVal ==
                                                   "Least Flux Points") {
                                                 r = _textEditingController
@@ -420,14 +436,16 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                         selectedCategories
                                                                     .length ==
                                                                 0
-                                                            ? sortAccordingToFluxPoints(
-                                                                selectedCategories
-                                                                            .length ==
-                                                                        0
-                                                                    ?r.length!=original.length?original: r
-                                                                    : filterAccordingToCategory(
-                                                                        r,
-                                                                        selectedCategories))
+                                                            ? sortAccordingToFluxPoints(selectedCategories
+                                                                        .length ==
+                                                                    0
+                                                                ? r.length !=
+                                                                        original
+                                                                            .length
+                                                                    ? original
+                                                                    : r
+                                                                : filterAccordingToCategory(
+                                                                    r, selectedCategories))
                                                             : filterAccordingToCategory(
                                                                 r,
                                                                 selectedCategories,
@@ -439,10 +457,13 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                         selectedCategories
                                                                     .length ==
                                                                 0
-                                                            ?r.length!=original.length?original: r
+                                                            ? r.length !=
+                                                                    original
+                                                                        .length
+                                                                ? original
+                                                                : r
                                                             : filterAccordingToCategory(
-                                                                r,
-                                                                selectedCategories));
+                                                                r, selectedCategories));
                                               } else if (_choosenVal ==
                                                   "My favorite brand") {
                                                 r = _textEditingController
@@ -458,7 +479,11 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                                 r,
                                                                 selectedCategories,
                                                               )
-                                                            :r.length!=original.length?original: r,
+                                                            : r.length !=
+                                                                    original
+                                                                        .length
+                                                                ? original
+                                                                : r,
                                                         _textEditingController
                                                             .value.text
                                                             .toString())
@@ -466,7 +491,11 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                         selectedCategories
                                                                     .length ==
                                                                 0
-                                                            ?r.length!=original.length?original: r
+                                                            ? r.length !=
+                                                                    original
+                                                                        .length
+                                                                ? original
+                                                                : r
                                                             : filterAccordingToCategory(
                                                                 r,
                                                                 selectedCategories,
@@ -874,13 +903,20 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
   filterAccordingToSearchFavorites(List<Rewards> rewardsList, String query) {
     List<Rewards> sortedRewardsList = [];
     rewardsList.forEach((element) {
-      print(element.rewardPartnerName! + "      " + query);
+      log("@!#" +
+          element.rewardPartnerName! +
+          "      " +
+          element.rewardPartnerID! +
+          "      " +
+          query +
+          " " +
+          favorites.toString());
       if (query
                   .toLowerCase()
                   .compareTo(element.rewardPartnerName!.toLowerCase()) ==
               0 &&
-          favorites.contains(query)) {
-        print(query);
+          favorites.contains(element.rewardPartnerID!)) {
+        log("@!#" + query);
         sortedRewardsList.add(element);
         print(sortedRewardsList);
       }
