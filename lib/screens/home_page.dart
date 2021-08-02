@@ -35,6 +35,7 @@ import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
 import 'package:flux_payments/models/RewardPartner.dart';
+import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
@@ -78,6 +79,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    User user;
     List<curatedList> curatedListData = [];
     List<ExternalAdvertisers> ExadvertiseList = [];
     List<InternalAdvertisers> InadvertiseList = [];
@@ -118,11 +120,14 @@ class _HomePageState extends State<HomePage> {
         _databaseLambdaService.getPendingServices(
             userID: 'Flux-Monik', todayDate: '2021-07-23');
         if (state is UserDetailsLoading) {
-          return CircularProgressIndicator(
-            strokeWidth: 5,
-            color: AppTheme.main,
+          return Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 4,
+              color: AppTheme.main,
+            ),
           );
         } else if (state is UserDetails) {
+          user = state.user;
           print('hjjjjjjjjj');
 
           return Scaffold(
@@ -599,6 +604,10 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.all(8.0),
                             child: LineChartGraph(
                               mp: state.graphData,
+                              height: SizeConfig.heightMultiplier * 40,
+                              width: SizeConfig.widthMultiplier * 90,
+                              user:user,
+                              popup:true,
                               //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
                             ),
                           );

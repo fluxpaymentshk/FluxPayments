@@ -34,6 +34,7 @@ class NavigatorPage extends StatefulWidget {
 class _NavigatorPageState extends State<NavigatorPage> {
   late List<Tuple2> _pages = [];
   bool isOpened = false;
+  double headerHeight = 75;
   double botScreenHeightRatio = 0.8;
   double activeIconElevation = 4;
   TextStyle navigationBarTextStyle = GoogleFonts.rubik(fontSize: 10,fontWeight: FontWeight.bold);
@@ -57,50 +58,213 @@ class _NavigatorPageState extends State<NavigatorPage> {
   PageController _pageController = PageController();
   final controller = SheetController();
 
+
   @override
   Widget build(BuildContext context) {
-    print(_pages);
-    print('//////////////');
-    return LayoutBuilder(builder: (context, constraints) {
-        SizeConfig().init(constraints);
-        return Scaffold(
-          body: PageView(
-            children: _pages.map<Widget>((Tuple2 page) => page.item2).toList(),
-            onPageChanged: (index) {
-              setState(() {
-                _selectedPage = index;
-              });
+    return
+    LayoutBuilder(builder: (context, constraints) {
+         SizeConfig().init(constraints); 
+    return Scaffold(
+      bottomNavigationBar: SafeArea(
+        child: SlidingSheet(
+            duration: const Duration(milliseconds: 900),
+            controller: controller,
+            color: Color(0xffF6F6FF),
+            elevation: 0,
+            maxWidth: 500,
+            cornerRadius: 21,
+            cornerRadiusOnFullscreen: 0.0,
+            closeOnBackdropTap: true,
+            closeOnBackButtonPressed: true,
+            isBackdropInteractable: true,
+            snapSpec: SnapSpec(
+              snap: true,
+              positioning: SnapPositioning.relativeToAvailableSpace,
+              snappings: [SnapSpec.headerFooterSnap, 0.9],
+              onSnap: (state, snap) {
+                print('Snapped to $snap');
+                if (snap != null && snap >= 0.5) {
+                  setState(() {
+                    isOpened = true;
+                  });
+                } else {
+                  setState(() {
+                    isOpened = false;
+                  });
+                }
+              },
+            ),
+            parallaxSpec: const ParallaxSpec(
+              enabled: true,
+              amount: 0.35,
+              endExtent: 0.6,
+            ),
+            liftOnScrollHeaderElevation: 12.0,
+            liftOnScrollFooterElevation: 12.0,
+            body: PageView(
+              children:
+                  _pages.map<Widget>((Tuple2 page) => page.item2).toList(),
+              onPageChanged: (index) {
+                setState(() {
+                  _selectedPage = index;
+                });
+              },
+              controller: _pageController,
+            ),
+            builder: (BuildContext context, SheetState state) {
+              return Container(
+                height:
+                    MediaQuery.of(context).size.height * botScreenHeightRatio,
+                child: SupportBotScreen(),
+              );
             },
-            controller: _pageController,
+            headerBuilder: (context, state) {
+              log(state.extent.toString());
+              if (isOpened)
+                return Container(
+                  height: headerHeight,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(21),
+                    color: Color(0xffF2F2FF),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: IconButton(
+                    icon: ImageIcon(
+                      AssetImage(
+                        "assets/icons/down_icon.png",
+                      ),
+                    ),
+                    onPressed: controller.collapse,
+                  ),
+                );
+              return Container(
+                height: headerHeight,
+                child: _bottomNavigationBarWidget(context),
+              );
+            }),
+      ),
+    );
+    });
+  }
+
+  Widget _bottomNavigationBarWidget(BuildContext context) {
+    return BottomNavigationBar(
+      backgroundColor: Color(0xffF6F6FF),
+      items: const [
+        BottomNavigationBarItem(
+          icon: ImageIcon(
+            AssetImage("assets/icons/my_bills.png"),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.payment),
-                label: 'payment',
+          activeIcon: Material(
+            elevation: 3,
+            shape: CircleBorder(),
+            child: CircleAvatar(
+              child: ImageIcon(
+                AssetImage("assets/icons/my_bills.png"),
+                color: Color(0xff7041EE),
+                size: 30,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.card_giftcard),
-                label: 'gift',
-              ),
-            ],
-            currentIndex: _selectedPage,
-            selectedItemColor: Colors.amber[800],
-            onTap: (index) {
-              setState(() {
-                _selectedPage = index;
-    
-                _pageController.animateToPage(_selectedPage,
-                    duration: Duration(milliseconds: 300), curve: Curves.linear);
-              });
-            },
+              backgroundColor: Colors.white,
+            ),
           ),
+          label: 'MY BILLS',
+        ),
+        BottomNavigationBarItem(
+          icon: ImageIcon(
+            AssetImage("assets/icons/home.png"),
+          ),
+          activeIcon: Material(
+            elevation: 3,
+            shape: CircleBorder(),
+            child: CircleAvatar(
+              child: ImageIcon(
+                AssetImage("assets/icons/home.png"),
+                color: Color(0xff7041EE),
+                size: 30,
+              ),
+              backgroundColor: Colors.white,
+            ),
+          ),
+          label: 'HOME',
+        ),
+        BottomNavigationBarItem(
+          icon: ImageIcon(
+            AssetImage("assets/icons/favorites.png"),
+          ),
+          activeIcon: Material(
+            elevation: 3,
+            shape: CircleBorder(),
+            child: CircleAvatar(
+              child: ImageIcon(
+                AssetImage("assets/icons/favorites.png"),
+                color: Color(0xff7041EE),
+                size: 30,
+              ),
+              backgroundColor: Colors.white,
+            ),
+          ),
+          label: 'REWARDS',
+        ),
+      ],
+      currentIndex: _selectedPage,
+      onTap: (index) {
+        setState(
+          () {
+            _selectedPage = index;
+            _pageController.jumpToPage(
+              _selectedPage,
+            );
+          },
         );
-      }
+      },
+      showUnselectedLabels: false,
     );
   }
+//  @override
+  // Widget build(BuildContext context) {
+  //   print(_pages);
+  //   print('//////////////');
+  //   return LayoutBuilder(builder: (context, constraints) {
+  //       SizeConfig().init(constraints);
+  //       return Scaffold(
+  //         body: PageView(
+  //           children: _pages.map<Widget>((Tuple2 page) => page.item2).toList(),
+  //           onPageChanged: (index) {
+  //             setState(() {
+  //               _selectedPage = index;
+  //             });
+  //           },
+  //           controller: _pageController,
+  //         ),
+  //         bottomNavigationBar: BottomNavigationBar(
+  //           items: const [
+  //             BottomNavigationBarItem(
+  //               icon: Icon(Icons.payment),
+  //               label: 'payment',
+  //             ),
+  //             BottomNavigationBarItem(
+  //               icon: Icon(Icons.home),
+  //               label: 'home',
+  //             ),
+  //             BottomNavigationBarItem(
+  //               icon: Icon(Icons.card_giftcard),
+  //               label: 'gift',
+  //             ),
+  //           ],
+  //           currentIndex: _selectedPage,
+  //           selectedItemColor: Colors.amber[800],
+  //           onTap: (index) {
+  //             setState(() {
+  //               _selectedPage = index;
+    
+  //               _pageController.animateToPage(_selectedPage,
+  //                   duration: Duration(milliseconds: 300), curve: Curves.linear);
+  //             });
+  //           },
+  //         ),
+  //       );
+  //     }
+  //   );
+   //}
 }
