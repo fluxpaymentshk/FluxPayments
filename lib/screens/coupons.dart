@@ -11,6 +11,8 @@ import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
 import 'package:flux_payments/repository/database_repository.dart';
+import 'package:flux_payments/screens/card.dart';
+import 'package:flux_payments/screens/couponList.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/myCoupons.dart';
@@ -98,17 +100,21 @@ class _CouponsState extends State<Coupons> {
     super.initState();
     //getfavdata();
     controller.addListener(() {
-      setState(() {
-        double value = controller.offset / (height * 0.18 * 0.6);
-        topContainer = value;
-        if (controller.offset > height * 0.18 * 0.6) {
-          expand = false;
-        } else {
-          expand = true;
-        }
-        //closeTopContainer = controller.offset > 100;
-      });
-    });
+      if (controller.offset > height * 0.18 * 0.6) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CouponsList(coupons,)));
+      }
+    //   setState(() {
+    //     double value = controller.offset / (height * 0.18 * 0.6);
+    //     topContainer = value;
+    //     if (controller.offset > 1) {
+    //       //Navigator.of(context).push(MaterialPageRoute(builder: (context) => CouponsList(coupons,)));
+    //       //expand = false;
+    //     } else {
+    //       //expand = true;
+    //     }
+    //     //closeTopContainer = controller.offset > 100;
+    //   });
+     });
   }
 
   @override
@@ -342,8 +348,8 @@ class _CouponsState extends State<Coupons> {
                                 return Container(
                                   //height: fav.length > 5 && loadAllFav ? height * 0.318 : height * 0.21,
                                   height: fav.length > 5 && loadAllFav
-                                      ? height * 0.258
-                                      : height * 0.147,
+                                      ? height * 0.259
+                                      : height * 0.148,
                                   padding: EdgeInsets.fromLTRB(
                                       width * 0.01,
                                       height * 0.016,
@@ -388,31 +394,6 @@ class _CouponsState extends State<Coupons> {
                     SizedBox(
                       height: height * 0.01,
                     ),
-                    // BlocBuilder<CouponsBloc, CouponsState>(
-                    //     builder: (context, state) {
-                    //   if (state is LoadingCoupons) {
-                    //     print("State is LoadingCoupons");
-                    //     return CircularProgressIndicator(
-                    //       strokeWidth: 5.0,
-                    //       color: Colors.black,
-                    //       //color: AppTheme.main,
-                    //     );
-                    //   } else if (state is LoadedCoupons) {
-                    //     print("State is LoadedCoupons");
-                    //     print(state.coupons[1].myCouponsID);
-                    //     coupons = state.coupons;
-                    //     return Container(
-                    //       //color: Colors.black,
-                    //       height: 100,
-                    //       child: Text(coupons[0].myCouponsID.toString()),
-                    //     );
-                    //   } else {
-                    //     return Container(
-                    //       color: Colors.black,
-                    //       height: 100,
-                    //     );
-                    //   }
-                    // }),
                     Container(
                       child: Text(
                         "My Coupon",
@@ -427,9 +408,24 @@ class _CouponsState extends State<Coupons> {
                       SizedBox(
                         height: height * 0.02,
                       ),
-                    Container(
+
+
+                    BlocBuilder<CouponsBloc, CouponsState>(
+                        builder: (context, state) {
+                      if (state is LoadingCoupons) {
+                        print("State is LoadingCoupons");
+                        return CircularProgressIndicator(
+                          strokeWidth: 5.0,
+                          color: Colors.black,
+                          //color: AppTheme.main,
+                        );
+                      } else if (state is LoadedCoupons) {
+                        print("State is LoadedCoupons");
+                        print(state.coupons);
+                        coupons = state.coupons;
+                        return Container(
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      height: 500,
+                      height: 200,
                       //! Change height
                       //height: !expand ? height * 0.2 : height * 0.18 * 14 * 0.7 + height * 0.18,
                       //height: expand ? height * 0.3 : height,
@@ -458,20 +454,34 @@ class _CouponsState extends State<Coupons> {
                                           ..scale(scale, scale),
                                         alignment: Alignment.bottomCenter,
                                         child: Align(
-                                          heightFactor: 0.15,
+                                          heightFactor: 0.135,
                                           alignment: Alignment.topCenter,
-                                          child: card(
-                                            colors[index%5],
-                                            height,
-                                            width,
-                                          ),
+                                          child: CouponCard(coupons[index], colors[index%5]),
+                                          // child: card(
+                                          //   coupons[index],
+                                          //   colors[index%5],
+                                          //   height,
+                                          //   width,
+                                          // ),
                                         ),
                                       ),
                                     );
                                   })),
                         ],
                       ),
-                    ),
+                    );
+
+
+                      } else {
+                        return Container(
+                          color: Colors.black,
+                          height: 100,
+                        );
+                      }
+                    }),
+                    
+                    
+                    
                   ],
                 ),
               ),
@@ -580,7 +590,7 @@ class _CouponsState extends State<Coupons> {
     );
   }
 
-  Widget card(List<Color> linearGradientCard, double height, double width) {
+  Widget card(myCoupons coupon, List<Color> linearGradientCard, double height, double width) {
     return CustomPaint(
       foregroundPainter: TimelinePainter(context, height * 0.42, width * 0.1),
       child: ClipPath(
@@ -608,11 +618,12 @@ class _CouponsState extends State<Coupons> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "LEGO",
+                      coupon.name ?? "Name",
                       style: TextStyle(fontSize: height * 0.023),
                     ),
-                    Image.asset(
-                      "assets/images/Lego.png",
+                    //Image.network(src);
+                    Image.network(
+                      coupon.image ?? "assets/images/Lego.png",
                       height: height * 0.03, //20,
                       width: width * 0.1, //40,
                       fit: BoxFit.contain,
@@ -625,7 +636,7 @@ class _CouponsState extends State<Coupons> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Discount 10% for any purchase.",
+                    coupon.shortDescription ?? "Offer to be added later",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 22,
@@ -643,7 +654,7 @@ class _CouponsState extends State<Coupons> {
                   color: Colors.white,
                 ),
                 child: Text(
-                  "Valid until 01-June-2021",
+                  "Valid until ${coupon.validUntill}",
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: height * 0.017,

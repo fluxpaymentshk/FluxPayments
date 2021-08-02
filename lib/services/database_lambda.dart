@@ -691,7 +691,6 @@ Map<String, dynamic> result = {};
 
   Future <List<myCoupons>> getUserCouponsList({@required String? userID}) async {
     result = {};
-    List<User> userDetails = [];
     List<myCoupons> coupons = [];
     try {
       result = await lambda.callLambda(
@@ -744,6 +743,7 @@ Map<String, dynamic> result = {};
     } catch (e) {
       print(e);
     }
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     print(coupons);
     //return result;
     return coupons;
