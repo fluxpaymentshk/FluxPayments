@@ -35,6 +35,7 @@ import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/detailed_payment.dart';
 // import 'package:flux_payments/screens/change_password.dart';
 // import 'package:flux_payments/screens/login_page.dart';
 // import 'package:flux_payments/screens/password_reset.dart';
@@ -82,7 +83,7 @@ class _BillPaymentState extends State<BillPayment> {
     List<InternalAdvertisers> InadvertiseList = [];
 
     var userBloc = BlocProvider.of<UserBloc>(context);
-    var curatedListBloc = BlocProvider.of<CuratedListBloc>(context);
+    //  var curatedListBloc = BlocProvider.of<CuratedListBloc>(context);
     var advertiserBloc = BlocProvider.of<AdvertiserBloc>(context);
     var bannerBloc = BlocProvider.of<BannerBloc>(context);
     var graphBloc = BlocProvider.of<GraphBloc>(context);
@@ -102,8 +103,8 @@ class _BillPaymentState extends State<BillPayment> {
     advertiserBloc.add(GetExternalAdvertiserEvent(
         page: 0, externalAdvertiserList: ExadvertiseList));
 
-    curatedListBloc
-        .add(LoadCuratedListEvent(page: 0, curatedListData: curatedListData));
+    // curatedListBloc
+    //     .add(LoadCuratedListEvent(page: 0, curatedListData: curatedListData));
 
     log("EMAIL-------------------> ${widget.email}");
 
@@ -532,66 +533,83 @@ class _BillPaymentState extends State<BillPayment> {
                         if (state is LoadingRecentPaymentState)
                           return CircularProgressIndicator();
                         else if (state is LoadRecentPaymentState) {
-                          return Container(
-                            height: SizeConfig.heightMultiplier * 9,
-                            child:
-                                // ListView.builder(
-                                // scrollDirection: Axis.vertical,
-                                //physics: const ClampingScrollPhysics(),
-                                //itemCount: state.RecentPaymentData.length,
-                                //itemBuilder: (context, int index) {
-                                //   return
-                                SingleChildScrollView(
-                              child: Column(
+                          return InkWell(
+                            child: Container(
+                              height: SizeConfig.heightMultiplier * 60,
+                              child:
+                                  // ListView.builder(
+                                  // scrollDirection: Axis.vertical,
+                                  //physics: const ClampingScrollPhysics(),
+                                  //itemCount: state.RecentPaymentData.length,
+                                  //itemBuilder: (context, int index) {
+                                  //   return
+                                  Column(
                                 children: [
-                                  recentPaymentTile(
-                                      name: state.RecentPaymentData[0]['name'],
-                                      paidOn: state.RecentPaymentData[0]
-                                          ['paidOn'],
-                                      imageurl: state.RecentPaymentData[0]
-                                          ['imageurl'],
-                                      amount: state.RecentPaymentData[0]
-                                          ['amount']),
-                                  recentPaymentTile(
-                                      name: state.RecentPaymentData[0]['name'],
-                                      paidOn: state.RecentPaymentData[0]
-                                          ['paidOn'],
-                                      imageurl: state.RecentPaymentData[0]
-                                          ['imageurl'],
-                                      amount: state.RecentPaymentData[0]
-                                          ['amount']),
-                                  recentPaymentTile(
-                                      name: state.RecentPaymentData[0]['name'],
-                                      paidOn: state.RecentPaymentData[0]
-                                          ['paidOn'],
-                                      imageurl: state.RecentPaymentData[0]
-                                          ['imageurl'],
-                                      amount: state.RecentPaymentData[0]
-                                          ['amount']),
-                                  recentPaymentTile(
-                                      name: state.RecentPaymentData[0]['name'],
-                                      paidOn: state.RecentPaymentData[0]
-                                          ['paidOn'],
-                                      imageurl: state.RecentPaymentData[0]
-                                          ['imageurl'],
-                                      amount: state.RecentPaymentData[0]
-                                          ['amount']),
-                                  recentPaymentTile(
-                                      name: state.RecentPaymentData[0]['name'],
-                                      paidOn: state.RecentPaymentData[0]
-                                          ['paidOn'],
-                                      imageurl: state.RecentPaymentData[0]
-                                          ['imageurl'],
-                                      amount: state.RecentPaymentData[0]
-                                          ['amount']),
+                                  if (state.RecentPaymentData.length > 0)
+                                    recentPaymentTile(
+                                        name: state.RecentPaymentData[0]
+                                            ['name'],
+                                        paidOn: state.RecentPaymentData[0]
+                                            ['paidOn'],
+                                        imageurl: state.RecentPaymentData[0]
+                                            ['imageurl'],
+                                        amount: state.RecentPaymentData[0]
+                                            ['amount']),
+                                  if (state.RecentPaymentData.length > 1)
+                                    recentPaymentTile(
+                                        name: state.RecentPaymentData[1]
+                                            ['name'],
+                                        paidOn: state.RecentPaymentData[1]
+                                            ['paidOn'],
+                                        imageurl: state.RecentPaymentData[1]
+                                            ['imageurl'],
+                                        amount: state.RecentPaymentData[1]
+                                            ['amount']),
+                                  if (state.RecentPaymentData.length > 2)
+                                    recentPaymentTile(
+                                        name: state.RecentPaymentData[2]
+                                            ['name'],
+                                        paidOn: state.RecentPaymentData[2]
+                                            ['paidOn'],
+                                        imageurl: state.RecentPaymentData[2]
+                                            ['imageurl'],
+                                        amount: state.RecentPaymentData[2]
+                                            ['amount']),
+                                  if (state.RecentPaymentData.length > 3)
+                                    recentPaymentTile(
+                                        name: state.RecentPaymentData[3]
+                                            ['name'],
+                                        paidOn: state.RecentPaymentData[3]
+                                            ['paidOn'],
+                                        imageurl: state.RecentPaymentData[3]
+                                            ['imageurl'],
+                                        amount: state.RecentPaymentData[3]
+                                            ['amount']),
+                                  if (state.RecentPaymentData.length > 4)
+                                    recentPaymentTile(
+                                        name: state.RecentPaymentData[4]
+                                            ['name'],
+                                        paidOn: state.RecentPaymentData[4]
+                                            ['paidOn'],
+                                        imageurl: state.RecentPaymentData[4]
+                                            ['imageurl'],
+                                        amount: state.RecentPaymentData[4]
+                                            ['amount']),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier * 3,
+                                  ),
                                 ],
                               ),
                             ),
+                            onDoubleTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return DetailedPayment(
+                                    paymentData: {}, user: user);
+                                // return GraphScreen(graphData: widget.mp, user: widget.user);
+                              }));
+                            },
                           );
-                          //   }),
-
-                          //   ),
-                          //);
                         } else if (state is ErrorRecentPaymentState)
                           return Container(child: Text(state.message));
                         else

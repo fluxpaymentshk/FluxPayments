@@ -35,12 +35,13 @@ class FluxPointsBloc extends Bloc<FluxPointsEvent, FluxPointsState> {
           await _databaseRepo.updateFluxPoints(
             userID: event.userID,
             appEvent: event.appEvent,
-            servicePoints: event.servicePoints,rewardTransID: event.rewardTransID,
-              amount: event.amount,
-              rewardID: event.rewardID,
-              rewardPartnerID: event.rewardPartnerID,
-              shopID: event.shopID,
-              timestamp: event.timestamp,
+            servicePoints: event.servicePoints,
+            rewardTransID: event.rewardTransID,
+            amount: event.amount,
+            rewardID: event.rewardID,
+            rewardPartnerID: event.rewardPartnerID,
+            shopID: event.shopID,
+            timestamp: event.timestamp,
           );
           fluxPoints += event.servicePoints ?? 0;
           // await _databaseRepo.addRewardTransaction(

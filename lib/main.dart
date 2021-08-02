@@ -160,31 +160,31 @@ class _MyAppState extends State<MyApp> {
           unselectedIconTheme: IconThemeData(size: 30),
         ),
       ),
-      home: 
-      // FutureBuilder<List<RewardCategory>>(
-      //   future: getCategories(),
-      //   builder: (context, snapshot) => snapshot.hasData
-      //       ? MultiBlocProvider(
-      //           providers: [
-      //             BlocProvider(
-      //                 create: (_) => FavoritesBloc(_databaseRepository)),
-      //             BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
-      //             BlocProvider(
-      //               create: (_) => CouponsSearchBloc(
-      //                 CouponsSearchRepository(),
-      //               ),
-      //             ),
-      //             BlocProvider(
-      //               create: (_) => FluxPointsBloc(_databaseRepository),
-      //             ),
-      //           ],
-      //           child: RewardsSearchScreen(
-      //             categories: snapshot.data,
-      //           ),
-      //         )
-      //       : CircularProgressIndicator(),
-      // ),
-      //  SupportBotScreen()
+      home:
+          // FutureBuilder<List<RewardCategory>>(
+          //   future: getCategories(),
+          //   builder: (context, snapshot) => snapshot.hasData
+          //       ? MultiBlocProvider(
+          //           providers: [
+          //             BlocProvider(
+          //                 create: (_) => FavoritesBloc(_databaseRepository)),
+          //             BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
+          //             BlocProvider(
+          //               create: (_) => CouponsSearchBloc(
+          //                 CouponsSearchRepository(),
+          //               ),
+          //             ),
+          //             BlocProvider(
+          //               create: (_) => FluxPointsBloc(_databaseRepository),
+          //             ),
+          //           ],
+          //           child: RewardsSearchScreen(
+          //             categories: snapshot.data,
+          //           ),
+          //         )
+          //       : CircularProgressIndicator(),
+          // ),
+          //  SupportBotScreen()
           MultiBlocProvider(
         providers: [
           BlocProvider(

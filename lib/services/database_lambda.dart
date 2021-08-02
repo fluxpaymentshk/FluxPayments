@@ -250,7 +250,7 @@ class DatabaseLambdaService {
     return result;
   }
 
-  Future<Map<String, Map<String, double>>> getPaymentHistoryProviderWiseDetails(
+  Future<Map<String, dynamic>> getPaymentHistoryProviderWiseDetails(
       {@required String? userID}) async {
     result = {};
     try {
@@ -299,73 +299,12 @@ class DatabaseLambdaService {
 
       Map<String, Map<String, double>> mp = {};
       //  Map<String, List<Map<String, double>>> mpnew = {};
-      print(result.keys);
-      result.forEach((key, value) {
-        //  mp.putIfAbsent(key, () => []);
-        if (value.length >= 1 &&
-            (value[0]["paidOn"].contains('2021-09') ||
-                value[0]["paidOn"].contains('2021-08') ||
-                value[0]["paidOn"].contains('2021-08'))) {
-          mp.putIfAbsent(
-              value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3),
-              () => {});
+      //## print(result.keys);
 
-          mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3)]!
-              .putIfAbsent(key, () => 0);
-
-          mp[value[0]["paidOn"].substring(0, value[0]["paidOn"].length - 3)]![
-              key] = mp[value[0]["paidOn"]
-                  .substring(0, value[0]["paidOn"].length - 3)]![key]! +
-              value[0]["rewardPoints"];
-        }
-        //  mp[key]?.add({value[0]["paidOn"]: value[0]["rewardPoints"]});
-
-        // if (value.length >= 2)
-        //   mp[key]?.add({value[1]["paidOn"]: value[1]["rewardPoints"]});
-
-        if (value.length >= 2 &&
-            (value[1]["paidOn"].contains('2021-09') ||
-                value[1]["paidOn"].contains('2021-08') ||
-                value[1]["paidOn"].contains('2021-08'))) {
-          mp.putIfAbsent(
-              value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3),
-              () => {});
-
-          mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3)]!
-              .putIfAbsent(key, () => 0);
-
-          mp[value[1]["paidOn"].substring(0, value[1]["paidOn"].length - 3)]![
-              key] = mp[value[1]["paidOn"]
-                  .substring(0, value[1]["paidOn"].length - 3)]![key]! +
-              value[1]["rewardPoints"];
-        }
-
-        if (value.length >= 3 &&
-            (value[2]["paidOn"].contains('2021-09') ||
-                value[2]["paidOn"].contains('2021-08') ||
-                value[2]["paidOn"].contains('2021-08'))) {
-          mp.putIfAbsent(
-              value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3),
-              () => {});
-
-          mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3)]!
-              .putIfAbsent(key, () => 0);
-
-          mp[value[2]["paidOn"].substring(0, value[2]["paidOn"].length - 3)]![
-              key] = mp[value[2]["paidOn"]
-                  .substring(0, value[2]["paidOn"].length - 3)]![key]! +
-              value[2]["rewardPoints"];
-        }
-
-        // if (value.length >= 3)
-        //   mp[key]?.add({value[2]["paidOn"]: value[2]["rewardPoints"]});
-
-//to process cummulative data for respective month.
-        // value.forEach((el) {});
-      });
-      print('hehehehehehehhehehehehh');
-      print(mp);
-      return mp;
+      //## print('hehehehehehehhehehehehh');
+      //## print(mp);
+      // return mp;
+      return result;
       // mp.forEach((key, value) {
       //   mp[key]?.forEach((ele) {
       //     ele.forEach((key, value) {
@@ -374,7 +313,7 @@ class DatabaseLambdaService {
       //     });
       //   });
       // });
-      return mp;
+      //     return mp;
     } catch (e) {
       print(e);
 
@@ -604,6 +543,7 @@ class DatabaseLambdaService {
       // log("$result");
       // print("####################");
       // print(result);
+
       Map<String, dynamic> mp = {};
 
       res.forEach((ele) {

@@ -44,7 +44,8 @@ abstract class DatabaseBaseRepository {
   Future<Map<String, dynamic>> updateFluxPoints(
       {required String? userID,
       required FluxPointServiceType? appEvent,
-      required double? servicePoints,required String? rewardTransID,
+      required double? servicePoints,
+      required String? rewardTransID,
       required double? amount,
       required String? timestamp,
       required String? rewardPartnerID,
@@ -113,7 +114,7 @@ class DatabaseRepository extends DatabaseBaseRepository {
   }
 
   @override
-  Future<Map<String, Map<String, double>>> getPaymentHistoryProviderWiseDetails(
+  Future<Map<String, dynamic>> getPaymentHistoryProviderWiseDetails(
       {required String? userID}) async {
     return await _databaseLambdaService.getPaymentHistoryProviderWiseDetails(
         userID: userID);
@@ -157,21 +158,24 @@ class DatabaseRepository extends DatabaseBaseRepository {
   Future<Map<String, dynamic>> updateFluxPoints(
       {required String? userID,
       required FluxPointServiceType? appEvent,
-      required double? servicePoints,required String? rewardTransID,
+      required double? servicePoints,
+      required String? rewardTransID,
       required double? amount,
       required String? timestamp,
       required String? rewardPartnerID,
       required String? rewardID,
       required String? shopID}) async {
     return await _databaseLambdaService.updateFluxPoints(
-        userID: userID, appEvent: appEvent, servicePoints: servicePoints,
-         rewardTransID: rewardTransID,
+      userID: userID,
+      appEvent: appEvent,
+      servicePoints: servicePoints,
+      rewardTransID: rewardTransID,
       amount: amount,
       timestamp: timestamp,
       rewardPartnerID: rewardPartnerID,
       rewardID: rewardID,
       shopID: shopID,
-      );
+    );
   }
 
   Future<void> getInternalAdvertiserList(

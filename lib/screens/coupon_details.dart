@@ -72,7 +72,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
               );
             }
             log("${snapshot.data}");
-            isRedeemed =snapshot.data!;
+            isRedeemed = snapshot.data!;
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -166,7 +166,8 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                   height: 8,
                                 ),
                                 Text(
-                                  widget.rewardInfo?.longDescription ?? "!! Not enough information given by reward Partner",
+                                  widget.rewardInfo?.longDescription ??
+                                      "!! Not enough information given by reward Partner",
                                   style: GoogleFonts.montserrat(
                                     fontSize: 13,
                                   ),
@@ -249,7 +250,6 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                       ),
                                     ),
                                     InkWell(
-                                      
                                       onTap: () async {
                                         if (widget.fluxPoints! >=
                                             (widget.rewardInfo?.amount
@@ -353,10 +353,9 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                 //     child:
                                 Container(
                                   width: size.width * 0.9,
-                                  height: size.width *
-                                   0.9,
-                                  child://Text("QR    COde")
-                                   ExpandWidget(
+                                  height: size.width * 0.9,
+                                  child: //Text("QR    COde")
+                                      ExpandWidget(
                                     child: generateQRCode(context, "testing"),
                                     expand: isRedeemed,
                                   ),

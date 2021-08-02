@@ -224,36 +224,39 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (state is UserSignedInAuthState) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) =>MultiBlocProvider(providers: [  BlocProvider.value(
-                        value: userBloc,
-                      ),
-                      BlocProvider.value(
-                        value: curatedListBloc,
-                      ),
-                      BlocProvider.value(
-                        value: bannerBloc,
-                      ),
-                      BlocProvider.value(
-                        value: advertiserBloc,
-                      ),
-                      BlocProvider.value(
-                        value: graphBloc,
-                      ),
-                      BlocProvider.value(
-                        value: recentPaymentBloc,
-                      ),
-                      BlocProvider.value(
-                        value: pendingServiceBloc,
-                      ),
-                      BlocProvider.value(
-                        value: storyBloc,
-                      ),
-                      BlocProvider.value(
-                        value: couponsBloc,
-                      ),
-                      BlocProvider.value(
-                        value: favoritesBloc,
-                      ),],
+                          builder: (context) => MultiBlocProvider(
+                            providers: [
+                              BlocProvider.value(
+                                value: userBloc,
+                              ),
+                              BlocProvider.value(
+                                value: curatedListBloc,
+                              ),
+                              BlocProvider.value(
+                                value: bannerBloc,
+                              ),
+                              BlocProvider.value(
+                                value: advertiserBloc,
+                              ),
+                              BlocProvider.value(
+                                value: graphBloc,
+                              ),
+                              BlocProvider.value(
+                                value: recentPaymentBloc,
+                              ),
+                              BlocProvider.value(
+                                value: pendingServiceBloc,
+                              ),
+                              BlocProvider.value(
+                                value: storyBloc,
+                              ),
+                              BlocProvider.value(
+                                value: couponsBloc,
+                              ),
+                              BlocProvider.value(
+                                value: favoritesBloc,
+                              ),
+                            ],
                             child: HomePage(
                               userRepository: widget.userConfigRepository,
                               databaseRepository: DatabaseRepository(),
