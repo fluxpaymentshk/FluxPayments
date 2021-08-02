@@ -13,12 +13,12 @@ class GraphBloc extends Bloc<GraphEvent, GraphState> {
       try {
         yield LoadingGraphState();
 
-        Map<String, Map<String, double>> mp = await _databaseRepository
+        Map<String, dynamic> mp = await _databaseRepository
             .getPaymentHistoryProviderWiseDetails(userID: event.UserID);
 
         yield LoadGraphState(graphData: mp);
       } catch (e) {
-        yield ErrorGraphState( message: 'Unable to plot Graph data!');
+        yield ErrorGraphState(message: 'Unable to plot Graph data!');
       }
     }
   }

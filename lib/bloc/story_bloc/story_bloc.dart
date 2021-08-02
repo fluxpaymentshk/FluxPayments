@@ -5,7 +5,6 @@ import 'story_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flux_payments/models/Story.dart';
 
-
 class StoryBloc extends Bloc<StoryEvent, StoryState> {
   final DatabaseRepository _databaseRepo;
   StoryBloc(this._databaseRepo) : super(StoryInitialState());
@@ -16,8 +15,8 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
       try {
         yield LoadingStory();
 
-        var story = await _databaseRepo.getStory(
-            page: event.page, story: event.story);
+        var story =
+            await _databaseRepo.getStory(page: event.page, story: event.story);
         try {
           yield LoadedStory(story: story);
         } catch (e) {

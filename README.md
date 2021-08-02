@@ -1,4 +1,4 @@
-# Flux Payments
+# fluxpayments
 
 A new Flutter project.
 

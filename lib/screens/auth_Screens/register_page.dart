@@ -2,9 +2,20 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flux_payments/bloc/advertiser_bloc/advertiser_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_event.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
+import 'package:flux_payments/bloc/banner_bloc/banner_bloc.dart';
+import 'package:flux_payments/bloc/coupons_bloc/coupons_bloc.dart';
+import 'package:flux_payments/bloc/curated_list_bloc/curated_list_bloc.dart';
+import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
+import 'package:flux_payments/bloc/graph_bloc/graph_bloc.dart';
+import 'package:flux_payments/bloc/pending_service_bloc/pending_service_bloc.dart';
+import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_bloc.dart';
+import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
+import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/login_page.dart';
@@ -40,6 +51,17 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     var authBloc = BlocProvider.of<AuthBloc>(context);
+    var userBloc = BlocProvider.of<UserBloc>(context);
+    var curatedListBloc = BlocProvider.of<CuratedListBloc>(context);
+    var advertiserBloc = BlocProvider.of<AdvertiserBloc>(context);
+    var bannerBloc = BlocProvider.of<BannerBloc>(context);
+    var graphBloc = BlocProvider.of<GraphBloc>(context);
+    var storyBloc = BlocProvider.of<StoryBloc>(context);
+
+    var pendingServiceBloc = BlocProvider.of<PendingServiceBloc>(context);
+    var recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
+    var favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
+    var couponsBloc = BlocProvider.of<CouponsBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('RegistPage'),
@@ -202,10 +224,42 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (state is UserSignedInAuthState) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => BlocProvider.value(
-                            value: authBloc,
+                          builder: (context) => MultiBlocProvider(
+                            providers: [
+                              BlocProvider.value(
+                                value: userBloc,
+                              ),
+                              BlocProvider.value(
+                                value: curatedListBloc,
+                              ),
+                              BlocProvider.value(
+                                value: bannerBloc,
+                              ),
+                              BlocProvider.value(
+                                value: advertiserBloc,
+                              ),
+                              BlocProvider.value(
+                                value: graphBloc,
+                              ),
+                              BlocProvider.value(
+                                value: recentPaymentBloc,
+                              ),
+                              BlocProvider.value(
+                                value: pendingServiceBloc,
+                              ),
+                              BlocProvider.value(
+                                value: storyBloc,
+                              ),
+                              BlocProvider.value(
+                                value: couponsBloc,
+                              ),
+                              BlocProvider.value(
+                                value: favoritesBloc,
+                              ),
+                            ],
                             child: HomePage(
                               userRepository: widget.userConfigRepository,
+                              databaseRepository: DatabaseRepository(),
                             ),
                             //  child:ProfilePage(),
                           ),

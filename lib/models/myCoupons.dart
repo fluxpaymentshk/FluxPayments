@@ -67,7 +67,6 @@ class _CouponsModelType extends ModelType<myCoupons> {
   }
 }
 
-
 // class Couponss {
 //   int? CouponsID;
 //   String? userID;

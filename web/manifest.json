@@ -1,6 +1,6 @@
 {
-    "name": "flux_payments",
-    "short_name": "flux_payments",
+    "name": "fluxpayments",
+    "short_name": "fluxpayments",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

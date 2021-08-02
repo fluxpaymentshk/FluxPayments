@@ -4,6 +4,4 @@ abstract class BannerEvent {
 
 class GetBannerEvent extends BannerEvent {
   const GetBannerEvent();
-
 }
-

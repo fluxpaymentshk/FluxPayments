@@ -5,10 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/banner.dart' as ban;
 
 class BannerTile extends StatelessWidget {
-  BannerTile(
-      {required this.banner,
-      Key? key})
-      : super(key: key);
+  BannerTile({required this.banner, Key? key}) : super(key: key);
   // final i, imageurl, desc;
   //final String dueDate, imageurl, desc;
   final ban.Banner banner;
@@ -50,11 +47,11 @@ class BannerTile extends StatelessWidget {
             right: 15.0,
             left: 5.0,
             child: Container(
-              padding:EdgeInsets.only(right:SizeConfig.widthMultiplier*40),
+              padding: EdgeInsets.only(right: SizeConfig.widthMultiplier * 40),
               // height: SizeConfig.heightMultiplier * 22,
               // width: SizeConfig.widthMultiplier * 90,
               decoration: BoxDecoration(
-                color:AppTheme.brownishPink,
+                  color: AppTheme.brownishPink,
                   borderRadius: BorderRadius.all(
                       Radius.circular(SizeConfig.heightMultiplier * 2)),
                   boxShadow: [
@@ -79,7 +76,7 @@ class BannerTile extends StatelessWidget {
                 //  color: AppTheme.brownishPink,
 
                 // ),
- padding: const EdgeInsets.only(left: 12.0, top: 8.0),
+                padding: const EdgeInsets.only(left: 12.0, top: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -88,7 +85,7 @@ class BannerTile extends StatelessWidget {
                     ),
                     Text(
                       //'08 sep, 2021',
-                      banner.dueDate??'',
+                      banner.dueDate ?? '',
                       style: AppTheme.display3,
                     ),
                     SizedBox(
@@ -104,13 +101,13 @@ class BannerTile extends StatelessWidget {
                     // ),
                     Text(
                       //'You are eligible for',
-                      banner.heading??'',
+                      banner.heading ?? '',
                       style: TextStyle(
-                         fontWeight: FontWeight.w400,
-    fontSize: SizeConfig.heightMultiplier * 2.3,
-    letterSpacing: SizeConfig.widthMultiplier / 10,
-    height: SizeConfig.heightMultiplier / 6.5,
-    color: Color(0xffffffff),
+                        fontWeight: FontWeight.w400,
+                        fontSize: SizeConfig.heightMultiplier * 2.3,
+                        letterSpacing: SizeConfig.widthMultiplier / 10,
+                        height: SizeConfig.heightMultiplier / 6.5,
+                        color: Color(0xffffffff),
                       ),
                     ),
                     // SizedBox(
@@ -133,8 +130,8 @@ class BannerTile extends StatelessWidget {
                             blurRadius: 3.0,
                           ),
                         ],
-                        borderRadius: BorderRadius.all(Radius.circular(
-                            SizeConfig.heightMultiplier * 1.1)),
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(SizeConfig.heightMultiplier * 1.1)),
                         color: AppTheme.white,
                       ),
                       child: InkWell(
@@ -145,13 +142,12 @@ class BannerTile extends StatelessWidget {
                         child: Center(
                             child: Text(
                           //'Claim Now',
-                          banner.buttonDesc??'',
+                          banner.buttonDesc ?? '',
 
                           style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.w600,
                             fontSize: SizeConfig.heightMultiplier * 2.0,
-                            letterSpacing:
-                                SizeConfig.widthMultiplier / 16,
+                            letterSpacing: SizeConfig.widthMultiplier / 16,
                             height: SizeConfig.heightMultiplier / 10,
                             color: AppTheme.main,
                           ),

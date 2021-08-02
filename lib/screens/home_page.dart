@@ -75,6 +75,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     //  SizeConfig().init(constraints);
     super.initState();
+    log("${SizeConfig.heightMultiplier}");
+    log("${SizeConfig.widthMultiplier}");
   }
 
   @override
@@ -235,7 +237,6 @@ class _HomePageState extends State<HomePage> {
                       }
                     }),
 
-                    
                     SizedBox(
                       height: SizeConfig.heightMultiplier * 1.5,
                     ),
@@ -290,8 +291,8 @@ class _HomePageState extends State<HomePage> {
                         final controller = StoryController();
                         Map<String, List<StoryItem>> stories =
                             Map<String, List<StoryItem>>();
-                            List<String> name = [];
-                            List<String> urls = [];
+                        List<String> name = [];
+                        List<String> urls = [];
 
                         for (int i = 0; i < story.length; i++) {
                           urls.add(story[i].image.toString());
@@ -323,13 +324,11 @@ class _HomePageState extends State<HomePage> {
                                     ];
                           stories[story[i].rewardPartnerID.toString()] =
                               rewardPartner;
-                              //name = stories.keys.toList();
-                               
+                          //name = stories.keys.toList();
+
                         }
                         name = stories.keys.toList();
                         urls = urls.toSet().toList();
-                        
-
 
                         return Container(
                             //padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier * 1),
@@ -349,13 +348,16 @@ class _HomePageState extends State<HomePage> {
                                         radius: 30,
                                         // backgroundImage: NetworkImage(
                                         //     "https://images.unsplash.com/photo-1581803118522-7b72a50f7e9f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bWFufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-                                        backgroundImage: NetworkImage(urls[index]),
+                                        backgroundImage:
+                                            NetworkImage(urls[index]),
                                       ),
                                       onTap: () => Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  StoryPageView(stories[name[index]]!.toList()))),
+                                                  StoryPageView(
+                                                      stories[name[index]]!
+                                                          .toList()))),
                                     ),
                                   );
                                 }));
@@ -601,13 +603,14 @@ class _HomePageState extends State<HomePage> {
                       builder: (context, state) {
                         if (state is LoadGraphState) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding:
+                                EdgeInsets.all(SizeConfig.heightMultiplier * 1),
                             child: LineChartGraph(
                               mp: state.graphData,
                               height: SizeConfig.heightMultiplier * 40,
-                              width: SizeConfig.widthMultiplier * 90,
-                              user:user,
-                              popup:true,
+                              width: SizeConfig.widthMultiplier * 85,
+                              user: user,
+                              popup: true,
                               //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
                             ),
                           );
@@ -624,7 +627,7 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                     ),
-
+                    SizedBox(height: SizeConfig.heightMultiplier * 10),
                     //////////////////////////////###########################
                     // Padding(
                     //   padding: const EdgeInsets.all(10.0),

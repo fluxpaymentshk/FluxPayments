@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>flux_payments</string>
+	<string>fluxpayments</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -41,18 +41,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	 <!-- ADD AN ENTRY TO CFBundleURLTypes for Cognito Auth -->
-     <!-- IF YOU DO NOT HAVE CFBundleURLTypes, YOU CAN COPY THE WHOLE BLOCK BELOW -->
-     <key>CFBundleURLTypes</key>
-     <array>
-         <dict>
-             <key>CFBundleURLSchemes</key>
-             <array>
-                 <string>fluxapp</string>
-             </array>
-         </dict>
-     </array>
-
-     <!-- ... -->
 </dict>
 </plist>
