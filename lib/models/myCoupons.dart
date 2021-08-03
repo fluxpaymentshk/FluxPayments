@@ -5,22 +5,35 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 class myCoupons extends Model {
+  //aaaaaa
   static const classType = const _CouponsModelType();
   String? myCouponsID;
   bool? isTransactionComp;
-  double? Amount;
+  double? amount;
   String? userID;
   String? rewardPartnerID;
+  String? rewardID;
+  String? validUntill;
+  String? shortDescription;
+  String? termsncond;
+  String? name;
+  String? image;
 
-  myCoupons({required this.myCouponsID,required this.isTransactionComp, this.rewardPartnerID, required this.userID,required this.Amount});
+  myCoupons({required this.myCouponsID,required this.isTransactionComp, this.rewardPartnerID, required this.userID,required this.amount, this.rewardID, this.shortDescription, this.termsncond, this.name, this.image});
 
   myCoupons.fromJson(Map<String, dynamic> json)
       : myCouponsID = json["myCouponsID"],
         isTransactionComp = json["isTransactionComp"],
         rewardPartnerID = json["rewardPartnerID"],
         userID = json["userID"],
-        Amount = json["Amount"];
-        
+        amount = json["amount"],
+        rewardID = json["rewardID"],  
+        validUntill = json["validUntill"],
+        shortDescription = json["shortDescription"],
+        termsncond = json["termsncond"],
+        name = json["name"],
+        image = json["image"];
+
   @override
   getInstanceType() => classType;
 
@@ -35,7 +48,13 @@ class myCoupons extends Model {
         'isTransactionComp': isTransactionComp,
         'rewardPartnerID': rewardPartnerID,
         'userID': userID,
-        'Amount': Amount,
+        'amount': amount,
+        'rewardID': rewardID,
+        'validUntill': validUntill,
+        'shortDescription': shortDescription,
+        'termsncond': termsncond,
+        'name': name,
+        'image': image,
       };
 }
 
@@ -48,7 +67,6 @@ class _CouponsModelType extends ModelType<myCoupons> {
     return myCoupons.fromJson(jsonData);
   }
 }
-
 
 // class Couponss {
 //   int? CouponsID;

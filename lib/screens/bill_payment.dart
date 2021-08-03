@@ -83,7 +83,7 @@ class _BillPaymentState extends State<BillPayment> {
     List<InternalAdvertisers> InadvertiseList = [];
 
     var userBloc = BlocProvider.of<UserBloc>(context);
-  //  var curatedListBloc = BlocProvider.of<CuratedListBloc>(context);
+    //  var curatedListBloc = BlocProvider.of<CuratedListBloc>(context);
     var advertiserBloc = BlocProvider.of<AdvertiserBloc>(context);
     var bannerBloc = BlocProvider.of<BannerBloc>(context);
     var graphBloc = BlocProvider.of<GraphBloc>(context);

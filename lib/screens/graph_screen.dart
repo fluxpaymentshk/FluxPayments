@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
@@ -31,8 +30,9 @@ class _GraphScreenState extends State<GraphScreen> {
                       alignment: Alignment.topLeft,
                       child: InkWell(
                         child: Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical:SizeConfig.heightMultiplier * 2,horizontal:SizeConfig.heightMultiplier * 1 ),
+                          padding: EdgeInsets.symmetric(
+                              vertical: SizeConfig.heightMultiplier * 2,
+                              horizontal: SizeConfig.heightMultiplier * 1),
                           // color: Colors.amber,
                           // height: SizeConfig.heightMultiplier*12,
                           // width: SizeConfig.widthMultiplier*100,
@@ -125,7 +125,6 @@ class _GraphScreenState extends State<GraphScreen> {
                 Container(
                   padding: EdgeInsets.all(15.0),
                   child: LineChartGraph(
-                  
                     mp: widget.graphData,
                     height: SizeConfig.heightMultiplier * 65,
                     width: SizeConfig.widthMultiplier * 92,

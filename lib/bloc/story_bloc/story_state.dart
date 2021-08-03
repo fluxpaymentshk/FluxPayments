@@ -20,4 +20,4 @@ class LoadedStory extends StoryState {
 class ErrorStory extends StoryState {
   final String? message;
   const ErrorStory(this.message);
-} 
+}

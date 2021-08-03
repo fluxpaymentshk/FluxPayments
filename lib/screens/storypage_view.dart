@@ -95,7 +95,7 @@ class _StoryPageViewState extends State<StoryPageView> {
         storyItems: widget.story,
         controller: controller,
         inline: false,
-        repeat: true,
+        repeat: false,
         onVerticalSwipeComplete:(direction) {
       if (direction == Direction.down) {
         Navigator.pop(context);

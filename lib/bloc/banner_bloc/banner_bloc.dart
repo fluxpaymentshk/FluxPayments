@@ -12,18 +12,15 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
   @override
   Stream<BannerState> mapEventToState(BannerEvent event) async* {
     if (event is GetBannerEvent) {
-      try{
-      yield LoadingBannerState();
-       String? amount, desc, dueDate, imageurl;
-      Banner banner=await _databaseRepository.getBannerDetails();
+      try {
+        yield LoadingBannerState();
+        String? amount, desc, dueDate, imageurl;
+        Banner banner = await _databaseRepository.getBannerDetails();
 
-      yield LoadBannerState(
-          banner:banner);
+        yield LoadBannerState(banner: banner);
+      } catch (e) {
+        yield BannerErrorState('Unable to fetch banner info!');
+      }
     }
-     catch(e){
-      yield BannerErrorState('Unable to fetch banner info!');
-    }
-    }
-   
   }
 }

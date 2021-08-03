@@ -1,4 +1,3 @@
-
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
 import 'package:flux_payments/models/Reward.dart';
@@ -9,22 +8,27 @@ import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 
-abstract class databaseBaseRepository {
+abstract class DatabaseBaseRepository {
   Future<void> getFavorites(
-      {required int? page, required List<Reward> favorites, required String? userID});
+      {required int? page,
+      required List<Reward> favorites,
+      required String? userID});
 
+  Future<List<myCoupons>> getUserCoupons(
+      {required int? page,
+      required List<myCoupons> coupons,
+      required String? userID});
 
-  Future <List<myCoupons>> getUserCoupons({required int? page, required List<myCoupons> coupons, required String? userID});
-
-  Future <List<Story>> getStory({required int? page, required List<Story> story});
-
+  Future<List<Story>> getStory(
+      {required int? page, required List<Story> story});
 
   Future<void> getCuratedList(
       {required int? page, required List<curatedList> curatedListData});
-      Future<List<Map<String,dynamic>>>getRecentPayments({required String UserID});
+  Future<List<Map<String, dynamic>>> getRecentPayments(
+      {required String UserID});
 
-      Future<Map<String,dynamic>>getPendingServices(
-            {required String userID, required String todayDate});
+  Future<Map<String, dynamic>> getPendingServices(
+      {required String userID, required String todayDate});
 
   Future<void> getInternalAdvertiserList(
       {required int? page,
@@ -35,10 +39,18 @@ abstract class databaseBaseRepository {
 
   Future<User> getUserDetails({required String? userID});
 
+  Future<double> getFluxPoints({required String? userID});
+
   Future<Map<String, dynamic>> updateFluxPoints(
       {required String? userID,
-      required String? appEvent,
-      required int? servicePoints});
+      required FluxPointServiceType? appEvent,
+      required double? servicePoints,
+      required String? rewardTransID,
+      required double? amount,
+      required String? timestamp,
+      required String? rewardPartnerID,
+      required String? rewardID,
+      required String? shopID});
 
   Future<Map<String, dynamic>> getUserBillProviderDetails(
       {required String? userID});
@@ -50,28 +62,43 @@ abstract class databaseBaseRepository {
 
   Future<Map<String, dynamic>> getPaymentHistoryProviderWiseDetails(
       {required String? userID});
+
   Future<Banner> getBannerDetails();
+
+  Future<void> addRewardTransaction(
+      {required String? rewardTransID,
+      required double? amount,
+      required String? timestamp,
+      required String? userID,
+      required String? rewardPartnerID,
+      required String? rewardID,
+      required String? shopID});
 }
 
-class DatabaseRepository extends databaseBaseRepository {
+class DatabaseRepository extends DatabaseBaseRepository {
   DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
 
   @override
-  Future <List<Reward>> getFavorites({required int? page, required List<Reward> favorites, required String? userID}) async {
+  Future<List<Reward>> getFavorites(
+      {required int? page,
+      required List<Reward> favorites,
+      required String? userID}) async {
     return await _databaseLambdaService.getUserFavoritesList(userID: userID);
   }
 
-
   @override
-  Future <List<myCoupons>> getUserCoupons({required int? page, required List<myCoupons> coupons, required String? userID}) async {
+  Future<List<myCoupons>> getUserCoupons(
+      {required int? page,
+      required List<myCoupons> coupons,
+      required String? userID}) async {
     return await _databaseLambdaService.getUserCouponsList(userID: userID);
   }
 
   @override
-  Future <List<Story>> getStory({required int? page, required List<Story> story}) async {
+  Future<List<Story>> getStory(
+      {required int? page, required List<Story> story}) async {
     return await _databaseLambdaService.getStory();
   }
-
 
   @override
   Future<void> getCuratedList(
@@ -79,13 +106,15 @@ class DatabaseRepository extends databaseBaseRepository {
     await _databaseLambdaService.getCuratedList(
         page: page, curatedListData: curatedListData);
   }
-@override
-  Future<List<Map<String,dynamic>>>getRecentPayments({required String UserID})async{
-  return  await _databaseLambdaService.getRecentPayment(userID: UserID);
+
+  @override
+  Future<List<Map<String, dynamic>>> getRecentPayments(
+      {required String UserID}) async {
+    return await _databaseLambdaService.getRecentPayment(userID: UserID);
   }
 
   @override
-  Future< Map<String, dynamic>> getPaymentHistoryProviderWiseDetails(
+  Future<Map<String, dynamic>> getPaymentHistoryProviderWiseDetails(
       {required String? userID}) async {
     return await _databaseLambdaService.getPaymentHistoryProviderWiseDetails(
         userID: userID);
@@ -121,12 +150,32 @@ class DatabaseRepository extends databaseBaseRepository {
   }
 
   @override
+  Future<double> getFluxPoints({required String? userID}) async {
+    return await _databaseLambdaService.getFluxPoints(userID!);
+  }
+
+  @override
   Future<Map<String, dynamic>> updateFluxPoints(
       {required String? userID,
-      required String? appEvent,
-      required int? servicePoints}) async {
+      required FluxPointServiceType? appEvent,
+      required double? servicePoints,
+      required String? rewardTransID,
+      required double? amount,
+      required String? timestamp,
+      required String? rewardPartnerID,
+      required String? rewardID,
+      required String? shopID}) async {
     return await _databaseLambdaService.updateFluxPoints(
-        userID: userID, appEvent: appEvent, servicePoints: servicePoints);
+      userID: userID,
+      appEvent: appEvent,
+      servicePoints: servicePoints,
+      rewardTransID: rewardTransID,
+      amount: amount,
+      timestamp: timestamp,
+      rewardPartnerID: rewardPartnerID,
+      rewardID: rewardID,
+      shopID: shopID,
+    );
   }
 
   Future<void> getInternalAdvertiserList(
@@ -144,7 +193,29 @@ class DatabaseRepository extends databaseBaseRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> getPendingServices({required String userID, required String todayDate})async {
-   return  await _databaseLambdaService.getPendingServices(userID: userID, todayDate: todayDate);
+  Future<Map<String, dynamic>> getPendingServices(
+      {required String userID, required String todayDate}) async {
+    return await _databaseLambdaService.getPendingServices(
+        userID: userID, todayDate: todayDate);
+  }
+
+  @override
+  Future<void> addRewardTransaction(
+      {required String? rewardTransID,
+      required double? amount,
+      required String? timestamp,
+      required String? userID,
+      required String? rewardPartnerID,
+      required String? rewardID,
+      required String? shopID}) async {
+    await _databaseLambdaService.addUserRewardTransaction(
+      rewardTransID: rewardTransID,
+      amount: amount,
+      timestamp: timestamp,
+      userID: userID,
+      rewardPartnerID: rewardPartnerID,
+      rewardID: rewardID,
+      shopID: shopID,
+    );
   }
 }

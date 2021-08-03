@@ -27,7 +27,7 @@ class PendingPaymentTile extends StatelessWidget {
           child: Row(
             children: [
               Container(
-               width:SizeConfig.widthMultiplier*80,
+                width: SizeConfig.widthMultiplier * 80,
                 child: Padding(
                   padding: EdgeInsets.only(left: 9.0),
                   child: Text(

@@ -18,7 +18,6 @@ class SupportBotScreen extends StatefulWidget {
 }
 
 class _SupportBotScreenState extends State<SupportBotScreen> {
-
   TextStyle chatTextStyle = GoogleFonts.montserrat(fontSize: 16);
   final _user = const types.User(id: '1234556');
   final _bot = const types.User(
@@ -161,8 +160,7 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                                     ? Color(0xffFFFFFF)
                                     : Color(0xffD9D9FF)),
                               ),
-                              child: Text(r["text"],
-                                  style: chatTextStyle),
+                              child: Text(r["text"], style: chatTextStyle),
                             ),
                           ),
                           if (r["author"]["id"].toString() != "123")
@@ -202,7 +200,8 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                           controller: _messageController,
                           decoration: InputDecoration(
                               hintText: "Type Here...",
-                              hintStyle: GoogleFonts.montserrat(fontSize:18,color: Colors.black54),
+                              hintStyle: GoogleFonts.montserrat(
+                                  fontSize: 18, color: Colors.black54),
                               border: InputBorder.none),
                         ),
                       ),

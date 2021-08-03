@@ -20,4 +20,4 @@ class LoadedCoupons extends CouponsState {
 class ErrorCoupons extends CouponsState {
   final String? message;
   const ErrorCoupons(this.message);
-} 
+}

@@ -12,7 +12,7 @@ class Story extends Model {
   String? rewardPartnerID;
   String? image;
 
-  Story({required this.text,required this.url,required this.caption});
+  Story({required this.text, required this.url, required this.caption});
 
   Story.fromJson(Map<String, dynamic> json)
       : text = json["text"],
@@ -34,8 +34,8 @@ class Story extends Model {
         'text': text,
         'url': url,
         'caption': caption,
-        'rewardPartnerID' : rewardPartnerID,
-        'image' : image,
+        'rewardPartnerID': rewardPartnerID,
+        'image': image,
       };
 }
 
@@ -48,7 +48,6 @@ class _StoryModelType extends ModelType<Story> {
     return Story.fromJson(jsonData);
   }
 }
-
 
 // class Favorites {
 //   int? favoriteID;

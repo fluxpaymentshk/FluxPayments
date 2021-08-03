@@ -21,4 +21,4 @@ class LoadedFavorites extends FavoritesState {
 class ErrorFavorites extends FavoritesState {
   final String? message;
   const ErrorFavorites(this.message);
-} 
+}

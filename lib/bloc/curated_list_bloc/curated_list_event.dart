@@ -7,5 +7,6 @@ abstract class CuratedListEvent {
 class LoadCuratedListEvent extends CuratedListEvent {
   final List<curatedList> curatedListData;
   final int page;
-  const LoadCuratedListEvent({required this.page,required this.curatedListData});
+  const LoadCuratedListEvent(
+      {required this.page, required this.curatedListData});
 }
