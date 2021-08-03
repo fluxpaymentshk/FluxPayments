@@ -3,10 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
+import 'package:flux_payments/screens/payment_Screens/select_payment_method_screen.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
+import 'package:flux_payments/widgets/gradient_button.dart';
 import 'package:flux_payments/widgets/hello_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class PayNowScreen extends StatefulWidget {
   final String? userName;
@@ -19,13 +23,24 @@ class PayNowScreen extends StatefulWidget {
 class _PayNowScreenState extends State<PayNowScreen> {
   Set<int> selectedBills = {};
   bool isAllSelected = false;
+  ItemScrollController _scrollController = ItemScrollController();
   int length = 20;
+  List<Color> cardBgColors = [
+    Colors.blue.shade900,
+    Colors.blue,
+    Colors.redAccent,
+    Colors.pink,
+    Colors.black,
+    Colors.greenAccent,
+    Colors.purpleAccent,
+    Colors.tealAccent,
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: backButton(context, "payNowBackButton"),
-      floatingActionButtonLocation:FloatingActionButtonLocation.startTop,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
         margin: EdgeInsets.only(top: 10),
         padding: EdgeInsets.all(16),
@@ -33,8 +48,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
         child: ListView(
           children: [
             fluxLogo(context),
-            helloWidget("shourya",context),
-           
+            helloWidget("shourya", context),
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Text(
@@ -43,6 +57,30 @@ class _PayNowScreenState extends State<PayNowScreen> {
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.aspectRatio * 370,
+              child: ScrollablePositionedList.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) => Container(
+                  child: CreditCardWidget(
+                    cardNumber: "9888098789765",
+                    expiryDate: "11/23",
+                    cardType: CardType.mastercard,
+                    cardHolderName: "monikinderjit sing",
+                    cvvCode: "111",
+                    showBackView: false,
+                    cardBgColor: cardBgColors[index % cardBgColors.length],
+                    obscureCardNumber: true,
+                    obscureCardCvv: true,
+                    width: MediaQuery.of(context).size.aspectRatio * 500,
+                    animationDuration: Duration(milliseconds: 1000),
+                  ),
+                ),
+                itemScrollController: _scrollController,
+                reverse: false,
+                scrollDirection: Axis.horizontal,
               ),
             ),
             Container(
@@ -275,39 +313,14 @@ class _PayNowScreenState extends State<PayNowScreen> {
               ),
             ),
             InkWell(
-              onTap: () async {},
-              child: Container(
-                margin: EdgeInsets.only(top: 16),
-                height: MediaQuery.of(context).size.height * 0.07,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      8,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => SelectPaymentScreen(),
                     ),
-                  ),
-                  border: Border.all(color: AppTheme.main),
-                  gradient: RadialGradient(
-                    center: Alignment(0.6, 0.5),
-                    colors: [
-                      Color(0xffB772EE),
-                      Color(0xff7041EE),
-                    ],
-                    radius: 2.5,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    "Pay now",
-                    style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      // height: 20,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+                  );
+                },
+                child: gradientButton(context, "Pay Now")),
           ],
         ),
       ),

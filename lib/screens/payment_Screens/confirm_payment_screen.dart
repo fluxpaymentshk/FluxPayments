@@ -10,7 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ConfirmPaymentScreen extends StatelessWidget {
   final String? transferMethod;
   final String? payerName;
-  final int? last4DigitCardNumer;
+  final String? last4DigitCardNumer;
   final double? amount;
   const ConfirmPaymentScreen(
       {Key? key,
@@ -29,19 +29,19 @@ class ConfirmPaymentScreen extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: SingleChildScrollView(
         child: Container(
-          height:MediaQuery.of(context).size.height*1,
-          margin:EdgeInsets.only(top:10),
+          height: MediaQuery.of(context).size.height * 1,
+          margin: EdgeInsets.only(top: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               fluxLogo(context),
               Expanded(
                   child: Container(
-                    height:MediaQuery.of(context).size.height*0.5,
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: SingleChildScrollView(
-                  primary:true,
+                  primary: true,
                   child: Container(
-                    height:MediaQuery.of(context).size.height,
+                    height: MediaQuery.of(context).size.height,
                     child: Column(
                       children: [
                         // SvgPicture.asset('assets/icons/lock_gradient.svg'),
@@ -50,7 +50,7 @@ class ConfirmPaymentScreen extends StatelessWidget {
                           width: double.infinity,
                           child: Image.asset(
                             'assets/icons/lock_gradient.png',
-                            fit:BoxFit.cover,
+                            fit: BoxFit.cover,
                             scale: 0.4,
                           ),
                         ),
@@ -69,7 +69,7 @@ class ConfirmPaymentScreen extends StatelessWidget {
                           padding: EdgeInsets.all(16),
                           height: MediaQuery.of(context).size.height * 0.3,
                           width: double.infinity,
-                          child:ListView(
+                          child: ListView(
                             children: [
                               ListTile(
                                 leading: Text(
@@ -106,7 +106,8 @@ class ConfirmPaymentScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ), InkWell(
+                        ),
+                        InkWell(
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -151,7 +152,6 @@ class ConfirmPaymentScreen extends StatelessWidget {
                   ),
                 ),
               )),
-                   
             ],
           ),
         ),
