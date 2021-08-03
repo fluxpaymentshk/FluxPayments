@@ -711,6 +711,7 @@ class DatabaseLambdaService {
             i++;
           });
         });
+        log("{}{}{}{}{}{}{}{}{}{}{{}{}{}{}{{}}}}]-]]]->$m");
         res.add(m);
       });
       res.forEach((ele) {
@@ -735,6 +736,9 @@ class DatabaseLambdaService {
       print(e);
     }
     print(fav[0].name);
+    fav.forEach((element) {
+      log("iiiiiii${element.rewardPartnerID}");
+    });
     //return result;
     return fav;
   }

@@ -213,7 +213,8 @@ class _CouponsState extends State<Coupons> {
                             ),
                             child: GestureDetector(
                               onTap: () {
-                                print("_+++__________++++++++++++++_________");
+                                print(
+                                    "_+++__________++++++++++++++_________${widget.databaseRepo}");
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => MultiBlocProvider(
@@ -226,6 +227,9 @@ class _CouponsState extends State<Coupons> {
                                           create: (_) => FluxPointsBloc(
                                             widget.databaseRepo!,
                                           ),
+                                        ),
+                                        BlocProvider.value(
+                                          value: favoritesBloc,
                                         ),
                                       ],
                                       child: RewardsSearchScreen(
