@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:amplify_flutter/amplify.dart';
 import 'package:aws_lambda/aws_lambda.dart';
@@ -13,6 +14,9 @@ import 'package:flux_payments/bloc/banner_bloc/banner_event.dart';
 import 'package:flux_payments/bloc/curated_list_bloc/curated_list_bloc.dart';
 import 'package:flux_payments/bloc/curated_list_bloc/curated_list_event.dart';
 import 'package:flux_payments/bloc/curated_list_bloc/curated_list_state.dart';
+import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
+import 'package:flux_payments/bloc/favorite_bloc/favorite_event.dart';
+import 'package:flux_payments/bloc/favorite_bloc/favorite_state.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_bloc.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_event.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_state.dart';
@@ -29,6 +33,7 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
+import 'package:flux_payments/models/Reward.dart';
 import 'package:flux_payments/models/RewardPartner.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/curatedList.dart';
@@ -42,6 +47,7 @@ import 'package:flux_payments/screens/service_provider_cat.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/banner_tile.dart';
+import 'package:flux_payments/widgets/expand_widget.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
 import 'package:flux_payments/widgets/pending_payment_tile.dart';
 import 'package:flux_payments/widgets/recent_payment_tile.dart';
@@ -66,7 +72,8 @@ class BillPayment extends StatefulWidget {
 
 class _BillPaymentState extends State<BillPayment> {
   //UserConfigRepository _userConfigRepository = new UserConfigRepository();
-
+  List<Reward> fav = [];
+  bool loadAllFav = false;
   DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
 
   @override
@@ -78,6 +85,9 @@ class _BillPaymentState extends State<BillPayment> {
   @override
   Widget build(BuildContext context) {
     User user;
+    var favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
+    favoritesBloc
+        .add(GetFavorites(page: 1000, userID: 'fluxsam1', favorites: fav));
     List<curatedList> curatedListData = [];
     List<ExternalAdvertisers> ExadvertiseList = [];
     List<InternalAdvertisers> InadvertiseList = [];
@@ -106,7 +116,7 @@ class _BillPaymentState extends State<BillPayment> {
     // curatedListBloc
     //     .add(LoadCuratedListEvent(page: 0, curatedListData: curatedListData));
 
-    log("EMAIL-------------------> ${widget.email}");
+    //log("EMAIL-------------------> ${widget.email}");
 
     //     await _databaseLambdaService.getCuratedList(page: 0) ;
     return BlocBuilder<UserBloc, UserState>(
@@ -126,34 +136,7 @@ class _BillPaymentState extends State<BillPayment> {
 
           user = state.user;
           return Scaffold(
-
-              //     SizedBox(height: 10),
-              //     FloatingActionButton(
-              //       onPressed: () async {
-              //         await Amplify.Auth.signOut();
-              //         Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-              //       },
-              //       child: Icon(Icons.logout),
-              //     ),
-              //   ],
-              // ),
-
-              body:
-                  //LayoutBuilder(builder: (context, constraints) {
-                  //  SizeConfig().init(constraints);
-                  // return FutureBuilder(
-                  //     future:
-                  //         //  _databaseLambdaService.getCuratedList(
-                  //         //      page: 0, curatedListData: curatedListData)
-                  //         // //_databaseLambdaService.getUserDetails(userID: 'flux-vid1')
-                  //         // _databaseLambdaService.getPaymentHistoryProviderWiseDetails(
-                  //         //     userID: 'flux-vid1')
-                  //         // ,
-                  //     builder: (context, snapshot) {
-
-                  //       if (snapshot.connectionState != snapshot.hasError) {
-
-                  Flex(direction: Axis.vertical, children: [
+              body: Flex(direction: Axis.vertical, children: [
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -256,145 +239,182 @@ class _BillPaymentState extends State<BillPayment> {
                         }
                       },
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(10.0),
-                    //   child: Align(
-                    //       alignment: Alignment.centerLeft,
-                    //       child: Text(
-                    //         "For You",
-                    //         style: TextStyle(
-                    //           fontSize: 20,
-                    //           fontWeight: FontWeight.w500,
-                    //         ),
-                    //       )),
-                    // ),
 
-                    // //Horizontal list view builder.
+//#### providers to be added!
+                    //fav = state.favorites;
 
-                    // //  Container(
+                    // if (fav.length < 10) {
+                    //   fav = fav.sublist(0, fav.length);
+                    // } else {
+                    //   fav = fav.sublist(0, 10);
+                    // }
+                    // return
+                    //fav.length == 0 ? Text("Please mark some favorites !") :
 
-                    // //  ),
+                    SizedBox(height: SizeConfig.heightMultiplier * 2),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "My Providers",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                    ),
 
-                    // //////////////////////
+                    BlocBuilder<FavoritesBloc, FavoritesState>(
+                      builder: (context, state) {
+                        if (state is LoadingFavorites) {
+                          print("State is LoadindFavorites");
+                          return CircularProgressIndicator(
+                            strokeWidth: 5.0,
+                            color: Colors.black,
+                            //color: AppTheme.main,
+                          );
+                        } else if (state is LoadedFavorites) {
+                          print("State is LoadedFavorites");
+                          fav = state.favorites;
+                          print("sttttttttttttttttttttttttttttttttttttttttttt");
+                          print(fav.length);
 
-                    // BlocBuilder<CuratedListBloc, CuratedListState>(
-                    //   builder: (context, state) {
-                    //     if (state is LoadingCuratedList)
-                    //       return CircularProgressIndicator(
-                    //         strokeWidth: 5.0,
-                    //         color: AppTheme.main,
-                    //       );
-                    //     else if (state is LoadedCuratedList) {
-                    //       //currently done for only one page!!
-                    //       return Container(
-                    //         height: SizeConfig.heightMultiplier * 22,
+                          ///################################
+                          if (fav.length < 10) {
+                            fav = fav.sublist(0, fav.length);
+                          } else {
+                            fav = fav.sublist(0, 10);
+                          }
+                          return
+                              //fav.length == 0 ? Text("Please mark some favorites !") :
+                              Container(
+                            //height: fav.length > 5 && loadAllFav ?SizeConfig.heightMultiplier*100* 0.318 :SizeConfig.heightMultiplier*100* 0.21,
+                            height: fav.length > 5 && loadAllFav
+                                ? SizeConfig.heightMultiplier * 100 * 0.859
+                                : SizeConfig.heightMultiplier * 100 * 0.8,
+                            padding: EdgeInsets.fromLTRB(
+                                SizeConfig.widthMultiplier * 100 * 0.01,
+                                SizeConfig.heightMultiplier * 100 * 0.016,
+                                SizeConfig.widthMultiplier * 100 * 0.01,
+                                SizeConfig.heightMultiplier * 100 * 0.01),
+                            decoration: BoxDecoration(
+                              color: AppTheme.offWhite,
+                              borderRadius: BorderRadius.circular(
+                                  SizeConfig.widthMultiplier * 100 * 0.03),
+                            ),
+                            child: Column(
+                              children: [
+                                favContainer(0, min(fav.length, 5)),
+                                ExpandWidget(
+                                  expand: loadAllFav,
+                                  child: Container(
+                                    height:
+                                        SizeConfig.heightMultiplier * 100 * 0.5,
+                                    child: ListView.builder(
+                                        //  itemCount:(fav.length-5)~/5,
+                                        itemCount: 1,
+                                     //   itemExtent: 40,
+                                        itemBuilder: (context, index) {
+                                          print(
+                                              "${(index + 1) * 5}  __##__ ${min(fav.length, 5)}");
 
-                    //         child: ListView.builder(
-                    //             scrollDirection: Axis.horizontal,
-                    //             physics: AlwaysScrollableScrollPhysics(),
-                    //             itemCount: curatedListData.length,
-                    //             itemBuilder: (context, int index) {
-                    //               return rewardPartnerTile(
-                    //                   background:
-                    //                       curatedListData[index].background,
-                    //                   imageurl: curatedListData[index].icon,
-                    //                   desc: curatedListData[index].tagline,
-                    //                   i: index);
-                    //             }),
+                                          return favContainer((index + 1) * 5,
+                                              min(fav.length,(index + 2) * 5));
+                                        }),
+                                  ),
+                                  //##################################################
+                                  //   (fav.length >= 5 && loadAllFav)
+                                  //       ? favContainer(5, min(fav.length, 10))
+                                  //       : null,
+                                ),
+                                SizedBox(
+                                  height:
+                                      SizeConfig.heightMultiplier * 100 * 0.01,
+                                ),
+                                // if (fav.length >= 5 && loadAllFav)
+                                //   favContainer(5, min(fav.length, 10)),
+                                IconButton(
+                                    onPressed: () {
+                                      print(fav.length);
+                                      print(
+                                          "Icon button is presseddddddddddddddddddddddddddd");
+                                      setState(() {
+                                        loadAllFav = !loadAllFav;
+                                      });
+                                    },
+                                    icon: loadAllFav
+                                        ? Icon(Icons.file_upload)
+                                        : Icon(Icons.file_download)),
+                                //     favContainer(0, min(fav.length, 5)),
+                                //     SizedBox(
+                                //       height:SizeConfig.heightMultiplier*100* 0.01,
+                                //     ),
+                                //     if (fav.length >= 5 && loadAllFav)
+                                //       favContainer(5, min(fav.length, 10)),
+                                //          IconButton(
+                                // onPressed: () {
+                                //   setState(() {
+                                //     loadAllFav = !loadAllFav;
+                                //   });
+                                // },
+                                // icon: Icon(loadAllFav
+                                //     ? Icons.upload
+                                //     : Icons.download)),
+                                // IconButton(onPressed: (){
+                                //   setState(() {
+                                //     loadAllFav =! loadAllFav;
+                                //   });
+                                // }, icon: Icon(Icons.file_upload))
+                              ],
+                            ),
+                          );
+                        } else {
+                          return Container(
+                            child: Text("No Favorites found !"
+                                //(state as ErrorFavorites).message
+                                ??
+                                ''),
+                          );
+                        }
+                      },
+                    ),
 
-                    //         //   ),
-                    //       );
-                    //     } else {
-                    //       return Container(
-                    //           child: Text(
-                    //               (state as ErrorCuratedist).message ?? ''));
-                    //     }
-                    //   },
-                    // ),
-
-                    // //  rewardPartnerTile(),
-
-                    // Padding(
-                    //   padding: const EdgeInsets.all(10.0),
-                    //   child: Align(
-                    //       alignment: Alignment.centerLeft,
-                    //       child: Text(
-                    //         "My Points",
-                    //         style: TextStyle(
-                    //           fontSize: 20,
-                    //           fontWeight: FontWeight.w500,
-                    //         ),
-                    //       )),
-                    // ),
-
+                    SizedBox(height: SizeConfig.heightMultiplier * 2),
                     // Container(
-                    //   height: SizeConfig.heightMultiplier * 32,
-                    //   width: SizeConfig.widthMultiplier * 94,
+                    //   //height: fav.length > 5 && loadAllFav ?SizeConfig.heightMultiplier*100* 0.318 :SizeConfig.heightMultiplier*100* 0.21,
+                    //   height: fav.length > 5 && loadAllFav
+                    //       ? SizeConfig.heightMultiplier * 100 * 0.259
+                    //       : SizeConfig.heightMultiplier * 100 * 0.148,
+                    //   padding: EdgeInsets.fromLTRB(
+                    //       SizeConfig.widthMultiplier * 100 * 0.01,
+                    //       SizeConfig.heightMultiplier * 100 * 0.016,
+                    //       SizeConfig.widthMultiplier * 100 * 0.01,
+                    //       SizeConfig.heightMultiplier * 100 * 0.01),
                     //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.all(
-                    //         Radius.circular(SizeConfig.heightMultiplier * 2)),
                     //     color: AppTheme.offWhite,
+                    //     borderRadius: BorderRadius.circular(
+                    //         SizeConfig.widthMultiplier * 100 * 0.03),
                     //   ),
                     //   child: Column(
                     //     children: [
-                    //       Center(
-                    //         child: Padding(
-                    //           padding: const EdgeInsets.all(8.0),
-                    //           child: Container(
-                    //             height: SizeConfig.heightMultiplier * 15,
-                    //             width: SizeConfig.widthMultiplier * 65,
-                    //             child: Row(
-                    //               children: [
-                    //                 Container(
-                    //                     child: Image.asset(
-                    //                         "assets/images/coin.png")),
-                    //                 SizedBox(
-                    //                   width: SizeConfig.widthMultiplier * 2,
-                    //                 ),
-                    //                 Container(
-                    //                     child: Column(
-                    //                   crossAxisAlignment:
-                    //                       CrossAxisAlignment.start,
-                    //                   children: [
-                    //                     SizedBox(
-                    //                       height:
-                    //                           SizeConfig.heightMultiplier *
-                    //                               1.5,
-                    //                     ),
-                    //                     Text(
-                    //                       state.user.fluxPoints.toString(),
-                    //                       style: TextStyle(
-                    //                         fontSize: 35,
-                    //                         fontWeight: FontWeight.bold,
-                    //                       ),
-                    //                     ),
-                    //                     Text(
-                    //                       'Flux Points',
-                    //                       style: TextStyle(
-                    //                         fontSize: 20,
-                    //                         fontWeight: FontWeight.w500,
-                    //                       ),
-                    //                     ),
-                    //                   ],
-                    //                 )),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         ),
+                    //       favContainer(0, min(fav.length, 5)),
+                    //       ExpandWidget(expand:loadAllFav,
+                    //       child: (fav.length >= 5 && loadAllFav)? favContainer(5, min(fav.length, 10)):null,
                     //       ),
-                    //       Padding(
-                    //         padding: const EdgeInsets.only(
-                    //             left: 20.0, right: 8.0, bottom: 8.0),
-                    //         child: Center(
-                    //           child: Text(
-                    //             'Congratulations! You are among top 5 % of highest point users.!',
-                    //             style: TextStyle(
-                    //               color: AppTheme.main,
-                    //               fontSize: 12,
-                    //             ),
-                    //           ),
-                    //         ),
+                    //       SizedBox(
+                    //         height: SizeConfig.heightMultiplier * 100 * 0.01,
                     //       ),
+                    //       // if (fav.length >= 5 && loadAllFav)
+                    //       //   favContainer(5, min(fav.length, 10)),
+                    //       IconButton(
+                    //           onPressed: () {
+                    //             setState(() {
+                    //               loadAllFav = !loadAllFav;
+                    //             });
+                    //           },
+                    //           icon:   loadAllFav?Icon(Icons.file_upload):Icon(Icons.file_download)
+                    //           )
                     //     ],
                     //   ),
                     // ),
@@ -535,13 +555,16 @@ class _BillPaymentState extends State<BillPayment> {
                         else if (state is LoadRecentPaymentState) {
                           return InkWell(
                             child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*3,vertical: SizeConfig.heightMultiplier*5,),
-                                   
-                                     decoration: BoxDecoration(
-        borderRadius:
-            BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier * 2)),
-         border: Border.all(color: AppTheme.main, width: 1.0),
-      ),
+                              margin: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.widthMultiplier * 3,
+                                vertical: SizeConfig.heightMultiplier * 5,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    SizeConfig.heightMultiplier * 2)),
+                                border: Border.all(
+                                    color: AppTheme.main, width: 1.0),
+                              ),
                               height: SizeConfig.heightMultiplier * 47,
                               child:
                                   // ListView.builder(
@@ -550,11 +573,10 @@ class _BillPaymentState extends State<BillPayment> {
                                   //itemCount: state.RecentPaymentData.length,
                                   //itemBuilder: (context, int index) {
                                   //   return
-    
+
                                   Column(
-                               
                                 children: [
-                                    SizedBox(
+                                  SizedBox(
                                     height: SizeConfig.heightMultiplier * 0.7,
                                   ),
                                   if (state.RecentPaymentData.length > 0)
@@ -567,9 +589,14 @@ class _BillPaymentState extends State<BillPayment> {
                                             ['imageurl'],
                                         amount: state.RecentPaymentData[0]
                                             ['amount']),
-                                            if (state.RecentPaymentData.length > 1)
-                                           Divider( indent:SizeConfig.widthMultiplier*3.5,endIndent:SizeConfig.widthMultiplier*3.5,color:Color(0xff979797),thickness: 0.8,),
-     
+                                  if (state.RecentPaymentData.length > 1)
+                                    Divider(
+                                      indent: SizeConfig.widthMultiplier * 3.5,
+                                      endIndent:
+                                          SizeConfig.widthMultiplier * 3.5,
+                                      color: Color(0xff979797),
+                                      thickness: 0.8,
+                                    ),
                                   if (state.RecentPaymentData.length > 1)
                                     recentPaymentTile(
                                         name: state.RecentPaymentData[1]
@@ -580,10 +607,14 @@ class _BillPaymentState extends State<BillPayment> {
                                             ['imageurl'],
                                         amount: state.RecentPaymentData[1]
                                             ['amount']),
-                                             if (state.RecentPaymentData.length > 2)
-                                             Divider( indent:SizeConfig.widthMultiplier*3.5,endIndent:SizeConfig.widthMultiplier*3.5,color:Color(0xff979797),thickness: 0.8,),
-     
-
+                                  if (state.RecentPaymentData.length > 2)
+                                    Divider(
+                                      indent: SizeConfig.widthMultiplier * 3.5,
+                                      endIndent:
+                                          SizeConfig.widthMultiplier * 3.5,
+                                      color: Color(0xff979797),
+                                      thickness: 0.8,
+                                    ),
                                   if (state.RecentPaymentData.length > 2)
                                     recentPaymentTile(
                                         name: state.RecentPaymentData[2]
@@ -594,9 +625,14 @@ class _BillPaymentState extends State<BillPayment> {
                                             ['imageurl'],
                                         amount: state.RecentPaymentData[2]
                                             ['amount']),
-                                             if (state.RecentPaymentData.length > 3)
-                                             Divider( indent:SizeConfig.widthMultiplier*3.5,endIndent:SizeConfig.widthMultiplier*3.5,color:Color(0xff979797),thickness: 0.8,),
-     
+                                  if (state.RecentPaymentData.length > 3)
+                                    Divider(
+                                      indent: SizeConfig.widthMultiplier * 3.5,
+                                      endIndent:
+                                          SizeConfig.widthMultiplier * 3.5,
+                                      color: Color(0xff979797),
+                                      thickness: 0.8,
+                                    ),
                                   if (state.RecentPaymentData.length > 3)
                                     recentPaymentTile(
                                         name: state.RecentPaymentData[3]
@@ -607,9 +643,14 @@ class _BillPaymentState extends State<BillPayment> {
                                             ['imageurl'],
                                         amount: state.RecentPaymentData[3]
                                             ['amount']),
-                                              if (state.RecentPaymentData.length > 4)
-                                             Divider( indent:SizeConfig.widthMultiplier*3.5,endIndent:SizeConfig.widthMultiplier*3.5,color:Color(0xff979797),thickness: 0.8,),
-     
+                                  if (state.RecentPaymentData.length > 4)
+                                    Divider(
+                                      indent: SizeConfig.widthMultiplier * 3.5,
+                                      endIndent:
+                                          SizeConfig.widthMultiplier * 3.5,
+                                      color: Color(0xff979797),
+                                      thickness: 0.8,
+                                    ),
                                   if (state.RecentPaymentData.length > 4)
                                     recentPaymentTile(
                                         name: state.RecentPaymentData[4]
@@ -635,7 +676,6 @@ class _BillPaymentState extends State<BillPayment> {
                               }));
                             },
                           );
-                      
                         } else if (state is ErrorRecentPaymentState)
                           return Container(child: Text(state.message));
                         else
@@ -644,7 +684,9 @@ class _BillPaymentState extends State<BillPayment> {
                                   'get recent payment details Event not Fired!'));
                       },
                     ),
-SizedBox(height: SizeConfig.heightMultiplier*7,)
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 7,
+                    )
                     //#############################################
                   ],
                 ),
@@ -738,5 +780,57 @@ SizedBox(height: SizeConfig.heightMultiplier*7,)
         }
       },
     );
+  }
+
+  Widget favContainer(start, end) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: fav.sublist(start, end).map((e) {
+          print(fav.length);
+          return Container(
+            width: SizeConfig.widthMultiplier * 100 * 0.18,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 0, 2, 0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade500,
+                        spreadRadius: SizeConfig.widthMultiplier * 100 * 0.005,
+                        blurRadius: SizeConfig.widthMultiplier * 100 * 0.005,
+                        offset: Offset(SizeConfig.widthMultiplier * 100 * 0.007,
+                            SizeConfig.heightMultiplier * 100 * 0.005),
+                      ),
+                    ],
+                  ),
+                  height: SizeConfig.heightMultiplier * 100 * 0.075,
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      "https://img.etimg.com/thumb/msid-59738997,width-640,resizemode-4,imgsize-21421/nike.jpg",
+                    ),
+                    backgroundColor: AppTheme.main,
+                    radius: SizeConfig.heightMultiplier * 100 * 0.11,
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.heightMultiplier * 100 * 0.009,
+                ),
+                Center(
+                  child: Text(
+                    e.name.toString(),
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: SizeConfig.heightMultiplier * 100 * 0.022,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList());
   }
 }

@@ -14,6 +14,11 @@ abstract class DatabaseBaseRepository {
       required List<Reward> favorites,
       required String? userID});
 
+  Future<List<Map<String, String>>> getServiceProviderCategoryList(
+      {required String? billCategoryID});
+
+  Future<List<Map<String, String>>> getBillCategoryList();
+
   Future<List<myCoupons>> getUserCoupons(
       {required int? page,
       required List<myCoupons> coupons,
@@ -84,6 +89,13 @@ class DatabaseRepository extends DatabaseBaseRepository {
       required List<Reward> favorites,
       required String? userID}) async {
     return await _databaseLambdaService.getUserFavoritesList(userID: userID);
+  }
+
+  @override
+  Future<List<Map<String, String>>> getServiceProviderCategoryList(
+      {required String? billCategoryID}) async {
+    return await _databaseLambdaService.getServiceProviderCategoryList(
+        billCategoryID: billCategoryID);
   }
 
   @override
@@ -217,5 +229,10 @@ class DatabaseRepository extends DatabaseBaseRepository {
       rewardID: rewardID,
       shopID: shopID,
     );
+  }
+
+  @override
+  Future<List<Map<String, String>>> getBillCategoryList() async {
+    return await _databaseLambdaService.getBillCategoryList();
   }
 }

@@ -686,10 +686,10 @@ class DatabaseLambdaService {
     try {
       result = await lambda
           .callLambda('aurora-serverless-function-favorites', <String, dynamic>{
-        "userID": userID,
+        "userID": 'fluxsam1',
       });
       print(
-          "---------------------------------------------------------------------------------$result");
+          "----------------------------------------------------???????????????????????????????-----------------------------$result");
 
       List<String> schemaName = [];
       result["columnMetadata"].forEach((e) {
@@ -697,6 +697,9 @@ class DatabaseLambdaService {
       });
 
       List<dynamic> res = [];
+
+      print('result---------------------->>>>>>>>>>>>');
+      print(result["records"].length);
 
       result["records"].forEach((e) {
         int i = 0;
@@ -713,6 +716,8 @@ class DatabaseLambdaService {
         });
         res.add(m);
       });
+      print("Gggggggg__________________");
+      print(res.length);
       res.forEach((ele) {
         //print(ele);
         //print('///////');
@@ -968,5 +973,129 @@ class DatabaseLambdaService {
 
       throw Exception(e);
     }
+  }
+
+  Future<List<Map<String,String>>> getServiceProviderCategoryList(
+      {@required String? billCategoryID}) async {
+    result = {};
+    List<Map<String,String>> serviceProviderDetails = [];
+    //  List<Reward> fav = [];
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-serviceProviderCategory',
+          <String, dynamic>{
+            "billCategoryID": billCategoryID,
+          });
+      print(
+          "----------------------------------------------------???????????????????????????????-----------------------------$result");
+
+      List<String> schemaName = [];
+      result["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      print('result---------------------->>>>>>>>>>>>');
+      print(result["records"].length);
+
+      result["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      print("Gggggggg__________________");
+      print(res.length);
+      Map<String, String> mp = {};
+      res.forEach((ele) {
+      
+        serviceProviderDetails.add(
+          {
+            "billProviderID": ele["billProviderID"],
+            "name": ele["name"],
+            "shortDescription": ele["shortDescription"],
+            "logo": ele["logo"]
+          }
+          ,
+        );
+      });
+      return serviceProviderDetails;
+    } catch (e) {
+     throw Exception(e);
+    
+    }
+  
+  }
+  
+  Future<List<Map<String,String>>> getBillCategoryList(
+      ) async {
+    result = {};
+    List<Map<String,String>> serviceCategoryDetails = [];
+    //  List<Reward> fav = [];
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-billCategory',
+          <String, dynamic>{
+           
+          });
+      print(
+          "----------------------------------------------------???????????????????????????????-----------------------------$result");
+
+      List<String> schemaName = [];
+      result["columnMetadata"].forEach((e) {
+        schemaName.add(e["name"]);
+      });
+
+      List<dynamic> res = [];
+
+      print('result---------------------->>>>>>>>>>>>');
+      print(result["records"].length);
+
+      result["records"].forEach((e) {
+        int i = 0;
+        Map<String, dynamic> m = {};
+        m = {};
+        e.forEach((el) {
+          el.forEach((key, value) {
+            if (key == "isNull" && value == true)
+              m[schemaName[i]] = null;
+            else
+              m[schemaName[i]] = value;
+            i++;
+          });
+        });
+        res.add(m);
+      });
+      print("Gggggggg__________________");
+      print(res.length);
+      Map<String, String> mp = {};
+      res.forEach((ele) {
+      
+        serviceCategoryDetails.add(
+          {
+            "billCategoryID": ele["billCategoryID"],
+            "name": ele["name"],
+            "description": ele["description"],
+            "icon": ele["icon"]
+          }
+          ,
+        );
+      });
+      return serviceCategoryDetails;
+    } catch (e) {
+     throw Exception(e);
+    
+    }
+  
   }
 }
