@@ -78,6 +78,53 @@ abstract class DatabaseBaseRepository {
       required String? rewardPartnerID,
       required String? rewardID,
       required String? shopID});
+
+  Future<String> insertCreditCardDetails(
+      {required String creditCardNumber,
+      required String expiryDate,
+      required String bankName,
+      required String cvv,
+      required String holderName,
+      required String userID,
+      required String billProviderID});
+  Future<String> insertTelecomDetails(
+      {required String phNumber,
+      required String name,
+      required String providerName,
+      required String billCategoryID,
+      required String userID,
+      required String billProviderID});
+  Future<String> insertElectricityBillDetails(
+      {required String phNumber,
+      required String acHolderName,
+      required String acNumber,
+      required String billCategoryID,
+      required String userID,
+      required String billProviderID});
+  Future<String> insertInsuranceDetails(
+      {required String phNumber,
+      required String acHolderName,
+      required String acNumber,
+      required String billCategoryID,
+      required String userID,
+      required String billProviderID});
+
+  Future<String> insertBankDetails(
+      {required String acHolderName,
+      required String accNumber,
+      required String bankName,
+      required String ifscCode,
+      required String userID,
+      required String billProviderID});
+
+  Future<String> insertTaxDetails(
+      {required double businessRegistrationFee,
+      required String shroffAcNumber,
+      required String trcAcNumber,
+      required String applicantName,
+      required String billCategoryID,
+      required String userID,
+      required String billProviderID});
 }
 
 class DatabaseRepository extends DatabaseBaseRepository {
@@ -234,5 +281,111 @@ class DatabaseRepository extends DatabaseBaseRepository {
   @override
   Future<List<Map<String, String>>> getBillCategoryList() async {
     return await _databaseLambdaService.getBillCategoryList();
+  }
+
+  @override
+  Future<String> insertBankDetails(
+      {required String acHolderName,
+      required String accNumber,
+      required String bankName,
+      required String ifscCode,
+      required String userID,
+      required String billProviderID}) async {
+    return await _databaseLambdaService.insertBankDetails(
+        acHolderName: acHolderName,
+        accNumber: accNumber,
+        bankName: bankName,
+        ifscCode: ifscCode,
+        userID: userID,
+        billProviderID: billProviderID);
+  }
+
+  @override
+  Future<String> insertCreditCardDetails(
+      {required String creditCardNumber,
+      required String expiryDate,
+      required String bankName,
+      required String cvv,
+      required String holderName,
+      required String userID,
+      required String billProviderID}) async {
+    return await _databaseLambdaService.insertCreditCardDetails(
+        creditCardNumber: creditCardNumber,
+        expiryDate: expiryDate,
+        bankName: bankName,
+        cvv: cvv,
+        holderName: holderName,
+        userID: userID,
+        billProviderID: billProviderID);
+  }
+
+  @override
+  Future<String> insertElectricityBillDetails(
+      {required String phNumber,
+      required String acHolderName,
+      required String acNumber,
+      required String billCategoryID,
+      required String userID,
+      required String billProviderID}) async {
+    return await _databaseLambdaService.insertElectricityBillDetails(
+        phNumber: phNumber,
+        acHolderName: acHolderName,
+        acNumber: acNumber,
+        billCategoryID: billCategoryID,
+        userID: userID,
+        billProviderID: billProviderID);
+  }
+
+  @override
+  Future<String> insertInsuranceDetails(
+      {required String phNumber,
+      required String acHolderName,
+      required String acNumber,
+      required String billCategoryID,
+      required String userID,
+      required String billProviderID}) async {
+    return await _databaseLambdaService.insertInsuranceDetails(
+        phNumber: phNumber,
+        acHolderName: acHolderName,
+        acNumber: acNumber,
+        billCategoryID: billCategoryID,
+        userID: userID,
+        billProviderID: billProviderID);
+  }
+
+  @override
+  Future<String> insertTaxDetails(
+      {required double businessRegistrationFee,
+      required String shroffAcNumber,
+      required String trcAcNumber,
+      required String applicantName,
+      required String billCategoryID,
+      required String userID,
+      required String billProviderID}) async {
+    return await _databaseLambdaService.insertTaxDetails(
+        businessRegistrationFee: businessRegistrationFee,
+        shroffAcNumber: shroffAcNumber,
+        trcAcNumber: trcAcNumber,
+        applicantName: applicantName,
+        billCategoryID: billCategoryID,
+        userID: userID,
+        billProviderID: billProviderID);
+  }
+
+  @override
+  Future<String> insertTelecomDetails(
+      {required String phNumber,
+      required String name,
+      required String providerName,
+      required String billCategoryID,
+      required String userID,
+      required String billProviderID}) async {
+    return await _databaseLambdaService.insertTelecomDetails(
+        phNumber: phNumber,
+        name: name,
+        providerName: providerName,
+        billCategoryID: billCategoryID,
+        userID: userID,
+        billProviderID: billProviderID);
   }
 }

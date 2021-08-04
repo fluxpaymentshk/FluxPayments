@@ -12,7 +12,6 @@ class ServiceProviderBloc
   @override
   Stream<ServiceProviderState> mapEventToState(
       ServiceProviderEvent event) async* {
-   
     if (event is GetServiceProviderCategoryDetails) {
       try {
         yield LoadingServiceProviderListState();
@@ -39,6 +38,116 @@ class ServiceProviderBloc
       } catch (e) {
         yield ErrorServiceCategoryListState(
             message: 'cannot Load the categories of different Providers');
+      }
+    }
+
+    if (event is InsertBankDetails) {
+      try {
+        yield InsertingDetails();
+
+        String res = await _databaseRepository.insertBankDetails(
+            acHolderName: event.acHolderName,
+            accNumber: event.accNumber,
+            bankName: event.bankName,
+            ifscCode: event.ifscCode,
+            userID: event.userID,
+            billProviderID: event.billProviderID);
+
+        if (res == 'success') yield InsertedDetailsSuccessfully();
+      } catch (e) {
+        yield ErrorInsertDetails(message: 'Error occured while inserting Bank Details');
+      }
+    }
+
+    if (event is InsertCreditCardDetails) {
+      try {
+        yield InsertingDetails();
+
+        String res = await _databaseRepository.insertCreditCardDetails(
+            creditCardNumber: event.creditCardNumber,
+            expiryDate: event.expiryDate,
+            bankName: event.bankName,
+            cvv: event.cvv,
+            holderName: event.holderName,
+            userID: event.userID,
+            billProviderID: event.billProviderID);
+
+        if (res == 'success') yield InsertedDetailsSuccessfully();
+      } catch (e) {
+        yield ErrorInsertDetails(message: 'Error occured while inserting Credit Card details');
+      }
+    }
+
+    if (event is InsertElectricityBillDetails) {
+      try {
+        yield InsertingDetails();
+
+        String res = await _databaseRepository.insertElectricityBillDetails(
+            phNumber: event.phNumber,
+            acHolderName: event.acHolderName,
+            acNumber: event.acNumber,
+            billCategoryID: event.billCategoryID,
+            userID: event.userID,
+            billProviderID: event.billProviderID);
+
+        if (res == 'success') yield InsertedDetailsSuccessfully();
+      } catch (e) {
+        yield ErrorInsertDetails(message: 'Error occured while inserting Electricity Details');
+      }
+    }
+
+    if (event is InsertInsuranceDetails) {
+      try {
+        yield InsertingDetails();
+
+        String res = await _databaseRepository.insertInsuranceDetails(
+            phNumber: event.phNumber,
+            acHolderName: event.acHolderName,
+            acNumber: event.acNumber,
+            billCategoryID: event.billCategoryID,
+            userID: event.userID,
+            billProviderID: event.billProviderID);
+
+        if (res == 'success') yield InsertedDetailsSuccessfully();
+      } catch (e) {
+        yield ErrorInsertDetails(message: 'Error occured while inserting Insurance details!');
+      }
+    }
+
+    if (event is InsertTaxDetails) {
+      try {
+        yield InsertingDetails();
+
+        String res = await _databaseRepository.insertTaxDetails(
+            businessRegistrationFee: event.businessRegistrationFee,
+            shroffAcNumber: event.shroffAcNumber,
+            trcAcNumber: event.trcAcNumber,
+            applicantName: event.applicantName,
+            billCategoryID: event.billCategoryID,
+            userID: event.userID,
+            billProviderID: event.billProviderID);
+
+        if (res == 'success') yield InsertedDetailsSuccessfully();
+      } catch (e) {
+        yield ErrorInsertDetails(message: 'Error occured while inserting Tax Details!');
+      }
+    }
+
+    if (event is InsertTelecomDetails) {
+      try {
+        yield InsertingDetails();
+
+        String res = await _databaseRepository.insertTelecomDetails(
+            phNumber: event.phNumber,
+            name: event.name,
+            providerName: event.providerName,
+            billCategoryID: event.billCategoryID,
+            userID: event.userID,
+            billProviderID: event.billProviderID);
+
+        if (res == 'success') yield InsertedDetailsSuccessfully();
+      } catch (e) {
+        yield ErrorInsertDetails(message: 'Error occured while inserting Telecom details!');
       }
     }
   }
