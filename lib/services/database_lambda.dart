@@ -975,10 +975,10 @@ class DatabaseLambdaService {
     }
   }
 
-  Future<List<Map<String,String>>> getServiceProviderCategoryList(
+  Future<List<Map<String, String>>> getServiceProviderCategoryList(
       {@required String? billCategoryID}) async {
     result = {};
-    List<Map<String,String>> serviceProviderDetails = [];
+    List<Map<String, String>> serviceProviderDetails = [];
     //  List<Reward> fav = [];
     try {
       result = await lambda.callLambda(
@@ -1018,36 +1018,28 @@ class DatabaseLambdaService {
       print(res.length);
       Map<String, String> mp = {};
       res.forEach((ele) {
-      
         serviceProviderDetails.add(
           {
             "billProviderID": ele["billProviderID"],
             "name": ele["name"],
             "shortDescription": ele["shortDescription"],
             "logo": ele["logo"]
-          }
-          ,
+          },
         );
       });
       return serviceProviderDetails;
     } catch (e) {
-     throw Exception(e);
-    
+      throw Exception(e);
     }
-  
   }
-  
-  Future<List<Map<String,String>>> getBillCategoryList(
-      ) async {
+
+  Future<List<Map<String, String>>> getBillCategoryList() async {
     result = {};
-    List<Map<String,String>> serviceCategoryDetails = [];
+    List<Map<String, String>> serviceCategoryDetails = [];
     //  List<Reward> fav = [];
     try {
       result = await lambda.callLambda(
-          'aurora-serverless-function-billCategory',
-          <String, dynamic>{
-           
-          });
+          'aurora-serverless-function-billCategory', <String, dynamic>{});
       print(
           "----------------------------------------------------???????????????????????????????-----------------------------$result");
 
@@ -1080,22 +1072,176 @@ class DatabaseLambdaService {
       print(res.length);
       Map<String, String> mp = {};
       res.forEach((ele) {
-      
         serviceCategoryDetails.add(
           {
             "billCategoryID": ele["billCategoryID"],
             "name": ele["name"],
             "description": ele["description"],
             "icon": ele["icon"]
-          }
-          ,
+          },
         );
       });
       return serviceCategoryDetails;
     } catch (e) {
-     throw Exception(e);
-    
+      throw Exception(e);
     }
-  
   }
+
+  Future<String> insertCreditCardDetails(
+      {required String creditCardNumber,
+      required String expiryDate,
+      required String bankName,
+      required String cvv,
+      required String holderName,
+      required String userID,
+      required String billProviderID}) async {
+    result = {};
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-insertCreditCard', <String, dynamic>{
+        "creditCardNumber": creditCardNumber,
+        "expiryDate": expiryDate,
+        "bankName": bankName,
+        "cvv": cvv,
+        "holderName": holderName,
+        "userID": userID,
+        "billProviderID": billProviderID
+      });
+
+     return result.toString().contains('success') ? 'success' : '';
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+   Future<String> insertTelecomDetails(
+      {required String phNumber,
+      required String name,
+      required String providerName,
+     required String billCategoryID,
+      required String userID,
+      required String billProviderID}) async {
+    result = {};
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-telecom', <String, dynamic>{
+        "phNumber": phNumber,
+        "name": name,
+        "providerName":  providerName,
+         "billCategoryID":billCategoryID,
+        "userID": userID,
+        "billProviderID": billProviderID
+      });
+
+     return result.toString().contains('success') ? 'success' : '';
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  
+   Future<String> insertElectricityBillDetails(
+      {required String phNumber,
+      required String acHolderName,
+      required String acNumber,
+     required String billCategoryID,
+      required String userID,
+      required String billProviderID}) async {
+    result = {};
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-insertElectricityBill', <String, dynamic>{
+        "phNumber": phNumber,
+        "acHolderName": acHolderName,
+        "acNumber":  acNumber,
+         "billCategoryID":billCategoryID,
+        "userID": userID,
+        "billProviderID": billProviderID
+      });
+
+     return result.toString().contains('success') ? 'success' : '';
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+   Future<String> insertInsuranceDetails(
+      {required String phNumber,
+      required String acHolderName,
+      required String acNumber,
+     required String billCategoryID,
+      required String userID,
+      required String billProviderID}) async {
+    result = {};
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-insertInsurance', <String, dynamic>{
+        "phNumber": phNumber,
+        "acHolderName": acHolderName,
+        "acNumber":  acNumber,
+         "billCategoryID":billCategoryID,
+        "userID": userID,
+        "billProviderID": billProviderID
+      });
+
+     return result.toString().contains('success') ? 'success' : '';
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+   Future<String> insertBankDetails(
+      {
+      required String acHolderName,
+      required String accNumber,
+      required String bankName,
+       required String ifscCode,
+      required String userID,
+      required String billProviderID}) async {
+    result = {};
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-insertBank', <String, dynamic>{
+        "acHolderName": acHolderName,
+        "accNumber":  accNumber,
+        "ifscCode":ifscCode,
+        "userID": userID,
+        "bankName":bankName,
+        "billProviderID": billProviderID
+      });
+
+     return result.toString().contains('success') ? 'success' : '';
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+   Future<String> insertTaxDetails(
+      {required double businessRegistrationFee,
+      required String shroffAcNumber,
+       required String trcAcNumber,
+      required String applicantName,
+     required String billCategoryID,
+      required String userID,
+      required String billProviderID}) async {
+    result = {};
+    try {
+      result = await lambda.callLambda(
+          'aurora-serverless-function-insertTax', <String, dynamic>{
+        "businessRegistrationFee": businessRegistrationFee,
+        "applicantName": applicantName,
+        "shroffAcNumber":shroffAcNumber,
+        "trcAcNumber":trcAcNumber,
+         "billCategoryID":billCategoryID,
+        "userID": userID,
+        "billProviderID": billProviderID
+      });
+
+     return result.toString().contains('success') ? 'success' : '';
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+
 }

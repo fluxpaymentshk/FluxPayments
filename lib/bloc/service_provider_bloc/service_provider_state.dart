@@ -20,8 +20,6 @@ class ErrorServiceProviderListState extends ServiceProviderState {
   const ErrorServiceProviderListState({required this.message});
 }
 
-
-
 class LoadServiceCategoryListState extends ServiceProviderState {
   final List<Map<String, String>> ServiceCategoryList;
   const LoadServiceCategoryListState({required this.ServiceCategoryList});
@@ -34,4 +32,17 @@ class LoadingServiceCategoryListState extends ServiceProviderState {
 class ErrorServiceCategoryListState extends ServiceProviderState {
   final String message;
   const ErrorServiceCategoryListState({required this.message});
+}
+
+class InsertedDetailsSuccessfully extends ServiceProviderState {
+  const InsertedDetailsSuccessfully();
+}
+
+class InsertingDetails extends ServiceProviderState {
+  const InsertingDetails();
+}
+
+class ErrorInsertDetails extends ServiceProviderState {
+  final String message;
+  const ErrorInsertDetails({required this.message});
 }
