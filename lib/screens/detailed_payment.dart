@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
-import 'package:flux_payments/widgets/line_chart_graph.dart';
 
 class DetailedPayment extends StatefulWidget {
   final Map<String, dynamic> paymentData;

@@ -1,5 +1,7 @@
+import 'package:flux_payments/models/Cards.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
+import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/Reward.dart';
 import 'package:flux_payments/models/Story.dart';
 import 'package:flux_payments/models/User.dart';
@@ -73,6 +75,20 @@ abstract class DatabaseBaseRepository {
       required String? rewardPartnerID,
       required String? rewardID,
       required String? shopID});
+
+  Future<List<UserServicePayments>> getPendingUserServicesPaymentInfo(
+      {required String? userID, required String? date});
+
+  Future<List<Cards>> getUserCards({required String? userID});
+
+  Future<List<Bank>> getUserBanks({required String? userID});
+  Future<bool> addNewCard({
+    required String? userID,
+    required String? expiryDate,
+    required String? cardNumber,
+    required String? cvv,
+    required String? holderName,
+  });
 }
 
 class DatabaseRepository extends DatabaseBaseRepository {
@@ -217,5 +233,53 @@ class DatabaseRepository extends DatabaseBaseRepository {
       rewardID: rewardID,
       shopID: shopID,
     );
+  }
+
+  @override
+  Future<List<UserServicePayments>> getPendingUserServicesPaymentInfo(
+      {required String? userID, required String? date}) async {
+    try {
+      return await _databaseLambdaService.getPendingUserServicesPaymentInfo(
+          userID: userID, date: date);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Bank>> getUserBanks({required String? userID}) async {
+    try {
+      return await _databaseLambdaService.getUserBanks(userID: userID);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Cards>> getUserCards({required String? userID}) async {
+    try {
+      return await _databaseLambdaService.getUserCards(userID: userID);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> addNewCard(
+      {required String? userID,
+      required String? expiryDate,
+      required String? cardNumber,
+      required String? cvv,
+      required String? holderName}) async {
+    try {
+      return await _databaseLambdaService.addNewCard(
+          userID: userID,
+          expiryDate: expiryDate,
+          cardNumber: cardNumber,
+          cvv: cvv,
+          holderName: holderName);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

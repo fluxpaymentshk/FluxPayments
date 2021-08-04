@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/bill_bloc/bill_bloc.dart';
 import 'package:flux_payments/models/User.dart';
-import 'package:flux_payments/models/user_model.dart';
 import 'package:flux_payments/screens/coupons.dart';
-// import 'package:flux_payments/screens/map.dart';
-import 'package:flux_payments/screens/pay_bills.dart';
-import 'package:flux_payments/services/user_details_services.dart';
 import 'package:flux_payments/services/database_lambda.dart';
+import 'package:flux_payments/services/user_details_services.dart';
 
 import 'auth_Screens/login_page.dart';
 

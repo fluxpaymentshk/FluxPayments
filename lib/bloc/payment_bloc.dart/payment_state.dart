@@ -1,3 +1,5 @@
+import 'package:flux_payments/models/UserService.dart';
+
 abstract class PaymentState {
   const PaymentState();
 }
@@ -6,11 +8,16 @@ class PaymentInitialState extends PaymentState {
   const PaymentInitialState();
 }
 
-class LoadingInternalPayment extends PaymentState {
-  const LoadingInternalPayment();
+class LoadingPendingPayment extends PaymentState {
+  const LoadingPendingPayment();
 }
 
-class ErrorInternalPayment extends PaymentState {
+class LoadedPendingPayments extends PaymentState {
+  final List<UserServicePayments> pendingPayments;
+  const LoadedPendingPayments(this.pendingPayments);
+}
+
+class ErrorPayment extends PaymentState {
   final String? message;
-  const ErrorInternalPayment(this.message);
+  const ErrorPayment(this.message);
 }

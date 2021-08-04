@@ -23,10 +23,10 @@ import 'package:flutter/foundation.dart';
 class Bank extends Model {
   static const classType = const _BankModelType();
   final String id;
-  final int? _accNumber;
+  final String? _accNumber;
   final String? _bankName;
   final String? _ifscCode;
-  final String? _name;
+  final String? _accHolderName;
   final String? _userID;
 
   @override
@@ -37,7 +37,7 @@ class Bank extends Model {
     return id;
   }
 
-  int? get accNumber {
+  String? get accNumber {
     return _accNumber;
   }
 
@@ -49,8 +49,8 @@ class Bank extends Model {
     return _ifscCode;
   }
 
-  String? get name {
-    return _name;
+  String? get accHolderName {
+    return _accHolderName;
   }
 
   String? get userID {
@@ -58,26 +58,26 @@ class Bank extends Model {
   }
 
   const Bank._internal(
-      {required this.id, accNumber, bankName, ifscCode, name, userID})
+      {required this.id, accNumber, bankName, ifscCode, accHolderName, userID})
       : _accNumber = accNumber,
         _bankName = bankName,
         _ifscCode = ifscCode,
-        _name = name,
+        _accHolderName = accHolderName,
         _userID = userID;
 
   factory Bank(
       {String? id,
-      int? accNumber,
+      String? accNumber,
       String? bankName,
       String? ifscCode,
-      String? name,
+      String? accHolderName,
       String? userID}) {
     return Bank._internal(
         id: id == null ? UUID.getUUID() : id,
         accNumber: accNumber,
         bankName: bankName,
         ifscCode: ifscCode,
-        name: name,
+        accHolderName: accHolderName,
         userID: userID);
   }
 
@@ -93,7 +93,7 @@ class Bank extends Model {
         _accNumber == other._accNumber &&
         _bankName == other._bankName &&
         _ifscCode == other._ifscCode &&
-        _name == other._name &&
+        _accHolderName == other._accHolderName &&
         _userID == other._userID;
   }
 
@@ -111,7 +111,7 @@ class Bank extends Model {
         ", ");
     buffer.write("bankName=" + "$_bankName" + ", ");
     buffer.write("ifscCode=" + "$_ifscCode" + ", ");
-    buffer.write("name=" + "$_name" + ", ");
+    buffer.write("accHolderName=" + "$_accHolderName" + ", ");
     buffer.write("userID=" + "$_userID");
     buffer.write("}");
 
@@ -120,17 +120,17 @@ class Bank extends Model {
 
   Bank copyWith(
       {String? id,
-      int? accNumber,
+      String? accNumber,
       String? bankName,
       String? ifscCode,
-      String? name,
+      String? accHolderName,
       String? userID}) {
     return Bank(
         id: id ?? this.id,
         accNumber: accNumber ?? this.accNumber,
         bankName: bankName ?? this.bankName,
         ifscCode: ifscCode ?? this.ifscCode,
-        name: name ?? this.name,
+        accHolderName: accHolderName ?? this.accHolderName,
         userID: userID ?? this.userID);
   }
 
@@ -139,7 +139,7 @@ class Bank extends Model {
         _accNumber = json['accNumber'],
         _bankName = json['bankName'],
         _ifscCode = json['ifscCode'],
-        _name = json['name'],
+        _accHolderName = json['accHolderName'],
         _userID = json['userID'];
 
   Map<String, dynamic> toJson() => {
@@ -147,7 +147,7 @@ class Bank extends Model {
         'accNumber': _accNumber,
         'bankName': _bankName,
         'ifscCode': _ifscCode,
-        'name': _name,
+        'accHolderName': _accHolderName,
         'userID': _userID
       };
 
@@ -155,7 +155,8 @@ class Bank extends Model {
   static final QueryField ACCNUMBER = QueryField(fieldName: "accNumber");
   static final QueryField BANKNAME = QueryField(fieldName: "bankName");
   static final QueryField IFSCCODE = QueryField(fieldName: "ifscCode");
-  static final QueryField NAME = QueryField(fieldName: "name");
+  static final QueryField ACCHOLDERNAME =
+      QueryField(fieldName: "accHolderName");
   static final QueryField USERID = QueryField(fieldName: "userID");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -189,7 +190,7 @@ class Bank extends Model {
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Bank.NAME,
+        key: Bank.ACCHOLDERNAME,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 

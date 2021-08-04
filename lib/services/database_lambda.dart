@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flux_payments/models/Cards.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
@@ -10,7 +12,7 @@ import 'package:flux_payments/models/RewardPartner.dart';
 import 'package:flux_payments/models/Rewards.dart';
 import 'package:flux_payments/models/Story.dart';
 import 'package:flux_payments/models/User.dart';
-import 'package:flux_payments/models/banner.dart';
+import 'package:flux_payments/models/banner.dart' as banner;
 import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
@@ -426,7 +428,7 @@ class DatabaseLambdaService {
     }
   }
 
-  Future<Banner> getBannerDetails() async {
+  Future<banner.Banner> getBannerDetails() async {
     try {
       result = {};
       // try {
@@ -467,8 +469,8 @@ class DatabaseLambdaService {
       print(
           "---------------------------------------------------------------------------------${res}");
 
-      List<Banner> bannerList = [];
-      Banner banner = new Banner(
+      List<banner.Banner> bannerList = [];
+      banner.Banner banners = banner.Banner(
           Logo: 'Logo',
           bannerID: 1233.0,
           buttonDesc: '',
@@ -477,11 +479,11 @@ class DatabaseLambdaService {
       res.forEach((ele) {
         bannerList.add(
           //new ExternalAdvertisers(name: ele["name"], productName: ele["productName"],),
-          banner = Banner.fromJson(ele),
+          banners = banner.Banner.fromJson(ele),
         );
       });
       //return bannerList[0];
-      return banner;
+      return banners;
       // return curatedListData;
       //print("@@@@@@@@@@@@@@@@@@@@@@@@@            ");
       //print(curatedListData[0].background);
@@ -634,6 +636,7 @@ class DatabaseLambdaService {
     result["columnMetadata"].forEach((e) {
       schema.add(e["label"]);
     });
+    log("SCHEMA----->$schema");
     List<Map<String, dynamic>> response = [];
     re.forEach((element) {
       int i = 0;
@@ -642,9 +645,10 @@ class DatabaseLambdaService {
       element.forEach((e) {
         // log("----$e");
         // print(e);
-        m[schema[i]] = e["stringValue"] ?? e["doubleValue"];
+        m[schema[i]] = e["stringValue"] ?? e["doubleValue"] ?? e["longValue"];
         i++;
       });
+      log("{}###$m");
       response.add(m);
     });
     // print("======================================+$response");
@@ -966,6 +970,108 @@ class DatabaseLambdaService {
       log("11111---------------------------------------------------------------------------------${getOrganizedData(r)}");
       log("${getOrganizedData(r).length}");
       if (getOrganizedData(r).length == 0) return false;
+      return true;
+    } catch (e) {
+      print(e);
+
+      throw Exception(e);
+    }
+  }
+
+  Future<List<UserServicePayments>> getPendingUserServicesPaymentInfo({
+    required String? userID,
+    required String? date,
+  }) async {
+    List<UserServicePayments> userServices = [];
+    try {
+      var r = await lambda.callLambda(
+          'aurora-serverless-function-pendingPaymentsInfo', <String, dynamic>{
+        "userID": userID,
+        "todayDate": date,
+      });
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&${r["records"]}");
+      // print(result);
+      log("11111---------------------------------------------------------------------------------${getOrganizedData(r)}");
+      getOrganizedData(r).forEach((element) {
+        userServices.add(UserServicePayments.fromJson(element));
+        print(userServices[userServices.length - 1].toJson());
+      });
+      // log("$");
+      return userServices;
+    } catch (e) {
+      print(e);
+
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Cards>> getUserCards({
+    required String? userID,
+  }) async {
+    List<Cards> userCards = [];
+    try {
+      var r = await lambda.callLambda(
+          'aurora-serverless-function-getAllCards', <String, dynamic>{
+        "userID": userID,
+      });
+      log("!!!!&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$result");
+      // print(result);
+      log("11111---------------------------------------------------------------------------------${getOrganizedData(r)}");
+      getOrganizedData(r).forEach((element) {
+        userCards.add(Cards.fromJson(element));
+        print(userCards[userCards.length - 1].toJson());
+      });
+      log("$userCards");
+      return userCards;
+    } catch (e) {
+      log("$e");
+
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Bank>> getUserBanks({
+    required String? userID,
+  }) async {
+    List<Bank> userBanks = [];
+    try {
+      var r = await lambda
+          .callLambda('aurora-serverless-function-bank', <String, dynamic>{
+        "userID": userID,
+      });
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      // print(result);
+      log("11111---------------------------------------------------------------------------------${getOrganizedData(r)}");
+      getOrganizedData(r).forEach((element) {
+        userBanks.add(Bank.fromJson(element));
+        print(userBanks[userBanks.length - 1].toJson());
+      });
+      log("$userBanks");
+      return userBanks;
+    } catch (e) {
+      print(e);
+
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> addNewCard({
+    @required String? userID,
+    @required String? expiryDate,
+    @required String? cardNumber,
+    @required String? cvv,
+    @required String? holderName,
+  }) async {
+    try {
+      var r = await lambda.callLambda('checkAndAddCard', <String, dynamic>{
+        "userID": userID,
+        "cardNumber": cardNumber,
+        "holderName": holderName,
+        "cvv": cvv,
+        "expiryDate": expiryDate
+      });
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      // print(result);
       return true;
     } catch (e) {
       print(e);

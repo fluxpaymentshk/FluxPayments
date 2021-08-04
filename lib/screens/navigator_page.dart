@@ -7,7 +7,7 @@ import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/rewards_screen.dart';
 import 'package:flux_payments/screens/bill_payment.dart';
 import 'package:flux_payments/screens/coupons.dart';
-import 'package:flux_payments/screens/gift_page.dart';
+// import 'package:flux_payments/screens/gift_page.dart';
 import 'package:flux_payments/screens/reward_partners.dart';
 import 'package:flux_payments/screens/support_bot_screen.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';

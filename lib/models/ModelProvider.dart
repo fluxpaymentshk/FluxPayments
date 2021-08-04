@@ -58,7 +58,7 @@ class ModelProvider implements ModelProviderInterface {
   @override
   List<ModelSchema> modelSchemas = [
     Bank.schema,
-    BillProvider.schema,
+    // BillProvider.schema,
     CreditCard.schema,
     DebitCard.schema,
     ExternalAdvertisers.schema,
@@ -71,8 +71,8 @@ class ModelProvider implements ModelProviderInterface {
     ServiceTransaction.schema,
     Shop.schema,
     User.schema,
-    UserBillProvider.schema,
-    UserService.schema,
+    // UserBillProvider.schema,
+    // UserService.schema,
     UserWallet.schema
   ];
   static final ModelProvider _instance = ModelProvider();
@@ -86,11 +86,11 @@ class ModelProvider implements ModelProviderInterface {
           return Bank.classType;
         }
         break;
-      case "BillProvider":
-        {
-          return BillProvider.classType;
-        }
-        break;
+      // case "BillProvider":
+      //   {
+      //     return BillProvider.classType;
+      //   }
+      //   break;
       case "CreditCard":
         {
           return CreditCard.classType;
@@ -151,16 +151,16 @@ class ModelProvider implements ModelProviderInterface {
           return User.classType;
         }
         break;
-      case "UserBillProvider":
-        {
-          return UserBillProvider.classType;
-        }
-        break;
-      case "UserService":
-        {
-          return UserService.classType;
-        }
-        break;
+      // case "UserBillProvider":
+      //   {
+      //     return UserBillProvider.classType;
+      //   }
+      //   break;
+      // case "UserService":
+      //   {
+      //     return UserService.classType;
+      //   }
+      //   break;
       case "UserWallet":
         {
           return UserWallet.classType;

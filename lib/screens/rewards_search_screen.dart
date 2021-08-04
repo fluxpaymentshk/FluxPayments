@@ -1,10 +1,9 @@
 import 'dart:developer';
+import 'dart:math' show cos, sqrt, asin;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
-import 'package:flux_payments/bloc/favorite_bloc/favorite_state.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_event.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_state.dart';
@@ -13,15 +12,12 @@ import 'package:flux_payments/bloc/flux_points_bloc/flux_point_event.dart';
 import 'package:flux_payments/bloc/flux_points_bloc/flux_point_state.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
+import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/models/Rewards.dart';
 import 'package:flux_payments/screens/coupon_details.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/back_button.dart';
-import 'package:flux_payments/widgets/drop_down_button.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flux_payments/models/RewardCategory.dart';
-import 'dart:math' show cos, sqrt, asin;
-
 import 'package:location/location.dart';
 
 class RewardsSearchScreen extends StatefulWidget {

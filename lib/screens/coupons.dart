@@ -1,9 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flux_payments/bloc/coupons_bloc/coupons_bloc.dart';
 import 'package:flux_payments/bloc/coupons_bloc/coupons_event.dart';
-import 'package:flux_payments/bloc/coupons_bloc/coupons_state.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_event.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_state.dart';
@@ -12,20 +13,18 @@ import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
+import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
+import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/favorite_search_repository.dart';
 import 'package:flux_payments/screens/rewards_search_screen.dart';
 import 'package:flux_payments/services/database_lambda.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:flux_payments/models/ModelProvider.dart';
-import 'package:flux_payments/models/myCoupons.dart';
-import 'package:flux_payments/repository/database_repo.dart';
-import 'dart:math';
-import 'package:vector_math/vector_math.dart' as v_math;
 import 'package:google_fonts/google_fonts.dart';
-import './animation.dart';
 import 'package:path_drawing/path_drawing.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+
+import './animation.dart';
 
 class Coupons extends StatefulWidget {
   static const routeName = '/coupons';

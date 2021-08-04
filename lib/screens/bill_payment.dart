@@ -1,7 +1,5 @@
 import 'dart:developer';
 
-import 'package:amplify_flutter/amplify.dart';
-import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/advertiser_bloc/advertiser_bloc.dart';
@@ -10,9 +8,6 @@ import 'package:flux_payments/bloc/advertiser_bloc/advertiser_state.dart';
 import 'package:flux_payments/bloc/banner_bloc/banner_State.dart';
 import 'package:flux_payments/bloc/banner_bloc/banner_bloc.dart';
 import 'package:flux_payments/bloc/banner_bloc/banner_event.dart';
-import 'package:flux_payments/bloc/curated_list_bloc/curated_list_bloc.dart';
-import 'package:flux_payments/bloc/curated_list_bloc/curated_list_event.dart';
-import 'package:flux_payments/bloc/curated_list_bloc/curated_list_state.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_bloc.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_event.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_state.dart';
@@ -29,11 +24,9 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
-import 'package:flux_payments/models/RewardPartner.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/repository/database_repository.dart';
-import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/detailed_payment.dart';
 // import 'package:flux_payments/screens/change_password.dart';
@@ -45,8 +38,6 @@ import 'package:flux_payments/widgets/banner_tile.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
 import 'package:flux_payments/widgets/pending_payment_tile.dart';
 import 'package:flux_payments/widgets/recent_payment_tile.dart';
-import 'package:flux_payments/widgets/reward_partner_tile.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class BillPayment extends StatefulWidget {
   static const routeName = '/home';
