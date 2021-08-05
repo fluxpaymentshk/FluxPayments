@@ -9,6 +9,7 @@ class Cards extends Model {
   final double? cvv;
   final String? holderName;
   final String? userID;
+  final String? cardBrand;
 
   Cards({
     this.cardID,
@@ -18,6 +19,7 @@ class Cards extends Model {
     this.cvv,
     this.holderName,
     this.userID,
+    this.cardBrand,
   });
 
   Cards.fromJson(Map<String, dynamic> json)
@@ -27,7 +29,8 @@ class Cards extends Model {
         bankName = json["bankName"],
         cvv = json["cvv"],
         userID = json["userID"],
-        holderName = json["holderName"];
+        holderName = json["holderName"],
+        cardBrand=json["cardBrand"];
 
   @override
   getInstanceType() => classType;
@@ -46,6 +49,7 @@ class Cards extends Model {
         "cvv": cvv,
         "userID": userID,
         "holderName": holderName,
+        "cardBrand":cardBrand,
       };
 }
 

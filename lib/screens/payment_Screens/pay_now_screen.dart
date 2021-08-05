@@ -18,6 +18,7 @@ import 'package:flux_payments/screens/payment_Screens/detailed_bill.dart';
 import 'package:flux_payments/screens/payment_Screens/select_payment_method_screen.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
+import 'package:flux_payments/widgets/getCardType.dart';
 import 'package:flux_payments/widgets/gradient_button.dart';
 import 'package:flux_payments/widgets/hello_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -120,7 +121,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                           child: CreditCardWidget(
                             cardNumber: cards[index].cardNumber!,
                             expiryDate: cards[index].expiryDate!,
-                            cardType: CardType.mastercard,
+                            cardType:  getCardType(cards[index].cardBrand),
                             cardHolderName: cards[index].holderName!,
                             cvvCode: cards[index].cvv.toString(),
                             showBackView: false,

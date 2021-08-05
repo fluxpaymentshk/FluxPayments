@@ -12,6 +12,7 @@ import 'package:flux_payments/repository/favorite_search_repository.dart';
 import 'package:flux_payments/screens/payment_Screens/confirm_payment_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/loading_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/pay_now_screen.dart';
+import 'package:flux_payments/screens/payment_Screens/payment_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/select_payment_method_screen.dart';
 
 import './screens/coupons.dart';
@@ -166,15 +167,7 @@ class _MyAppState extends State<MyApp> {
           unselectedIconTheme: IconThemeData(size: 30),
         ),
       ),
-      home: MultiBlocProvider(providers: [
-        BlocProvider(
-          create: (_) => PaymentBloc(_databaseRepository),
-        ),
-        BlocProvider(
-          create: (_) => UserBloc(_userConfigRepository, _databaseRepository),
-        ),
-        BlocProvider(create: (_) => CardsBloc(_databaseRepository)),
-      ], child: PayNowScreen(databaseRepository: _databaseRepository)),
+      home: PaymentScreen(databaseRepository: _databaseRepository,userConfigRepository: _userConfigRepository,),
       // FutureBuilder<List<RewardCategory>>(
       //   future: getCategories(),
       //   builder: (context, snapshot) => snapshot.hasData

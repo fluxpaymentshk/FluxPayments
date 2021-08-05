@@ -16,6 +16,7 @@ import 'package:flux_payments/screens/payment_Screens/loading_screen.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/expand_widget.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
+import 'package:flux_payments/widgets/getCardType.dart';
 import 'package:flux_payments/widgets/gradient_button.dart';
 import 'package:flux_payments/widgets/hello_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -82,7 +83,7 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                 child: CreditCardWidget(
                   cardNumber: widget.cards![index].cardNumber!,
                   expiryDate: widget.cards![index].expiryDate!,
-                  cardType: CardType.mastercard,
+                  cardType: getCardType(widget.cards![index].cardBrand),
                   cardHolderName: widget.cards![index].holderName!,
                   cvvCode: widget.cards![index].cvv.toString(),
                   showBackView: false,
@@ -449,6 +450,7 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
               expiryDate: expiryDate,
               cardHolderName: cardHolderName,
               cvvCode: cvvCode,
+
               onCreditCardModelChange: (creditCardModel) {
                 log("${creditCardModel.cardNumber}    ${creditCardModel.cardHolderName}  ${creditCardModel.cvvCode}   ${creditCardModel.expiryDate}");
                 setState(() {
@@ -664,6 +666,7 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
     );
   }
 }
+
 // BlocBuilder<BanksBloc, BanksState>(
 //   builder: (context, state) {
 //     if (state is LoadingBanks ||
