@@ -90,16 +90,17 @@ class _StoryPageViewState extends State<StoryPageView> {
     // ];
     return Material(
       child: StoryView(
-          //storyItems: stories["Adidas"]!.toList(),
-          storyItems: widget.story,
-          controller: controller,
-          inline: false,
-          repeat: true,
-          onVerticalSwipeComplete: (direction) {
-            if (direction == Direction.down) {
-              Navigator.pop(context);
-            }
-          }),
+        //storyItems: stories["Adidas"]!.toList(),
+        storyItems: widget.story,
+        controller: controller,
+        inline: false,
+        repeat: false,
+        onVerticalSwipeComplete:(direction) {
+      if (direction == Direction.down) {
+        Navigator.pop(context);
+      }
+    }  
+      ),
     );
   }
 }
