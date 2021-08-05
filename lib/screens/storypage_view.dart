@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flux_payments/models/Story.dart';
 import 'package:story_view/story_view.dart';
 
 class StoryPageView extends StatefulWidget {

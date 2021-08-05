@@ -1,12 +1,5 @@
 import 'dart:developer';
-import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
-import 'package:flux_payments/bloc/story_bloc/story_event.dart';
-import 'package:flux_payments/bloc/story_bloc/story_state.dart';
-import 'package:flux_payments/models/Story.dart';
-import 'package:flux_payments/screens/storypage_view.dart';
-import 'package:story_view/story_view.dart';
-import 'package:amplify_flutter/amplify.dart';
-import 'package:aws_lambda/aws_lambda.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/advertiser_bloc/advertiser_bloc.dart';
@@ -26,7 +19,9 @@ import 'package:flux_payments/bloc/pending_service_bloc/pending_service_event.da
 import 'package:flux_payments/bloc/pending_service_bloc/pending_service_state.dart';
 import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_bloc.dart';
 import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_event.dart';
-import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_state.dart';
+import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
+import 'package:flux_payments/bloc/story_bloc/story_event.dart';
+import 'package:flux_payments/bloc/story_bloc/story_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
@@ -34,20 +29,20 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
-import 'package:flux_payments/models/RewardPartner.dart';
+import 'package:flux_payments/models/Story.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/repository/database_repository.dart';
-import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/storypage_view.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/banner_tile.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
 import 'package:flux_payments/widgets/pending_payment_tile.dart';
-import 'package:flux_payments/widgets/recent_payment_tile.dart';
 import 'package:flux_payments/widgets/reward_partner_tile.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:story_view/story_view.dart';
+
 import '../services/database_lambda.dart';
 
 class HomePage extends StatefulWidget {
@@ -393,7 +388,7 @@ class _HomePageState extends State<HomePage> {
 
                     BlocBuilder<CuratedListBloc, CuratedListState>(
                       builder: (context, state) {
-                        if (state is LoadingCuratedList)
+                        if (state is LoadingCuratedList || state is InitialState)
                           return CircularProgressIndicator(
                             strokeWidth: 5.0,
                             color: AppTheme.main,
