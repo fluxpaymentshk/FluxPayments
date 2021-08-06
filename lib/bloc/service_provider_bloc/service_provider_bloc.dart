@@ -78,8 +78,11 @@ class ServiceProviderBloc
             holderName: event.holderName,
             userID: event.userID,
             billProviderID: event.billProviderID);
+        print('{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{[');
+        print(res);
+        print(res.contains('success'));
 
-        if (res == 'success') yield InsertedDetailsSuccessfully();
+        if (res.contains('success')) yield InsertedDetailsSuccessfully();
       } catch (e) {
         yield ErrorInsertDetails(
             message: 'Error occured while inserting Credit Card details');

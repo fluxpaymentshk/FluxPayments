@@ -202,11 +202,13 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
 
                 BlocBuilder<ServiceProviderBloc, ServiceProviderState>(
                   buildWhen: (previous,current){
-                    if(previous is ServiceProviderInitialState)
+                    if(current is LoadServiceCategoryListState||current is LoadingServiceCategoryListState||current is ErrorServiceCategoryListState)
                     return true;
                     else return false;
                   }
                   ,builder: (context, state) {
+                //     serviceProviderBloc.add(InsertCreditCardDetails(creditCardNumber:'121111', expiryDate: '00/11', bankName: 'ddd', cvv: '112', holderName: 'unknonwn', userID: 'flux-vid1', billProviderID: 'BillProvid_X102'));
+
                     if (state is LoadingServiceCategoryListState)
                       return Center(
                         child: CircularProgressIndicator(

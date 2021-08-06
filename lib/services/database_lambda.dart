@@ -1165,8 +1165,9 @@ class DatabaseLambdaService {
         "userID": userID,
         "billProviderID": billProviderID
       });
+      return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
 
-      return result.toString().contains('success') ? 'success' : '';
+    // return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }
@@ -1215,7 +1216,7 @@ class DatabaseLambdaService {
         "billProviderID": billProviderID
       });
 
-      return result.toString().contains('success') ? 'success' : '';
+     return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }
@@ -1240,7 +1241,7 @@ class DatabaseLambdaService {
         "billProviderID": billProviderID
       });
 
-      return result.toString().contains('success') ? 'success' : '';
+     return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }
@@ -1265,7 +1266,7 @@ class DatabaseLambdaService {
         "billProviderID": billProviderID
       });
 
-      return result.toString().contains('success') ? 'success' : '';
+     return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }
@@ -1315,7 +1316,7 @@ class DatabaseLambdaService {
         "billProviderID": billProviderID
       });
 
-      return result.toString().contains('success') ? 'success' : '';
+     return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }
@@ -1342,7 +1343,7 @@ class DatabaseLambdaService {
         "billProviderID": billProviderID
       });
 
-      return result.toString().contains('success') ? 'success' : '';
+     return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }

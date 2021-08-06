@@ -6,6 +6,7 @@ import 'package:flux_payments/bloc/service_provider_bloc/service_provider_state.
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
+import 'package:flux_payments/screens/add_credit_card.dart';
 import 'package:flux_payments/widgets/recent_payment_tile.dart';
 import 'package:flux_payments/widgets/service_provider_tile.dart';
 
@@ -191,7 +192,11 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
               ],
             ),
             BlocBuilder<ServiceProviderBloc, ServiceProviderState>(
-                builder: (context, state) {
+                buildWhen: (previous, current) {
+              return (current is LoadServiceProviderListState ||
+                  current is LoadingServiceProviderListState ||
+                  current is ErrorServiceProviderListState);
+            }, builder: (context, state) {
               if (state is LoadingServiceProviderListState)
                 return Center(
                     child: CircularProgressIndicator(color: AppTheme.main));
@@ -199,191 +204,91 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
               if (state is LoadServiceProviderListState) {
                 List<Map<String, String>> ServiceProviderList =
                     state.ServiceProviderList;
-                return (ServiceProviderList.length!=0)
-                ?Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.widthMultiplier * 3,
-                    vertical: SizeConfig.heightMultiplier * 2.3,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(SizeConfig.heightMultiplier * 2)),
-                    border: Border.all(color: AppTheme.main, width: 1.0),
-                  ),
-                  height: SizeConfig.heightMultiplier * 55,
-                  child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        return
-                            //to expp
-                            serviceProviderTile(
-                          name: ServiceProviderList[index]['name']??'',
-                         // paidOn: '',
-                          imageurl:  ServiceProviderList[index]['logo']??'',
-                        //  amount: 100,
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return Divider(
-                          indent: SizeConfig.widthMultiplier * 3.5,
-                          endIndent: SizeConfig.widthMultiplier * 3.5,
-                          color: Color(0xff979797),
-                          thickness: 0.8,
-                        );
-                      },
-                      itemCount: ServiceProviderList.length),
-                  // ListView.builder(
-                  // scrollDirection: Axis.vertical,
-                  //physics: const ClampingScrollPhysics(),
-                  //itemCount: state.RecentPaymentData.length,
-                  //itemBuilder: (context, int index) {
-                  //   return
-                  // ServiceProviderTile(
-                  //                       name: '',
-                  //                       paidOn: '',
-                  //                       imageurl: '',
-                  //                       amount: 100,
-                  //                     ),
-                  //     Column(
-                  //   children: [
-                  //     SizedBox(
-                  //       height: SizeConfig.heightMultiplier * 0.7,
-                  //     ),
-                  //     ServiceProviderTile(
-                  //       name: '',
-                  //       paidOn: '',
-                  //       imageurl: '',
-                  //       amount: 100,
-                  //     ),
-                  //     // if (state.RecentPaymentData.length > 0)
-                  //     //   ServiceProviderTile(
-                  //     //       name: state.RecentPaymentData[0]
-                  //     //           ['name'],
-                  //     //       paidOn: state.RecentPaymentData[0]
-                  //     //           ['paidOn'],
-                  //     //       imageurl: state.RecentPaymentData[0]
-                  //     //           ['imageurl'],
-                  //     //       amount: state.RecentPaymentData[0]
-                  //     //           ['amount']),
-                  //     //           if (state.RecentPaymentData.length > 1)
-                  //     Divider(
-                  //       indent: SizeConfig.widthMultiplier * 3.5,
-                  //       endIndent: SizeConfig.widthMultiplier * 3.5,
-                  //       color: Color(0xff979797),
-                  //       thickness: 0.8,
-                  //     ),
-                  //     ServiceProviderTile(
-                  //       name: '',
-                  //       paidOn: '',
-                  //       imageurl: '',
-                  //       amount: 100,
-                  //     ),
-                  //     // if (state.RecentPaymentData.length > 1)
-                  //     //   ServiceProviderTile(
-                  //     //       name: state.RecentPaymentData[1]
-                  //     //           ['name'],
-                  //     //       paidOn: state.RecentPaymentData[1]
-                  //     //           ['paidOn'],
-                  //     //       imageurl: state.RecentPaymentData[1]
-                  //     //           ['imageurl'],
-                  //     //       amount: state.RecentPaymentData[1]
-                  //     //           ['amount']),
-                  //     //            if (state.RecentPaymentData.length > 2)
-                  //     Divider(
-                  //       indent: SizeConfig.widthMultiplier * 3.5,
-                  //       endIndent: SizeConfig.widthMultiplier * 3.5,
-                  //       color: Color(0xff979797),
-                  //       thickness: 0.8,
-                  //     ),
-
-                  //     ServiceProviderTile(
-                  //       name: '',
-                  //       paidOn: '',
-                  //       imageurl: '',
-                  //       amount: 100,
-                  //     ),
-                  //     // if (state.RecentPaymentData.length > 2)
-                  //     //   ServiceProviderTile(
-                  //     //       name: state.RecentPaymentData[2]
-                  //     //           ['name'],
-                  //     //       paidOn: state.RecentPaymentData[2]
-                  //     //           ['paidOn'],
-                  //     //       imageurl: state.RecentPaymentData[2]
-                  //     //           ['imageurl'],
-                  //     //       amount: state.RecentPaymentData[2]
-                  //     //           ['amount']),
-                  //     //            if (state.RecentPaymentData.length > 3)
-                  //     Divider(
-                  //       indent: SizeConfig.widthMultiplier * 3.5,
-                  //       endIndent: SizeConfig.widthMultiplier * 3.5,
-                  //       color: Color(0xff979797),
-                  //       thickness: 0.8,
-                  //     ),
-
-                  //     ServiceProviderTile(
-                  //       name: '',
-                  //       paidOn: '',
-                  //       imageurl: '',
-                  //       amount: 100,
-                  //     ),
-                  //     // if (state.RecentPaymentData.length > 3)
-                  //     //   ServiceProviderTile(
-                  //     //       name: state.RecentPaymentData[3]
-                  //     //           ['name'],
-                  //     //       paidOn: state.RecentPaymentData[3]
-                  //     //           ['paidOn'],
-                  //     //       imageurl: state.RecentPaymentData[3]
-                  //     //           ['imageurl'],
-                  //     //       amount: state.RecentPaymentData[3]
-                  //     //           ['amount']),
-                  //     //             if (state.RecentPaymentData.length > 4)
-                  //     Divider(
-                  //       indent: SizeConfig.widthMultiplier * 3.5,
-                  //       endIndent: SizeConfig.widthMultiplier * 3.5,
-                  //       color: Color(0xff979797),
-                  //       thickness: 0.8,
-                  //     ),
-
-                  //     ServiceProviderTile(
-                  //       name: '',
-                  //       paidOn: '',
-                  //       imageurl: '',
-                  //       amount: 100,
-                  //     ),
-                  //     // if (state.RecentPaymentData.length > 4)
-                  //     //   ServiceProviderTile(
-                  //     //       name: state.RecentPaymentData[4]
-                  //     //           ['name'],
-                  //     //       paidOn: state.RecentPaymentData[4]
-                  //     //           ['paidOn'],
-                  //     //       imageurl: state.RecentPaymentData[4]
-                  //     //           ['imageurl'],
-                  //     //       amount: state.RecentPaymentData[4]
-                  //     //           ['amount']),
-                  //     SizedBox(
-                  //       height: SizeConfig.heightMultiplier * 0.7,
-                  //     ),
-                  //   ],
-                  //),
-                )
-                :Container(
-                    margin: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.widthMultiplier * 3,
-                  //  vertical: SizeConfig.heightMultiplier * 2.2,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(SizeConfig.heightMultiplier * 2)),
-                    border: Border.all(color: AppTheme.main, width: 1.0),
-                  ),
-                  height: SizeConfig.heightMultiplier * 15,
-                  child:Center(child: Text('Sorry, No provider is there in the given category!')),
-                );
+                return (ServiceProviderList.length != 0)
+                    ? Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.widthMultiplier * 3,
+                          vertical: SizeConfig.heightMultiplier * 2.3,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(SizeConfig.heightMultiplier * 2)),
+                          border: Border.all(color: AppTheme.main, width: 1.0),
+                        ),
+                        height: SizeConfig.heightMultiplier * 55,
+                        child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              return
+                                  //to expp
+                                  InkWell(
+                                child: serviceProviderTile(
+                                  name:
+                                      ServiceProviderList[index]['name'] ?? '',
+                                  // paidOn: '',
+                                  imageurl:
+                                      ServiceProviderList[index]['logo'] ?? '',
+                                  //  id:ServiceProviderList[index]['billProviderID']??'',
+                                  //  amount: 100,
+                                ),
+                                onDoubleTap: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return BlocProvider<
+                                        ServiceProviderBloc>.value(
+                                      value: serviceProvierBloc,
+                                      child:
+                                          //  ServiceProviderPage(
+                                          //     categoryName: title, categoryID: billCategoryID, user: user),
+                                          AddCreditCard(
+                                        name: ServiceProviderList[index]
+                                                ['name'] ??
+                                            '',
+                                        logo: ServiceProviderList[index]
+                                                ['logo'] ??
+                                            '',
+                                        billProviderID:
+                                            ServiceProviderList[index]
+                                                    ['billProviderID'] ??
+                                                '',
+                                      ),
+                                    );
+                                    // return GraphScreen(graphData: widget.mp, user: widget.user);
+                                  }));
+                                },
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return Divider(
+                                indent: SizeConfig.widthMultiplier * 3.5,
+                                endIndent: SizeConfig.widthMultiplier * 3.5,
+                                color: Color(0xff979797),
+                                thickness: 0.8,
+                              );
+                            },
+                            itemCount: ServiceProviderList.length),
+                      )
+                    : Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.widthMultiplier * 3,
+                          //  vertical: SizeConfig.heightMultiplier * 2.2,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(SizeConfig.heightMultiplier * 2)),
+                          border: Border.all(color: AppTheme.main, width: 1.0),
+                        ),
+                        height: SizeConfig.heightMultiplier * 15,
+                        child: Center(
+                            child: Text(
+                                'Sorry, No provider is there in the given category!')),
+                      );
               }
               if (state is ErrorServiceProviderListState)
                 return Center(child: Text(state.message));
               else
                 return Center(
-                    child: Text('event not fired or state is incorrect!'));
+                    child: Text('event not fired or state is incorrect!' +
+                        state.runtimeType.toString()));
             }),
           ]),
         ),
