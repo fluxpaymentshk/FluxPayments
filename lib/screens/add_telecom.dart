@@ -14,38 +14,35 @@ import 'package:flux_payments/widgets/logo_with_back_button.dart';
 import 'package:flux_payments/widgets/service_provider_tile.dart';
 import 'package:flux_payments/widgets/subheading.dart';
 
-class AddCreditCard extends StatefulWidget {
-  final String name, logo, billProviderID;
-  const AddCreditCard(
+class AddTelecom extends StatefulWidget {
+  final String name, logo, billProviderID, billCategoryID;
+  const AddTelecom(
       {required this.name,
       required this.logo,
+      required this.billCategoryID,
       required this.billProviderID,
       Key? key})
       : super(key: key);
 
   @override
-  _AddCreditCardState createState() => _AddCreditCardState();
+  _AddTelecomState createState() => _AddTelecomState();
 }
 
-class _AddCreditCardState extends State<AddCreditCard> {
-  final nameController = TextEditingController();
+class _AddTelecomState extends State<AddTelecom> {
   var e = 1;
 
   bool isSubmitted = false;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController cardNumberController = TextEditingController(),
-      cardHolderNumberController = TextEditingController(),
-      validDateController = TextEditingController(),
-      cvvNumberController = TextEditingController();
+
+  final phNumberController = TextEditingController();
+  final nameController = TextEditingController();
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    cardHolderNumberController.dispose();
-    cardNumberController.dispose();
-    cvvNumberController.dispose();
-    validDateController.dispose();
-
+    phNumberController.dispose();
+    nameController.dispose();
     // nameCon
   }
 
@@ -58,62 +55,43 @@ class _AddCreditCardState extends State<AddCreditCard> {
     //  serviceProvierBloc.add(
     //     GetServiceProviderCategoryDetails(billCategoryID: widget.categoryID));
     return Scaffold(
-      body: Flex(direction: Axis.vertical, children: [
-        Expanded(
-          child: SingleChildScrollView(
+        body: Flex(direction: Axis.vertical, children: [
+      Expanded(
+        child: SingleChildScrollView(
             child: Column(children: [
-              logoWithBackButton(context),
-              subheading('My Providers'),
-              SizedBox(
-                height: SizeConfig.heightMultiplier * 3,
-              ),
-              Card(
-                elevation: 3.6,
-                shape: RoundedRectangleBorder(
-                    side: new BorderSide(color: AppTheme.main, width: 1.0),
-                    borderRadius: BorderRadius.circular(
-                        SizeConfig.heightMultiplier * 1.1)),
-                child: serviceProviderTile(
-                  name: widget.name,
-                  // paidOn: '',
-                  imageurl: widget.logo,
-                  //  amount: 100,
-                ),
-              ),
+          logoWithBackButton(context),
+          subheading('My Providers'),
+          SizedBox(
+            height: SizeConfig.heightMultiplier * 3,
+          ),
+          Card(
+            elevation: 3.6,
+            shape: RoundedRectangleBorder(
+                side: new BorderSide(color: AppTheme.main, width: 1.0),
+                borderRadius:
+                    BorderRadius.circular(SizeConfig.heightMultiplier * 1.1)),
+            child: serviceProviderTile(
+              name: widget.name,
+              // paidOn: '',
+              imageurl: widget.logo,
+              //  amount: 100,
+            ),
+          ),
+          Form(
+            key: _formKey,
+            child: Column(children: [
+              subheading('Input information'),
+              appTextField(
+                  text: 'Phone Number',
+                  height: SizeConfig.heightMultiplier * 6,
+                  width: SizeConfig.widthMultiplier * 90.3,
+                  mycontroller: phNumberController),
+              appTextField(
+                  text: 'Phone Number Name',
+                  height: SizeConfig.heightMultiplier * 6,
+                  width: SizeConfig.widthMultiplier * 90.3,
+                  mycontroller: nameController),
 
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    subheading('Input information'),
-                    appTextField(
-                        text: 'Card Number',
-                        height: SizeConfig.heightMultiplier * 6,
-                        width: SizeConfig.widthMultiplier * 90.3,
-                        mycontroller: cardNumberController),
-                    appTextField(
-                        text: 'Card Holder Name',
-                        height: SizeConfig.heightMultiplier * 6,
-                        width: SizeConfig.widthMultiplier * 90.3,
-                        mycontroller: cardHolderNumberController),
-                    Row(
-                      children: [
-                        appTextField(
-                            text: 'Valid Date',
-                            height: SizeConfig.heightMultiplier * 6,
-                            width: SizeConfig.widthMultiplier * 30,
-                            mycontroller: validDateController),
-                        Spacer(),
-                        appTextField(
-                            text: 'CVV Number',
-                            height: SizeConfig.heightMultiplier * 6,
-                            width: SizeConfig.widthMultiplier * 30,
-                            mycontroller: cvvNumberController),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
               SizedBox(
                 height: SizeConfig.heightMultiplier * 3,
               ),
@@ -137,18 +115,17 @@ class _AddCreditCardState extends State<AddCreditCard> {
                         // setState(() {
                         //   isSubmitted = true;
                         // });
-                        print(cardHolderNumberController.text);
+                        // print(cardHolderNumberController.text);
 
-                        serviceProviderBloc.add(InsertCreditCardDetails(
-                            creditCardNumber: cardNumberController.text,
-                            expiryDate: validDateController.text,
-                            bankName: widget.name,
-                            cvv: cvvNumberController.text,
-                            holderName: cardHolderNumberController.text,
+                        serviceProviderBloc.add(InsertTelecomDetails(
+                            billCategoryID: widget.billCategoryID,
                             userID: 'flux-vid1',
-                            billProviderID: widget.billProviderID));
+                            billProviderID: widget.billProviderID,
+                            name: widget.name,
+                            phNumber: phNumberController.text,
+                            providerName: nameController.text));
 
-                     //   e = 0;
+                        //   e = 0;
                         //@@@@@@@@@@@@@@@@@@@@@@@@@@
 
                         // setState(() {
@@ -189,8 +166,8 @@ class _AddCreditCardState extends State<AddCreditCard> {
               // //#############
             ]),
           ),
-        ),
-      ]),
-    );
+        ])),
+      )
+    ]));
   }
 }
