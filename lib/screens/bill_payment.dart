@@ -373,9 +373,7 @@ class _BillPaymentState extends State<BillPayment> {
                         } else {
                           return Container(
                             child: Text("No Favorites found !"
-                                //(state as ErrorFavorites).message
-                                ??
-                                ''),
+                               ),
                           );
                         }
                       },

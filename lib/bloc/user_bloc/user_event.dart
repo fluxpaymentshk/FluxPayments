@@ -29,6 +29,9 @@ class UpdateUserDetails extends UserEvent {
   final String? email;
   final String? phnNumber;
   final String? hkID;
+  final bool? isDBChange;
+  final bool? resend;
+  final String code;
   const UpdateUserDetails({
     @required this.userID,
     @required this.lastName,
@@ -36,5 +39,8 @@ class UpdateUserDetails extends UserEvent {
     @required this.email,
     @required this.phnNumber,
     @required this.hkID,
+    @required this.isDBChange,
+    this.resend = false,
+      this.code = ""
   });
 }

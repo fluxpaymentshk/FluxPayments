@@ -159,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 child: Text(
-                  user.hkID!,
+                  user.hkID??"",
                   style: GoogleFonts.montserrat(
                     fontSize: 16,
                   ),

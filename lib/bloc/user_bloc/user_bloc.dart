@@ -79,14 +79,51 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (event is UpdateUserDetails) {
       try {
         yield UserDetailsUpdating();
-        await _databaseRepository.updateUserDetails(
-            userID: event.userID!,
-            firstName: event.firstName!,
-            lastName: event.lastName!,
-            hkID: event.hkID!,
-            email: event.email!,
-            phnNumber: event.phnNumber!);
-        yield UserServiceDone();
+        if (event.isDBChange!) {
+          await _databaseRepository.updateUserDetails(
+              userID: event.userID!,
+              firstName: event.firstName!,
+              lastName: event.lastName!,
+              hkID: event.hkID!,
+              email: event.email!,
+              phnNumber: event.phnNumber!);
+          yield UserServiceDone();
+        } else {
+          if (event.resend == true) {
+            try {
+              log("GGIVE codeeeeeeeeeeeeeeeee");
+              await _userConfigRepository
+                  .resendConfirmationCode(event.email ?? "");
+            } catch (e) {
+              log(e.toString());
+            }
+          } else if (event.code != "") {
+            try {
+              log("CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+              yield (CheckOTPScreen());
+              bool getCode = await _userConfigRepository.confirmUser(
+                  event.email ?? "", event.code);
+              if (getCode) {
+                await _databaseRepository.updateUserDetails(
+                    userID: event.userID!,
+                    firstName: event.firstName!,
+                    lastName: event.lastName!,
+                    hkID: event.hkID!,
+                    email: event.email!,
+                    phnNumber: event.phnNumber!);
+                yield (ConfirmUpdateUserState());
+              } else {
+                yield (UserServiceError("Wrong Code"));
+              }
+            } on CodeMismatchException catch (e) {
+              log(e.toString());
+              yield UserServiceError(e.message);
+            }
+          } else {
+            log("EVENNNNNNNNNNNNNNNNNNNTTTTTTTTTTTTTTTT EMAILALLALA");
+            await _userConfigRepository.updateUser(event.email!);
+          }
+        }
       } catch (e) {
         yield UserDetailsError("unable to update User Details!");
       }

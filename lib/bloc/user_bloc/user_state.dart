@@ -25,6 +25,14 @@ class UserDetailsUpdating extends UserState {
   const UserDetailsUpdating();
 }
 
+class ConfirmUpdateUserState extends UserState {
+  const ConfirmUpdateUserState();
+}
+
+class CheckOTPScreen extends UserState {
+  const CheckOTPScreen();
+}
+
 class UserResetPasswordDone extends UserState {
   const UserResetPasswordDone();
 }

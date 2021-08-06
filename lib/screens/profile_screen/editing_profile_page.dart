@@ -8,7 +8,9 @@ import 'package:flux_payments/bloc/user_bloc/user_state.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/screens/profile_screen/settings_screen.dart';
+import 'package:flux_payments/screens/profile_screen/update_Profile_otp_screen.dart';
 import 'package:flux_payments/services/form_validator.dart';
+import 'package:flux_payments/services/login_req.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/error_snackBar.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
@@ -54,7 +56,7 @@ class _EditingProfilePageState extends State<EditingProfilePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: BlocListener<UserBloc, UserState>(
         listener: (ctx, state) {
-          if (state is UserDetailsUpdating) {
+          if (state is UserDetailsUpdating && widget.user!.email==_emailController.value.text) {
             showDialog(
                 context: ctx,
                 barrierDismissible: false,
@@ -68,9 +70,9 @@ class _EditingProfilePageState extends State<EditingProfilePage> {
             Navigator.of(ctx).pushReplacement(
               MaterialPageRoute(
                 builder: (_) => BlocProvider.value(
-                    value: userBloc,
-                    child: SettingsPage(
-                        user: User(
+                  value: userBloc,
+                  child: SettingsPage(
+                    user: User(
                       id: widget.user!.id,
                       uniqueID: "",
                       referralID: widget.user!.referralID,
@@ -80,7 +82,9 @@ class _EditingProfilePageState extends State<EditingProfilePage> {
                       mobileNumber: _phnNumberController.value.text,
                       refreeID: widget.user!.refreeID,
                       hkID: _hkIDController.value.text,
-                    ))),
+                    ),
+                  ),
+                ),
               ),
             );
             //  Navigator.popUntil(context, ModalRoute.withName('/login'));
@@ -259,16 +263,52 @@ class _EditingProfilePageState extends State<EditingProfilePage> {
             InkWell(
               onTap: () {
                 if (_profileFormKey.currentState!.validate()) {
-                  userBloc.add(
-                    UpdateUserDetails(
-                      userID: widget.user!.id,
-                      lastName: _lastNameController.value.text,
-                      firstName: _firstNameController.value.text,
-                      email: _emailController.value.text,
-                      phnNumber: _phnNumberController.value.text,
-                      hkID: _hkIDController.value.text,
-                    ),
-                  );
+                  log("${widget.user!.email} == ${_emailController.value.text}");
+                  ;
+                  if (widget.user!.email == _emailController.value.text) {
+                    userBloc.add(
+                      UpdateUserDetails(
+                        isDBChange: true,
+                        userID: widget.user!.id,
+                        lastName: _lastNameController.value.text,
+                        firstName: _firstNameController.value.text,
+                        email: _emailController.value.text,
+                        phnNumber: _phnNumberController.value.text,
+                        hkID: _hkIDController.value.text,
+                      ),
+                    );
+                  } else {
+                    userBloc.add(
+                      UpdateUserDetails(
+                        userID: widget.user!.id,
+                        lastName: _lastNameController.value.text,
+                        firstName: _firstNameController.value.text,
+                        email: _emailController.value.text,
+                        phnNumber: _phnNumberController.value.text,
+                        hkID: _hkIDController.value.text,
+                      ),
+                    );
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (_) => BlocProvider.value(
+                    //       value: userBloc,
+                    //       child: UpdateProfileOTPScreen(
+                    //         user: User(
+                    //           id: widget.user!.id,
+                    //           uniqueID: "",
+                    //           referralID: widget.user!.referralID,
+                    //           lastName: _lastNameController.value.text,
+                    //           firstName: _firstNameController.value.text,
+                    //           email: _emailController.value.text,
+                    //           mobileNumber: _phnNumberController.value.text,
+                    //           refreeID: widget.user!.refreeID,
+                    //           hkID: _hkIDController.value.text,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // );
+                  }
                   // user.copyWith(
                   //   id: widget.user!.id,
                   //   uniqueID: widget.user!.uniqueID,
