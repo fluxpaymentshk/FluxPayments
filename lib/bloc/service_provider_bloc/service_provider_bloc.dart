@@ -20,6 +20,9 @@ class ServiceProviderBloc
             await _databaseRepository.getServiceProviderCategoryList(
                 billCategoryID: event.billCategoryID);
 
+        print('qqqqqqqqqqqwwwwwwwww-----------------');
+        print(ServiceProviderList);
+
         yield LoadServiceProviderListState(
             ServiceProviderList: ServiceProviderList);
       } catch (e) {
@@ -33,8 +36,11 @@ class ServiceProviderBloc
         yield LoadingServiceCategoryListState();
         List<Map<String, String>> ServiceCategoryList =
             await _databaseRepository.getBillCategoryList();
-        yield LoadServiceProviderListState(
-            ServiceProviderList: ServiceCategoryList);
+
+        print('gfffffffffff');
+        print(ServiceCategoryList);
+        yield LoadServiceCategoryListState(
+            ServiceCategoryList: ServiceCategoryList);
       } catch (e) {
         yield ErrorServiceCategoryListState(
             message: 'cannot Load the categories of different Providers');
@@ -72,8 +78,11 @@ class ServiceProviderBloc
             holderName: event.holderName,
             userID: event.userID,
             billProviderID: event.billProviderID);
+        print('{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{[');
+        print(res);
+        print(res.contains('success'));
 
-        if (res == 'success') yield InsertedDetailsSuccessfully();
+        if (res.contains('success')) yield InsertedDetailsSuccessfully();
       } catch (e) {
         yield ErrorInsertDetails(
             message: 'Error occured while inserting Credit Card details');

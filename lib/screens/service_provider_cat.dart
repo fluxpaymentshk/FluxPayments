@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_event.dart';
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_state.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/screens/service_provider_page.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
 
 class ServiceProviderCategory extends StatefulWidget {
   final Map<String, dynamic> paymentData;
   final User user;
-  const ServiceProviderCategory(
-      {Key? key, required this.paymentData, required this.user})
-      : super(key: key);
+  final DatabaseRepository? databaseRepository;
+  const ServiceProviderCategory({
+    Key? key,
+    required this.paymentData,
+    required this.user,
+    required this.databaseRepository,
+  }) : super(key: key);
 
   @override
   _ServiceProviderCategoryState createState() =>
@@ -21,6 +30,9 @@ class ServiceProviderCategory extends StatefulWidget {
 class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
   @override
   Widget build(BuildContext context) {
+    var serviceProviderBloc = BlocProvider.of<ServiceProviderBloc>(context);
+    serviceProviderBloc.add(GetServiceCategoryDetails());
+
     return Scaffold(
       body: Flex(
         direction: Axis.vertical,
@@ -187,93 +199,158 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                 SizedBox(
                   height: SizeConfig.heightMultiplier * 1.5,
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.widthMultiplier * 5,
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          billCategories(
-                            "Food",
-                            "assets/images/food.svg",
-                            SizeConfig.heightMultiplier * 100,
-                            SizeConfig.widthMultiplier * 100,
-                            widget.user,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 3,
-                          ),
-                          billCategories(
-                            "Fashion",
-                            "assets/images/fashion.svg",
-                            SizeConfig.heightMultiplier * 100,
-                            SizeConfig.widthMultiplier * 100,
-                            widget.user,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 3,
-                          ),
-                          billCategories(
-                            "Fitness",
-                            "assets/images/fitness.svg",
-                            SizeConfig.heightMultiplier * 100,
-                            SizeConfig.widthMultiplier * 100,
-                            widget.user,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 3,
-                          ),
-                          billCategories(
-                            "Entertainment",
-                            "assets/images/entertainment.svg",
-                            SizeConfig.heightMultiplier * 100,
-                            SizeConfig.widthMultiplier * 100,
-                            widget.user,
-                          ),
-                          //   Spacer(),
-                        ],
-                      ),
-                      SizedBox(
-                        height: SizeConfig.widthMultiplier * 100 * 0.015,
-                      ),
-                      Row(
-                        children: [
-                          billCategories(
-                            "Food",
-                            "assets/images/food.svg",
-                            SizeConfig.heightMultiplier * 100,
-                            SizeConfig.widthMultiplier * 100,
-                            widget.user,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 3,
-                          ),
-                          billCategories(
-                            "Fashion",
-                            "assets/images/fashion.svg",
-                            SizeConfig.heightMultiplier * 100,
-                            SizeConfig.widthMultiplier * 100,
-                            widget.user,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 3,
-                          ),
-                          billCategories(
-                            "Fitness",
-                            "assets/images/fitness.svg",
-                            SizeConfig.heightMultiplier * 100,
-                            SizeConfig.widthMultiplier * 100,
-                            widget.user,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 3,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+
+                BlocBuilder<ServiceProviderBloc, ServiceProviderState>(
+                  buildWhen: (previous,current){
+                    if(current is LoadServiceCategoryListState||current is LoadingServiceCategoryListState||current is ErrorServiceCategoryListState)
+                    return true;
+                    else return false;
+                  }
+                  ,builder: (context, state) {
+                //     serviceProviderBloc.add(InsertCreditCardDetails(creditCardNumber:'121111', expiryDate: '00/11', bankName: 'ddd', cvv: '112', holderName: 'unknonwn', userID: 'flux-vid1', billProviderID: 'BillProvid_X102'));
+
+                    if (state is LoadingServiceCategoryListState)
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: AppTheme.main,
+                        ),
+                      );
+
+                    if (state is LoadServiceCategoryListState) {
+                      print('opppppppp');
+                      print(state.ServiceCategoryList);
+                      List<Map<String, String>> ServiceCategoryList =
+                          state.ServiceCategoryList;
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.widthMultiplier * 5,
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                // billCategories(
+                                //   "Food",
+                                //   "assets/images/food.svg",
+                                //   SizeConfig.heightMultiplier * 100,
+                                //   SizeConfig.widthMultiplier * 100,
+                                //   widget.user, width: null,
+                                // ),
+                                billCategories(
+                                    billCategoryID: ServiceCategoryList[0]
+                                            ['billCategoryID'] ??
+                                        '',
+                                    title: ServiceCategoryList[0]['name'] ?? '',
+                                    img: ServiceCategoryList[0]['icon'] ?? '',
+                                    height: SizeConfig.heightMultiplier * 100,
+                                    width: SizeConfig.widthMultiplier * 100,
+                                    user: widget.user,
+                                    serviceProviderBloc: serviceProviderBloc),
+                                SizedBox(
+                                  width: SizeConfig.widthMultiplier * 3,
+                                ),
+                                billCategories(
+                                    billCategoryID: ServiceCategoryList[1]
+                                            ['billCategoryID'] ??
+                                        '',
+                                    title: ServiceCategoryList[1]['name'] ?? '',
+                                    img: ServiceCategoryList[1]['icon'] ?? '',
+                                    height: SizeConfig.heightMultiplier * 100,
+                                    width: SizeConfig.widthMultiplier * 100,
+                                    user: widget.user,
+                                     serviceProviderBloc: serviceProviderBloc),
+                                SizedBox(
+                                  width: SizeConfig.widthMultiplier * 3,
+                                ),
+                                billCategories(
+                                    billCategoryID: ServiceCategoryList[2]
+                                            ['billCategoryID'] ??
+                                        '',
+                                    title: ServiceCategoryList[2]['name'] ?? '',
+                                    img: ServiceCategoryList[2]['icon'] ?? '',
+                                    height: SizeConfig.heightMultiplier * 100,
+                                    width: SizeConfig.widthMultiplier * 100,
+                                    user: widget.user,
+                                     serviceProviderBloc: serviceProviderBloc),
+                                SizedBox(
+                                  width: SizeConfig.widthMultiplier * 3,
+                                ),
+                                billCategories(
+                                    billCategoryID: ServiceCategoryList[3]
+                                            ['billCategoryID'] ??
+                                        '',
+                                    title: ServiceCategoryList[3]['name'] ?? '',
+                                    img: ServiceCategoryList[3]['icon'] ?? '',
+                                    height: SizeConfig.heightMultiplier * 100,
+                                    width: SizeConfig.widthMultiplier * 100,
+                                    user: widget.user,
+                                     serviceProviderBloc: serviceProviderBloc),
+                                //   Spacer(),
+                              ],
+                            ),
+                            SizedBox(
+                              height: SizeConfig.widthMultiplier * 100 * 0.015,
+                            ),
+                            Row(
+                              children: [
+                                billCategories(
+                                    billCategoryID: ServiceCategoryList[4]
+                                            ['billCategoryID'] ??
+                                        '',
+                                    title: ServiceCategoryList[4]['name'] ?? '',
+                                    img: ServiceCategoryList[4]['icon'] ?? '',
+                                    height: SizeConfig.heightMultiplier * 100,
+                                    width: SizeConfig.widthMultiplier * 100,
+                                    user: widget.user,
+                                     serviceProviderBloc: serviceProviderBloc),
+                                SizedBox(
+                                  width: SizeConfig.widthMultiplier * 3,
+                                ),
+                                billCategories(
+                                    billCategoryID: ServiceCategoryList[5]
+                                            ['billCategoryID'] ??
+                                        '',
+                                    title: ServiceCategoryList[5]['name'] ?? '',
+                                    img: ServiceCategoryList[5]['icon'] ?? '',
+                                    height: SizeConfig.heightMultiplier * 100,
+                                    width: SizeConfig.widthMultiplier * 100,
+                                    user: widget.user,
+                                     serviceProviderBloc: serviceProviderBloc),
+                                SizedBox(
+                                  width: SizeConfig.widthMultiplier * 3,
+                                ),
+                                billCategories(
+                                    billCategoryID: ServiceCategoryList[6]
+                                            ['billCategoryID'] ??
+                                        '',
+                                    title: ServiceCategoryList[6]['name'] ?? '',
+                                    img: ServiceCategoryList[6]['icon'] ?? '',
+                                    height: SizeConfig.heightMultiplier * 100,
+                                    width: SizeConfig.widthMultiplier * 100,
+                                    user: widget.user,
+                                     serviceProviderBloc: serviceProviderBloc),
+                                SizedBox(
+                                  width: SizeConfig.widthMultiplier * 3,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    if (state is ErrorServiceCategoryListState) {
+                      return Center(
+                        child: Text((state).message),
+                      );
+                    }
+                    if (state is ServiceProviderInitialState)
+                      return Center(
+                        child: Text('unable to fire event!'),
+                      );
+                    else {
+                      return Text(state.toString());
+                    }
+                  },
                 ),
 
                 SizedBox(
@@ -301,7 +378,13 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
   }
 
   Widget billCategories(
-      String title, String img, double height, double width, User user) {
+      {required String billCategoryID,
+      required String title,
+      required String img,
+      required double height,
+      required double width,
+      required User user,
+      required var serviceProviderBloc}) {
     return InkWell(
       child: Container(
         child: Column(
@@ -319,13 +402,14 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                 ],
               ),
               child: CircleAvatar(
-                child: SvgPicture.asset(
-                  img,
-                  //alignment: Alignment.center,
-                  height: height * 0.06,
-                  color: AppTheme.main,
-                  fit: BoxFit.scaleDown,
-                ),
+                backgroundImage: NetworkImage(img),
+                // SvgPicture.asset(
+                //   img,
+                //   //alignment: Alignment.center,
+                //   height: height * 0.06,
+                //   color: AppTheme.main,
+                //   fit: BoxFit.scaleDown,
+                // ),
                 backgroundColor: AppTheme.offWhite,
                 radius: height * 0.04,
               ),
@@ -348,7 +432,11 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
       onTap: () {
         Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) {
-          return ServiceProviderPage(serviceName: 'Credit Card', user: user);
+          return BlocProvider<ServiceProviderBloc>.value(
+           value:serviceProviderBloc,
+            child: ServiceProviderPage(
+                categoryName: title, categoryID: billCategoryID, user: user),
+          );
           // return GraphScreen(graphData: widget.mp, user: widget.user);
         }));
       },

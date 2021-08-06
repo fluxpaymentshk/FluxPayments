@@ -292,8 +292,7 @@ packages:
       name: flutter_chat_ui
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "1.1.9"
+    version: "1.1.5"
   flutter_credit_card:
     dependency: "direct main"
     description:
@@ -301,9 +300,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-=======
-    version: "1.1.5"
->>>>>>> 9fcc8902bd4418be905bfd2ff1a118c3ea3fae41
   flutter_dotenv:
     dependency: "direct main"
     description:
