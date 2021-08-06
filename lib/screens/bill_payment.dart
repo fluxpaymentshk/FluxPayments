@@ -24,6 +24,7 @@ import 'package:flux_payments/bloc/pending_service_bloc/pending_service_state.da
 import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_bloc.dart';
 import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_event.dart';
 import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_state.dart';
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
@@ -95,7 +96,7 @@ class _BillPaymentState extends State<BillPayment> {
 
     var pendingServiceBloc = BlocProvider.of<PendingServiceBloc>(context);
     var recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
-
+    var serviceProviderBloc = BlocProvider.of<ServiceProviderBloc>(context);
     final DatabaseRepository databaseRepo = DatabaseRepository();
     bannerBloc.add(GetBannerEvent());
     userBloc.add(GetUserDetails(userID: 'flux-vid1'));
@@ -309,13 +310,13 @@ class _BillPaymentState extends State<BillPayment> {
                                     child: ListView.builder(
                                         //  itemCount:(fav.length-5)~/5,
                                         itemCount: 1,
-                                     //   itemExtent: 40,
+                                        //   itemExtent: 40,
                                         itemBuilder: (context, index) {
                                           print(
                                               "${(index + 1) * 5}  __##__ ${min(fav.length, 5)}");
 
                                           return favContainer((index + 1) * 5,
-                                              min(fav.length,(index + 2) * 5));
+                                              min(fav.length, (index + 2) * 5));
                                         }),
                                   ),
                                   //##################################################
@@ -665,8 +666,15 @@ class _BillPaymentState extends State<BillPayment> {
                             onDoubleTap: () {
                               Navigator.push(context, MaterialPageRoute(
                                   builder: (BuildContext context) {
-                                return ServiceProviderCategory(
-                                    paymentData: {}, user: user);
+                                return BlocProvider.value(
+                                  value: serviceProviderBloc,
+                                  child: ServiceProviderCategory(
+                                    paymentData: {},
+                                    user: user,
+                                    databaseRepository:
+                                        widget.databaseRepository,
+                                  ),
+                                );
                                 // return GraphScreen(graphData: widget.mp, user: widget.user);
                               }));
                             },

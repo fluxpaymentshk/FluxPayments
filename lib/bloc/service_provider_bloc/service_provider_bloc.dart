@@ -20,6 +20,9 @@ class ServiceProviderBloc
             await _databaseRepository.getServiceProviderCategoryList(
                 billCategoryID: event.billCategoryID);
 
+        print('qqqqqqqqqqqwwwwwwwww-----------------');
+        print(ServiceProviderList);
+
         yield LoadServiceProviderListState(
             ServiceProviderList: ServiceProviderList);
       } catch (e) {
@@ -33,8 +36,11 @@ class ServiceProviderBloc
         yield LoadingServiceCategoryListState();
         List<Map<String, String>> ServiceCategoryList =
             await _databaseRepository.getBillCategoryList();
-        yield LoadServiceProviderListState(
-            ServiceProviderList: ServiceCategoryList);
+
+        print('gfffffffffff');
+        print(ServiceCategoryList);
+        yield LoadServiceCategoryListState(
+            ServiceCategoryList: ServiceCategoryList);
       } catch (e) {
         yield ErrorServiceCategoryListState(
             message: 'cannot Load the categories of different Providers');
@@ -55,7 +61,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Bank Details');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Bank Details');
       }
     }
 
@@ -74,7 +81,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Credit Card details');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Credit Card details');
       }
     }
 
@@ -92,7 +100,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Electricity Details');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Electricity Details');
       }
     }
 
@@ -110,7 +119,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Insurance details!');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Insurance details!');
       }
     }
 
@@ -129,7 +139,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Tax Details!');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Tax Details!');
       }
     }
 
@@ -147,7 +158,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Telecom details!');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Telecom details!');
       }
     }
   }
