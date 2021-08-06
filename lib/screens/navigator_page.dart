@@ -170,10 +170,11 @@ class _NavigatorPageState extends State<NavigatorPage> {
             elevation: 3,
             shape: CircleBorder(),
             child: CircleAvatar(
+                radius: 18,
               child: ImageIcon(
                 AssetImage("assets/icons/my_bills.png"),
                 color: Color(0xff7041EE),
-                size: 20,
+                size: 16,
               ),
               backgroundColor: Colors.white,
             ),
@@ -188,10 +189,11 @@ class _NavigatorPageState extends State<NavigatorPage> {
             elevation: 3,
             shape: CircleBorder(),
             child: CircleAvatar(
+                radius: 18,
               child: ImageIcon(
                 AssetImage("assets/icons/home.png"),
                 color: Color(0xff7041EE),
-                size: 20,
+                size: 16,
               ),
               backgroundColor: Colors.white,
             ),
@@ -206,10 +208,11 @@ class _NavigatorPageState extends State<NavigatorPage> {
             elevation: 3,
             shape: CircleBorder(),
             child: CircleAvatar(
+              radius: 18,
               child: ImageIcon(
                 AssetImage("assets/icons/favorites.png"),
                 color: Color(0xff7041EE),
-                size: 20,
+                size: 16,
               ),
               backgroundColor: Colors.white,
             ),

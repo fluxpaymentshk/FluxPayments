@@ -1329,7 +1329,7 @@ class DatabaseLambdaService {
     try {
       result = await lambda.callLambda(
           'aurora-serverless-function-insertBank', <String, dynamic>{
-        "acHolderName": acHolderName,
+        "accHolderName": acHolderName,
         "accNumber": accNumber,
         "ifscCode": ifscCode,
         "userID": userID,

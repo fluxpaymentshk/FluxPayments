@@ -36,7 +36,7 @@ class _AddBankState extends State<AddBank> {
 
   final ifscController = TextEditingController();
   final nameController = TextEditingController();
-  final acNumberController=TextEditingController();
+  final acNumberController = TextEditingController();
 
   @override
   void dispose() {
@@ -85,23 +85,21 @@ class _AddBankState extends State<AddBank> {
                 child: Column(
                   children: [
                     subheading('Input information'),
-                 
                     appTextField(
                         text: 'Account Holder Name',
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
                         mycontroller: nameController),
-                         appTextField(
+                    appTextField(
                         text: 'Account Number',
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
                         mycontroller: acNumberController),
-                           appTextField(
+                    appTextField(
                         text: 'IFSC Code',
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
                         mycontroller: ifscController),
-                   
                   ],
                 ),
               ),
@@ -130,14 +128,16 @@ class _AddBankState extends State<AddBank> {
                         // });
                         // print(cardHolderNumberController.text);
 
-                       
+                        print(nameController.text);
+                        print('vvvvvvvvvvvvvvvvvvvvv');
 
                         serviceProviderBloc.add(InsertBankDetails(
-                           
-                           
                             userID: 'flux-vid1',
-                            billProviderID: widget.billProviderID,  acHolderName: nameController.text, 
-                        accNumber: acNumberController.text,ifscCode:ifscController.text, bankName: widget.name));
+                            billProviderID: widget.billProviderID,
+                            acHolderName: nameController.text,
+                            accNumber: acNumberController.text,
+                            ifscCode: ifscController.text,
+                            bankName: widget.name));
 
                         //   e = 0;
                         //@@@@@@@@@@@@@@@@@@@@@@@@@@
