@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
@@ -7,8 +9,14 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/screens/add_credit_card.dart';
+import 'package:flux_payments/screens/add_tax.dart';
+import 'package:flux_payments/screens/provider_added.dart';
 import 'package:flux_payments/widgets/recent_payment_tile.dart';
 import 'package:flux_payments/widgets/service_provider_tile.dart';
+
+import 'add_bank.dart';
+import 'add_telecom.dart';
+import 'add_electricity_bill.dart';
 
 class ServiceProviderPage extends StatefulWidget {
   final User user;
@@ -215,7 +223,11 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                               Radius.circular(SizeConfig.heightMultiplier * 2)),
                           border: Border.all(color: AppTheme.main, width: 1.0),
                         ),
-                        height: SizeConfig.heightMultiplier * 55,
+                        height: min(
+                            SizeConfig.heightMultiplier *
+                                6 *
+                                ServiceProviderList.length,
+                            SizeConfig.heightMultiplier * 6 * 10),
                         child: ListView.separated(
                             itemBuilder: (context, index) {
                               return
@@ -230,16 +242,20 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                                   //  id:ServiceProviderList[index]['billProviderID']??'',
                                   //  amount: 100,
                                 ),
-                                onDoubleTap: () {
+                                onTap: () {
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (BuildContext context) {
+                                //    return ProviderAdded();
                                     return BlocProvider<
                                         ServiceProviderBloc>.value(
                                       value: serviceProvierBloc,
                                       child:
-                                          //  ServiceProviderPage(
-                                          //     categoryName: title, categoryID: billCategoryID, user: user),
-                                          AddCreditCard(
+
+                                      //     ServiceProviderPage(categoryName: title, categoryID: billCategoryID, user: user),
+                                           (ServiceProviderList[index]
+                                                 ['name']!.contains('credit card')==true)
+                                           ?
+                                      AddCreditCard(
                                         name: ServiceProviderList[index]
                                                 ['name'] ??
                                             '',
@@ -250,8 +266,73 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                                             ServiceProviderList[index]
                                                     ['billProviderID'] ??
                                                 '',
-                                      ),
+                                      )
+                                      :
+
+                                       (ServiceProviderList[index]
+                                                 ['name']!.contains('tax'))
+                                     ?
+                                       AddTax(
+                                        name: ServiceProviderList[index]
+                                                ['name'] ??
+                                            '',
+                                        logo: ServiceProviderList[index]
+                                                ['logo'] ??
+                                            '',
+                                        billProviderID:
+                                            ServiceProviderList[index]
+                                                    ['billProviderID'] ??
+                                                '',
+                                        billCategoryID:widget.categoryID,
+                                      )
+
+                                         :(ServiceProviderList[index]
+                                                 ['name']!.contains('telecom'))
+                                             ?
+
+                                           AddTelecom(
+                                        name: ServiceProviderList[index]
+                                                ['name'] ??
+                                            '',
+                                        logo: ServiceProviderList[index]
+                                                ['logo'] ??
+                                            '',
+                                        billProviderID:
+                                            ServiceProviderList[index]
+                                                    ['billProviderID'] ??
+                                                '',
+                                                billCategoryID:widget.categoryID,
+                                      )
+                                            :(ServiceProviderList[index]
+                                                ['name']!.contains('electricitybill'))
+                                             ?
+                                            AddElectricityBill(
+
+                                        name: ServiceProviderList[index]
+                                                ['name'] ??
+                                            '',
+                                        logo: ServiceProviderList[index]
+                                                ['logo'] ??
+                                            '',
+                                        billProviderID:
+                                            ServiceProviderList[index]
+                                                    ['billProviderID'] ??
+                                                '',
+                                                billCategoryID:widget.categoryID,
+                                      )
+                                       :
+                                    // (ServiceProviderList[index]
+                                    //  ['name']!.contains('bank'))
+
+                                            AddBank(
+                                        name: ServiceProviderList[index]
+                                                ['name'] ??'',logo: ServiceProviderList[index] ['logo'] ??'',billProviderID: ServiceProviderList[index]['billProviderID'] ??'',
+                                                billCategoryID:widget.categoryID,
+                                      )
+                                      ,
+
                                     );
+
                                     // return GraphScreen(graphData: widget.mp, user: widget.user);
                                   }));
                                 },

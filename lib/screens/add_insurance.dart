@@ -14,38 +14,37 @@ import 'package:flux_payments/widgets/logo_with_back_button.dart';
 import 'package:flux_payments/widgets/service_provider_tile.dart';
 import 'package:flux_payments/widgets/subheading.dart';
 
-class AddCreditCard extends StatefulWidget {
-  final String name, logo, billProviderID;
-  const AddCreditCard(
+class AddInsurance extends StatefulWidget {
+  final String name, logo, billProviderID, billCategoryID;
+  const AddInsurance(
       {required this.name,
       required this.logo,
+      required this.billCategoryID,
       required this.billProviderID,
       Key? key})
       : super(key: key);
 
   @override
-  _AddCreditCardState createState() => _AddCreditCardState();
+  _AddInsuranceState createState() => _AddInsuranceState();
 }
 
-class _AddCreditCardState extends State<AddCreditCard> {
-  final nameController = TextEditingController();
+class _AddInsuranceState extends State<AddInsurance> {
   var e = 1;
 
   bool isSubmitted = false;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController cardNumberController = TextEditingController(),
-      cardHolderNumberController = TextEditingController(),
-      validDateController = TextEditingController(),
-      cvvNumberController = TextEditingController();
+
+  final phNumberController = TextEditingController();
+  final nameController = TextEditingController();
+  final acNumberController=TextEditingController();
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    cardHolderNumberController.dispose();
-    cardNumberController.dispose();
-    cvvNumberController.dispose();
-    validDateController.dispose();
-
+    phNumberController.dispose();
+    nameController.dispose();
+    acNumberController.dispose();
     // nameCon
   }
 
@@ -87,30 +86,21 @@ class _AddCreditCardState extends State<AddCreditCard> {
                   children: [
                     subheading('Input information'),
                     appTextField(
-                        text: 'Card Number',
+                        text: 'Phone Number',
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
-                        mycontroller: cardNumberController),
+                        mycontroller: phNumberController),
                     appTextField(
-                        text: 'Card Holder Name',
+                        text: 'Account Holder Name',
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
-                        mycontroller: cardHolderNumberController),
-                    Row(
-                      children: [
-                        appTextField(
-                            text: 'Valid Date',
-                            height: SizeConfig.heightMultiplier * 6,
-                            width: SizeConfig.widthMultiplier * 30,
-                            mycontroller: validDateController),
-                        Spacer(),
-                        appTextField(
-                            text: 'CVV Number',
-                            height: SizeConfig.heightMultiplier * 6,
-                            width: SizeConfig.widthMultiplier * 30,
-                            mycontroller: cvvNumberController),
-                      ],
-                    ),
+                        mycontroller: nameController),
+                         appTextField(
+                        text: 'Account Number',
+                        height: SizeConfig.heightMultiplier * 6,
+                        width: SizeConfig.widthMultiplier * 90.3,
+                        mycontroller: acNumberController),
+                   
                   ],
                 ),
               ),
@@ -137,18 +127,17 @@ class _AddCreditCardState extends State<AddCreditCard> {
                         // setState(() {
                         //   isSubmitted = true;
                         // });
-                        print(cardHolderNumberController.text);
+                        // print(cardHolderNumberController.text);
 
-                        serviceProviderBloc.add(InsertCreditCardDetails(
-                            creditCardNumber: cardNumberController.text,
-                            expiryDate: validDateController.text,
-                            bankName: widget.name,
-                            cvv: cvvNumberController.text,
-                            holderName: cardHolderNumberController.text,
+                       
+
+                        serviceProviderBloc.add(InsertInsuranceDetails(
+                           
+                            billCategoryID: widget.billCategoryID,
                             userID: 'flux-vid1',
-                            billProviderID: widget.billProviderID));
+                            billProviderID: widget.billProviderID, phNumber: phNumberController.text, acHolderName: nameController.text, acNumber: acNumberController.text));
 
-                     //   e = 0;
+                        //   e = 0;
                         //@@@@@@@@@@@@@@@@@@@@@@@@@@
 
                         // setState(() {

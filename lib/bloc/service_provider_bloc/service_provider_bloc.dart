@@ -59,7 +59,7 @@ class ServiceProviderBloc
             userID: event.userID,
             billProviderID: event.billProviderID);
 
-        if (res == 'success') yield InsertedDetailsSuccessfully();
+        if (res.contains('success')) yield InsertedDetailsSuccessfully();
       } catch (e) {
         yield ErrorInsertDetails(
             message: 'Error occured while inserting Bank Details');
@@ -101,7 +101,7 @@ class ServiceProviderBloc
             userID: event.userID,
             billProviderID: event.billProviderID);
 
-        if (res == 'success') yield InsertedDetailsSuccessfully();
+        if (res.contains('success')) yield InsertedDetailsSuccessfully();
       } catch (e) {
         yield ErrorInsertDetails(
             message: 'Error occured while inserting Electricity Details');
@@ -120,7 +120,7 @@ class ServiceProviderBloc
             userID: event.userID,
             billProviderID: event.billProviderID);
 
-        if (res == 'success') yield InsertedDetailsSuccessfully();
+        if (res.contains('success')) yield InsertedDetailsSuccessfully();
       } catch (e) {
         yield ErrorInsertDetails(
             message: 'Error occured while inserting Insurance details!');
@@ -140,7 +140,9 @@ class ServiceProviderBloc
             userID: event.userID,
             billProviderID: event.billProviderID);
 
-        if (res == 'success') yield InsertedDetailsSuccessfully();
+        print('pggggggggggg');
+        print(res.contains('success'));
+        if (res.contains('success')) yield InsertedDetailsSuccessfully();
       } catch (e) {
         yield ErrorInsertDetails(
             message: 'Error occured while inserting Tax Details!');
@@ -159,7 +161,7 @@ class ServiceProviderBloc
             userID: event.userID,
             billProviderID: event.billProviderID);
 
-        if (res == 'success') yield InsertedDetailsSuccessfully();
+        if (res.contains('success')) yield InsertedDetailsSuccessfully();
       } catch (e) {
         yield ErrorInsertDetails(
             message: 'Error occured while inserting Telecom details!');

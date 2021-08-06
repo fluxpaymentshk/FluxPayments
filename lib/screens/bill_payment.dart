@@ -171,9 +171,12 @@ class _BillPaymentState extends State<BillPayment> {
                       //  decoration: BoxDecoration(color: AppTheme.main),
                       child: Row(
                         children: [
-                          Text(
-                            'Hello ${state.user.firstName}!',
-                            style: AppTheme.display1,
+                          Padding(
+                            padding:EdgeInsets.all(SizeConfig.heightMultiplier*2),
+                            child: Text(
+                              'Hello ${state.user.firstName}!',
+                              style: AppTheme.display1,
+                            ),
                           ),
                           Spacer(),
                           Padding(
@@ -190,6 +193,7 @@ class _BillPaymentState extends State<BillPayment> {
                         ],
                       ),
                     ),
+                 
                     SizedBox(
                       height: SizeConfig.heightMultiplier * 2,
                     ),
@@ -298,93 +302,110 @@ class _BillPaymentState extends State<BillPayment> {
                           }
                           return
                               //fav.length == 0 ? Text("Please mark some favorites !") :
-                              StatefulBuilder(
-                            builder: (context, setState) => AnimatedContainer(
-                              duration:Duration(milliseconds:300),
-                              //height: fav.length > 5 && loadAllFav ?SizeConfig.heightMultiplier*100* 0.318 :SizeConfig.heightMultiplier*100* 0.21,
-                              height: fav.length > 5 && loadAllFav
-                                  ? SizeConfig.heightMultiplier * 100 * 0.45*((fav.length-5)~/5+1)
-                                  : SizeConfig.heightMultiplier * 100 * 0.23,
-                              padding: EdgeInsets.fromLTRB(
-                                  SizeConfig.widthMultiplier * 100 * 0.01,
-                                  SizeConfig.heightMultiplier * 100 * 0.016,
-                                  SizeConfig.widthMultiplier * 100 * 0.01,
-                                  SizeConfig.heightMultiplier * 100 * 0.01),
-                              decoration: BoxDecoration(
-                                color: AppTheme.offWhite,
-                                borderRadius: BorderRadius.circular(
-                                    SizeConfig.widthMultiplier * 100 * 0.03),
-                              ),
-                              child: Column(
-                                children: [
-                                  favContainer(0, min(fav.length, 5)),
-                                  ExpandWidget(
-                                    expand: loadAllFav,
-                                    child: Container(
-                                        height:  SizeConfig.heightMultiplier * 100 * 0.2*((fav.length-5)~/5+1),
-                                        child: ListView.builder(
-                                              //  itemCount:(fav.length-5)~/5,
-                                              itemCount:(fav.length-5)~/5+1,
-                                              //   itemExtent: 40,
-                                              itemBuilder: (context, index) {
-                                                dev.log("${(fav.length)~/5}");
-                                                print(
-                                                    "${(index + 1) * 5}  __##__ ${min(fav.length, 5)}");
-                                    
-                                                return favContainer(
-                                                    (index + 1) * 5,
-                                                    min(fav.length,
-                                                        (index + 2) * 5));
-                                              }),
+                              InkWell(
+                                child: StatefulBuilder(
+                                                          builder: (context, setState) => AnimatedContainer(
+                                duration:Duration(milliseconds:300),
+                                //height: fav.length > 5 && loadAllFav ?SizeConfig.heightMultiplier*100* 0.318 :SizeConfig.heightMultiplier*100* 0.21,
+                                height: fav.length > 5 && loadAllFav
+                                    ? SizeConfig.heightMultiplier * 100 * 0.45*((fav.length-5)~/5+1)
+                                    : SizeConfig.heightMultiplier * 100 * 0.23,
+                                padding: EdgeInsets.fromLTRB(
+                                    SizeConfig.widthMultiplier * 100 * 0.01,
+                                    SizeConfig.heightMultiplier * 100 * 0.016,
+                                    SizeConfig.widthMultiplier * 100 * 0.01,
+                                    SizeConfig.heightMultiplier * 100 * 0.01),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.offWhite,
+                                  borderRadius: BorderRadius.circular(
+                                      SizeConfig.widthMultiplier * 100 * 0.03),
+                                ),
+                                child: Column(
+                                  children: [
+                                    favContainer(0, min(fav.length, 5)),
+                                    ExpandWidget(
+                                      expand: loadAllFav,
+                                      child: Container(
+                                          height:  SizeConfig.heightMultiplier * 100 * 0.2*((fav.length-5)~/5+1),
+                                          child: ListView.builder(
+                                                //  itemCount:(fav.length-5)~/5,
+                                                itemCount:(fav.length-5)~/5+1,
+                                                //   itemExtent: 40,
+                                                itemBuilder: (context, index) {
+                                                  dev.log("${(fav.length)~/5}");
+                                                  print(
+                                                      "${(index + 1) * 5}  __##__ ${min(fav.length, 5)}");
+                                      
+                                                  return favContainer(
+                                                      (index + 1) * 5,
+                                                      min(fav.length,
+                                                          (index + 2) * 5));
+                                                }),
+                                      ),
+                                      //##################################################
+                                      //   (fav.length >= 5 && loadAllFav)
+                                      //       ? favContainer(5, min(fav.length, 10))
+                                      //       : null,
                                     ),
-                                    //##################################################
-                                    //   (fav.length >= 5 && loadAllFav)
-                                    //       ? favContainer(5, min(fav.length, 10))
-                                    //       : null,
+                                    // SizedBox(
+                                    //   height: SizeConfig.heightMultiplier *
+                                    //       100 *
+                                    //       0.01,
+                                    // ),
+                                    // if (fav.length >= 5 && loadAllFav)
+                                    //   favContainer(5, min(fav.length, 10)),
+                                    IconButton(
+                                        onPressed: () {
+                                          print(fav.length);
+                                          print(
+                                              "Icon button is presseddddddddddddddddddddddddddd");
+                                          setState(() {
+                                            loadAllFav = !loadAllFav;
+                                          });
+                                        },
+                                        icon: loadAllFav
+                                            ? Icon(Icons.file_upload)
+                                            : Icon(Icons.file_download)),
+                                    //     favContainer(0, min(fav.length, 5)),
+                                    //     SizedBox(
+                                    //       height:SizeConfig.heightMultiplier*100* 0.01,
+                                    //     ),
+                                    //     if (fav.length >= 5 && loadAllFav)
+                                    //       favContainer(5, min(fav.length, 10)),
+                                    //          IconButton(
+                                    // onPressed: () {
+                                    //   setState(() {
+                                    //     loadAllFav = !loadAllFav;
+                                    //   });
+                                    // },
+                                    // icon: Icon(loadAllFav
+                                    //     ? Icons.upload
+                                    //     : Icons.download)),
+                                    // IconButton(onPressed: (){
+                                    //   setState(() {
+                                    //     loadAllFav =! loadAllFav;
+                                    //   });
+                                    // }, icon: Icon(Icons.file_upload))
+                                  ],
+                                ),
+                                                          ),
+                                                        ),
+                             onDoubleTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return BlocProvider.value(
+                                  value: serviceProviderBloc,
+                                  child: ServiceProviderCategory(
+                                    paymentData: {},
+                                    user: user,
+                                    databaseRepository:
+                                        widget.databaseRepository,
                                   ),
-                                  // SizedBox(
-                                  //   height: SizeConfig.heightMultiplier *
-                                  //       100 *
-                                  //       0.01,
-                                  // ),
-                                  // if (fav.length >= 5 && loadAllFav)
-                                  //   favContainer(5, min(fav.length, 10)),
-                                  IconButton(
-                                      onPressed: () {
-                                        print(fav.length);
-                                        print(
-                                            "Icon button is presseddddddddddddddddddddddddddd");
-                                        setState(() {
-                                          loadAllFav = !loadAllFav;
-                                        });
-                                      },
-                                      icon: loadAllFav
-                                          ? Icon(Icons.file_upload)
-                                          : Icon(Icons.file_download)),
-                                  //     favContainer(0, min(fav.length, 5)),
-                                  //     SizedBox(
-                                  //       height:SizeConfig.heightMultiplier*100* 0.01,
-                                  //     ),
-                                  //     if (fav.length >= 5 && loadAllFav)
-                                  //       favContainer(5, min(fav.length, 10)),
-                                  //          IconButton(
-                                  // onPressed: () {
-                                  //   setState(() {
-                                  //     loadAllFav = !loadAllFav;
-                                  //   });
-                                  // },
-                                  // icon: Icon(loadAllFav
-                                  //     ? Icons.upload
-                                  //     : Icons.download)),
-                                  // IconButton(onPressed: (){
-                                  //   setState(() {
-                                  //     loadAllFav =! loadAllFav;
-                                  //   });
-                                  // }, icon: Icon(Icons.file_upload))
-                                ],
-                              ),
-                            ),
-                          );
+                                );
+                                // return GraphScreen(graphData: widget.mp, user: widget.user);
+                              }));
+                            },
+                              );
                         } else {
                           return Container(
                             child: Text("No Favorites found !"
@@ -681,21 +702,7 @@ class _BillPaymentState extends State<BillPayment> {
                                 ],
                               ),
                             ),
-                            onDoubleTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                return BlocProvider.value(
-                                  value: serviceProviderBloc,
-                                  child: ServiceProviderCategory(
-                                    paymentData: {},
-                                    user: user,
-                                    databaseRepository:
-                                        widget.databaseRepository,
-                                  ),
-                                );
-                                // return GraphScreen(graphData: widget.mp, user: widget.user);
-                              }));
-                            },
+                           
                           );
                         } else if (state is ErrorRecentPaymentState)
                           return Container(child: Text(state.message));

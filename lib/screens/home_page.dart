@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      height: SizeConfig.heightMultiplier * 8,
+                      height: SizeConfig.heightMultiplier * 2.4,
                     ),
                     Container(
                       height: SizeConfig.heightMultiplier * 12,
@@ -195,13 +195,17 @@ class _HomePageState extends State<HomePage> {
                       //  decoration: BoxDecoration(color: AppTheme.main),
                       child: Row(
                         children: [
-                          Text(
-                            'Hello ${state.user.firstName}!',
-                            style: AppTheme.display1,
+                          Padding(
+                            padding:EdgeInsets.all(SizeConfig.heightMultiplier*2),
+                            child: Text(
+                              'Hello ${state.user.firstName}!',
+                              style: AppTheme.display1,
+                            ),
                           ),
                           Spacer(),
                           Padding(
-                            padding: const EdgeInsets.all(9.0),
+                             padding: EdgeInsets.all(
+                                SizeConfig.heightMultiplier * 2.0),
                             child: InkWell(
                               onTap: () {
                                 log("Tap");

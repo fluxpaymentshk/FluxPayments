@@ -14,37 +14,39 @@ import 'package:flux_payments/widgets/logo_with_back_button.dart';
 import 'package:flux_payments/widgets/service_provider_tile.dart';
 import 'package:flux_payments/widgets/subheading.dart';
 
-class AddCreditCard extends StatefulWidget {
-  final String name, logo, billProviderID;
-  const AddCreditCard(
+class AddTax extends StatefulWidget {
+  final String name, logo, billProviderID, billCategoryID;
+  const AddTax(
       {required this.name,
       required this.logo,
+      required this.billCategoryID,
       required this.billProviderID,
       Key? key})
       : super(key: key);
 
   @override
-  _AddCreditCardState createState() => _AddCreditCardState();
+  _AddTaxState createState() => _AddTaxState();
 }
 
-class _AddCreditCardState extends State<AddCreditCard> {
+class _AddTaxState extends State<AddTax> {
   final nameController = TextEditingController();
   var e = 1;
 
   bool isSubmitted = false;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController cardNumberController = TextEditingController(),
-      cardHolderNumberController = TextEditingController(),
-      validDateController = TextEditingController(),
-      cvvNumberController = TextEditingController();
+
+  final businessRegistrationFeeController = TextEditingController();
+  final shroffAcNumberController = TextEditingController(),
+      trcAcNumberController = TextEditingController(),
+      applicantNameController = TextEditingController();
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    cardHolderNumberController.dispose();
-    cardNumberController.dispose();
-    cvvNumberController.dispose();
-    validDateController.dispose();
+    businessRegistrationFeeController.dispose();
+    shroffAcNumberController.dispose();
+    trcAcNumberController.dispose();
+    applicantNameController.dispose();
 
     // nameCon
   }
@@ -87,30 +89,26 @@ class _AddCreditCardState extends State<AddCreditCard> {
                   children: [
                     subheading('Input information'),
                     appTextField(
-                        text: 'Card Number',
+                        text: 'Applicant Name',
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
-                        mycontroller: cardNumberController),
+                        mycontroller: applicantNameController),
                     appTextField(
-                        text: 'Card Holder Name',
+                        text: 'Shroff Account Number',
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
-                        mycontroller: cardHolderNumberController),
-                    Row(
-                      children: [
-                        appTextField(
-                            text: 'Valid Date',
-                            height: SizeConfig.heightMultiplier * 6,
-                            width: SizeConfig.widthMultiplier * 30,
-                            mycontroller: validDateController),
-                        Spacer(),
-                        appTextField(
-                            text: 'CVV Number',
-                            height: SizeConfig.heightMultiplier * 6,
-                            width: SizeConfig.widthMultiplier * 30,
-                            mycontroller: cvvNumberController),
-                      ],
-                    ),
+                        mycontroller: shroffAcNumberController),
+                    appTextField(
+                        text: ' TRC Account Number',
+                        height: SizeConfig.heightMultiplier * 6,
+                        width: SizeConfig.widthMultiplier * 90.3,
+                        mycontroller: trcAcNumberController),
+                    //   Spacer(),
+                    appTextField(
+                        text: ' Business Registration Fee',
+                        height: SizeConfig.heightMultiplier * 6,
+                        width: SizeConfig.widthMultiplier * 45,
+                        mycontroller: businessRegistrationFeeController),
                   ],
                 ),
               ),
@@ -137,18 +135,34 @@ class _AddCreditCardState extends State<AddCreditCard> {
                         // setState(() {
                         //   isSubmitted = true;
                         // });
-                        print(cardHolderNumberController.text);
+                        // print(cardHolderNumberController.text);
 
-                        serviceProviderBloc.add(InsertCreditCardDetails(
-                            creditCardNumber: cardNumberController.text,
-                            expiryDate: validDateController.text,
-                            bankName: widget.name,
-                            cvv: cvvNumberController.text,
-                            holderName: cardHolderNumberController.text,
+                        // serviceProviderBloc.add(InsertCreditCardDetails(
+                        //     creditCardNumber: cardNumberController.text,
+                        //     expiryDate: validDateController.text,
+                        //     bankName: widget.name,
+                        //     cvv: cvvNumberController.text,
+                        //     holderName: cardHolderNumberController.text,
+                        //     userID: 'flux-vid1',
+                        //     billProviderID: widget.billProviderID));
+                        print('pccccc');
+                        print(businessRegistrationFeeController.text);
+                        print(applicantNameController.text);
+                        print(trcAcNumberController.text);
+                        print(widget.billCategoryID);
+                        print(widget.billProviderID);
+
+                        serviceProviderBloc.add(InsertTaxDetails(
+                            businessRegistrationFee: double.parse(
+                                businessRegistrationFeeController.text),
+                            shroffAcNumber: shroffAcNumberController.text,
+                            trcAcNumber: trcAcNumberController.text,
+                            applicantName: applicantNameController.text,
+                            billCategoryID: widget.billCategoryID,
                             userID: 'flux-vid1',
                             billProviderID: widget.billProviderID));
 
-                     //   e = 0;
+                        //   e = 0;
                         //@@@@@@@@@@@@@@@@@@@@@@@@@@
 
                         // setState(() {
