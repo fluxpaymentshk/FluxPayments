@@ -15,6 +15,13 @@ abstract class DatabaseBaseRepository {
       {required int? page,
       required List<Reward> favorites,
       required String? userID});
+  Future<void> updateUserDetails(
+      {required String userID,
+      required String firstName,
+      required String lastName,
+      required String hkID,
+      required String email,
+      required String phnNumber});
 
   Future<List<Map<String, String>>> getServiceProviderCategoryList(
       {required String? billCategoryID});
@@ -151,6 +158,27 @@ class DatabaseRepository extends DatabaseBaseRepository {
       required List<Reward> favorites,
       required String? userID}) async {
     return await _databaseLambdaService.getUserFavoritesList(userID: userID);
+  }
+
+  @override
+  Future<void> updateUserDetails(
+      {required String userID,
+      required String firstName,
+      required String lastName,
+      required String hkID,
+      required String email,
+      required String phnNumber}) async {
+    try {
+      await _databaseLambdaService.updateUserDetails(
+          userID: userID,
+          firstName: firstName,
+          lastName: lastName,
+          hkID: hkID,
+          email: email,
+          phnNumber: phnNumber);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override

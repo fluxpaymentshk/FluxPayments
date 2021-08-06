@@ -15,7 +15,6 @@ import 'package:tuple/tuple.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'home_page.dart';
-import 'profile_page.dart';
 
 class NavigatorPage extends StatefulWidget {
   static const routeName = '/nav';

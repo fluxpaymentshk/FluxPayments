@@ -34,7 +34,6 @@ class _CouponsListState extends State<CouponsList> {
 
   @override
   Widget build(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
     setState(() {
       height = size.height;
@@ -42,87 +41,90 @@ class _CouponsListState extends State<CouponsList> {
     });
     return Scaffold(
       body: Container(
-        padding:EdgeInsets.fromLTRB(width * 0.04, height * 0.02, width * 0.04, height * 0.03), 
-          // padding: EdgeInsets.symmetric(
-          //     vertical: height * 0.03, horizontal: width * 0.04),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  IconButton(onPressed: (){
-                    Navigator.of(context).pop();
-                  }, icon: Icon(Icons.arrow_back)),
-                  Text(
-                    "My Coupon",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: height * 0.03,
-                      fontWeight: FontWeight.bold,
-                    ),
+        padding: EdgeInsets.fromLTRB(
+            width * 0.04, height * 0.02, width * 0.04, height * 0.03),
+        // padding: EdgeInsets.symmetric(
+        //     vertical: height * 0.03, horizontal: width * 0.04),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(Icons.arrow_back)),
+                Text(
+                  "My Coupon",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: height * 0.03,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                height: height * 0.84,
-                //! Change height
-                //height: !expand ? height * 0.2 : height * 0.18 * 14 * 0.7 + height * 0.18,
-                //height: expand ? height * 0.3 : height,
-                child: Flex(
-                  direction: Axis.vertical,
-                  children: [
-                    Expanded(
-                        child: ListView.builder(
-                            controller: controller,
-                            itemCount: widget.coupons.length,
-                            //itemCount: 1,
-                            physics: BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              double scale = 1.0;
-                              if (topContainer > 0.5) {
-                                scale = index + 0.5 - topContainer;
-                                if (scale < 0) {
-                                  scale = 0;
-                                } else if (scale > 1) {
-                                  scale = 1;
-                                }
+                ),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              height: height * 0.84,
+              //! Change height
+              //height: !expand ? height * 0.2 : height * 0.18 * 14 * 0.7 + height * 0.18,
+              //height: expand ? height * 0.3 : height,
+              child: Flex(
+                direction: Axis.vertical,
+                children: [
+                  Expanded(
+                      child: ListView.builder(
+                          controller: controller,
+                          itemCount: widget.coupons.length,
+                          //itemCount: 1,
+                          physics: BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            double scale = 1.0;
+                            if (topContainer > 0.5) {
+                              scale = index + 0.5 - topContainer;
+                              if (scale < 0) {
+                                scale = 0;
+                              } else if (scale > 1) {
+                                scale = 1;
                               }
-                              return Opacity(
-                                opacity: scale,
-                                child: Transform(
-                                  transform: Matrix4.identity()
-                                    ..scale(scale, scale),
-                                  alignment: Alignment.bottomCenter,
-                                  child: Align(
-                                    heightFactor: 0.55,
-                                    alignment: Alignment.topCenter,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return CustomDialogBox(
-                                                widget.coupons[index],
-                                                colors[index % 5],
-                                              );
-                                            });
-                                      },
-                                      child: CouponCard(
-                                        widget.coupons[index],
-                                        colors[index % 5],
-                                      ),
+                            }
+                            return Opacity(
+                              opacity: scale,
+                              child: Transform(
+                                transform: Matrix4.identity()
+                                  ..scale(scale, scale),
+                                alignment: Alignment.bottomCenter,
+                                child: Align(
+                                  heightFactor: 0.55,
+                                  alignment: Alignment.topCenter,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return CustomDialogBox(
+                                              widget.coupons[index],
+                                              colors[index % 5],
+                                            );
+                                          });
+                                    },
+                                    child: CouponCard(
+                                      widget.coupons[index],
+                                      colors[index % 5],
                                     ),
                                   ),
                                 ),
-                              );
-                            })),
-                  ],
-                ),
+                              ),
+                            );
+                          })),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }

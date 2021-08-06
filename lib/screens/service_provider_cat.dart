@@ -14,13 +14,13 @@ class ServiceProviderCategory extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ServiceProviderCategoryState createState() => _ServiceProviderCategoryState();
+  _ServiceProviderCategoryState createState() =>
+      _ServiceProviderCategoryState();
 }
 
 class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       body: Flex(
         direction: Axis.vertical,
@@ -93,17 +93,15 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                   child: Row(
                     children: [
                       Padding(
-                        padding:    EdgeInsets.symmetric(
-                                horizontal:SizeConfig.widthMultiplier * 1,
-                                vertical: SizeConfig.heightMultiplier * 0.2),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: SizeConfig.widthMultiplier * 1,
+                            vertical: SizeConfig.heightMultiplier * 0.2),
                         child: Text(
                           'My Providers',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
-
                           ),
-                          
                         ),
                       ),
                       // Spacer(),
@@ -121,54 +119,57 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                     ],
                   ),
                 ),
-             
+
                 // SizedBox(
                 //   height: SizeConfig.heightMultiplier * 0.09,
                 // ),
-                 Container(
-                            height: SizeConfig.heightMultiplier *6,
-                            width:SizeConfig.widthMultiplier*91,
-                            padding: EdgeInsets.symmetric(
-                                horizontal:SizeConfig.widthMultiplier * 1,
-                                vertical: SizeConfig.heightMultiplier * 0.2),
-                            margin: EdgeInsets.fromLTRB(0, SizeConfig.heightMultiplier  * 1, 0, 0),
-                            decoration: BoxDecoration(
-                              boxShadow:
-                                  //kElevationToShadow[4],
-                                  [
-                                BoxShadow(
-                                  color: Colors.grey.shade500,
-                                  blurRadius: SizeConfig.widthMultiplier * 0.5,
-                                  spreadRadius: SizeConfig.widthMultiplier * 0.05,
-                                  offset: Offset(SizeConfig.widthMultiplier * 0.7, SizeConfig.heightMultiplier * 0.5),
-                                ),
-                              ],
-                              border: Border.all(
-                                color: AppTheme.main,
-                              ),
-                              borderRadius: BorderRadius.circular(SizeConfig.widthMultiplier *3),
-                              color: AppTheme.offWhite,
-                            ),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintStyle: TextStyle(
-                                  color: AppTheme.main,
-                                  fontSize:SizeConfig.heightMultiplier * 2.4,
-                                ),
-                                hintText: "Search for my favorite brand",
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  size: SizeConfig.heightMultiplier * 4.5,
-                                  color: AppTheme.main,
-                                ),
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                          //),
-                          SizedBox(
-                            height: SizeConfig.heightMultiplier* 2,
-                          ),
+                Container(
+                  height: SizeConfig.heightMultiplier * 6,
+                  width: SizeConfig.widthMultiplier * 91,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.widthMultiplier * 1,
+                      vertical: SizeConfig.heightMultiplier * 0.2),
+                  margin: EdgeInsets.fromLTRB(
+                      0, SizeConfig.heightMultiplier * 1, 0, 0),
+                  decoration: BoxDecoration(
+                    boxShadow:
+                        //kElevationToShadow[4],
+                        [
+                      BoxShadow(
+                        color: Colors.grey.shade500,
+                        blurRadius: SizeConfig.widthMultiplier * 0.5,
+                        spreadRadius: SizeConfig.widthMultiplier * 0.05,
+                        offset: Offset(SizeConfig.widthMultiplier * 0.7,
+                            SizeConfig.heightMultiplier * 0.5),
+                      ),
+                    ],
+                    border: Border.all(
+                      color: AppTheme.main,
+                    ),
+                    borderRadius:
+                        BorderRadius.circular(SizeConfig.widthMultiplier * 3),
+                    color: AppTheme.offWhite,
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintStyle: TextStyle(
+                        color: AppTheme.main,
+                        fontSize: SizeConfig.heightMultiplier * 2.4,
+                      ),
+                      hintText: "Search for my favorite brand",
+                      prefixIcon: Icon(
+                        Icons.search,
+                        size: SizeConfig.heightMultiplier * 4.5,
+                        color: AppTheme.main,
+                      ),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                //),
+                SizedBox(
+                  height: SizeConfig.heightMultiplier * 2,
+                ),
                 Padding(
                   padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1),
                   child: Align(
@@ -183,107 +184,102 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                 ),
 
                 /////////////
-                  SizedBox(
-                            height: SizeConfig.heightMultiplier * 1.5,
+                SizedBox(
+                  height: SizeConfig.heightMultiplier * 1.5,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.widthMultiplier * 5,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          billCategories(
+                            "Food",
+                            "assets/images/food.svg",
+                            SizeConfig.heightMultiplier * 100,
+                            SizeConfig.widthMultiplier * 100,
+                            widget.user,
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*5,),
-                            child: Column(
-                             
-                              children: [
-                                Row(
-                               
-                                  children: [
-                              
-                                    billCategories(
-                                      "Food",
-                                      "assets/images/food.svg",
-                                      SizeConfig.heightMultiplier*100,
-                                     SizeConfig.widthMultiplier*100,
-                                     widget.user,
-                                    ),
-                                    SizedBox(
-                                 width: SizeConfig.widthMultiplier*3,
-                                ),
-                                    billCategories(
-                                      "Fashion",
-                                      "assets/images/fashion.svg",
-                                      SizeConfig.heightMultiplier*100,
-                                     SizeConfig.widthMultiplier*100,
-                                      widget.user,
-                                    ),
-                         SizedBox(
-                                  width: SizeConfig.widthMultiplier*3,
-                                ),
-                                    billCategories(
-                                      "Fitness",
-                                      "assets/images/fitness.svg",
-                                      SizeConfig.heightMultiplier*100,
-                                     SizeConfig.widthMultiplier*100,
-                                      widget.user,
-                                    ),
-                                   SizedBox(
-                                  width: SizeConfig.widthMultiplier*3,
-                                ),
-                                    billCategories(
-                                      "Entertainment",
-                                      "assets/images/entertainment.svg",
-                                      SizeConfig.heightMultiplier*100,
-                                     SizeConfig.widthMultiplier*100,
-                                      widget.user,
-                                    ),
-                                  //   Spacer(),
-                                  ],
-                                ),
-                              SizedBox(
-                              height: SizeConfig.widthMultiplier*100 * 0.015,
-                            ),
-                            
-                            Row(
-                            
-                              children: [
-                             
-                                    billCategories(
-                                      "Food",
-                                      "assets/images/food.svg",
-                                      SizeConfig.heightMultiplier*100,
-                                     SizeConfig.widthMultiplier*100,
-                                      widget.user,
-                                    ),
-                                    SizedBox(
-                                  width: SizeConfig.widthMultiplier*3,
-                                ),
-                                    billCategories(
-                                      "Fashion",
-                                      "assets/images/fashion.svg",
-                                      SizeConfig.heightMultiplier*100,
-                                     SizeConfig.widthMultiplier*100,
-                                      widget.user,
-                                    ),
-                         SizedBox(
-                                 width: SizeConfig.widthMultiplier*3,
-                                ),
-                                    billCategories(
-                                      "Fitness",
-                                      "assets/images/fitness.svg",
-                                      SizeConfig.heightMultiplier*100,
-                                     SizeConfig.widthMultiplier*100,
-                                      widget.user,
-                                    ),
-                                   SizedBox(
-                                 width: SizeConfig.widthMultiplier*3,
-                                ),
-                              ],
-                            ),
-                       
-                              ],
-                            ),
-                          ),
-                         
                           SizedBox(
-                            height: SizeConfig.heightMultiplier*100 * 0.02,
+                            width: SizeConfig.widthMultiplier * 3,
                           ),
-              
+                          billCategories(
+                            "Fashion",
+                            "assets/images/fashion.svg",
+                            SizeConfig.heightMultiplier * 100,
+                            SizeConfig.widthMultiplier * 100,
+                            widget.user,
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 3,
+                          ),
+                          billCategories(
+                            "Fitness",
+                            "assets/images/fitness.svg",
+                            SizeConfig.heightMultiplier * 100,
+                            SizeConfig.widthMultiplier * 100,
+                            widget.user,
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 3,
+                          ),
+                          billCategories(
+                            "Entertainment",
+                            "assets/images/entertainment.svg",
+                            SizeConfig.heightMultiplier * 100,
+                            SizeConfig.widthMultiplier * 100,
+                            widget.user,
+                          ),
+                          //   Spacer(),
+                        ],
+                      ),
+                      SizedBox(
+                        height: SizeConfig.widthMultiplier * 100 * 0.015,
+                      ),
+                      Row(
+                        children: [
+                          billCategories(
+                            "Food",
+                            "assets/images/food.svg",
+                            SizeConfig.heightMultiplier * 100,
+                            SizeConfig.widthMultiplier * 100,
+                            widget.user,
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 3,
+                          ),
+                          billCategories(
+                            "Fashion",
+                            "assets/images/fashion.svg",
+                            SizeConfig.heightMultiplier * 100,
+                            SizeConfig.widthMultiplier * 100,
+                            widget.user,
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 3,
+                          ),
+                          billCategories(
+                            "Fitness",
+                            "assets/images/fitness.svg",
+                            SizeConfig.heightMultiplier * 100,
+                            SizeConfig.widthMultiplier * 100,
+                            widget.user,
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 3,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(
+                  height: SizeConfig.heightMultiplier * 100 * 0.02,
+                ),
+
                 // Padding(
                 //   padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1),
                 //   child: Align(
@@ -296,8 +292,6 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                 //         ),
                 //       )),
                 // ),
-
-
               ],
             ),
           ),
@@ -306,7 +300,8 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
     );
   }
 
-  Widget billCategories(String title, String img, double height, double width,User user) {
+  Widget billCategories(
+      String title, String img, double height, double width, User user) {
     return InkWell(
       child: Container(
         child: Column(
@@ -328,7 +323,7 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                   img,
                   //alignment: Alignment.center,
                   height: height * 0.06,
-                  color:AppTheme.main,
+                  color: AppTheme.main,
                   fit: BoxFit.scaleDown,
                 ),
                 backgroundColor: AppTheme.offWhite,
@@ -350,14 +345,13 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
           ],
         ),
       ),
-    onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                return ServiceProviderPage(
-                                    serviceName:'Credit Card', user: user);
-                                // return GraphScreen(graphData: widget.mp, user: widget.user);
-                              }));
-              },
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) {
+          return ServiceProviderPage(serviceName: 'Credit Card', user: user);
+          // return GraphScreen(graphData: widget.mp, user: widget.user);
+        }));
+      },
     );
   }
 }

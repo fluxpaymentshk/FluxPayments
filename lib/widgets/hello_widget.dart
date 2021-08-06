@@ -7,6 +7,7 @@ Widget helloWidget(String userName, BuildContext context) {
   return Container(
     height: MediaQuery.of(context).size.height * 0.1,
     width: MediaQuery.of(context).size.width * 0.5,
+    padding: EdgeInsets.symmetric(horizontal: 16),
     //  decoration: BoxDecoration(color: AppTheme.main),
     child: Row(
       children: [

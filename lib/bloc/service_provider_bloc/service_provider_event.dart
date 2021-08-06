@@ -19,13 +19,12 @@ class InsertBankDetails extends ServiceProviderEvent {
   final String userID;
   final String billProviderID;
   const InsertBankDetails(
-   { required this.acHolderName,
-    required this.accNumber,
-    required this.bankName,
-    required this.ifscCode,
-    required this.userID,
-    required this.billProviderID}
-  );
+      {required this.acHolderName,
+      required this.accNumber,
+      required this.bankName,
+      required this.ifscCode,
+      required this.userID,
+      required this.billProviderID});
 }
 
 class InsertCreditCardDetails extends ServiceProviderEvent {
@@ -53,8 +52,13 @@ class InsertElectricityBillDetails extends ServiceProviderEvent {
   final String billCategoryID;
   final String userID;
   final String billProviderID;
-  const InsertElectricityBillDetails({required this.phNumber, required this.acHolderName,
-      required this.acNumber, required this.billCategoryID, required this.userID, required this.billProviderID});
+  const InsertElectricityBillDetails(
+      {required this.phNumber,
+      required this.acHolderName,
+      required this.acNumber,
+      required this.billCategoryID,
+      required this.userID,
+      required this.billProviderID});
 }
 
 class InsertInsuranceDetails extends ServiceProviderEvent {
@@ -65,8 +69,13 @@ class InsertInsuranceDetails extends ServiceProviderEvent {
   final String userID;
   final String billProviderID;
 
-  const InsertInsuranceDetails({required this.phNumber, required this.acHolderName, required this.acNumber,
-      required this.billCategoryID, required this.userID, required this.billProviderID});
+  const InsertInsuranceDetails(
+      {required this.phNumber,
+      required this.acHolderName,
+      required this.acNumber,
+      required this.billCategoryID,
+      required this.userID,
+      required this.billProviderID});
 }
 
 class InsertTaxDetails extends ServiceProviderEvent {
@@ -94,5 +103,11 @@ class InsertTelecomDetails extends ServiceProviderEvent {
   final String billCategoryID;
   final String userID;
   final String billProviderID;
-  const InsertTelecomDetails({required this.phNumber, required this.name, required this.providerName, required this.billCategoryID, required this.userID, required this.billProviderID});
+  const InsertTelecomDetails(
+      {required this.phNumber,
+      required this.name,
+      required this.providerName,
+      required this.billCategoryID,
+      required this.userID,
+      required this.billProviderID});
 }

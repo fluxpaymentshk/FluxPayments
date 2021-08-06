@@ -14,6 +14,8 @@ import 'package:flux_payments/screens/payment_Screens/loading_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/pay_now_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/payment_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/select_payment_method_screen.dart';
+import 'package:flux_payments/screens/profile_screen/editing_profile_page.dart';
+import 'package:flux_payments/screens/profile_screen/profile_page.dart';
 
 import './screens/coupons.dart';
 
@@ -167,8 +169,13 @@ class _MyAppState extends State<MyApp> {
           unselectedIconTheme: IconThemeData(size: 30),
         ),
       ),
-      home: 
-      
+      home: //EditingProfilePage(),
+      //     BlocProvider(
+      //   create: (_) => UserBloc(_userConfigRepository, _databaseRepository),
+      //   child: ProfilePage(
+      //       userConfigRepository: _userConfigRepository,
+      //       databaseRepository: _databaseRepository),
+      // ),
           MultiBlocProvider(
         providers: [
           BlocProvider(

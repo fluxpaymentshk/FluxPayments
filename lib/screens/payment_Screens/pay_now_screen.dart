@@ -121,7 +121,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                           child: CreditCardWidget(
                             cardNumber: cards[index].cardNumber!,
                             expiryDate: cards[index].expiryDate!,
-                            cardType:  getCardType(cards[index].cardBrand),
+                            cardType: getCardType(cards[index].cardBrand),
                             cardHolderName: cards[index].holderName!,
                             cvvCode: cards[index].cvv.toString(),
                             showBackView: false,

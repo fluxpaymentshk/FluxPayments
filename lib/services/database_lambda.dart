@@ -32,6 +32,26 @@ class DatabaseLambdaService {
         });
   }
 
+  Future<void> updateUserDetails(
+      {@required userID,
+      @required String? firstName,
+      @required String? lastName,
+      @required String? hkID,
+      @required String? email,
+      @required String? phnNumber}) async {
+    try {
+      Map<String, dynamic> re = await lambda.callLambda(
+          'aurora-serverless-function-updateUserDetails', <String, dynamic>{
+        "userID": userID,
+        "firstName": firstName,
+        "lastName": lastName,
+        "hkID": hkID,
+        "email": email,
+        "phnNumber": phnNumber,
+      });
+    } catch (e) {}
+  }
+
   Future<void> getCuratedList(
       {@required int? page, required List<curatedList> curatedListData}) async {
     result = {};
@@ -1329,9 +1349,8 @@ class DatabaseLambdaService {
       required String billCategoryID,
       required String userID,
       required String billProviderID}) async {
-    result = {};
     try {
-      result = await lambda
+      var result = await lambda
           .callLambda('aurora-serverless-function-insertTax', <String, dynamic>{
         "businessRegistrationFee": businessRegistrationFee,
         "applicantName": applicantName,
