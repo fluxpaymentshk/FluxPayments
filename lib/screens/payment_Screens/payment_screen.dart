@@ -10,7 +10,11 @@ import 'package:flux_payments/screens/payment_Screens/pay_now_screen.dart';
 class PaymentScreen extends StatelessWidget {
   final DatabaseRepository? databaseRepository;
   final UserConfigRepository? userConfigRepository;
-  const PaymentScreen({Key? key,@required this.databaseRepository,@required this.userConfigRepository}) : super(key: key);
+  const PaymentScreen(
+      {Key? key,
+      @required this.databaseRepository,
+      @required this.userConfigRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

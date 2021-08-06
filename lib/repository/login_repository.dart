@@ -7,9 +7,9 @@ abstract class LoginBaseRepository {
   Future<String> signIn(String email, String password);
   Future<String> signUp(
       String email, String password, String phnNumber, String name);
-  Future<bool> confirmUser(String email, String code);
   Future<void> signOut();
   Future<bool> isUserSignedIn();
+  Future<bool> confirmUser(String email, String code);
   Future<void> resendConfirmationCode(String email);
   String? validateField(String s);
   String? validateEmailFormField(String email);

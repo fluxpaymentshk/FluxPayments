@@ -231,54 +231,54 @@ class _CouponsState extends State<Coupons> {
                           //     borderRadius: BorderRadius.circular(width * 0.03),
                           //     color: color,
                           //   ),
-                            child: GestureDetector(
-                              onTap: () {
-                                print(
-                                    "_+++__________++++++++++++++_________${widget.databaseRepo}");
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => MultiBlocProvider(
-                                      providers: [
-                                        BlocProvider<CouponsSearchBloc>(
-                                          create: (_) => CouponsSearchBloc(
-                                              _couponSearchRepository),
-                                        ),
-                                        BlocProvider(
-                                          create: (_) => FluxPointsBloc(
-                                            widget.databaseRepo!,
-                                          ),
-                                        ),
-                                        BlocProvider.value(
-                                          value: favoritesBloc,
-                                        ),
-                                      ],
-                                      child: RewardsSearchScreen(
-                                        categories: categories,
-                                        favorites: fav,
+                          child: GestureDetector(
+                            onTap: () {
+                              print(
+                                  "_+++__________++++++++++++++_________${widget.databaseRepo}");
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider<CouponsSearchBloc>(
+                                        create: (_) => CouponsSearchBloc(
+                                            _couponSearchRepository),
                                       ),
+                                      BlocProvider(
+                                        create: (_) => FluxPointsBloc(
+                                          widget.databaseRepo!,
+                                        ),
+                                      ),
+                                      BlocProvider.value(
+                                        value: favoritesBloc,
+                                      ),
+                                    ],
+                                    child: RewardsSearchScreen(
+                                      categories: categories,
+                                      favorites: fav,
                                     ),
                                   ),
-                                );
-                              },
-                              child: TextField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(
-                                    color: color1,
-                                    fontSize: height * 0.024,
-                                  ),
-                                  hintText: "Search for my favorite brand",
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    size: height * 0.045,
-                                    color: color1,
-                                  ),
-                                  border: InputBorder.none,
                                 ),
+                              );
+                            },
+                            child: TextField(
+                              enabled: false,
+                              decoration: InputDecoration(
+                                hintStyle: TextStyle(
+                                  color: color1,
+                                  fontSize: height * 0.024,
+                                ),
+                                hintText: "Search for my favorite brand",
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  size: height * 0.045,
+                                  color: color1,
+                                ),
+                                border: InputBorder.none,
                               ),
-                              //border: InputBorder.none,
                             ),
+                            //border: InputBorder.none,
                           ),
+                        ),
                         //),
                         //),
                         SizedBox(

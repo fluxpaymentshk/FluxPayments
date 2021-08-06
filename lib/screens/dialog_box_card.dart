@@ -13,7 +13,7 @@ class DialogBoxCard extends StatefulWidget {
 }
 
 class _DialogBoxCardState extends State<DialogBoxCard> {
-   @override
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
@@ -127,7 +127,6 @@ class _DialogBoxCardState extends State<DialogBoxCard> {
     );
   }
 }
-
 
 class DolDurmaClipper extends CustomClipper<Path> {
   DolDurmaClipper(this.right, this.holeRadius);

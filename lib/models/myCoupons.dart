@@ -19,7 +19,17 @@ class myCoupons extends Model {
   String? name;
   String? image;
 
-  myCoupons({required this.myCouponsID,required this.isTransactionComp, this.rewardPartnerID, required this.userID,required this.amount, this.rewardID, this.shortDescription, this.termsncond, this.name, this.image});
+  myCoupons(
+      {required this.myCouponsID,
+      required this.isTransactionComp,
+      this.rewardPartnerID,
+      required this.userID,
+      required this.amount,
+      this.rewardID,
+      this.shortDescription,
+      this.termsncond,
+      this.name,
+      this.image});
 
   myCoupons.fromJson(Map<String, dynamic> json)
       : myCouponsID = json["myCouponsID"],
@@ -27,7 +37,7 @@ class myCoupons extends Model {
         rewardPartnerID = json["rewardPartnerID"],
         userID = json["userID"],
         amount = json["amount"],
-        rewardID = json["rewardID"],  
+        rewardID = json["rewardID"],
         validUntill = json["validUntill"],
         shortDescription = json["shortDescription"],
         termsncond = json["termsncond"],

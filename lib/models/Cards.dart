@@ -30,7 +30,7 @@ class Cards extends Model {
         cvv = json["cvv"],
         userID = json["userID"],
         holderName = json["holderName"],
-        cardBrand=json["cardBrand"];
+        cardBrand = json["cardBrand"];
 
   @override
   getInstanceType() => classType;
@@ -49,7 +49,7 @@ class Cards extends Model {
         "cvv": cvv,
         "userID": userID,
         "holderName": holderName,
-        "cardBrand":cardBrand,
+        "cardBrand": cardBrand,
       };
 }
 
