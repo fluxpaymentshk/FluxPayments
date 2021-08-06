@@ -123,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 child: Text(
-                  user.firstName!,
+                  user.firstName,
                   style: GoogleFonts.montserrat(
                     fontSize: 16,
                   ),

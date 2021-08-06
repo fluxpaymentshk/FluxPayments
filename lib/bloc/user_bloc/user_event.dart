@@ -39,7 +39,7 @@ class UpdateUserDetails extends UserEvent {
     @required this.email,
     @required this.phnNumber,
     @required this.hkID,
-    @required this.isDBChange,
+    this.isDBChange,
     this.resend = false,
       this.code = ""
   });

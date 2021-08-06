@@ -34,6 +34,7 @@ import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/curatedList.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
+import 'package:flux_payments/screens/payment_Screens/payment_screen.dart';
 import 'package:flux_payments/screens/profile_screen/profile_page.dart';
 import 'package:flux_payments/screens/storypage_view.dart';
 import 'package:flux_payments/services/database_lambda.dart';
@@ -257,11 +258,25 @@ class _HomePageState extends State<HomePage> {
                     BlocBuilder<PendingServiceBloc, PendingServiceState>(
                       builder: (context, state) {
                         if (state is LoadPendingService) {
-                          return PendingPaymentTile(
-                              amount:
-                                  state.pendingService["dueAmount"].toDouble(),
-                              serviceProviders:
-                                  state.pendingService["dueProviders"].toInt());
+                          return InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => PaymentScreen(
+                                    databaseRepository:
+                                        widget.databaseRepository,
+                                    userConfigRepository: widget.userRepository,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: PendingPaymentTile(
+                                amount: state.pendingService["dueAmount"]
+                                    .toDouble(),
+                                serviceProviders: state
+                                    .pendingService["dueProviders"]
+                                    .toInt()),
+                          );
                         } else if (State is LoadingPendingService) {
                           return CircularProgressIndicator();
                         } else if (state is PendingServiceError) {
