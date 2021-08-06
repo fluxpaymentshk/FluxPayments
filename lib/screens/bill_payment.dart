@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -283,85 +283,91 @@ class _BillPaymentState extends State<BillPayment> {
                           }
                           return
                               //fav.length == 0 ? Text("Please mark some favorites !") :
-                              Container(
-                            //height: fav.length > 5 && loadAllFav ?SizeConfig.heightMultiplier*100* 0.318 :SizeConfig.heightMultiplier*100* 0.21,
-                            height: fav.length > 5 && loadAllFav
-                                ? SizeConfig.heightMultiplier * 100 * 0.859
-                                : SizeConfig.heightMultiplier * 100 * 0.8,
-                            padding: EdgeInsets.fromLTRB(
-                                SizeConfig.widthMultiplier * 100 * 0.01,
-                                SizeConfig.heightMultiplier * 100 * 0.016,
-                                SizeConfig.widthMultiplier * 100 * 0.01,
-                                SizeConfig.heightMultiplier * 100 * 0.01),
-                            decoration: BoxDecoration(
-                              color: AppTheme.offWhite,
-                              borderRadius: BorderRadius.circular(
-                                  SizeConfig.widthMultiplier * 100 * 0.03),
-                            ),
-                            child: Column(
-                              children: [
-                                favContainer(0, min(fav.length, 5)),
-                                ExpandWidget(
-                                  expand: loadAllFav,
-                                  child: Container(
-                                    height:
-                                        SizeConfig.heightMultiplier * 100 * 0.5,
-                                    child: ListView.builder(
-                                        //  itemCount:(fav.length-5)~/5,
-                                        itemCount: 1,
-                                        //   itemExtent: 40,
-                                        itemBuilder: (context, index) {
-                                          print(
-                                              "${(index + 1) * 5}  __##__ ${min(fav.length, 5)}");
+                              StatefulBuilder(
+                            builder: (context, setState) => AnimatedContainer(
+                              duration:Duration(milliseconds:300),
+                              //height: fav.length > 5 && loadAllFav ?SizeConfig.heightMultiplier*100* 0.318 :SizeConfig.heightMultiplier*100* 0.21,
+                              height: fav.length > 5 && loadAllFav
+                                  ? SizeConfig.heightMultiplier * 100 * 0.45*((fav.length-5)~/5+1)
+                                  : SizeConfig.heightMultiplier * 100 * 0.23,
+                              padding: EdgeInsets.fromLTRB(
+                                  SizeConfig.widthMultiplier * 100 * 0.01,
+                                  SizeConfig.heightMultiplier * 100 * 0.016,
+                                  SizeConfig.widthMultiplier * 100 * 0.01,
+                                  SizeConfig.heightMultiplier * 100 * 0.01),
+                              decoration: BoxDecoration(
+                                color: AppTheme.offWhite,
+                                borderRadius: BorderRadius.circular(
+                                    SizeConfig.widthMultiplier * 100 * 0.03),
+                              ),
+                              child: Column(
+                                children: [
+                                  favContainer(0, min(fav.length, 5)),
+                                  ExpandWidget(
+                                    expand: loadAllFav,
+                                    child: Container(
+                                      height:  SizeConfig.heightMultiplier * 100 * 0.2*((fav.length-5)~/5+1),
+                                      child: ListView.builder(
+                                          //  itemCount:(fav.length-5)~/5,
+                                          itemCount:(fav.length-5)~/5+1,
+                                          //   itemExtent: 40,
+                                          itemBuilder: (context, index) {
+                                            dev.log("${(fav.length)~/5}");
+                                            print(
+                                                "${(index + 1) * 5}  __##__ ${min(fav.length, 5)}");
 
-                                          return favContainer((index + 1) * 5,
-                                              min(fav.length, (index + 2) * 5));
-                                        }),
+                                            return favContainer(
+                                                (index + 1) * 5,
+                                                min(fav.length,
+                                                    (index + 2) * 5));
+                                          }),
+                                    ),
+                                    //##################################################
+                                    //   (fav.length >= 5 && loadAllFav)
+                                    //       ? favContainer(5, min(fav.length, 10))
+                                    //       : null,
                                   ),
-                                  //##################################################
-                                  //   (fav.length >= 5 && loadAllFav)
-                                  //       ? favContainer(5, min(fav.length, 10))
-                                  //       : null,
-                                ),
-                                SizedBox(
-                                  height:
-                                      SizeConfig.heightMultiplier * 100 * 0.01,
-                                ),
-                                // if (fav.length >= 5 && loadAllFav)
-                                //   favContainer(5, min(fav.length, 10)),
-                                IconButton(
-                                    onPressed: () {
-                                      print(fav.length);
-                                      print(
-                                          "Icon button is presseddddddddddddddddddddddddddd");
-                                      setState(() {
-                                        loadAllFav = !loadAllFav;
-                                      });
-                                    },
-                                    icon: loadAllFav
-                                        ? Icon(Icons.file_upload)
-                                        : Icon(Icons.file_download)),
-                                //     favContainer(0, min(fav.length, 5)),
-                                //     SizedBox(
-                                //       height:SizeConfig.heightMultiplier*100* 0.01,
-                                //     ),
-                                //     if (fav.length >= 5 && loadAllFav)
-                                //       favContainer(5, min(fav.length, 10)),
-                                //          IconButton(
-                                // onPressed: () {
-                                //   setState(() {
-                                //     loadAllFav = !loadAllFav;
-                                //   });
-                                // },
-                                // icon: Icon(loadAllFav
-                                //     ? Icons.upload
-                                //     : Icons.download)),
-                                // IconButton(onPressed: (){
-                                //   setState(() {
-                                //     loadAllFav =! loadAllFav;
-                                //   });
-                                // }, icon: Icon(Icons.file_upload))
-                              ],
+                                  // SizedBox(
+                                  //   height: SizeConfig.heightMultiplier *
+                                  //       100 *
+                                  //       0.01,
+                                  // ),
+                                  // if (fav.length >= 5 && loadAllFav)
+                                  //   favContainer(5, min(fav.length, 10)),
+                                  IconButton(
+                                      onPressed: () {
+                                        print(fav.length);
+                                        print(
+                                            "Icon button is presseddddddddddddddddddddddddddd");
+                                        setState(() {
+                                          loadAllFav = !loadAllFav;
+                                        });
+                                      },
+                                      icon: loadAllFav
+                                          ? Icon(Icons.file_upload)
+                                          : Icon(Icons.file_download)),
+                                  //     favContainer(0, min(fav.length, 5)),
+                                  //     SizedBox(
+                                  //       height:SizeConfig.heightMultiplier*100* 0.01,
+                                  //     ),
+                                  //     if (fav.length >= 5 && loadAllFav)
+                                  //       favContainer(5, min(fav.length, 10)),
+                                  //          IconButton(
+                                  // onPressed: () {
+                                  //   setState(() {
+                                  //     loadAllFav = !loadAllFav;
+                                  //   });
+                                  // },
+                                  // icon: Icon(loadAllFav
+                                  //     ? Icons.upload
+                                  //     : Icons.download)),
+                                  // IconButton(onPressed: (){
+                                  //   setState(() {
+                                  //     loadAllFav =! loadAllFav;
+                                  //   });
+                                  // }, icon: Icon(Icons.file_upload))
+                                ],
+                              ),
                             ),
                           );
                         } else {
