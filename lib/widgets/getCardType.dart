@@ -1,4 +1,3 @@
-
 import 'package:flutter_credit_card/credit_card_widget.dart';
 
 CardType getCardType(String? cardBrand) {

@@ -21,3 +21,20 @@ class GetUserDetails extends UserEvent {
   final String? userID;
   const GetUserDetails({@required this.userID});
 }
+
+class UpdateUserDetails extends UserEvent {
+  final String? userID;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final String? phnNumber;
+  final String? hkID;
+  const UpdateUserDetails({
+    @required this.userID,
+    @required this.lastName,
+    @required this.firstName,
+    @required this.email,
+    @required this.phnNumber,
+    @required this.hkID,
+  });
+}

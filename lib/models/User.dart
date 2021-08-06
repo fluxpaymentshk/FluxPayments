@@ -43,6 +43,7 @@ class User extends Model {
   final String? _refreeID;
   final String? _referralID;
   final List<String>? _referredTo;
+  final String? _hkID;
 
   static var schema;
 
@@ -98,6 +99,10 @@ class User extends Model {
 
   String? get email {
     return _email;
+  }
+
+  String? get hkID {
+    return _hkID;
   }
 
   double? get fluxPoints {
@@ -171,6 +176,7 @@ class User extends Model {
       hasCreditCard,
       hasWallets,
       required refreeID,
+      hkID,
       referralID,
       referredTo})
       : _firstName = firstName,
@@ -190,6 +196,7 @@ class User extends Model {
         _hasWallets = hasWallets,
         _refreeID = refreeID,
         _referredTo = referredTo,
+        _hkID = hkID,
         _referralID = referralID;
 
   factory User(
@@ -209,6 +216,7 @@ class User extends Model {
       List<DebitCard>? hasDebitCards,
       List<CreditCard>? hasCreditCard,
       List<UserWallet>? hasWallets,
+      String? hkID,
       required String refreeID,
       String? referralID,
       List<String>? referredTo}) {
@@ -222,6 +230,7 @@ class User extends Model {
         mobileNumber: mobileNumber,
         email: email,
         fluxPoints: fluxPoints,
+        hkID: hkID,
         UserToRewardTransactions: UserToRewardTransactions != null
             ? List<RewardTransaction>.unmodifiable(UserToRewardTransactions)
             : UserToRewardTransactions,
@@ -266,6 +275,7 @@ class User extends Model {
         _uniqueID == other._uniqueID &&
         _mobileNumber == other._mobileNumber &&
         _email == other._email &&
+        _hkID == other._hkID &&
         _fluxPoints == other._fluxPoints &&
         DeepCollectionEquality().equals(
             _UserToRewardTransactions, other._UserToRewardTransactions) &&
@@ -293,6 +303,7 @@ class User extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("firstName=" + "$_firstName" + ", ");
     buffer.write("lastName=" + "$_lastName" + ", ");
+    buffer.write("hkID=" + "$_hkID" + ", ");
     buffer.write("dateOfBirth=" +
         (_dateOfBirth != null ? _dateOfBirth! : "null") +
         ", ");
@@ -334,6 +345,7 @@ class User extends Model {
       List<UserWallet>? hasWallets,
       String? refreeID,
       String? referralID,
+      String? hkID,
       List<String>? referredTo}) {
     return User(
         id: id ?? this.id,
@@ -355,6 +367,7 @@ class User extends Model {
         hasCreditCard: hasCreditCard ?? this.hasCreditCard,
         hasWallets: hasWallets ?? this.hasWallets,
         refreeID: refreeID ?? this.refreeID,
+        hkID: hkID ?? this.hkID,
         referredTo: referredTo ?? this.referredTo,
         referralID: referralID ?? this.referralID);
   }
@@ -369,14 +382,7 @@ class User extends Model {
         _mobileNumber = json['mobileNumber'],
         _email = json['email'],
         _fluxPoints = json['fluxPoints'],
-        _UserToRewardTransactions = json['UserToRewardTransactions'] is List
-            ? (json['UserToRewardTransactions'] as List)
-                .where((e) => e?['serializedData'] != null)
-                .map((e) => RewardTransaction.fromJson(
-                    new Map<String, dynamic>.from(e['serializedData'])))
-                .toList()
-            : null,
-        _favorites = json['favorites']?.cast<String>(),
+        _UserToRewardTransactions = json['UserToRewardTransactions'],
         _UserToServiceTransactions = json['UserToServiceTransactions'] is List
             ? (json['UserToServiceTransactions'] as List)
                 .where((e) => e?['serializedData'] != null)
@@ -384,6 +390,7 @@ class User extends Model {
                     new Map<String, dynamic>.from(e['serializedData'])))
                 .toList()
             : null,
+        _favorites = json['favorites']?.cast<String>(),
         _hasBankAccounts = json['hasBankAccounts'] is List
             ? (json['hasBankAccounts'] as List)
                 .where((e) => e?['serializedData'] != null)
@@ -413,6 +420,7 @@ class User extends Model {
                 .toList()
             : null,
         _refreeID = json['refreeID'],
+        _hkID = json['hkID'],
         _referralID = json['referralID'],
         _referredTo = json['referredTo']?.cast<String>();
 
@@ -429,8 +437,7 @@ class User extends Model {
         'UserToRewardTransactions':
             _UserToRewardTransactions?.map((e) => e?.toJson())?.toList(),
         'favorites': _favorites,
-        'UserToServiceTransactions':
-            _UserToServiceTransactions?.map((e) => e?.toJson())?.toList(),
+        'hkID': _hkID,
         'hasBankAccounts': _hasBankAccounts?.map((e) => e?.toJson())?.toList(),
         'hasDebitCards': _hasDebitCards?.map((e) => e?.toJson())?.toList(),
         'hasCreditCard': _hasCreditCard?.map((e) => e?.toJson())?.toList(),

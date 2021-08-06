@@ -80,4 +80,27 @@ class UserDetailsServices {
       print(e);
     }
   }
+
+  Future<void> updateUserDetails(
+      String email, String phnNumber, String name) async {
+    var attributes = [
+      AuthUserAttribute(userAttributeKey: 'email', value: email),
+      AuthUserAttribute(userAttributeKey: 'name', value: name),
+      AuthUserAttribute(userAttributeKey: 'phn_number', value: phnNumber),
+    ];
+    try {
+      var res = await Amplify.Auth.updateUserAttributes(attributes: attributes);
+      res.forEach((key, value) {
+        if (value.nextStep.updateAttributeStep ==
+            'CONFIRM_ATTRIBUTE_WITH_CODE') {
+          var destination = value.nextStep.codeDeliveryDetails?.destination;
+          print('Confirmation code sent to $destination for $key');
+        } else {
+          print('Update completed for $key');
+        }
+      });
+    } on AmplifyException catch (e) {
+      print(e.message);
+    }
+  }
 }

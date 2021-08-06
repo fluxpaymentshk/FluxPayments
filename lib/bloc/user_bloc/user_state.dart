@@ -21,6 +21,10 @@ class UserServiceError extends UserState {
   const UserServiceError(this.message);
 }
 
+class UserDetailsUpdating extends UserState {
+  const UserDetailsUpdating();
+}
+
 class UserResetPasswordDone extends UserState {
   const UserResetPasswordDone();
 }

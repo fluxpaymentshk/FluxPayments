@@ -42,4 +42,11 @@ class FormValidator {
     }
     return null;
   }
+
+  String? validatePhnNumber(String s) {
+    if (s != null && s.length != 0 && s[0] != "+") {
+      return "Please enter country code with + sign";
+    }
+    return null;
+  }
 }

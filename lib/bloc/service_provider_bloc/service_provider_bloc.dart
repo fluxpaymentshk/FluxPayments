@@ -55,7 +55,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Bank Details');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Bank Details');
       }
     }
 
@@ -74,7 +75,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Credit Card details');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Credit Card details');
       }
     }
 
@@ -92,7 +94,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Electricity Details');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Electricity Details');
       }
     }
 
@@ -110,7 +113,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Insurance details!');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Insurance details!');
       }
     }
 
@@ -129,7 +133,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Tax Details!');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Tax Details!');
       }
     }
 
@@ -147,7 +152,8 @@ class ServiceProviderBloc
 
         if (res == 'success') yield InsertedDetailsSuccessfully();
       } catch (e) {
-        yield ErrorInsertDetails(message: 'Error occured while inserting Telecom details!');
+        yield ErrorInsertDetails(
+            message: 'Error occured while inserting Telecom details!');
       }
     }
   }

@@ -388,7 +388,8 @@ class _HomePageState extends State<HomePage> {
 
                     BlocBuilder<CuratedListBloc, CuratedListState>(
                       builder: (context, state) {
-                        if (state is LoadingCuratedList || state is InitialState)
+                        if (state is LoadingCuratedList ||
+                            state is InitialState)
                           return CircularProgressIndicator(
                             strokeWidth: 5.0,
                             color: AppTheme.main,

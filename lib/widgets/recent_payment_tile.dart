@@ -38,8 +38,11 @@ class recentPaymentTile extends StatelessWidget {
     return Container(
       height: SizeConfig.heightMultiplier * 7,
       width: SizeConfig.widthMultiplier * 92,
-      padding: EdgeInsets.symmetric(vertical:SizeConfig.heightMultiplier * 1,horizontal:SizeConfig.widthMultiplier*3,),
-     // margin: EdgeInsets.all(SizeConfig.heightMultiplier * 0.6),
+      padding: EdgeInsets.symmetric(
+        vertical: SizeConfig.heightMultiplier * 1,
+        horizontal: SizeConfig.widthMultiplier * 3,
+      ),
+      // margin: EdgeInsets.all(SizeConfig.heightMultiplier * 0.6),
       decoration: BoxDecoration(
         borderRadius:
             BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier * 2)),
