@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
+import 'package:flux_payments/widgets/flux_logo.dart';
 
 Widget logoWithBackButton(BuildContext context) {
   return Stack(
@@ -39,17 +40,7 @@ Widget logoWithBackButton(BuildContext context) {
             width: SizeConfig.widthMultiplier * 100,
             child: Center(
               //  child: Image.asset("assets/images/logo.png"),
-              child: Text(
-                "Flux.",
-                style: TextStyle(
-                  foreground: Paint()
-                    ..shader = LinearGradient(
-                      colors: <Color>[AppTheme.main, Color(0xffA867EE)],
-                    ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                  fontSize: 60,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
+              child: fluxLogo(context),
             ),
           ),
         ],

@@ -45,55 +45,81 @@ class serviceProviderTile extends StatelessWidget {
             BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier * 2)),
         // border: Border.all(color: AppTheme.main, width: 1.0),
       ),
-      child: Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(SizeConfig.heightMultiplier * 0.3),
-            child:
-             Container(
-              height: SizeConfig.heightMultiplier*4,
-              width: SizeConfig.widthMultiplier*10,
+      child: 
+      ListTile(
+      //  minLeadingWidth: SizeConfig.widthMultiplier*3,
+        leading: Padding(
+          padding: const EdgeInsets.only(bottom:8.0),
+          child: CircleAvatar(
+           
+          //  minRadius: 3,
+            backgroundImage:  NetworkImage(imageurl),
+          ),
+        ),
+       // tileColor: AppTheme.black,
+      // horizontalTitleGap: SizeConfig.widthMultiplier*20,
+        title:  Padding(
+          padding: EdgeInsets.only(bottom:8.0),
+          child: Text(
+                //'HSBC',
+                  name,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  )),
+        ),
+      ),
+      
+      // Row(
+      //   children: [
+      //     Padding(
+      //       padding: EdgeInsets.all(SizeConfig.heightMultiplier * 0.3),
+      //       child:
+      //        Container(
+      //         height: SizeConfig.heightMultiplier*4,
+      //         width: SizeConfig.widthMultiplier*10,
 
             
-              child : Image.network(imageurl,fit:BoxFit.cover),
-              //  child:NetworkImage(state.user.);
-            ),
-            // CircleAvatar(
-            //     backgroundImage: NetworkImage(img),
-            //     // SvgPicture.asset(
-            //     //   img,
-            //     //   //alignment: Alignment.center,
-            //     //   height: height * 0.06,
-            //     //   color: AppTheme.main,
-            //     //   fit: BoxFit.scaleDown,
-            //     // ),
-            //     backgroundColor: AppTheme.offWhite,
-            //     radius: height * 0.04,
-            //   ),
-          ),
-          // SizedBox(
-          //   width: SizeConfig.widthMultiplier * 4,
-          // ),
-           Spacer(flex: 2,),
-          Center(
-            child: Text(
-              //'HSBC',
-                name,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                )),
-          ),
-         Spacer(flex:5,),
-          // Text('-500',
-          //     //amount
-          //     style: TextStyle(
-          //       fontSize: 15,
-          //       color: AppTheme.red,
-          //       fontWeight: FontWeight.w500,
-          //     )),
-        ],
-      ),
+      //         child : Image.network(imageurl,fit:BoxFit.cover),
+      //         //  child:NetworkImage(state.user.);
+      //       ),
+      //       // CircleAvatar(
+      //       //     backgroundImage: NetworkImage(img),
+      //       //     // SvgPicture.asset(
+      //       //     //   img,
+      //       //     //   //alignment: Alignment.center,
+      //       //     //   height: height * 0.06,
+      //       //     //   color: AppTheme.main,
+      //       //     //   fit: BoxFit.scaleDown,
+      //       //     // ),
+      //       //     backgroundColor: AppTheme.offWhite,
+      //       //     radius: height * 0.04,
+      //       //   ),
+      //     ),
+      //     // SizedBox(
+      //     //   width: SizeConfig.widthMultiplier * 4,
+      //     // ),
+      //      Spacer(flex: 2,),
+      //     Center(
+      //       child: Text(
+      //         //'HSBC',
+      //           name,
+      //           style: TextStyle(
+      //             fontSize: 18,
+      //             fontWeight: FontWeight.w800,
+      //           )),
+      //     ),
+      //    Spacer(flex:5,),
+      //     // Text('-500',
+      //     //     //amount
+      //     //     style: TextStyle(
+      //     //       fontSize: 15,
+      //     //       color: AppTheme.red,
+      //     //       fontWeight: FontWeight.w500,
+      //     //     )),
+      //   ],
+      // ),
+   
     );
   }
 }

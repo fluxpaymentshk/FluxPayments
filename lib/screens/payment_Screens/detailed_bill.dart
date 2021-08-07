@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/screens/payment_Screens/pay_now_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -143,7 +144,7 @@ class _DetailedBillState extends State<DetailedBill> {
                     ),
                   ),
                   title: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                    padding: EdgeInsets.only(left: SizeConfig.widthMultiplier*2),
                     child: Text(
                       "${widget.pendingPayments![index].billProviderName}",
                       style: GoogleFonts.montserrat(
@@ -153,7 +154,7 @@ class _DetailedBillState extends State<DetailedBill> {
                     ),
                   ),
                   subtitle: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                    padding: EdgeInsets.only(left: SizeConfig.widthMultiplier*2),
                     child: Text(
                       "${widget.pendingPayments![index].dueDate}",
                       style: GoogleFonts.montserrat(

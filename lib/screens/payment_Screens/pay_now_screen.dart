@@ -202,8 +202,8 @@ class _PayNowScreenState extends State<PayNowScreen> {
                   );
                 }),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 16),
-                  padding: const EdgeInsets.only(left: 8.0),
+                  margin: EdgeInsets.symmetric(vertical: SizeConfig.heightMultiplier*2.5),
+                  padding:EdgeInsets.only(left: SizeConfig.widthMultiplier*2),
                   child: Text(
                     "Detailed Bill",
                     style: GoogleFonts.montserrat(

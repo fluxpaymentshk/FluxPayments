@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flux_payments/config/size_config.dart';
 
 class BillTile extends StatelessWidget {
   const BillTile(
@@ -8,7 +9,7 @@ class BillTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(7.0),
+      padding: EdgeInsets.all(SizeConfig.heightMultiplier*1.2),
       child: Card(
         child: Column(
           children: [
@@ -18,7 +19,7 @@ class BillTile extends StatelessWidget {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(6.0),
+                  padding: EdgeInsets.all(SizeConfig.heightMultiplier*0.8),
                   child: Text(
                     title,
                     style: TextStyle(
@@ -29,7 +30,7 @@ class BillTile extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(6.0),
+                  padding: EdgeInsets.all(SizeConfig.heightMultiplier*0.9),
                   child: Text(
                     amount,
                     style: TextStyle(
@@ -45,7 +46,7 @@ class BillTile extends StatelessWidget {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: EdgeInsets.all(SizeConfig.heightMultiplier*0.9),
               child: Text(
                 desc,
                 style: TextStyle(
