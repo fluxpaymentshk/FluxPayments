@@ -2,17 +2,31 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flux_payments/bloc/advertiser_bloc/advertiser_bloc.dart';
+import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
+import 'package:flux_payments/bloc/banner_bloc/banner_bloc.dart';
+import 'package:flux_payments/bloc/coupons_bloc/coupons_bloc.dart';
+import 'package:flux_payments/bloc/curated_list_bloc/curated_list_bloc.dart';
+import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
+import 'package:flux_payments/bloc/graph_bloc/graph_bloc.dart';
+import 'package:flux_payments/bloc/pending_service_bloc/pending_service_bloc.dart';
+import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_bloc.dart';
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
+import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/repository/database_repository.dart';
+import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/change_password.dart';
+import 'package:flux_payments/screens/auth_Screens/login_page.dart';
 import 'package:flux_payments/screens/profile_screen/settings_screen.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
+import 'package:flux_payments/widgets/gradient_button.dart';
 import 'package:flux_payments/widgets/hello_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,6 +41,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final LoginRepository _loginRepository = LoginRepository();
   @override
   Widget build(BuildContext context) {
     var userBloc = BlocProvider.of<UserBloc>(context);
@@ -159,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 child: Text(
-                  user.hkID??"",
+                  user.hkID ?? "",
                   style: GoogleFonts.montserrat(
                     fontSize: 16,
                   ),
@@ -202,6 +217,65 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     );
                   },
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: InkWell(
+                  onTap: () async {
+                    await LoginRepository().signOut();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => MultiBlocProvider(
+                          providers: [
+                            BlocProvider<AuthBloc>(
+                              create: (_) => AuthBloc(_loginRepository),
+                            ),
+                             BlocProvider(
+                                create: (_) => ServiceProviderBloc(widget.databaseRepository!),),
+                            BlocProvider(
+                                create: (_) => UserBloc(
+                                    widget.userConfigRepository!,
+                                    widget.databaseRepository!)),
+                            BlocProvider(
+                                create: (_) =>
+                                    AdvertiserBloc(widget.databaseRepository!)),
+                            BlocProvider(
+                                create: (_) => CuratedListBloc(
+                                    widget.databaseRepository!)),
+                            BlocProvider(
+                                create: (_) =>
+                                    BannerBloc(widget.databaseRepository!)),
+                            BlocProvider(
+                                create: (_) =>
+                                    GraphBloc(widget.databaseRepository!)),
+                            BlocProvider(
+                                create: (_) => RecentPaymentBloc(
+                                    widget.databaseRepository!)),
+                            BlocProvider(
+                                create: (_) =>
+                                    FavoritesBloc(widget.databaseRepository!)),
+                            BlocProvider(
+                                create: (_) => PendingServiceBloc(
+                                    widget.databaseRepository!)),
+                            BlocProvider(
+                                create: (_) =>
+                                    StoryBloc(widget.databaseRepository!)),
+                            BlocProvider(
+                                create: (_) => ServiceProviderBloc(
+                                    widget.databaseRepository!)),
+                            BlocProvider(
+                                create: (_) =>
+                                    CouponsBloc(widget.databaseRepository!)),
+                          ],
+                          child: LoginPage(
+                              loginRepo: _loginRepository,
+                              userConfigRepository: UserConfigRepository()),
+                        ),
+                      ),
+                    );
+                  },
+                  child: gradientButton(context, "Log out"),
                 ),
               ),
             ],

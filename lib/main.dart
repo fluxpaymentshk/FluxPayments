@@ -1,28 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flux_payments/bloc/cards_bloc.dart/cards_bloc.dart';
-import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
-import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.dart';
-import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
-import 'package:flux_payments/bloc/payment_bloc.dart/payment_bloc.dart';
-import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
-import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
-import 'package:flux_payments/models/RewardCategory.dart';
-import 'package:flux_payments/repository/database_repo.dart';
-import 'package:flux_payments/repository/favorite_search_repository.dart';
-import 'package:flux_payments/screens/auth_Screens/login_screen.dart';
-import 'package:flux_payments/screens/payment_Screens/confirm_payment_screen.dart';
-import 'package:flux_payments/screens/payment_Screens/loading_screen.dart';
-import 'package:flux_payments/screens/payment_Screens/pay_now_screen.dart';
-import 'package:flux_payments/screens/payment_Screens/payment_screen.dart';
-import 'package:flux_payments/screens/payment_Screens/select_payment_method_screen.dart';
-import 'package:flux_payments/screens/profile_screen/editing_profile_page.dart';
-import 'package:flux_payments/screens/profile_screen/profile_page.dart';
-
-import './screens/coupons.dart';
 
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
@@ -38,20 +18,25 @@ import 'package:flux_payments/bloc/advertiser_bloc/advertiser_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/curated_list_bloc/curated_list_bloc.dart';
-import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/pending_service_bloc/pending_service_bloc.dart';
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
+import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
+import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/notification_handler.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
-import 'package:flux_payments/screens/auth_Screens/login_page.dart';
+import 'package:flux_payments/screens/auth_Screens/login_screen.dart';
 import 'package:flux_payments/screens/home_page.dart';
-import 'package:flux_payments/screens/rewards_search_screen.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'bloc/coupons_bloc/coupons_bloc.dart';
+
+import './screens/coupons.dart';
 import 'bloc/banner_bloc/banner_bloc.dart';
+import 'bloc/coupons_bloc/coupons_bloc.dart';
 import 'bloc/graph_bloc/graph_bloc.dart';
 import 'bloc/recent_payment_bloc/recent_payment_bloc.dart';
 
@@ -217,6 +202,7 @@ class _MyAppState extends State<MyApp> {
               child: LoginScreen(
                 loginRepo: _loginRepository,
                 userConfigRepository: _userConfigRepository,
+                databaseRepository: _databaseRepository,
               ),
             ),
         HomePage.routeName: (_) => BlocProvider<UserBloc>(

@@ -15,6 +15,7 @@ import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_bloc.dart';
 import 'package:flux_payments/bloc/pending_service_bloc/pending_service_bloc.dart';
 import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_bloc.dart';
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
 import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/repository/database_repository.dart';
@@ -57,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
     var recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
     var favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
     var couponsBloc = BlocProvider.of<CouponsBloc>(context);
+    var serviceProviderBloc = BlocProvider.of<ServiceProviderBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('LoginPage'),
@@ -111,36 +113,42 @@ class _LoginPageState extends State<LoginPage> {
                 MaterialPageRoute(
                   builder: (context) => MultiBlocProvider(
                     providers: [
-                      BlocProvider.value(
-                        value: userBloc,
-                      ),
-                      BlocProvider.value(
-                        value: curatedListBloc,
-                      ),
-                      BlocProvider.value(
-                        value: bannerBloc,
-                      ),
-                      BlocProvider.value(
-                        value: advertiserBloc,
-                      ),
-                      BlocProvider.value(
-                        value: graphBloc,
-                      ),
-                      BlocProvider.value(
-                        value: recentPaymentBloc,
-                      ),
-                      BlocProvider.value(
-                        value: pendingServiceBloc,
-                      ),
-                      BlocProvider.value(
-                        value: storyBloc,
-                      ),
-                      BlocProvider.value(
-                        value: couponsBloc,
-                      ),
-                      BlocProvider.value(
-                        value: favoritesBloc,
-                      ),
+                    BlocProvider.value(
+                                  value: authBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: userBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: curatedListBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: bannerBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: advertiserBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: graphBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: recentPaymentBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: serviceProviderBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: pendingServiceBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: storyBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: couponsBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: favoritesBloc,
+                                ),
                     ],
                     child: NavigatorPage(
                       userRepository: widget.userConfigRepository,
@@ -270,7 +278,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                 ),
               ),
-             
+
               // ),
               SizedBox(
                 height: 20,
@@ -328,6 +336,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 BlocProvider.value(
                                   value: recentPaymentBloc,
+                                ),
+                                BlocProvider.value(
+                                  value: serviceProviderBloc,
                                 ),
                                 BlocProvider.value(
                                   value: pendingServiceBloc,
