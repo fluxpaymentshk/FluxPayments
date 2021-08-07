@@ -20,6 +20,7 @@ import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
+import 'package:otp_text_field/style.dart';
 
 class RewardsSearchScreen extends StatefulWidget {
   final List<RewardCategory>? categories;
@@ -304,275 +305,281 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Flexible(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Color(0xffE9E9FF),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5)),
-                                                boxShadow: <BoxShadow>[
-                                                  BoxShadow(
-                                                    color: Colors.grey.shade300,
-                                                    spreadRadius: 1,
-                                                    offset: Offset(1, 1),
-                                                  ),
-                                                ],
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Color(0xffE9E9FF),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5)),
+                                              boxShadow: <BoxShadow>[
+                                                BoxShadow(
+                                                  color: Colors.grey.shade300,
+                                                  spreadRadius: 1,
+                                                  offset: Offset(1, 1),
+                                                ),
+                                              ],
+                                            ),
+                                            margin: EdgeInsets.only(left: 20),
+                                            padding: EdgeInsets.all(8),
+                                            height: 50,
+                                            width:MediaQuery.of(context).size.width*0.4,
+                                            child: DropdownButton<String>(
+                                              selectedItemBuilder: (context) {
+                                                print(_choosenVal);
+                                                print(
+                                                    "###${_textEditingController.value.text.toString().length}");
+                                                if (_choosenVal == "Sort") {
+                                                  r = _textEditingController
+                                                              .value.text
+                                                              .toString()
+                                                              .length !=
+                                                          0
+                                                      ? filterAccordingToSearchFavorites(
+                                                          selectedCategories
+                                                                      .length ==
+                                                                  0
+                                                              ? r.length !=
+                                                                      original
+                                                                          .length
+                                                                  ? original
+                                                                  : r
+                                                              : filterAccordingToCategory(
+                                                                  r,
+                                                                  selectedCategories,
+                                                                ),
+                                                          _textEditingController
+                                                              .value.text
+                                                              .toString())
+                                                      : selectedCategories
+                                                                  .length ==
+                                                              0
+                                                          ? original
+                                                          : filterAccordingToCategory(
+                                                              r,
+                                                              selectedCategories);
+                                                } else if (_choosenVal ==
+                                                    "Nearest Store") {
+                                                  r = _textEditingController
+                                                              .value.text
+                                                              .toString()
+                                                              .length !=
+                                                          0
+                                                      ? filterAccordingToSearchFavorites(
+                                                          selectedCategories.length ==
+                                                                  0
+                                                              ? sortAccordingToDistance(selectedCategories.length ==
+                                                                      0
+                                                                  ? r.length !=
+                                                                          original
+                                                                              .length
+                                                                      ? original
+                                                                      : r
+                                                                  : filterAccordingToCategory(
+                                                                      r, selectedCategories))
+                                                              : filterAccordingToCategory(
+                                                                  r,
+                                                                  selectedCategories,
+                                                                ),
+                                                          _textEditingController
+                                                              .value.text
+                                                              .toString())
+                                                      : sortAccordingToDistance(
+                                                          selectedCategories
+                                                                      .length ==
+                                                                  0
+                                                              ? r.length !=
+                                                                      original
+                                                                          .length
+                                                                  ? original
+                                                                  : r
+                                                              : filterAccordingToCategory(
+                                                                  r, selectedCategories));
+                                                } else if (_choosenVal ==
+                                                    "Least Flux Points") {
+                                                  r = _textEditingController
+                                                              .value.text
+                                                              .toString()
+                                                              .length !=
+                                                          0
+                                                      ? filterAccordingToSearchFavorites(
+                                                          selectedCategories.length ==
+                                                                  0
+                                                              ? sortAccordingToFluxPoints(selectedCategories.length ==
+                                                                      0
+                                                                  ? r.length !=
+                                                                          original
+                                                                              .length
+                                                                      ? original
+                                                                      : r
+                                                                  : filterAccordingToCategory(
+                                                                      r, selectedCategories))
+                                                              : filterAccordingToCategory(
+                                                                  r,
+                                                                  selectedCategories,
+                                                                ),
+                                                          _textEditingController
+                                                              .value.text
+                                                              .toString())
+                                                      : sortAccordingToFluxPoints(
+                                                          selectedCategories
+                                                                      .length ==
+                                                                  0
+                                                              ? r.length !=
+                                                                      original
+                                                                          .length
+                                                                  ? original
+                                                                  : r
+                                                              : filterAccordingToCategory(
+                                                                  r, selectedCategories));
+                                                } else if (_choosenVal ==
+                                                    "My favorite brand") {
+                                                  r = _textEditingController
+                                                              .value.text
+                                                              .toString()
+                                                              .length !=
+                                                          0
+                                                      ? filterAccordingToSearchFavorites(
+                                                          selectedCategories
+                                                                      .length !=
+                                                                  0
+                                                              ? filterAccordingToCategory(
+                                                                  r,
+                                                                  selectedCategories,
+                                                                )
+                                                              : r.length !=
+                                                                      original
+                                                                          .length
+                                                                  ? original
+                                                                  : r,
+                                                          _textEditingController
+                                                              .value.text
+                                                              .toString())
+                                                      : filterAccordingToFavorites(
+                                                          selectedCategories
+                                                                      .length ==
+                                                                  0
+                                                              ? r.length !=
+                                                                      original
+                                                                          .length
+                                                                  ? original
+                                                                  : r
+                                                              : filterAccordingToCategory(
+                                                                  r,
+                                                                  selectedCategories,
+                                                                ));
+                                                }
+                                                return [
+                                                  Center(child: Container(width:100, child: Text("Sort",style:GoogleFonts.montserrat(fontSize: 24)))),
+                                                  Center(child: Container(width:100, child: FittedBox(child: Text("Nearest Store",style:GoogleFonts.montserrat(fontSize: 24))))),
+                                                  Center(child: Container(width: 100,child: FittedBox(child: Text("Least Flux Points",style:GoogleFonts.montserrat(fontSize: 24))))),
+                                                  Center(child: Container(width:100,child: FittedBox(child: Text("My favorite brand",style:GoogleFonts.montserrat(fontSize: 24))))),
+                                                ];
+                                              },
+                                              value: _choosenVal,
+                                              underline: Container(),
+                                              menuMaxHeight: 2000,
+                                              style: GoogleFonts.montserrat(
+                                                color: AppTheme.main,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15,
                                               ),
-                                              margin: EdgeInsets.only(left: 20),
-                                              padding: EdgeInsets.all(8),
-                                              height: 50,
-                                              child: DropdownButton<String>(
-                                                selectedItemBuilder: (context) {
-                                                  print(_choosenVal);
-                                                  print(
-                                                      "###${_textEditingController.value.text.toString().length}");
-                                                  if (_choosenVal == "Sort") {
-                                                    r = _textEditingController
-                                                                .value.text
-                                                                .toString()
-                                                                .length !=
-                                                            0
-                                                        ? filterAccordingToSearchFavorites(
-                                                            selectedCategories
-                                                                        .length ==
-                                                                    0
-                                                                ? r.length !=
-                                                                        original
-                                                                            .length
-                                                                    ? original
-                                                                    : r
-                                                                : filterAccordingToCategory(
-                                                                    r,
-                                                                    selectedCategories,
-                                                                  ),
-                                                            _textEditingController
-                                                                .value.text
-                                                                .toString())
-                                                        : selectedCategories
-                                                                    .length ==
-                                                                0
-                                                            ? original
-                                                            : filterAccordingToCategory(
-                                                                r,
-                                                                selectedCategories);
-                                                  } else if (_choosenVal ==
-                                                      "Nearest Store") {
-                                                    r = _textEditingController
-                                                                .value.text
-                                                                .toString()
-                                                                .length !=
-                                                            0
-                                                        ? filterAccordingToSearchFavorites(
-                                                            selectedCategories.length ==
-                                                                    0
-                                                                ? sortAccordingToDistance(selectedCategories.length ==
-                                                                        0
-                                                                    ? r.length !=
-                                                                            original
-                                                                                .length
-                                                                        ? original
-                                                                        : r
-                                                                    : filterAccordingToCategory(
-                                                                        r, selectedCategories))
-                                                                : filterAccordingToCategory(
-                                                                    r,
-                                                                    selectedCategories,
-                                                                  ),
-                                                            _textEditingController
-                                                                .value.text
-                                                                .toString())
-                                                        : sortAccordingToDistance(
-                                                            selectedCategories
-                                                                        .length ==
-                                                                    0
-                                                                ? r.length !=
-                                                                        original
-                                                                            .length
-                                                                    ? original
-                                                                    : r
-                                                                : filterAccordingToCategory(
-                                                                    r, selectedCategories));
-                                                  } else if (_choosenVal ==
-                                                      "Least Flux Points") {
-                                                    r = _textEditingController
-                                                                .value.text
-                                                                .toString()
-                                                                .length !=
-                                                            0
-                                                        ? filterAccordingToSearchFavorites(
-                                                            selectedCategories.length ==
-                                                                    0
-                                                                ? sortAccordingToFluxPoints(selectedCategories.length ==
-                                                                        0
-                                                                    ? r.length !=
-                                                                            original
-                                                                                .length
-                                                                        ? original
-                                                                        : r
-                                                                    : filterAccordingToCategory(
-                                                                        r, selectedCategories))
-                                                                : filterAccordingToCategory(
-                                                                    r,
-                                                                    selectedCategories,
-                                                                  ),
-                                                            _textEditingController
-                                                                .value.text
-                                                                .toString())
-                                                        : sortAccordingToFluxPoints(
-                                                            selectedCategories
-                                                                        .length ==
-                                                                    0
-                                                                ? r.length !=
-                                                                        original
-                                                                            .length
-                                                                    ? original
-                                                                    : r
-                                                                : filterAccordingToCategory(
-                                                                    r, selectedCategories));
-                                                  } else if (_choosenVal ==
-                                                      "My favorite brand") {
-                                                    r = _textEditingController
-                                                                .value.text
-                                                                .toString()
-                                                                .length !=
-                                                            0
-                                                        ? filterAccordingToSearchFavorites(
-                                                            selectedCategories
-                                                                        .length !=
-                                                                    0
-                                                                ? filterAccordingToCategory(
-                                                                    r,
-                                                                    selectedCategories,
-                                                                  )
-                                                                : r.length !=
-                                                                        original
-                                                                            .length
-                                                                    ? original
-                                                                    : r,
-                                                            _textEditingController
-                                                                .value.text
-                                                                .toString())
-                                                        : filterAccordingToFavorites(
-                                                            selectedCategories
-                                                                        .length ==
-                                                                    0
-                                                                ? r.length !=
-                                                                        original
-                                                                            .length
-                                                                    ? original
-                                                                    : r
-                                                                : filterAccordingToCategory(
-                                                                    r,
-                                                                    selectedCategories,
-                                                                  ));
-                                                  }
-                                                  return [
-                                                    Text("Sort"),
-                                                    Text("Nearest Store"),
-                                                    Text("Least Flux Points"),
-                                                    Text("My favorite brand"),
-                                                  ];
-                                                },
-                                                value: _choosenVal,
-                                                menuMaxHeight: 2000,
+                                              dropdownColor:
+                                                  Color(0xffE9E9FF),
+                                              onChanged: (String? s) {
+                                                setState(() {
+                                                  _choosenVal = s ?? "";
+                                                });
+                                              },
+                                              // iconSize:30,
+                                              iconEnabledColor: AppTheme.main,
+                                              icon: ImageIcon(
+                                                AssetImage(
+                                                  "assets/images/drop_down.png",
+                                                ),
+                                              ),
+                                              //       Container(
+                                              //   height: 24,
+                                              //   child: FloatingActionButton(
+                                              //     onPressed: null,
+                                              //     shape: CircleBorder(
+                                              //       side: BorderSide(
+                                              //         color: AppTheme.main,
+                                              //         width: 3,
+                                              //       ),
+                                              //     ),
+                                              //     backgroundColor: Colors.white,
+                                              //     mini: true,
+                                              //     child: Icon(
+                                              //       Icons.arrow_downward_outlined,
+                                              //       color: AppTheme.main,
+                                              //       size: 16,
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                              hint: Text(
+                                                "Sort",
                                                 style: GoogleFonts.montserrat(
                                                   color: AppTheme.main,
                                                   fontWeight: FontWeight.w500,
-                                                  fontSize: 15,
+                                                  fontSize: 13,
                                                 ),
-                                                dropdownColor:
-                                                    Color(0xffE9E9FF),
-                                                onChanged: (String? s) {
-                                                  setState(() {
-                                                    _choosenVal = s ?? "";
-                                                  });
-                                                },
-                                                // iconSize:30,
-                                                iconEnabledColor: AppTheme.main,
-                                                icon: ImageIcon(
-                                                  AssetImage(
-                                                    "assets/images/drop_down.png",
-                                                  ),
-                                                ),
-                                                //       Container(
-                                                //   height: 24,
-                                                //   child: FloatingActionButton(
-                                                //     onPressed: null,
-                                                //     shape: CircleBorder(
-                                                //       side: BorderSide(
-                                                //         color: AppTheme.main,
-                                                //         width: 3,
-                                                //       ),
-                                                //     ),
-                                                //     backgroundColor: Colors.white,
-                                                //     mini: true,
-                                                //     child: Icon(
-                                                //       Icons.arrow_downward_outlined,
-                                                //       color: AppTheme.main,
-                                                //       size: 16,
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                hint: Text(
-                                                  "Sort",
-                                                  style: GoogleFonts.montserrat(
-                                                    color: AppTheme.main,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                                items: <String>[
-                                                  "Sort",
-                                                  "Nearest Store",
-                                                  "Least Flux Points",
-                                                  "My favorite brand"
-                                                ].map<DropdownMenuItem<String>>(
-                                                    (String s) {
-                                                  return DropdownMenuItem(
-                                                    child: Text(s),
-                                                    value: s,
-                                                  );
-                                                }).toList(),
-                                                isDense: false,
-                                              ), //DropDownButton(),
-                                            ),
+                                              ),
+                                              items: <String>[
+                                                "Sort",
+                                                "Nearest Store",
+                                                "Least Flux Points",
+                                                "My favorite brand"
+                                              ].map<DropdownMenuItem<String>>(
+                                                  (String s) {
+                                                return DropdownMenuItem(
+                                                  child: Text(s),
+                                                  value: s,
+                                                );
+                                              }).toList(),
+                                              isDense: false,
+                                            ), //DropDownButton(),
                                           ),
                                           Container(
-                                            width: 200,
+                                            width: MediaQuery.of(context).size.width*0.4,
                                             height: 80,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                ListTile(
-                                                  minVerticalPadding: 1,
-                                                  horizontalTitleGap: 1,
-                                                  // dense: true,
-                                                  leading: Image.asset(
-                                                    "assets/images/coin.png",
-                                                    height: 40,
-                                                  ),
-                                                  title: Text(
-                                                    "${fluxPointsBloc.getFluxPoints}",
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 25,
-                                                      color: AppTheme.main,
+                                            child: FittedBox(
+                                              child: Container(
+                                              width: MediaQuery .of(context).size.width*0.4,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    ListTile(
+                                                      minLeadingWidth: 10,
+                                                      minVerticalPadding: 1,
+                                                      horizontalTitleGap: 1,
+                                                      // dense: true,
+                                                      leading: Image.asset(
+                                                        "assets/images/coin.png",
+                                                        height: 40,
+                                                      ),
+                                                      title: Text(
+                                                        "${fluxPointsBloc.getFluxPoints}",
+                                                        style:
+                                                            GoogleFonts.montserrat(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 25,
+                                                          color: AppTheme.main,
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
+                                                    Text(
+                                                      "My Points",
+                                                      style: GoogleFonts.montserrat(
+                                                        fontWeight: FontWeight.w300,
+                                                        fontSize: 20,
+                                                        color: AppTheme.main,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Text(
-                                                  "My Points",
-                                                  style: GoogleFonts.montserrat(
-                                                    fontWeight: FontWeight.w300,
-                                                    fontSize: 20,
-                                                    color: AppTheme.main,
-                                                  ),
-                                                ),
-                                              ],
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -793,35 +800,46 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
-                                                                Flexible(
+                                                                Container(
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.35,
                                                                   child:
-                                                                      Container(
-                                                                    width: 150,
+                                                                      FittedBox(
                                                                     child:
-                                                                        ListTile(
-                                                                      minVerticalPadding:
-                                                                          1,
-                                                                      horizontalTitleGap:
-                                                                          1,
-                                                                      leading: Image
-                                                                          .asset(
-                                                                        "assets/images/coin.png",
-                                                                        height:
-                                                                            40,
-                                                                      ),
-                                                                      title:
-                                                                          Text(
-                                                                        r[i]
-                                                                            .amount
-                                                                            .toString(),
-                                                                        style: GoogleFonts
-                                                                            .montserrat(
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          fontSize:
-                                                                              25,
-                                                                          color:
-                                                                              AppTheme.main,
+                                                                        Container(
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.4,
+                                                                      child:
+                                                                          ListTile(
+                                                                        minVerticalPadding:
+                                                                            1,
+                                                                        horizontalTitleGap:
+                                                                            1,
+                                                                        leading:
+                                                                            Image.asset(
+                                                                          "assets/images/coin.png",
+                                                                          height:
+                                                                              40,
+                                                                        ),
+                                                                        title:
+                                                                            Text(
+                                                                          r[i]
+                                                                              .amount
+                                                                              .toString(),
+                                                                          style:
+                                                                              GoogleFonts.montserrat(
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            fontSize:
+                                                                                25,
+                                                                            color:
+                                                                                AppTheme.main,
+                                                                          ),
                                                                         ),
                                                                       ),
                                                                     ),

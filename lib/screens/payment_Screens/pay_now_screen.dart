@@ -14,6 +14,7 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/Cards.dart';
 import 'package:flux_payments/repository/database_repository.dart';
+import 'package:flux_payments/screens/payment_Screens/add_new_card_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/detailed_bill.dart';
 import 'package:flux_payments/screens/payment_Screens/select_payment_method_screen.dart';
 import 'package:flux_payments/widgets/back_button.dart';
@@ -116,29 +117,82 @@ class _PayNowScreenState extends State<PayNowScreen> {
                     //TO DO
                     return Container(
                       height: MediaQuery.of(context).size.aspectRatio * 370,
-                      child: ScrollablePositionedList.builder(
-                        itemCount: cards.length,
-                        itemBuilder: (context, index) => Container(
-                          child: CreditCardWidget(
-                            cardNumber: cards[index].cardNumber!,
-                            expiryDate: cards[index].expiryDate!,
-                            cardType: getCardType(cards[index].cardBrand),
-                            cardHolderName: cards[index].holderName!,
-                            cvvCode: cards[index].cvv.toString(),
-                            showBackView: false,
-                            cardBgColor:
-                                cardBgColors[index % cardBgColors.length],
-                            obscureCardNumber: true,
-                            obscureCardCvv: true,
-                            width:
-                                MediaQuery.of(context).size.aspectRatio * 500,
-                            animationDuration: Duration(milliseconds: 1000),
-                          ),
-                        ),
-                        itemScrollController: _scrollController,
-                        reverse: false,
-                        scrollDirection: Axis.horizontal,
-                      ),
+                      child: cards.length == 0
+                          ? InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => BlocProvider.value(
+                                      value: cardsBloc,
+                                      child: AddCardNewScreen(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                child: Stack(
+                                  children: [
+                                    CreditCardWidget(
+                                      cardNumber: "",
+                                      expiryDate: " ",
+                                      cardHolderName: 'Add new Card',
+                                      cvvCode: '',
+                                      showBackView: false,
+                                      cardBgColor:
+                                          cardBgColors[cardBgColors.length - 1],
+                                      obscureCardNumber: true,
+                                      obscureCardCvv: true,
+                                      width: MediaQuery.of(context)
+                                              .size
+                                              .aspectRatio *
+                                          500,
+                                      animationDuration:
+                                          Duration(milliseconds: 1000),
+                                    ),
+                                    Positioned(
+                                      top: MediaQuery.of(context)
+                                              .size
+                                              .aspectRatio *
+                                          150,
+                                      left: MediaQuery.of(context)
+                                              .size
+                                              .aspectRatio *
+                                          150,
+                                      child: Icon(
+                                        Icons.add,
+                                        size: 60,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : ScrollablePositionedList.builder(
+                              itemCount: cards.length,
+                              itemBuilder: (context, index) => Container(
+                                child: CreditCardWidget(
+                                  cardNumber: cards[index].cardNumber!,
+                                  expiryDate: cards[index].expiryDate!,
+                                  cardType: getCardType(cards[index].cardBrand),
+                                  cardHolderName: cards[index].holderName!,
+                                  cvvCode: cards[index].cvv.toString(),
+                                  showBackView: false,
+                                  cardBgColor:
+                                      cardBgColors[index % cardBgColors.length],
+                                  obscureCardNumber: true,
+                                  obscureCardCvv: true,
+                                  width:
+                                      MediaQuery.of(context).size.aspectRatio *
+                                          500,
+                                  animationDuration:
+                                      Duration(milliseconds: 1000),
+                                ),
+                              ),
+                              itemScrollController: _scrollController,
+                              reverse: false,
+                              scrollDirection: Axis.horizontal,
+                            ),
                     );
                   }
                   return Center(
