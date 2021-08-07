@@ -66,7 +66,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
     ];
   }
 
-  int _selectedPage = 0;
+  int _selectedPage =1;
 
   PageController _pageController = PageController();
   final controller = SheetController();
