@@ -51,11 +51,11 @@ class serviceProviderTile extends StatelessWidget {
             padding: EdgeInsets.all(SizeConfig.heightMultiplier * 0.3),
             child:
              Container(
-              height: SizeConfig.heightMultiplier*3,
-              width: SizeConfig.widthMultiplier*6,
+              height: SizeConfig.heightMultiplier*4,
+              width: SizeConfig.widthMultiplier*10,
 
             
-              child : Image.network(imageurl,fit: BoxFit.cover,),
+              child : Image.network(imageurl,fit:BoxFit.cover),
               //  child:NetworkImage(state.user.);
             ),
             // CircleAvatar(

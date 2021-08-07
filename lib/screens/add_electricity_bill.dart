@@ -149,32 +149,33 @@ class _AddElectricityBillState extends State<AddElectricityBill> {
                 ),
               ),
 
-              // BlocListener<ServiceProviderBloc, ServiceProviderState>(
-              //   listener: (context, state) {
-              //     print('ggbhaii');
-              //     print(state.runtimeType.toString());
-              //     if (state is InsertingDetails) {
-              //       MaterialPageRoute(builder: (BuildContext context) {
-              //         return WaitingScreen();
-              //       });
-              //     }
+              BlocListener<ServiceProviderBloc, ServiceProviderState>(
+                child:Container(),
+                listener: (context, state) {
+                  print('ggbhaii');
+                  print(state.runtimeType.toString());
+                  if (state is InsertingDetails) {
+                    MaterialPageRoute(builder: (BuildContext context) {
+                      return WaitingScreen();
+                    });
+                  }
 
-              //     if (state is InsertedDetailsSuccessfully)
-              //       Navigator.pushReplacement(context,
-              //           MaterialPageRoute(builder: (BuildContext context) {
-              //         return BlocProvider<ServiceProviderBloc>.value(
-              //           value: serviceProviderBloc,
-              //           child: ProviderAdded(),
-              //         );
-              //       }));
+                  if (state is InsertedDetailsSuccessfully)
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return BlocProvider<ServiceProviderBloc>.value(
+                        value: serviceProviderBloc,
+                        child: ProviderAdded(),
+                      );
+                    }));
 
-              //     if (state is ErrorInsertDetails) {
-              //       Navigator.of(context).pop();
-              //       ScaffoldMessenger.of(context)
-              //           .showSnackBar(errorSnackBar(state.message));
-              //     }
-              //   },
-              // ),
+                  if (state is ErrorInsertDetails) {
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(errorSnackBar(state.message));
+                  }
+                },
+              ),
               // //#############
             ]),
           ),
