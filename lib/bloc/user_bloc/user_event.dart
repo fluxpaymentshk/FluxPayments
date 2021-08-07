@@ -21,3 +21,4 @@ class GetUserDetails extends UserEvent {
   final String? userID;
   const GetUserDetails({@required this.userID});
 }
+

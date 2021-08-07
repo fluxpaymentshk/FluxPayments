@@ -7,9 +7,10 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_flutter/categories/amplify_categories.dart';
 
 class AmplifyLogin {
+  var r;
   Future<bool> isUserSignedIn() async {
     try {
-      var r = await Amplify.Auth.fetchAuthSession(
+      r = await Amplify.Auth.fetchAuthSession(
               options: CognitoSessionOptions(getAWSCredentials: true))
           as CognitoAuthSession;
       log("${r.credentials} ,  ${r.identityId}  , ${r.userPoolTokens}   ,  ${r.userSub}");
@@ -18,6 +19,10 @@ class AmplifyLogin {
       return false;
     }
   }
+
+CognitoAuthSession getUserDetails(){
+  return r;
+}
 
   Future<bool> socialSignInUser(AuthProvider authProvider) async {
     try {

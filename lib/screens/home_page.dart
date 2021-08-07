@@ -133,6 +133,9 @@ class _HomePageState extends State<HomePage> {
           print('hjjjjjjjjj');
 
           return Scaffold(
+            floatingActionButton: FloatingActionButton(onPressed: () async {
+              await Amplify.Auth.signOut();
+            },),
 
               //     SizedBox(height: 10),
               //     FloatingActionButton(

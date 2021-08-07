@@ -73,10 +73,36 @@ abstract class DatabaseBaseRepository {
       required String? rewardPartnerID,
       required String? rewardID,
       required String? shopID});
+  
+  Future<void> addUserdata(
+    {required String? email,
+      required String? lname,
+      required String? fname,
+      required String? phnNumber,
+      required String? hkID,
+      required String? userID,}
+  );
 }
 
 class DatabaseRepository extends DatabaseBaseRepository {
   DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
+
+  @override
+  Future<void> addUserdata({required String? email,
+      required String? lname,
+      required String? fname,
+      required String? phnNumber,
+      required String? hkID,
+      required String? userID,}){
+      return _databaseLambdaService.addUserdata(
+        email: email,
+            lname: lname,
+            fname: fname,
+            phnNumber: phnNumber,
+            hkID: hkID,
+            userID: userID,
+      );
+  }
 
   @override
   Future<List<Reward>> getFavorites(

@@ -7,16 +7,18 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_event.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
+import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
+import 'package:flux_payments/repository/user_config_repository.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginRepository _loginRepository;
   AuthBloc(this._loginRepository) : super(AuthInitial());
 
   Future<bool> get currentUser async => await _loginRepository.isUserSignedIn();
-
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
+    DatabaseRepository _databaseRepository = DatabaseRepository();
     var request;
     yield (AuthInitial());
     if (event is EmailSignUpUser) {
@@ -25,6 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (event.resend == true) {
           try {
             await _loginRepository.resendConfirmationCode(event.email ?? "");
+            yield OtpResentState();
           } catch (e) {
             log(e.toString());
           }
@@ -42,13 +45,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             yield AuthError(e.message);
           }
         } else {
-          request = await _loginRepository.signUp(
+          try{
+            request = await _loginRepository.signUp(
             event.email ?? "",
             event.password ?? "",
             event.phnNumber ?? "",
-            event.name ?? "",
+            event.fname ?? "",
           );
+          
+          print("Hello World");
           yield UserSignedUpAuthState();
+          print("Hello World2");
+          }catch(e){
+            print("Error $e");
+            yield AuthError("Signup error");
+          }
+          
         }
       } on LimitExceededException catch (e) {
         yield AuthError("limit exceeded");

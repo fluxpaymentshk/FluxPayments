@@ -12,14 +12,18 @@ class EmailLogInUser extends AuthEvent {
 
 class EmailSignUpUser extends AuthEvent {
   final String? email, password;
-  final String? phnNumber, name;
+  final String? phnNumber, fname;
+  final String? lname;
+  final String? hkid;
   final String code;
   final bool resend;
   const EmailSignUpUser(
       {@required this.email,
+      @required this.lname,
+      @required this.hkid,
       @required this.password,
       this.phnNumber,
-      this.name,
+      this.fname,
       this.resend = false,
       this.code = ""});
 }

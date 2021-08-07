@@ -969,4 +969,25 @@ class DatabaseLambdaService {
       throw Exception(e);
     }
   }
+
+  Future<void> addUserdata({required String? email,
+      required String? lname,
+      required String? fname,
+      required String? phnNumber,
+      required String? hkID,
+      required String? userID,}) async {
+    try {
+      result = await lambda
+          .callLambda('aurora-serverless-function-createUser', <String, dynamic>{
+        "email": email,
+            "lname": lname,
+            "fname": fname,
+            "phnNumber": phnNumber,
+            "hkID": hkID,
+            "userID": userID,
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 }
