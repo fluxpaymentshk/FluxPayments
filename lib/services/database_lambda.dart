@@ -1003,6 +1003,27 @@ class DatabaseLambdaService {
     }
   }
 
+  Future<void> addUserdata({required String? email,
+      required String? lname,
+      required String? fname,
+      required String? phnNumber,
+      required String? hkID,
+      required String? userID,}) async {
+    try {
+      log("In ADDUSERDATA FUNCTION $userID $email $lname");
+      log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      result = await lambda
+          .callLambda('aurora-serverless-function-createUser', <String, dynamic>{
+        "email": email,
+            "lname": lname,
+            "fname": fname,
+            "phnNumber": phnNumber,
+            "hkID": hkID,
+            "userID": userID,
+      });
+    } catch (e) {
+      print(e);
+    }}
   Future<List<UserServicePayments>> getPendingUserServicesPaymentInfo({
     required String? userID,
     required String? date,
@@ -1370,3 +1391,4 @@ class DatabaseLambdaService {
     }
   }
 }
+   

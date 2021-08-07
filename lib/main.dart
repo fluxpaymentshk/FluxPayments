@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flux_payments/bloc/cards_bloc.dart/cards_bloc.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/repository/database_repo.dart';
 import 'package:flux_payments/repository/favorite_search_repository.dart';
+import 'package:flux_payments/screens/auth_Screens/login_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/confirm_payment_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/loading_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/pay_now_screen.dart';
@@ -80,6 +82,7 @@ Future<void> main() async {
   });
 
   runApp(MyApp());
+  //runApp(SplashScreen());
 }
 
 class MyApp extends StatefulWidget {
@@ -91,13 +94,21 @@ class _MyAppState extends State<MyApp> {
   LoginRepository _loginRepository = new LoginRepository();
   UserConfigRepository _userConfigRepository = new UserConfigRepository();
   DatabaseRepository _databaseRepository = DatabaseRepository();
-
+  bool nav = false;
   bool _amplifyConfigured = false;
   bool isSignedIn = false;
   List<Map<String, dynamic>> categories = [];
 
   @override
   void initState() {
+    Timer(
+         Duration(milliseconds: 3000),
+         (){
+           setState(() {
+             nav = true;
+           });
+         }
+         );
     super.initState();
     _configureAmplify();
   }
@@ -148,10 +159,19 @@ class _MyAppState extends State<MyApp> {
     return isSignedIn;
   }
 
+  // void nav(context){
+  //   Timer(
+  //       Duration(milliseconds: 3000),
+  //       () => Navigator.pushReplacement(
+  //           context, MaterialPageRoute(builder: (context) => BlocScreen())));
+  // }
+  
+
   var authBloc;
   var userBloc;
   @override
   Widget build(BuildContext context) {
+    //nav(context);
     getCategories();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -170,14 +190,63 @@ class _MyAppState extends State<MyApp> {
           unselectedIconTheme: IconThemeData(size: 30),
         ),
       ),
-      home: //EditingProfilePage(),
-      //     BlocProvider(
-      //   create: (_) => UserBloc(_userConfigRepository, _databaseRepository),
-      //   child: ProfilePage(
-      //       userConfigRepository: _userConfigRepository,
-      //       databaseRepository: _databaseRepository),
-      // ),
-          MultiBlocProvider(
+      home: nav ? BlocScreen() : SplashScreen(),
+      
+      routes: {
+        LoginScreen.routeName: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider<AuthBloc>(
+                  create: (_) => AuthBloc(_loginRepository),
+                ),
+                BlocProvider(
+                    create: (_) =>
+                        UserBloc(_userConfigRepository, _databaseRepository)),
+                BlocProvider(
+                    create: (_) => AdvertiserBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => CuratedListBloc(_databaseRepository)),
+                BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
+                BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => RecentPaymentBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => PendingServiceBloc(_databaseRepository)),
+                BlocProvider<StoryBloc>(
+                    create: (_) => StoryBloc(_databaseRepository)),
+              ],
+              child: LoginScreen(
+                loginRepo: _loginRepository,
+                userConfigRepository: _userConfigRepository,
+              ),
+            ),
+        HomePage.routeName: (_) => BlocProvider<UserBloc>(
+              create: (_) =>
+                  UserBloc(_userConfigRepository, _databaseRepository),
+              child: HomePage(
+                  userRepository: _userConfigRepository,
+                  databaseRepository: _databaseRepository,
+                  email: userDetails["email"] ?? ""),
+            ),
+        Coupons.routeName: (_) => MultiBlocProvider(
+                providers: [
+                  BlocProvider<UserBloc>(
+                    create: (_) =>
+                        UserBloc(_userConfigRepository, _databaseRepository),
+                  ),
+                  BlocProvider<FavoritesBloc>(
+                      create: (_) => FavoritesBloc(_databaseRepository)),
+                  BlocProvider<CouponsBloc>(
+                      create: (_) => CouponsBloc(_databaseRepository)),
+                ],
+                child: Coupons(
+                  databaseRepo: _databaseRepository,
+                ))
+      },
+    );
+  }
+
+  Widget BlocScreen (){
+    return MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (_) => AuthBloc(_loginRepository),
@@ -222,9 +291,10 @@ class _MyAppState extends State<MyApp> {
                       if (snapshot.hasData &&
                           snapshot.data != null &&
                           snapshot.data == false)
-                        return LoginPage(
+                        return LoginScreen(
                           loginRepo: _loginRepository,
                           userConfigRepository: _userConfigRepository,
+                          databaseRepository: _databaseRepository,
                         );
                       return NavigatorPage(
                         userRepository: _userConfigRepository,
@@ -233,62 +303,81 @@ class _MyAppState extends State<MyApp> {
                     });
           },
         ),
-      ),
-      routes: {
-        LoginPage.routeName: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider<AuthBloc>(
-                  create: (_) => AuthBloc(_loginRepository),
+      );
+  }
+}
+
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({ Key? key }) : super(key: key);
+
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    
+  }
+  @override
+  Widget build(BuildContext context) {
+    // Size size = MediaQuery.of(context).size;
+    // double height = size.height;
+    // double width = size.width;
+    double height = 800;
+    double width = 500;
+    return Scaffold(
+        body: Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/Splash Screen.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: height * 0.4,
                 ),
-                BlocProvider(
-                    create: (_) =>
-                        UserBloc(_userConfigRepository, _databaseRepository)),
-                BlocProvider(
-                    create: (_) => AdvertiserBloc(_databaseRepository)),
-                BlocProvider(
-                    create: (_) => CuratedListBloc(_databaseRepository)),
-                BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
-                BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
-                BlocProvider(
-                    create: (_) => RecentPaymentBloc(_databaseRepository)),
-                BlocProvider(
-                    create: (_) => PendingServiceBloc(_databaseRepository)),
-                BlocProvider<StoryBloc>(
-                    create: (_) => StoryBloc(_databaseRepository)),
-                     BlocProvider(create: (_)=>ServiceProviderBloc(_databaseRepository)),
-              ],
-              child: LoginPage(
-                loginRepo: _loginRepository,
-                userConfigRepository: _userConfigRepository,
-              ),
-            ),
-        HomePage.routeName: (_) => BlocProvider<UserBloc>(
-              create: (_) =>
-                  UserBloc(_userConfigRepository, _databaseRepository),
-              child: HomePage(
-                  userRepository: _userConfigRepository,
-                  databaseRepository: _databaseRepository,
-                  email: userDetails["email"] ?? ""),
-            ),
-        Coupons.routeName: (_) => MultiBlocProvider(
-                providers: [
-                  BlocProvider<UserBloc>(
-                    create: (_) =>
-                        UserBloc(_userConfigRepository, _databaseRepository),
+                DefaultTextStyle(
+                  style: const TextStyle(
+                    fontSize: 30.0,
+                    fontFamily: 'Agne',
                   ),
-                  BlocProvider<FavoritesBloc>(
-                      create: (_) => FavoritesBloc(_databaseRepository)),
-                  BlocProvider<CouponsBloc>(
-                      create: (_) => CouponsBloc(_databaseRepository)),
-                ],
-                child: Coupons(
-                  databaseRepo: _databaseRepository,
-                ))
-        // Coupons.routeName: (_) => BlocProvider<UserBloc>(
-        //   create: (_) => UserBloc(_userConfigRepository,_databaseRepository),
-        //   child: Coupons(databaseRepo: _databaseRepository,),
-        // ),
-      },
+                  child: AnimatedTextKit(
+                    isRepeatingAnimation: false,
+                    animatedTexts: [
+                      TyperAnimatedText(
+                        'Flux.',
+                        speed: Duration(milliseconds: 250),
+                        textStyle: GoogleFonts.montserrat(
+                          fontSize: height * 0.07,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                    onTap: () {
+                      print("Tap Event");
+                    },
+                  ),
+                ),
+                Text(
+                  "Making repayments easy",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: height * 0.03,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      
     );
   }
 }

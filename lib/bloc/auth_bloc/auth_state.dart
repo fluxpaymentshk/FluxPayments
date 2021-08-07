@@ -22,6 +22,10 @@ class ConfirmUserState extends AuthState {
   const ConfirmUserState();
 }
 
+class OtpResentState extends AuthState {
+  const OtpResentState();
+}
+
 class AuthError extends AuthState {
   final String message;
   const AuthError(this.message);

@@ -11,6 +11,14 @@ import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 
 abstract class DatabaseBaseRepository {
+  Future<void> addUserdata(
+    {required String? email,
+      required String? lname,
+      required String? fname,
+      required String? phnNumber,
+      required String? hkID,
+      required String? userID,}
+  );
   Future<void> getFavorites(
       {required int? page,
       required List<Reward> favorites,
@@ -152,6 +160,22 @@ abstract class DatabaseBaseRepository {
 class DatabaseRepository extends DatabaseBaseRepository {
   DatabaseLambdaService _databaseLambdaService = DatabaseLambdaService();
 
+  @override
+  Future<void> addUserdata({required String? email,
+      required String? lname,
+      required String? fname,
+      required String? phnNumber,
+      required String? hkID,
+      required String? userID,}){
+      return _databaseLambdaService.addUserdata(
+        email: email,
+            lname: lname,
+            fname: fname,
+            phnNumber: phnNumber,
+            hkID: hkID,
+            userID: userID,
+      );
+  }
   @override
   Future<List<Reward>> getFavorites(
       {required int? page,

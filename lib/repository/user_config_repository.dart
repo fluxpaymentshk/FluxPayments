@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/user_model.dart';
@@ -26,6 +27,16 @@ abstract class UserConfigBaseRepository {
 class UserConfigRepository extends UserConfigBaseRepository {
   FormValidator _formValidator = new FormValidator();
   UserDetailsServices _userDetailsServices = new UserDetailsServices();
+
+  Future<CognitoAuthSession> fetchUserDetails() async {
+   
+      var r = await Amplify.Auth.fetchAuthSession(
+              options: CognitoSessionOptions(getAWSCredentials: true))
+          as CognitoAuthSession;
+      log("${r.credentials} ,  ${r.identityId}  , ${r.userPoolTokens}   ,  ${r.userSub}");
+      return r;
+    
+  }
 
   @override
   Future<String> changePassword(String oldPassword, String newPassword) async {
