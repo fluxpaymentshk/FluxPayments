@@ -1185,8 +1185,10 @@ class DatabaseLambdaService {
         "userID": userID,
         "billProviderID": billProviderID
       });
+      print("pkggggggg");
+      return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
 
-      return result.toString().contains('success') ? 'success' : '';
+      // return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }
@@ -1235,7 +1237,7 @@ class DatabaseLambdaService {
         "billProviderID": billProviderID
       });
 
-      return result.toString().contains('success') ? 'success' : '';
+      return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }
@@ -1260,7 +1262,7 @@ class DatabaseLambdaService {
         "billProviderID": billProviderID
       });
 
-      return result.toString().contains('success') ? 'success' : '';
+      return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }
@@ -1285,7 +1287,7 @@ class DatabaseLambdaService {
         "billProviderID": billProviderID
       });
 
-      return result.toString().contains('success') ? 'success' : '';
+      return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }
@@ -1327,7 +1329,7 @@ class DatabaseLambdaService {
     try {
       result = await lambda.callLambda(
           'aurora-serverless-function-insertBank', <String, dynamic>{
-        "acHolderName": acHolderName,
+        "accHolderName": acHolderName,
         "accNumber": accNumber,
         "ifscCode": ifscCode,
         "userID": userID,
@@ -1335,7 +1337,7 @@ class DatabaseLambdaService {
         "billProviderID": billProviderID
       });
 
-      return result.toString().contains('success') ? 'success' : '';
+      return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }
@@ -1360,8 +1362,9 @@ class DatabaseLambdaService {
         "userID": userID,
         "billProviderID": billProviderID
       });
+      print('pkkkkkkkk');
 
-      return result.toString().contains('success') ? 'success' : '';
+      return result["numberOfRecordsUpdated"] == 1 ? 'success' : '';
     } catch (e) {
       throw Exception(e);
     }

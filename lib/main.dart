@@ -5,6 +5,7 @@ import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.dart';
 import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
 import 'package:flux_payments/bloc/payment_bloc.dart/payment_bloc.dart';
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
 import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/repository/database_repo.dart';
@@ -192,7 +193,8 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
           BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
           BlocProvider(create: (_) => StoryBloc(_databaseRepository)),
-          BlocProvider(create: (_) => PendingServiceBloc(_databaseRepository))
+          BlocProvider(create: (_) => PendingServiceBloc(_databaseRepository)),
+          BlocProvider(create: (_)=>ServiceProviderBloc(_databaseRepository)),
         ],
         child: BlocBuilder<AuthBloc, AuthState>(
           buildWhen: (prevSt, newSt) {
@@ -253,6 +255,7 @@ class _MyAppState extends State<MyApp> {
                     create: (_) => PendingServiceBloc(_databaseRepository)),
                 BlocProvider<StoryBloc>(
                     create: (_) => StoryBloc(_databaseRepository)),
+                     BlocProvider(create: (_)=>ServiceProviderBloc(_databaseRepository)),
               ],
               child: LoginPage(
                 loginRepo: _loginRepository,

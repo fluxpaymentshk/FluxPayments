@@ -443,7 +443,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
         ),
         height: MediaQuery.of(context).size.height * 0.6,
         padding: EdgeInsets.only(left: 8),
-        child: Column(
+        child:
+         Column(
           children: [
             CreditCardForm(
               cardNumber: cardNumber,
@@ -525,6 +526,7 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
             ),
           ],
         ),
+     
       ),
     );
   }
