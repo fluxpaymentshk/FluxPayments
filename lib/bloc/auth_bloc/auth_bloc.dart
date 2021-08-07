@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     DatabaseRepository _databaseRepository = DatabaseRepository();
+    
     var request;
     yield (AuthInitial());
     if (event is EmailSignUpUser) {
@@ -52,8 +53,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             event.phnNumber ?? "",
             event.fname ?? "",
           );
-          
-          print("Hello World");
           yield UserSignedUpAuthState();
           print("Hello World2");
           }catch(e){

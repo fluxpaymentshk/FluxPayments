@@ -1,4 +1,5 @@
 import 'package:flux_payments/screens/auth_Screens/login_screen.dart';
+import 'package:flux_payments/screens/navigator_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im_stepper/stepper.dart';
 import 'dart:developer';
@@ -333,13 +334,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               onPressed: () {
                 Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => LoginPage(
-                                    loginRepo: widget.loginRepo,
-                                    userConfigRepository:
-                                        widget.userConfigRepository,
-                                  )));
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => LoginPage(
+                              loginRepo: widget.loginRepo,
+                              userConfigRepository: widget.userConfigRepository,
+                            )));
               },
             ),
           ),
@@ -573,7 +573,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             child: BlocListener<AuthBloc, AuthState>(
               listener: (ctx, state) {
-                print(state);
                 if (state is AuthError) {
                   Navigator.of(ctx).pop();
                   print(
@@ -598,53 +597,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Navigator.of(ctx).pop();
                   Navigator.of(ctx).pop();
                   enterOtp = true;
+                  log("3333333333333333333333${_fnameController.value.text}22222");
                   setState(() {});
+                  log("88888888888888888888888${_fnameController.value.text}22222");
                   print("===++++________________User signed in");
-                  if (state is UserSignedInAuthState) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => MultiBlocProvider(
-                          providers: [
-                            BlocProvider<UserBloc>.value(
-                              value: userBloc,
-                            ),
-                            BlocProvider<CuratedListBloc>.value(
-                              value: curatedListBloc,
-                            ),
-                            BlocProvider<BannerBloc>.value(
-                              value: bannerBloc,
-                            ),
-                            BlocProvider<AdvertiserBloc>.value(
-                              value: advertiserBloc,
-                            ),
-                            BlocProvider<GraphBloc>.value(
-                              value: graphBloc,
-                            ),
-                            BlocProvider<RecentPaymentBloc>.value(
-                              value: recentPaymentBloc,
-                            ),
-                            BlocProvider<PendingServiceBloc>.value(
-                              value: pendingServiceBloc,
-                            ),
-                            BlocProvider<StoryBloc>.value(
-                              value: storyBloc,
-                            ),
-                            BlocProvider<CouponsBloc>.value(
-                              value: couponsBloc,
-                            ),
-                            BlocProvider<FavoritesBloc>.value(
-                              value: favoritesBloc,
-                            ),
-                          ],
-                          child: HomePage(
-                            userRepository: widget.userConfigRepository,
-                            databaseRepository: DatabaseRepository(),
-                          ),
-                          //  child:ProfilePage(),
-                        ),
-                      ),
-                    );
-                  }
                 }
               },
               child: TextButton(
@@ -685,8 +641,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _ThreeScreen2(height, width) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (ctx, state)async {
+      listener: (ctx, state) async {
         print(state);
+        log("___________________________________________________________$state");
         if (state is AuthError) {
           Navigator.of(ctx).pop();
           print("-------------------------AUTH ERROR===${state.message}");
@@ -714,7 +671,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Navigator.of(ctx).pop();
           Navigator.of(ctx).pop();
           //Navigator.of(ctx).pop();
-          authBloc.add(EmailLogInUser(_emailController.value.text, _passwordController.value.text));
+          authBloc.add(EmailLogInUser(
+              _emailController.value.text, _passwordController.value.text));
         }
         if (state is UserSignedUpAuthState) {
           enterOtp = true;
@@ -723,21 +681,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Navigator.of(ctx).pop();
           Navigator.of(ctx).pop();
           print("===++++________________User signed in");
+        }
           if (state is UserSignedInAuthState) {
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
-          var userdetails = await userConfigRepository.fetchUserDetails();
-            print(userdetails.userSub);
-            print("##############################################################");
-          _databaseRepository.addUserdata(
-            email: _emailController.value.text,
-            lname:_lnameController.value.text,
-            fname: _fnameController.value.text,
-            phnNumber:_phnController.value.text,
-            hkID:_identitycontroller.value.text,
-            userID: userdetails.userSub,
-          );
-            
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          log("44444444444444444444444444${_fnameController.value.text}22222");
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => MultiBlocProvider(
@@ -773,16 +721,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       value: favoritesBloc,
                     ),
                   ],
-                  child: HomePage(
-                    userRepository: widget.userConfigRepository,
-                    databaseRepository: DatabaseRepository(),
-                  ),
+                  child: NavigatorPage(
+                      userRepository: widget.userConfigRepository,
+                      databaseRepository: DatabaseRepository(),
+                      register: true,
+                    email: _emailController.value.text,
+                    fname: _fnameController.value.text,
+                    hkID: _identitycontroller.value.text,
+                    lname: _lnameController.value.text,
+                    phnNumber: _phnController.value.text,
+                    ),
                   //  child:ProfilePage(),
                 ),
               ),
             );
           }
-        }
+        
       },
       child: Form(
         key: _three2formkey,
@@ -855,6 +809,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         email: _emailController.value.text,
                         password: _passwordController.value.text,
                         code: _otpController.value.text,
+                        fname: _fnameController.value.text,
+                        lname: _lnameController.value.text,
+                        hkid: _identitycontroller.value.text,
                       ),
                     );
                   }),
@@ -881,9 +838,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 onPressed: () {
                   authBloc.add(EmailSignUpUser(
-                      email: _emailController.value.text,
-                      password: _passwordController.value.text,
-                      resend: true));
+                    email: _emailController.value.text,
+                    password: _passwordController.value.text,
+                    resend: true,
+                    fname: _fnameController.value.text,
+                    lname: _lnameController.value.text,
+                    hkid: _identitycontroller.value.text,
+                  ));
                 },
               ),
             ),
@@ -930,12 +891,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 border: InputBorder.none,
               ),
               validator: (v) {
-                  if (v!.length < 6) {
-                    return "Fill the form";
-                  } else {
-                    return null;
-                  }
-                },
+                if (v!.length < 6) {
+                  return "Fill the form";
+                } else {
+                  return null;
+                }
+              },
             ),
           ),
           SizedBox(

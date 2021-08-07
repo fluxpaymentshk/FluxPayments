@@ -19,15 +19,25 @@ import 'profile_page.dart';
 
 class NavigatorPage extends StatefulWidget {
   static const routeName = '/nav';
-  final String email;
+  String? email;
+  String? fname;
+  String? lname;
+  String? hkID;
+  String? phnNumber;
+  bool? register;
   final UserConfigRepository? userRepository;
   final DatabaseRepository? databaseRepository;
-  const NavigatorPage(
-      {Key? key,
-      @required this.userRepository,
-      @required this.databaseRepository,
-      this.email = ""})
-      : super(key: key);
+  NavigatorPage({
+    Key? key,
+    @required this.userRepository,
+    @required this.databaseRepository,
+    this.email,
+    this.fname,
+    this.lname,
+    this.hkID,
+    this.phnNumber,
+    this.register,
+  }) : super(key: key);
   @override
   _NavigatorPageState createState() => _NavigatorPageState();
 }
@@ -40,9 +50,31 @@ class _NavigatorPageState extends State<NavigatorPage> {
   double activeIconElevation = 4;
   TextStyle navigationBarTextStyle =
       GoogleFonts.rubik(fontSize: 10, fontWeight: FontWeight.bold);
+  DatabaseRepository _databaseRepo = DatabaseRepository();
+  final UserConfigRepository userConfigRepository = UserConfigRepository();
+
+  void addUser() async {
+    var userdetails = await userConfigRepository.fetchUserDetails();
+    print(userdetails.userSub);
+    log("##############################################################");
+    print("44444444444${widget.lname}44444444444444444444444444444444444444 ");
+    log(userdetails.userSub.toString());
+    _databaseRepo.addUserdata(
+      email: widget.email,
+      lname: widget.lname,
+      fname: widget.fname,
+      phnNumber: widget.phnNumber,
+      hkID: widget.hkID,
+      userID: userdetails.userSub,
+    );
+  }
 
   @override
   void initState() {
+    log("#######^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ${widget.register}");
+    //if (widget.register!) {
+      addUser();
+    //}
     super.initState();
     _pages = [
       // Tuple2('payment', PayBills()),

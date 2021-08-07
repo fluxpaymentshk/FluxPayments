@@ -977,6 +977,8 @@ class DatabaseLambdaService {
       required String? hkID,
       required String? userID,}) async {
     try {
+      log("In ADDUSERDATA FUNCTION $userID $email $lname");
+      log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
       result = await lambda
           .callLambda('aurora-serverless-function-createUser', <String, dynamic>{
         "email": email,
