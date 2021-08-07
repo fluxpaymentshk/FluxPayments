@@ -49,6 +49,7 @@ class ServiceProviderBloc
 
     if (event is InsertBankDetails) {
       try {
+        if(event.acHolderName.length==0||event.accNumber.length==0||event.bankName.length==0||event.ifscCode.length==0||event.userID.length==0|| event.billProviderID.length==0)
         yield InsertingDetails();
 
         String res = await _databaseRepository.insertBankDetails(

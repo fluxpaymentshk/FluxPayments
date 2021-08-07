@@ -17,6 +17,7 @@ import 'package:flux_payments/models/Rewards.dart';
 import 'package:flux_payments/screens/coupon_details.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/back_button.dart';
+import 'package:flux_payments/widgets/flux_logo.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
 
@@ -114,16 +115,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
         children: [
           Align(
             alignment: Alignment.center,
-            child: Text(
-              "Flux.",
-              style: GoogleFonts.montserrat(
-                fontSize: size.height * 0.07,
-                fontWeight: FontWeight.bold,
-                foreground: Paint()..shader = linearGradientText,
-                // textStyle:
-                //     TextStyle(color: Colors.blue, letterSpacing: .5),
-              ),
-            ),
+            child: fluxLogo(context),
           ),
           Container(
             height: size.height * 0.06,

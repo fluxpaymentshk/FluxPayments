@@ -40,9 +40,11 @@ import 'package:flux_payments/screens/storypage_view.dart';
 import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/banner_tile.dart';
+import 'package:flux_payments/widgets/flux_logo.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
 import 'package:flux_payments/widgets/pending_payment_tile.dart';
 import 'package:flux_payments/widgets/reward_partner_tile.dart';
+import 'package:flux_payments/widgets/subheading.dart';
 import 'package:story_view/story_view.dart';
 
 import '../services/database_lambda.dart';
@@ -171,21 +173,8 @@ class _HomePageState extends State<HomePage> {
                       width: SizeConfig.widthMultiplier * 100,
                       child: Center(
                         //  child: Image.asset("assets/images/logo.png"),
-                        child: Text(
-                          "Flux.",
-                          style: TextStyle(
-                            foreground: Paint()
-                              ..shader = LinearGradient(
-                                colors: <Color>[
-                                  AppTheme.main,
-                                  Color(0xffA867EE)
-                                ],
-                              ).createShader(
-                                  Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                            fontSize: 60,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
+                        child: 
+                       fluxLogo(context),
                       ),
                     ),
 
@@ -194,14 +183,24 @@ class _HomePageState extends State<HomePage> {
                       width: SizeConfig.widthMultiplier * 97,
                       //  decoration: BoxDecoration(color: AppTheme.main),
                       child: Row(
+                      //  mainAxisSize:
                         children: [
-                          Padding(
+                           Padding(
                             padding:EdgeInsets.all(SizeConfig.heightMultiplier*2),
-                            child: Text(
-                              'Hello ${state.user.firstName}!',
-                              style: AppTheme.display1,
+                            child: Center(
+                              child: Container(
+                                width: SizeConfig.widthMultiplier * 60,
+                                height: SizeConfig.heightMultiplier * 10,
+                                child: FittedBox(
+                                  child: Text(
+                                   'Hello ${state.user.firstName}!',
+                                    style: AppTheme.display1,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
+                         
                           Spacer(),
                           Padding(
                              padding: EdgeInsets.all(
@@ -225,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                               child: Container(
                                 // height: SizeConfig.heightMultiplier*12,
                                 // width: SizeConfig.widthMultiplier*100,
-
+                      
                                 child: Image.asset("assets/images/av.png"),
                                 //  child:NetworkImage(state.user.);
                               ),
@@ -300,7 +299,7 @@ class _HomePageState extends State<HomePage> {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: EdgeInsets.symmetric(horizontal:SizeConfig.widthMultiplier*3),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -403,7 +402,7 @@ class _HomePageState extends State<HomePage> {
                     }),
 
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*3),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -461,18 +460,19 @@ class _HomePageState extends State<HomePage> {
 
                     //  rewardPartnerTile(),
 
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "My Points",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(10.0),
+                    //   child: Align(
+                    //       alignment: Alignment.centerLeft,
+                    //       child: Text(
+                    //         "My Points",
+                    //         style: TextStyle(
+                    //           fontSize: 20,
+                    //           fontWeight: FontWeight.w500,
+                    //         ),
+                    //       )),
+                    // ),
+                    subheading('My Points'),
 
                     Container(
                       height: SizeConfig.heightMultiplier * 32,
@@ -486,7 +486,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Center(
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.symmetric( horizontal:SizeConfig.widthMultiplier*2,vertical:SizeConfig.heightMultiplier*3),
                               child: Container(
                                 height: SizeConfig.heightMultiplier * 15,
                                 width: SizeConfig.widthMultiplier * 65,
@@ -529,8 +529,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20.0, right: 8.0, bottom: 8.0),
+                            padding: EdgeInsets.only(
+                                left:  SizeConfig.widthMultiplier*7, right:  SizeConfig.widthMultiplier*2.2, bottom:  SizeConfig.heightMultiplier*1.5),
                             child: Center(
                               child: Text(
                                 'Congratulations! You are among top 5 % of highest point users.!',
@@ -545,18 +545,20 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "What's New",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(10.0),
+                    //   child: Align(
+                    //       alignment: Alignment.centerLeft,
+                    //       child: Text(
+                    //         "What's New",
+                    //         style: TextStyle(
+                    //           fontSize: 20,
+                    //           fontWeight: FontWeight.w500,
+                    //         ),
+                    //       )),
+                    // ),
+                    subheading('What\'s New'),
+
 
                     BlocBuilder<AdvertiserBloc, AdvertiserState>(
                       builder: (context, state) {
@@ -619,18 +621,7 @@ class _HomePageState extends State<HomePage> {
 
                     //   Container(child: Flexible(fit: FlexFit.loose,child: LineChartSample1())),
 
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Paid With Flux",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )),
-                    ),
+                   subheading('Paid With Flux'),
 
                     BlocBuilder<GraphBloc, GraphState>(
                       builder: (context, state) {

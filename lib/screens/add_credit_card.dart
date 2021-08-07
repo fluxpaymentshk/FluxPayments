@@ -73,11 +73,14 @@ class _AddCreditCardState extends State<AddCreditCard> {
                     side: new BorderSide(color: AppTheme.main, width: 1.0),
                     borderRadius: BorderRadius.circular(
                         SizeConfig.heightMultiplier * 1.1)),
-                child: serviceProviderTile(
-                  name: widget.name,
-                  // paidOn: '',
-                  imageurl: widget.logo,
-                  //  amount: 100,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: SizeConfig.widthMultiplier*3),
+                  child: serviceProviderTile(
+                    name: widget.name,
+                    // paidOn: '',
+                    imageurl: widget.logo,
+                    //  amount: 100,
+                  ),
                 ),
               ),
 
