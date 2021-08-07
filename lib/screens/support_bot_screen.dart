@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/repository/bot_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
@@ -149,7 +150,7 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                                 ? Color(0xffFFFFFF)
                                 : Color(0xffD9D9FF)),
                             child: Container(
-                              padding: const EdgeInsets.all(20.0),
+                              padding:EdgeInsets.all(SizeConfig.heightMultiplier*2.7),
                               constraints: BoxConstraints(
                                 maxWidth:
                                     MediaQuery.of(context).size.width * 0.7,
@@ -178,7 +179,7 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                   }),
             ),
             Padding(
-              padding: const EdgeInsets.all(18.0),
+              padding: EdgeInsets.all(18.0),
               child: Card(
                 elevation: 15,
                 shape: RoundedRectangleBorder(

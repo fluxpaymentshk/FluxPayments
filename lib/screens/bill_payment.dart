@@ -47,9 +47,11 @@ import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/advertiser_tile.dart';
 import 'package:flux_payments/widgets/banner_tile.dart';
 import 'package:flux_payments/widgets/expand_widget.dart';
+import 'package:flux_payments/widgets/flux_logo.dart';
 import 'package:flux_payments/widgets/line_chart_graph.dart';
 import 'package:flux_payments/widgets/pending_payment_tile.dart';
 import 'package:flux_payments/widgets/recent_payment_tile.dart';
+import 'package:flux_payments/widgets/subheading.dart';
 
 class BillPayment extends StatefulWidget {
   static const routeName = '/home';
@@ -147,21 +149,7 @@ class _BillPaymentState extends State<BillPayment> {
                       width: SizeConfig.widthMultiplier * 100,
                       child: Center(
                         //  child: Image.asset("assets/images/logo.png"),
-                        child: Text(
-                          "Flux.",
-                          style: TextStyle(
-                            foreground: Paint()
-                              ..shader = LinearGradient(
-                                colors: <Color>[
-                                  AppTheme.main,
-                                  Color(0xffA867EE)
-                                ],
-                              ).createShader(
-                                  Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                            fontSize: 60,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
+                        child: fluxLogo(context),
                       ),
                     ),
 
@@ -172,20 +160,28 @@ class _BillPaymentState extends State<BillPayment> {
                       child: Row(
                         children: [
                           Padding(
-                            padding:EdgeInsets.all(SizeConfig.heightMultiplier*2),
-                            child: Text(
-                              'Hello ${state.user.firstName}!',
-                              style: AppTheme.display1,
+                          padding:EdgeInsets.all(SizeConfig.heightMultiplier*2),
+                          child: Center(
+                            child: Container(
+                              width: SizeConfig.widthMultiplier * 60,
+                              height: SizeConfig.heightMultiplier * 10,
+                              child: FittedBox(
+                                child: Text(
+                                 'Hello ${state.user.firstName}!',
+                                  style: AppTheme.display1,
+                                ),
+                              ),
                             ),
                           ),
+                        ),
                           Spacer(),
                           Padding(
                             padding: EdgeInsets.all(
-                                SizeConfig.heightMultiplier * 2.0),
+                                SizeConfig.widthMultiplier * 2.0),
                             child: Container(
                               // height: SizeConfig.heightMultiplier*12,
                               // width: SizeConfig.widthMultiplier*100,
-
+                    
                               child: Image.asset("assets/images/av.png"),
                               //  child:NetworkImage(state.user.);
                             ),
@@ -266,18 +262,7 @@ class _BillPaymentState extends State<BillPayment> {
                     //fav.length == 0 ? Text("Please mark some favorites !") :
 
                     SizedBox(height: SizeConfig.heightMultiplier * 2),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "My Providers",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )),
-                    ),
+                   subheading('MY Providers'),
 
                     BlocBuilder<FavoritesBloc, FavoritesState>(
                       builder: (context, state) {
@@ -528,18 +513,7 @@ class _BillPaymentState extends State<BillPayment> {
 
                     //   Container(child: Flexible(fit: FlexFit.loose,child: LineChartSample1())),
 
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Paid With Flux",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )),
-                    ),
+                   subheading('Paid With Flux'),
 
                     BlocBuilder<GraphBloc, GraphState>(
                       builder: (context, state) {

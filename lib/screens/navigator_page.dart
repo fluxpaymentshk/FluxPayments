@@ -141,7 +141,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
                       borderRadius: BorderRadius.circular(21),
                       color: Color(0xffF2F2FF),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 17.2),
+                    padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*4.5),
                     child: IconButton(
                       icon: ImageIcon(
                         AssetImage(

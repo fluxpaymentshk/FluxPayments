@@ -23,6 +23,7 @@ import 'package:flux_payments/screens/couponList.dart';
 import 'package:flux_payments/repository/favorite_search_repository.dart';
 import 'package:flux_payments/screens/rewards_search_screen.dart';
 import 'package:flux_payments/services/database_lambda.dart';
+import 'package:flux_payments/widgets/flux_logo.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_drawing/path_drawing.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -184,16 +185,7 @@ class _CouponsState extends State<Coupons> {
                       children: [
                         Align(
                           alignment: Alignment.center,
-                          child: Text(
-                            "Flux.",
-                            style: GoogleFonts.montserrat(
-                              fontSize: height * 0.07,
-                              fontWeight: FontWeight.bold,
-                              foreground: Paint()..shader = linearGradientText,
-                              // textStyle:
-                              //     TextStyle(color: Colors.blue, letterSpacing: .5),
-                            ),
-                          ),
+                          child: fluxLogo(context),
                         ),
                         // Material(
                         //   elevation: 5,

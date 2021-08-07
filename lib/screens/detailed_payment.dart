@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
+import 'package:flux_payments/widgets/flux_logo.dart';
 
 class DetailedPayment extends StatefulWidget {
   final Map<String, dynamic> paymentData;
@@ -61,21 +62,7 @@ class _DetailedPaymentState extends State<DetailedPayment> {
                           width: SizeConfig.widthMultiplier * 100,
                           child: Center(
                             //  child: Image.asset("assets/images/logo.png"),
-                            child: Text(
-                              "Flux.",
-                              style: TextStyle(
-                                foreground: Paint()
-                                  ..shader = LinearGradient(
-                                    colors: <Color>[
-                                      AppTheme.main,
-                                      Color(0xffA867EE)
-                                    ],
-                                  ).createShader(
-                                      Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                                fontSize: 60,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
+                            child: fluxLogo(context),
                           ),
                         ),
                       ],
@@ -83,29 +70,42 @@ class _DetailedPaymentState extends State<DetailedPayment> {
                   ],
                 ),
 
-                Container(
-                  height: SizeConfig.heightMultiplier * 9,
-                  width: SizeConfig.widthMultiplier * 97,
-                  //  decoration: BoxDecoration(color: AppTheme.main),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Hello ${widget.user.firstName}!',
-                        style: AppTheme.display1,
-                      ),
-                      Spacer(),
+                FittedBox(
+                  child: Container(
+                    height: SizeConfig.heightMultiplier * 9,
+                    width: SizeConfig.widthMultiplier * 97,
+                    //  decoration: BoxDecoration(color: AppTheme.main),
+                    child: Row(
+                      children: [
                       Padding(
-                        padding:
-                            EdgeInsets.all(SizeConfig.heightMultiplier * 1.5),
-                        child: Container(
-                          // height: SizeConfig.heightMultiplier*12,
-                          // width: SizeConfig.widthMultiplier*100,
+                            padding:EdgeInsets.all(SizeConfig.heightMultiplier*2),
+                            child: Center(
+                              child: Container(
+                                width: SizeConfig.widthMultiplier * 60,
+                                height: SizeConfig.heightMultiplier * 10,
+                                child: FittedBox(
+                                  child: Text(
+                                   'Hello ${widget.user.firstName}!',
+                                    style: AppTheme.display1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        Spacer(),
+                        Padding(
+                          padding:
+                              EdgeInsets.all(SizeConfig.heightMultiplier * 1.5),
+                          child: Container(
+                            // height: SizeConfig.heightMultiplier*12,
+                            // width: SizeConfig.widthMultiplier*100,
 
-                          child: Image.asset("assets/images/av.png"),
-                          //  child:NetworkImage(widget.user.);
+                            child: Image.asset("assets/images/av.png"),
+                            //  child:NetworkImage(widget.user.);
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 // SizedBox(
