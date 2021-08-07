@@ -34,7 +34,7 @@ class NavigatorPage extends StatefulWidget {
 class _NavigatorPageState extends State<NavigatorPage> {
   late List<Tuple2> _pages = [];
   bool isOpened = false;
-  double headerHeight = 60;
+  double headerHeight=0;
   double botScreenHeightRatio = 0.8;
   double activeIconElevation = 4;
   TextStyle navigationBarTextStyle =
@@ -43,6 +43,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   @override
   void initState() {
     super.initState();
+  //  headerHeight = MediaQuery.of(context).size.height * 0.1;
     _pages = [
       // Tuple2('payment', PayBills()),
       //Tuple2('payment', BillPayment(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
@@ -74,6 +75,8 @@ class _NavigatorPageState extends State<NavigatorPage> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       SizeConfig().init(constraints);
+      headerHeight= SizeConfig.heightMultiplier*11;
+
       return Scaffold(
         bottomNavigationBar: SafeArea(
           child: SlidingSheet(
@@ -138,7 +141,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
                       borderRadius: BorderRadius.circular(21),
                       color: Color(0xffF2F2FF),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 17.2),
                     child: IconButton(
                       icon: ImageIcon(
                         AssetImage(
@@ -165,16 +168,17 @@ class _NavigatorPageState extends State<NavigatorPage> {
         BottomNavigationBarItem(
           icon: ImageIcon(
             AssetImage("assets/icons/my_bills.png"),
+            size:26,
           ),
           activeIcon: Material(
             elevation: 3,
             shape: CircleBorder(),
             child: CircleAvatar(
-                radius: 18,
+              radius: 18,
               child: ImageIcon(
                 AssetImage("assets/icons/my_bills.png"),
                 color: Color(0xff7041EE),
-                size: 16,
+                size: 17.2,
               ),
               backgroundColor: Colors.white,
             ),
@@ -184,16 +188,17 @@ class _NavigatorPageState extends State<NavigatorPage> {
         BottomNavigationBarItem(
           icon: ImageIcon(
             AssetImage("assets/icons/home.png"),
+            size:26,
           ),
           activeIcon: Material(
             elevation: 3,
             shape: CircleBorder(),
             child: CircleAvatar(
-                radius: 18,
+              radius: 18,
               child: ImageIcon(
                 AssetImage("assets/icons/home.png"),
                 color: Color(0xff7041EE),
-                size: 16,
+                size: 17.2,
               ),
               backgroundColor: Colors.white,
             ),
@@ -203,6 +208,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
         BottomNavigationBarItem(
           icon: ImageIcon(
             AssetImage("assets/icons/favorites.png"),
+            size:26,
           ),
           activeIcon: Material(
             elevation: 3,
@@ -212,7 +218,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
               child: ImageIcon(
                 AssetImage("assets/icons/favorites.png"),
                 color: Color(0xff7041EE),
-                size: 16,
+                size: 17.2,
               ),
               backgroundColor: Colors.white,
             ),
