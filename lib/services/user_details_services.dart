@@ -80,4 +80,51 @@ class UserDetailsServices {
       print(e);
     }
   }
+
+  Future<void> updateUserDetails(
+    String email,
+  ) async {
+    var attributes = [
+      AuthUserAttribute(userAttributeKey: 'email', value: email),
+    ];
+    try {
+      var res = await Amplify.Auth.updateUserAttribute(
+        userAttributeKey: 'email',
+        value: email,
+      );
+      if (res.nextStep.updateAttributeStep == 'CONFIRM_ATTRIBUTE_WITH_CODE') {
+        var destination = res.nextStep.codeDeliveryDetails?.destination;
+        print('Confirmation code sent to $destination');
+      } else {
+        print('Update completed');
+      }
+    } on AmplifyException catch (e) {
+      print(e.message);
+    }
+  }
+
+  Future<bool> confirmUserCode(String email, String code) async {
+    try {
+      ConfirmUserAttributeResult res = await Amplify.Auth.confirmUserAttribute(
+          userAttributeKey: 'email', confirmationCode: code);
+      log("+++++++++++++++++++++++++++++++++++++++$res");
+      return true;
+    } on CodeMismatchException catch (e) {
+      throw CodeMismatchException(e.recoverySuggestion ?? "");
+    }
+  }
+
+  Future<void> resendUpdateDetailVerificationCode(String email) async {
+    try {
+      var res = await Amplify.Auth.resendUserAttributeConfirmationCode(
+        userAttributeKey: 'email',
+      );
+      var destination = res.codeDeliveryDetails.destination;
+      print('Confirmation code set to $destination');
+    } on LimitExceededException catch (e) {
+      throw LimitExceededException(e.message);
+    } catch (e) {
+      throw e;
+    }
+  }
 }

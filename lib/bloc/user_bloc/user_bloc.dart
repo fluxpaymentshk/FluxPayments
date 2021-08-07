@@ -32,7 +32,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       } on NotAuthorizedException catch (er) {
         yield UserServiceError(er.message);
       } catch (e) {
-        yield UserServiceError("Error updating password. Try again later!");
+        yield UserServiceError("Error updating password. Try ag ain later!");
       }
     }
     if (event is UserResetPasswordEvent) {
@@ -72,6 +72,23 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         yield UserDetails(user: user);
       } catch (e) {
         yield UserDetailsError("unable to fetch User Details!");
+      }
+    }
+
+    if (event is UpdateUserDetails) {
+      try {
+        yield UserDetailsUpdating();
+          await _databaseRepository.updateUserDetails(
+              userID: event.userID!,
+              firstName: event.firstName!,
+              lastName: event.lastName!,
+              hkID: event.hkID!,
+              email: event.email!,
+              phnNumber: event.phnNumber!);
+          yield UserServiceDone();
+       
+      } catch (e) {
+        yield UserDetailsError("unable to update User Details!");
       }
     }
   }

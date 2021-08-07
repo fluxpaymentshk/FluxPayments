@@ -15,6 +15,7 @@ class FluxPointsBloc extends Bloc<FluxPointsEvent, FluxPointsState> {
   double get getFluxPoints => fluxPoints;
   @override
   Stream<FluxPointsState> mapEventToState(FluxPointsEvent event) async* {
+    yield FluxPointsInitialState();
     log("***************************************************************$fluxPoints");
     if (event is GetFluxPoints) {
       try {

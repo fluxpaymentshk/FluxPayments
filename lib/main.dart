@@ -1,14 +1,25 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flux_payments/bloc/cards_bloc.dart/cards_bloc.dart';
 import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_bloc.dart';
 import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
+import 'package:flux_payments/bloc/payment_bloc.dart/payment_bloc.dart';
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
 import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/repository/database_repo.dart';
 import 'package:flux_payments/repository/favorite_search_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/login_screen.dart';
+import 'package:flux_payments/screens/payment_Screens/confirm_payment_screen.dart';
+import 'package:flux_payments/screens/payment_Screens/loading_screen.dart';
+import 'package:flux_payments/screens/payment_Screens/pay_now_screen.dart';
+import 'package:flux_payments/screens/payment_Screens/payment_screen.dart';
+import 'package:flux_payments/screens/payment_Screens/select_payment_method_screen.dart';
+import 'package:flux_payments/screens/profile_screen/editing_profile_page.dart';
+import 'package:flux_payments/screens/profile_screen/profile_page.dart';
+
 import './screens/coupons.dart';
 
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
@@ -251,7 +262,8 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
           BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
           BlocProvider(create: (_) => StoryBloc(_databaseRepository)),
-          BlocProvider(create: (_) => PendingServiceBloc(_databaseRepository))
+          BlocProvider(create: (_) => PendingServiceBloc(_databaseRepository)),
+          BlocProvider(create: (_)=>ServiceProviderBloc(_databaseRepository)),
         ],
         child: BlocBuilder<AuthBloc, AuthState>(
           buildWhen: (prevSt, newSt) {

@@ -6,6 +6,7 @@ import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/models/user_model.dart';
 import 'package:flux_payments/services/form_validator.dart';
+import 'package:flux_payments/services/login_req.dart';
 import 'package:flux_payments/services/user_details_services.dart';
 
 abstract class UserConfigBaseRepository {
@@ -18,6 +19,9 @@ abstract class UserConfigBaseRepository {
   String? validatePasswordFormField(String password);
   String? validateConfirmPasswordFormField(
       String password, String confirmPassword);
+  Future<bool> confirmUser(String email, String code);
+  Future<void> resendConfirmationCode(String email);
+  Future<void> updateUser(String email);
 }
 
 class UserConfigRepository extends UserConfigBaseRepository {
@@ -99,5 +103,34 @@ class UserConfigRepository extends UserConfigBaseRepository {
   @override
   String? validatePasswordFormField(String password) {
     return _formValidator.validatePassword(password);
+  }
+
+  @override
+  Future<void> resendConfirmationCode(String email) async {
+    try {
+      await _userDetailsServices.resendUpdateDetailVerificationCode(email);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> confirmUser(String email, String code) async {
+    try {
+      return await _userDetailsServices.confirmUserCode(email, code);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateUser(String email) async {
+    try {
+      return await _userDetailsServices.updateUserDetails(email);
+      
+    } catch (e) {
+      rethrow;
+    }
   }
 }

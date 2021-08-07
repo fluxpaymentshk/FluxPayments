@@ -30,7 +30,7 @@ class Reward extends Model {
   final String? _longDescription;
   final double? _amount;
   final String? _image;
-  final String? _rewardpartnerID;
+  final String? _rewardPartnerID;
   final RewardTransaction? _RewardtoRewardTransaction;
   final String? _shopID;
   final String? _rewardcategoryID;
@@ -94,8 +94,8 @@ class Reward extends Model {
     return _image;
   }
 
-  String? get rewardpartnerID {
-    return _rewardpartnerID;
+  String? get rewardPartnerID {
+    return _rewardPartnerID;
   }
 
   RewardTransaction? get RewardtoRewardTransaction {
@@ -118,7 +118,7 @@ class Reward extends Model {
       longDescription,
       amount,
       image,
-      rewardpartnerID,
+      rewardPartnerID,
       RewardtoRewardTransaction,
       shopID,
       rewardcategoryID})
@@ -128,7 +128,7 @@ class Reward extends Model {
         _longDescription = longDescription,
         _amount = amount,
         _image = image,
-        _rewardpartnerID = rewardpartnerID,
+        _rewardPartnerID = rewardPartnerID,
         _RewardtoRewardTransaction = RewardtoRewardTransaction,
         _shopID = shopID,
         _rewardcategoryID = rewardcategoryID;
@@ -141,7 +141,7 @@ class Reward extends Model {
       String? longDescription,
       double? amount,
       String? image,
-      String? rewardpartnerID,
+      String? rewardPartnerID,
       RewardTransaction? RewardtoRewardTransaction,
       String? shopID,
       String? rewardcategoryID}) {
@@ -153,7 +153,7 @@ class Reward extends Model {
         longDescription: longDescription,
         amount: amount,
         image: image,
-        rewardpartnerID: rewardpartnerID,
+        rewardPartnerID: rewardPartnerID,
         RewardtoRewardTransaction: RewardtoRewardTransaction,
         shopID: shopID,
         rewardcategoryID: rewardcategoryID);
@@ -174,7 +174,7 @@ class Reward extends Model {
         _longDescription == other._longDescription &&
         _amount == other._amount &&
         _image == other._image &&
-        _rewardpartnerID == other._rewardpartnerID &&
+        _rewardPartnerID == other._rewardPartnerID &&
         _RewardtoRewardTransaction == other._RewardtoRewardTransaction &&
         _shopID == other._shopID &&
         _rewardcategoryID == other._rewardcategoryID;
@@ -196,7 +196,7 @@ class Reward extends Model {
     buffer.write(
         "amount=" + (_amount != null ? _amount!.toString() : "null") + ", ");
     buffer.write("image=" + "$_image" + ", ");
-    buffer.write("rewardpartnerID=" + "$_rewardpartnerID" + ", ");
+    buffer.write("rewardPartnerID=" + "$_rewardPartnerID" + ", ");
     buffer.write("RewardtoRewardTransaction=" +
         (_RewardtoRewardTransaction != null
             ? _RewardtoRewardTransaction!.toString()
@@ -217,7 +217,7 @@ class Reward extends Model {
       String? longDescription,
       double? amount,
       String? image,
-      String? rewardpartnerID,
+      String? rewardPartnerID,
       RewardTransaction? RewardtoRewardTransaction,
       String? shopID,
       String? rewardcategoryID}) {
@@ -229,7 +229,7 @@ class Reward extends Model {
         longDescription: longDescription ?? this.longDescription,
         amount: amount ?? this.amount,
         image: image ?? this.image,
-        rewardpartnerID: rewardpartnerID ?? this.rewardpartnerID,
+        rewardPartnerID: rewardPartnerID ?? this.rewardPartnerID,
         RewardtoRewardTransaction:
             RewardtoRewardTransaction ?? this.RewardtoRewardTransaction,
         shopID: shopID ?? this.shopID,
@@ -244,7 +244,7 @@ class Reward extends Model {
         _longDescription = json['longDescription'],
         _amount = json['amount'],
         _image = json['image'],
-        _rewardpartnerID = json['rewardpartnerID'],
+        _rewardPartnerID = json['rewardPartnerID'],
         _RewardtoRewardTransaction =
             json['RewardtoRewardTransaction']?['serializedData'] != null
                 ? RewardTransaction.fromJson(new Map<String, dynamic>.from(
@@ -261,7 +261,7 @@ class Reward extends Model {
         'longDescription': _longDescription,
         'amount': _amount,
         'image': _image,
-        'rewardpartnerID': _rewardpartnerID,
+        'rewardPartnerID': _rewardPartnerID,
         'RewardtoRewardTransaction': _RewardtoRewardTransaction?.toJson(),
         'shopID': _shopID,
         'rewardcategoryID': _rewardcategoryID
@@ -277,7 +277,7 @@ class Reward extends Model {
   static final QueryField AMOUNT = QueryField(fieldName: "amount");
   static final QueryField IMAGE = QueryField(fieldName: "image");
   static final QueryField REWARDPARTNERID =
-      QueryField(fieldName: "rewardpartnerID");
+      QueryField(fieldName: "rewardPartnerID");
   static final QueryField REWARDTOREWARDTRANSACTION = QueryField(
       fieldName: "RewardtoRewardTransaction",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,

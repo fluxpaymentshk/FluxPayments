@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flux_payments/models/Story.dart';
 import 'package:story_view/story_view.dart';
 
 class StoryPageView extends StatefulWidget {
@@ -91,17 +90,16 @@ class _StoryPageViewState extends State<StoryPageView> {
     // ];
     return Material(
       child: StoryView(
-        //storyItems: stories["Adidas"]!.toList(),
-        storyItems: widget.story,
-        controller: controller,
-        inline: false,
-        repeat: false,
-        onVerticalSwipeComplete:(direction) {
-      if (direction == Direction.down) {
-        Navigator.pop(context);
-      }
-    }  
-      ),
+          //storyItems: stories["Adidas"]!.toList(),
+          storyItems: widget.story,
+          controller: controller,
+          inline: false,
+          repeat: false,
+          onVerticalSwipeComplete: (direction) {
+            if (direction == Direction.down) {
+              Navigator.pop(context);
+            }
+          }),
     );
   }
 }

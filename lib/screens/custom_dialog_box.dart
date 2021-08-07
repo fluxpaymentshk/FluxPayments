@@ -19,16 +19,16 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
     double height = size.height;
     double width = size.width;
     return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        elevation: 500,
-        backgroundColor: Colors.transparent,
-        child: Container(
-          height: height * 0.6,
-          width: width ,
-          child: DialogBoxCard(widget.coupon, widget.colors),
-        ),
-      );
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      elevation: 500,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        height: height * 0.6,
+        width: width,
+        child: DialogBoxCard(widget.coupon, widget.colors),
+      ),
+    );
   }
 }

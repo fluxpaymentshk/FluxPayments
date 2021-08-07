@@ -2,12 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flux_payments/config/size_config.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/rewards_screen.dart';
 import 'package:flux_payments/screens/bill_payment.dart';
 import 'package:flux_payments/screens/coupons.dart';
-import 'package:flux_payments/screens/gift_page.dart';
+// import 'package:flux_payments/screens/gift_page.dart';
 import 'package:flux_payments/screens/reward_partners.dart';
 import 'package:flux_payments/screens/support_bot_screen.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
@@ -15,7 +16,6 @@ import 'package:tuple/tuple.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'home_page.dart';
-import 'profile_page.dart';
 
 class NavigatorPage extends StatefulWidget {
   static const routeName = '/nav';
@@ -45,7 +45,7 @@ class NavigatorPage extends StatefulWidget {
 class _NavigatorPageState extends State<NavigatorPage> {
   late List<Tuple2> _pages = [];
   bool isOpened = false;
-  double headerHeight = 60;
+  double headerHeight=0;
   double botScreenHeightRatio = 0.8;
   double activeIconElevation = 4;
   TextStyle navigationBarTextStyle =
@@ -59,6 +59,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
     log("##############################################################");
     print("44444444444${widget.lname}44444444444444444444444444444444444444 ");
     log(userdetails.userSub.toString());
+    SizeConfig.userID = userdetails.userSub!;
     _databaseRepo.addUserdata(
       email: widget.email,
       lname: widget.lname,
@@ -76,6 +77,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
       addUser();
     //}
     super.initState();
+  //  headerHeight = MediaQuery.of(context).size.height * 0.1;
     _pages = [
       // Tuple2('payment', PayBills()),
       //Tuple2('payment', BillPayment(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
@@ -107,6 +109,8 @@ class _NavigatorPageState extends State<NavigatorPage> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       SizeConfig().init(constraints);
+      headerHeight= SizeConfig.heightMultiplier*11;
+
       return Scaffold(
         bottomNavigationBar: SafeArea(
           child: SlidingSheet(
@@ -171,7 +175,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
                       borderRadius: BorderRadius.circular(21),
                       color: Color(0xffF2F2FF),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*4.5),
                     child: IconButton(
                       icon: ImageIcon(
                         AssetImage(
@@ -198,15 +202,17 @@ class _NavigatorPageState extends State<NavigatorPage> {
         BottomNavigationBarItem(
           icon: ImageIcon(
             AssetImage("assets/icons/my_bills.png"),
+            size:26,
           ),
           activeIcon: Material(
             elevation: 3,
             shape: CircleBorder(),
             child: CircleAvatar(
+              radius: 18,
               child: ImageIcon(
                 AssetImage("assets/icons/my_bills.png"),
                 color: Color(0xff7041EE),
-                size: 20,
+                size: 17.2,
               ),
               backgroundColor: Colors.white,
             ),
@@ -216,15 +222,17 @@ class _NavigatorPageState extends State<NavigatorPage> {
         BottomNavigationBarItem(
           icon: ImageIcon(
             AssetImage("assets/icons/home.png"),
+            size:26,
           ),
           activeIcon: Material(
             elevation: 3,
             shape: CircleBorder(),
             child: CircleAvatar(
+              radius: 18,
               child: ImageIcon(
                 AssetImage("assets/icons/home.png"),
                 color: Color(0xff7041EE),
-                size: 20,
+                size: 17.2,
               ),
               backgroundColor: Colors.white,
             ),
@@ -234,15 +242,17 @@ class _NavigatorPageState extends State<NavigatorPage> {
         BottomNavigationBarItem(
           icon: ImageIcon(
             AssetImage("assets/icons/favorites.png"),
+            size:26,
           ),
           activeIcon: Material(
             elevation: 3,
             shape: CircleBorder(),
             child: CircleAvatar(
+              radius: 18,
               child: ImageIcon(
                 AssetImage("assets/icons/favorites.png"),
                 color: Color(0xff7041EE),
-                size: 20,
+                size: 17.2,
               ),
               backgroundColor: Colors.white,
             ),

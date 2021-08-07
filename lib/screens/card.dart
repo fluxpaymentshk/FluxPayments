@@ -8,7 +8,6 @@ class CouponCard extends StatefulWidget {
   final myCoupons coupon;
   final List<Color> colors;
 
-
   @override
   _CouponCardState createState() => _CouponCardState();
 }
@@ -128,7 +127,6 @@ class _CouponCardState extends State<CouponCard> {
     );
   }
 }
-
 
 class DolDurmaClipper extends CustomClipper<Path> {
   DolDurmaClipper(this.right, this.holeRadius);

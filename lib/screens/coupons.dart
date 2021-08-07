@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,7 +14,9 @@ import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
+import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
+import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/card.dart';
@@ -20,15 +24,12 @@ import 'package:flux_payments/screens/couponList.dart';
 import 'package:flux_payments/repository/favorite_search_repository.dart';
 import 'package:flux_payments/screens/rewards_search_screen.dart';
 import 'package:flux_payments/services/database_lambda.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:flux_payments/models/ModelProvider.dart';
-import 'package:flux_payments/models/myCoupons.dart';
-import 'package:flux_payments/repository/database_repo.dart';
-import 'dart:math';
-import 'package:vector_math/vector_math.dart' as v_math;
+import 'package:flux_payments/widgets/flux_logo.dart';
 import 'package:google_fonts/google_fonts.dart';
-import './animation.dart';
 import 'package:path_drawing/path_drawing.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+
+import './animation.dart';
 
 class Coupons extends StatefulWidget {
   static const routeName = '/coupons';
@@ -193,16 +194,7 @@ class _CouponsState extends State<Coupons> {
                       children: [
                         Align(
                           alignment: Alignment.center,
-                          child: Text(
-                            "Flux.",
-                            style: GoogleFonts.montserrat(
-                              fontSize: height * 0.07,
-                              fontWeight: FontWeight.bold,
-                              foreground: Paint()..shader = linearGradientText,
-                              // textStyle:
-                              //     TextStyle(color: Colors.blue, letterSpacing: .5),
-                            ),
-                          ),
+                          child: fluxLogo(context),
                         ),
                         // Material(
                         //   elevation: 5,
@@ -240,50 +232,54 @@ class _CouponsState extends State<Coupons> {
                           //     borderRadius: BorderRadius.circular(width * 0.03),
                           //     color: color,
                           //   ),
-                            child: GestureDetector(
-                              onTap: () {
-                                print("_+++__________++++++++++++++_________");
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => MultiBlocProvider(
-                                      providers: [
-                                        BlocProvider<CouponsSearchBloc>(
-                                          create: (_) => CouponsSearchBloc(
-                                              _couponSearchRepository),
-                                        ),
-                                        BlocProvider(
-                                          create: (_) => FluxPointsBloc(
-                                            widget.databaseRepo!,
-                                          ),
-                                        ),
-                                      ],
-                                      child: RewardsSearchScreen(
-                                        categories: categories,
-                                        favorites: fav,
+                          child: GestureDetector(
+                            onTap: () {
+                              print(
+                                  "_+++__________++++++++++++++_________${widget.databaseRepo}");
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider<CouponsSearchBloc>(
+                                        create: (_) => CouponsSearchBloc(
+                                            _couponSearchRepository),
                                       ),
+                                      BlocProvider(
+                                        create: (_) => FluxPointsBloc(
+                                          widget.databaseRepo!,
+                                        ),
+                                      ),
+                                      BlocProvider.value(
+                                        value: favoritesBloc,
+                                      ),
+                                    ],
+                                    child: RewardsSearchScreen(
+                                      categories: categories,
+                                      favorites: fav,
                                     ),
                                   ),
-                                );
-                              },
-                              child: TextField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(
-                                    color: color1,
-                                    fontSize: height * 0.024,
-                                  ),
-                                  hintText: "Search for my favorite brand",
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    size: height * 0.045,
-                                    color: color1,
-                                  ),
-                                  border: InputBorder.none,
                                 ),
+                              );
+                            },
+                            child: TextField(
+                              enabled: false,
+                              decoration: InputDecoration(
+                                hintStyle: TextStyle(
+                                  color: color1,
+                                  fontSize: height * 0.024,
+                                ),
+                                hintText: "Search for my favorite brand",
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  size: height * 0.045,
+                                  color: color1,
+                                ),
+                                border: InputBorder.none,
                               ),
-                              //border: InputBorder.none,
                             ),
+                            //border: InputBorder.none,
                           ),
+                        ),
                         //),
                         //),
                         SizedBox(
