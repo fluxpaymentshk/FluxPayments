@@ -18,6 +18,7 @@ import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/models/myCoupons.dart';
 import 'package:flux_payments/repository/database_repository.dart';
+import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/card.dart';
 import 'package:flux_payments/screens/couponList.dart';
 import 'package:flux_payments/repository/favorite_search_repository.dart';
@@ -77,6 +78,7 @@ class _CouponsState extends State<Coupons> {
     [Color(0xFFFFCF71), Color(0xFF2376DD)],
   ];
   List<Reward> fav = [];
+  var userdetails;
   ScrollController controller = ScrollController();
   List<myCoupons> coupons = [];
   var expand = true;
@@ -107,6 +109,7 @@ class _CouponsState extends State<Coupons> {
   void initState() {
     super.initState();
     getCategoryList();
+    fetchUserDetails();
     //getfavdata();
     controller.addListener(() {
       // if (controller.offset > height * 0.18 * 0.6) {
@@ -133,6 +136,12 @@ class _CouponsState extends State<Coupons> {
   void getCategoryList() async {
     categories = await DatabaseLambdaService().getCategories();
   }
+  final UserConfigRepository userConfigRepository = UserConfigRepository();
+  void fetchUserDetails() async {
+    userdetails = await userConfigRepository.fetchUserDetails();
+    print(userdetails.userSub); 
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +155,7 @@ class _CouponsState extends State<Coupons> {
     favoritesBloc
         .add(GetFavorites(page: 0, userID: 'fluxsam1', favorites: fav));
     couponsBloc.add(GetCoupons(page: 0, userID: 'fluxsam1', coupons: coupons));
-
+    
     Size size = MediaQuery.of(context).size;
 
     setState(() {
@@ -434,8 +443,7 @@ class _CouponsState extends State<Coupons> {
                               return Container(
                                 child: Text("No Favorites found !"
                                     //(state as ErrorFavorites).message
-                                    ??
-                                    ''),
+                                    ),
                               );
                             }
                           },

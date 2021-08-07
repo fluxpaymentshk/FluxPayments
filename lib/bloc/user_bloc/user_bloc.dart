@@ -14,7 +14,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final DatabaseRepository _databaseRepository;
   UserBloc(this._userConfigRepository, this._databaseRepository)
       : super(UserInitialState());
-
   @override
   Stream<UserState> mapEventToState(UserEvent event) async* {
     yield UserInitialState();
