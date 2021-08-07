@@ -246,7 +246,7 @@ class _MyAppState extends State<MyApp> {
                 BlocProvider(
                     create: (_) => AdvertiserBloc(_databaseRepository)),
                 BlocProvider(
-                    create: (_) => CuratedListBloc(_databaseRepository)),
+                    create: (_) => CuratedListBloc(_databaseRepository)),   
                 BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
                 BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
                 BlocProvider(
@@ -255,7 +255,7 @@ class _MyAppState extends State<MyApp> {
                     create: (_) => PendingServiceBloc(_databaseRepository)),
                 BlocProvider<StoryBloc>(
                     create: (_) => StoryBloc(_databaseRepository)),
-                     BlocProvider(create: (_)=>ServiceProviderBloc(_databaseRepository)),
+                BlocProvider(create: (_)=>ServiceProviderBloc(_databaseRepository)),
               ],
               child: LoginPage(
                 loginRepo: _loginRepository,

@@ -189,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                             padding:EdgeInsets.all(SizeConfig.heightMultiplier*2),
                             child: Center(
                               child: Container(
-                                width: SizeConfig.widthMultiplier * 60,
+                                width: SizeConfig.widthMultiplier * 40,
                                 height: SizeConfig.heightMultiplier * 10,
                                 child: FittedBox(
                                   child: Text(
@@ -202,10 +202,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                          
                           Spacer(),
-                          Padding(
-                             padding: EdgeInsets.all(
-                                SizeConfig.heightMultiplier * 2.0),
-                            child: InkWell(
+                         InkWell(
                               onTap: () {
                                 log("Tap");
                                 Navigator.of(context).push(
@@ -221,7 +218,10 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 );
                               },
-                              child: Container(
+                              child: Padding(
+                             padding: EdgeInsets.all(
+                                SizeConfig.heightMultiplier * 2.0),
+                            child:  Container(
                                 // height: SizeConfig.heightMultiplier*12,
                                 // width: SizeConfig.widthMultiplier*100,
                       
