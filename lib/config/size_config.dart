@@ -6,7 +6,7 @@ class SizeConfig {
   static double _screenHeight = 0;
   static double _blockWidth = 0;
   static double _blockHeight = 0;
-  static String _userID = "";
+  static String userID = "";
   static double textMultiplier = 0;
   static double imageSizeMultiplier = 0;
   static double heightMultiplier = 0;
@@ -25,5 +25,6 @@ class SizeConfig {
 
     print(_screenHeight);
     print(_screenWidth);
+    
   }
 }

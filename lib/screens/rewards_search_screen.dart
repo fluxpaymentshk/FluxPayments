@@ -10,6 +10,8 @@ import 'package:flux_payments/bloc/favorites_search_bloc/favorite_search_state.d
 import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
 import 'package:flux_payments/bloc/flux_points_bloc/flux_point_event.dart';
 import 'package:flux_payments/bloc/flux_points_bloc/flux_point_state.dart';
+import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
@@ -24,9 +26,10 @@ import 'package:otp_text_field/style.dart';
 
 class RewardsSearchScreen extends StatefulWidget {
   final List<RewardCategory>? categories;
+  final String? uid;
   final List<Reward>? favorites;
   const RewardsSearchScreen(
-      {Key? key, this.categories, @required this.favorites})
+      {Key? key,this.uid, this.categories, @required this.favorites})
       : super(key: key);
 
   @override
@@ -103,11 +106,12 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
   Widget build(BuildContext context) {
     log("&**-!!---*&$favorites");
     var fluxPointsBloc = BlocProvider.of<FluxPointsBloc>(context);
+    var uid = BlocProvider.of<UserBloc>(context).getUserID;
     Size size = MediaQuery.of(context).size;
     // var couponsSearchBloc = BlocProvider.of<CouponsSearchBloc>(context);
     // couponsSearchBloc.add(LoadCouponsSearch());
     print("ji");
-    fluxPointsBloc.add(GetFluxPoints(userID: "Flux-Monik"));
+    fluxPointsBloc.add(GetFluxPoints(userID: uid));
     return Scaffold(
       floatingActionButton: backButton(context, "button1"),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
@@ -606,6 +610,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                         value: fluxPointsBloc,
                                                         child:
                                                             CouponDetailScreen(
+                                                              uid: widget.uid,
                                                           fluxPoints:
                                                               fluxPointsBloc
                                                                   .getFluxPoints,

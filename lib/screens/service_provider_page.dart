@@ -9,6 +9,7 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/screens/add_credit_card.dart';
+import 'package:flux_payments/screens/add_insurance.dart';
 import 'package:flux_payments/screens/add_tax.dart';
 import 'package:flux_payments/screens/provider_added.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
@@ -245,6 +246,7 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                                                    ['name']!.contains('credit card')==true)
                                              ?
                                         AddCreditCard(
+                                          uid: widget.user.id,
                                           name: ServiceProviderList[index]
                                                   ['name'] ??
                                               '',
@@ -262,6 +264,7 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                                                    ['name']!.contains('tax'))
                                        ?
                                          AddTax(
+                                           uid: widget.user.id,
                                           name: ServiceProviderList[index]
                                                   ['name'] ??
                                               '',
@@ -280,6 +283,7 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                                                ?
           
                                              AddTelecom(
+                                               uid: widget.user.id,
                                           name: ServiceProviderList[index]
                                                   ['name'] ??
                                               '',
@@ -296,7 +300,7 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                                                   ['name']!.contains('electricitybill'))
                                                ?
                                               AddElectricityBill(
-          
+                                                uid: widget.user.id,
                                           name: ServiceProviderList[index]
                                                   ['name'] ??
                                               '',
@@ -309,11 +313,17 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                                                   '',
                                                   billCategoryID:widget.categoryID,
                                         )
+                                        
                                          :
-                                      // (ServiceProviderList[index]
-                                      //  ['name']!.contains('bank'))
-          
+
+                                      (ServiceProviderList[index]
+                                      ['name']!.contains('insurance'))
+                                      ?
+                                      AddInsurance(uid: widget.user.id, name: ServiceProviderList[index]
+                                                  ['name'] ??'', logo: ServiceProviderList[index] ['logo'] ??'', billCategoryID: widget.categoryID, billProviderID: ServiceProviderList[index]['billProviderID'] ??'')
+                                      :
                                               AddBank(
+                                                uid: widget.user.id,
                                           name: ServiceProviderList[index]
                                                   ['name'] ??'',logo: ServiceProviderList[index] ['logo'] ??'',billProviderID: ServiceProviderList[index]['billProviderID'] ??'',
                                                   billCategoryID:widget.categoryID,

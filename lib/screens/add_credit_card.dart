@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
 import 'package:flux_payments/bloc/service_provider_bloc/service_provider_event.dart';
 import 'package:flux_payments/bloc/service_provider_bloc/service_provider_state.dart';
+import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/screens/provider_added.dart';
@@ -16,8 +17,10 @@ import 'package:flux_payments/widgets/subheading.dart';
 
 class AddCreditCard extends StatefulWidget {
   final String name, logo, billProviderID;
+  final String? uid;
   const AddCreditCard(
-      {required this.name,
+      {required this.uid,
+        required this.name,
       required this.logo,
       required this.billProviderID,
       Key? key})
@@ -52,7 +55,6 @@ class _AddCreditCardState extends State<AddCreditCard> {
   @override
   Widget build(BuildContext context) {
     var serviceProviderBloc = BlocProvider.of<ServiceProviderBloc>(context);
-
     //   var serviceProvierBloc = BlocProvider.of<ServiceProviderBloc>(context);
 
     //  serviceProvierBloc.add(
@@ -148,7 +150,7 @@ class _AddCreditCardState extends State<AddCreditCard> {
                             bankName: widget.name,
                             cvv: cvvNumberController.text,
                             holderName: cardHolderNumberController.text,
-                            userID: 'flux-vid1',
+                            userID: widget.uid!,
                             billProviderID: widget.billProviderID));
 
                      //   e = 0;

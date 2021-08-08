@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
 import 'package:flux_payments/bloc/service_provider_bloc/service_provider_event.dart';
 import 'package:flux_payments/bloc/service_provider_bloc/service_provider_state.dart';
+import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/screens/provider_added.dart';
@@ -16,8 +17,10 @@ import 'package:flux_payments/widgets/subheading.dart';
 
 class AddElectricityBill extends StatefulWidget {
   final String name, logo, billProviderID, billCategoryID;
+  final String? uid;
   const AddElectricityBill(
-      {required this.name,
+      {required this.uid,
+        required this.name,
       required this.logo,
       required this.billCategoryID,
       required this.billProviderID,
@@ -51,7 +54,6 @@ class _AddElectricityBillState extends State<AddElectricityBill> {
   @override
   Widget build(BuildContext context) {
     var serviceProviderBloc = BlocProvider.of<ServiceProviderBloc>(context);
-
     //   var serviceProvierBloc = BlocProvider.of<ServiceProviderBloc>(context);
 
     //  serviceProvierBloc.add(
@@ -134,7 +136,7 @@ class _AddElectricityBillState extends State<AddElectricityBill> {
                         serviceProviderBloc.add(InsertElectricityBillDetails(
                            
                             billCategoryID: widget.billCategoryID,
-                            userID: 'flux-vid1',
+                            userID: widget.uid!,
                             billProviderID: widget.billProviderID, phNumber: phNumberController.text, acHolderName: nameController.text, acNumber: acNumberController.text));
 
                         //   e = 0;

@@ -1,3 +1,5 @@
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/screens/auth_Screens/login_screen.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -80,6 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var recentPaymentBloc;
   var favoritesBloc;
   var couponsBloc;
+  var serviceP;
   DatabaseRepository _databaseRepository = DatabaseRepository();
 
   @override
@@ -95,6 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
     favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
     couponsBloc = BlocProvider.of<CouponsBloc>(context);
+    serviceP = BlocProvider.of<ServiceProviderBloc>(context);
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
@@ -336,7 +340,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => LoginPage(
+                        builder: (_) => LoginScreen(
+                          databaseRepository: _databaseRepository,
                               loginRepo: widget.loginRepo,
                               userConfigRepository: widget.userConfigRepository,
                             )));
@@ -682,61 +687,75 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Navigator.of(ctx).pop();
           print("===++++________________User signed in");
         }
-          if (state is UserSignedInAuthState) {
-            Navigator.of(context).pop();
-            Navigator.of(context).pop();
+        if (state is UserSignedInAuthState) {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          var userdetails = await userConfigRepository.fetchUserDetails();
+          print(userdetails.userSub);
+          log("##############################################################");
+          print(
+              "44444444444${_lnameController.value.text}44444444444444444444444444444444444444 ");
+          log(userdetails.userSub.toString());
+          SizeConfig.userID = userdetails.userSub!;
+          _databaseRepository.addUserdata(
+            email: _emailController.value.text,
+            fname: _fnameController.value.text,
+            hkID: _identitycontroller.value.text,
+            lname: _lnameController.value.text,
+            phnNumber: _phnController.value.text,
+            userID: userdetails.userSub,
+          );
           log("44444444444444444444444444${_fnameController.value.text}22222");
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => MultiBlocProvider(
-                  providers: [
-                    BlocProvider<UserBloc>.value(
-                      value: userBloc,
-                    ),
-                    BlocProvider<CuratedListBloc>.value(
-                      value: curatedListBloc,
-                    ),
-                    BlocProvider<BannerBloc>.value(
-                      value: bannerBloc,
-                    ),
-                    BlocProvider<AdvertiserBloc>.value(
-                      value: advertiserBloc,
-                    ),
-                    BlocProvider<GraphBloc>.value(
-                      value: graphBloc,
-                    ),
-                    BlocProvider<RecentPaymentBloc>.value(
-                      value: recentPaymentBloc,
-                    ),
-                    BlocProvider<PendingServiceBloc>.value(
-                      value: pendingServiceBloc,
-                    ),
-                    BlocProvider<StoryBloc>.value(
-                      value: storyBloc,
-                    ),
-                    BlocProvider<CouponsBloc>.value(
-                      value: couponsBloc,
-                    ),
-                    BlocProvider<FavoritesBloc>.value(
-                      value: favoritesBloc,
-                    ),
-                  ],
-                  child: NavigatorPage(
-                      userRepository: widget.userConfigRepository,
-                      databaseRepository: DatabaseRepository(),
-                      register: true,
-                    email: _emailController.value.text,
-                    fname: _fnameController.value.text,
-                    hkID: _identitycontroller.value.text,
-                    lname: _lnameController.value.text,
-                    phnNumber: _phnController.value.text,
-                    ),
-                  //  child:ProfilePage(),
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider<UserBloc>.value(
+                    value: userBloc,
+                  ),
+                  BlocProvider<CuratedListBloc>.value(
+                    value: curatedListBloc,
+                  ),
+                  BlocProvider<BannerBloc>.value(
+                    value: bannerBloc,
+                  ),
+                  BlocProvider<AdvertiserBloc>.value(
+                    value: advertiserBloc,
+                  ),
+                  BlocProvider<GraphBloc>.value(
+                    value: graphBloc,
+                  ),
+                  BlocProvider<RecentPaymentBloc>.value(
+                    value: recentPaymentBloc,
+                  ),
+                  BlocProvider<PendingServiceBloc>.value(
+                    value: pendingServiceBloc,
+                  ),
+                  BlocProvider<StoryBloc>.value(
+                    value: storyBloc,
+                  ),
+                  BlocProvider<CouponsBloc>.value(
+                    value: couponsBloc,
+                  ),
+                  BlocProvider<FavoritesBloc>.value(
+                    value: favoritesBloc,
+                  ),
+                  BlocProvider<ServiceProviderBloc>.value(
+                    value: serviceP,
+                  ),
+                  BlocProvider<AuthBloc>.value(
+                    value: authBloc,
+                  ),
+                ],
+                child: NavigatorPage(
+                  userRepository: widget.userConfigRepository,
+                  databaseRepository: DatabaseRepository(),
                 ),
+                //  child:ProfilePage(),
               ),
-            );
-          }
-        
+            ),
+          );
+        }
       },
       child: Form(
         key: _three2formkey,
@@ -976,6 +995,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               onPressed: () {
+                setState(() {
+                  activeStep++;
+                });
                 _fourformkey.currentState!.validate();
               },
             ),

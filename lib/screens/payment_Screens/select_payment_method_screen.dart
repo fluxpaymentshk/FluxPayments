@@ -9,6 +9,7 @@ import 'package:flux_payments/bloc/bank_bloc/bank_state.dart';
 import 'package:flux_payments/bloc/cards_bloc.dart/cards_bloc.dart';
 import 'package:flux_payments/bloc/cards_bloc.dart/cards_event.dart';
 import 'package:flux_payments/bloc/cards_bloc.dart/cards_state.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/Cards.dart';
 import 'package:flux_payments/screens/payment_Screens/confirm_payment_screen.dart';
@@ -23,11 +24,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class SelectPaymentScreen extends StatefulWidget {
+  final String? uid;
   final double? amount;
   final double? fluxPoints;
   final List<Cards>? cards;
   const SelectPaymentScreen(
-      {Key? key, this.amount, this.cards, this.fluxPoints})
+      {Key? key,this.uid, this.amount, this.cards, this.fluxPoints})
       : super(key: key);
 
   @override
@@ -505,7 +507,7 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
 
                   BlocProvider.of<CardsBloc>(context).add(
                     AddCard(
-                      userID: "Flux-Monik",
+                      userID: widget.uid,
                       expiryDate: expiryDate,
                       cardNumber: cardNumber,
                       cvv: cvvCode,

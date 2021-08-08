@@ -7,13 +7,15 @@ import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:flux_payments/bloc/cards_bloc.dart/cards_bloc.dart';
 import 'package:flux_payments/bloc/cards_bloc.dart/cards_event.dart';
 import 'package:flux_payments/bloc/cards_bloc.dart/cards_state.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
 import 'package:flux_payments/widgets/gradient_button.dart';
 
 class AddCardNewScreen extends StatefulWidget {
-  const AddCardNewScreen({Key? key}) : super(key: key);
+  final String? uid;
+  const AddCardNewScreen({Key? key, this.uid}) : super(key: key);
 
   @override
   _AddCardNewScreenState createState() => _AddCardNewScreenState();
@@ -150,7 +152,7 @@ class _AddCardNewScreenState extends State<AddCardNewScreen> {
           
                       BlocProvider.of<CardsBloc>(context).add(
                         AddCard(
-                          userID: "Flux-Monik",
+                          userID: widget.uid,
                           expiryDate: expiryDate,
                           cardNumber: cardNumber,
                           cvv: cvvCode,

@@ -28,9 +28,10 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class PayNowScreen extends StatefulWidget {
   final String? userName;
+  final String? uid;
   final DatabaseRepository? databaseRepository;
   const PayNowScreen(
-      {Key? key, this.userName, @required this.databaseRepository})
+      {Key? key,this.uid, this.userName, @required this.databaseRepository})
       : super(key: key);
 
   @override
@@ -58,11 +59,10 @@ class _PayNowScreenState extends State<PayNowScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var userBloc = BlocProvider.of<UserBloc>(context);
     var paymentsBloc = BlocProvider.of<PaymentBloc>(context);
     var cardsBloc = BlocProvider.of<CardsBloc>(context);
-    paymentsBloc.add(GetPendingPayments("Flux-Monik"));
-    cardsBloc.add(GetCards(userID: "Flux-Monik"));
+    paymentsBloc.add(GetPendingPayments(widget.uid!));
+    cardsBloc.add(GetCards(userID: widget.uid!));
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: backButton(context, "payNowBackButton"),
@@ -124,7 +124,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                                   MaterialPageRoute(
                                     builder: (_) => BlocProvider.value(
                                       value: cardsBloc,
-                                      child: AddCardNewScreen(),
+                                      child: AddCardNewScreen(uid: widget.uid),
                                     ),
                                   ),
                                 );
@@ -251,6 +251,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                                   ),
                                 ],
                                 child: SelectPaymentScreen(
+                                  uid: widget.uid,
                                   cards: cardsList,
                                   amount: totalBill,
                                   fluxPoints: totalFluxPointsService,

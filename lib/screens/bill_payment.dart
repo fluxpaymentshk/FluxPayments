@@ -84,14 +84,14 @@ class _BillPaymentState extends State<BillPayment> {
   @override
   Widget build(BuildContext context) {
     User user;
+    var userBloc = BlocProvider.of<UserBloc>(context);
     var favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
     favoritesBloc
-        .add(GetFavorites(page: 1000, userID: 'fluxsam1', favorites: fav));
+        .add(GetFavorites(page: 1000, userID: userBloc.getUserID, favorites: fav));
     List<curatedList> curatedListData = [];
     List<ExternalAdvertisers> ExadvertiseList = [];
     List<InternalAdvertisers> InadvertiseList = [];
 
-    var userBloc = BlocProvider.of<UserBloc>(context);
     //  var curatedListBloc = BlocProvider.of<CuratedListBloc>(context);
     var advertiserBloc = BlocProvider.of<AdvertiserBloc>(context);
     var bannerBloc = BlocProvider.of<BannerBloc>(context);
@@ -102,11 +102,11 @@ class _BillPaymentState extends State<BillPayment> {
     var serviceProviderBloc = BlocProvider.of<ServiceProviderBloc>(context);
     final DatabaseRepository databaseRepo = DatabaseRepository();
     bannerBloc.add(GetBannerEvent());
-    userBloc.add(GetUserDetails(userID: 'flux-vid1'));
-    graphBloc.add(GetGraphEvent(UserID: 'Flux-Monik'));
-    recentPaymentBloc.add(GetRecentPaymentDetails(userID: 'Flux-Monik'));
+    userBloc.add(GetUserDetails(userID: userBloc.getUserID));
+    graphBloc.add(GetGraphEvent(UserID: userBloc.getUserID));
+    recentPaymentBloc.add(GetRecentPaymentDetails(userID: userBloc.getUserID));
     pendingServiceBloc
-        .add(GetPendingService(userID: 'Flux-Monik', todayDate: '2021-07-23'));
+        .add(GetPendingService(userID: userBloc.getUserID, todayDate: '2021-07-23'));
     //((userID: 'flux-vid1'));
 
     advertiserBloc.add(GetExternalAdvertiserEvent(
@@ -122,7 +122,7 @@ class _BillPaymentState extends State<BillPayment> {
       builder: (context, state) {
         // _databaseLambdaService.getRecentPayment(userID: 'Flux-Monik');
         _databaseLambdaService.getPendingServices(
-            userID: 'Flux-Monik', todayDate: '2021-07-23');
+            userID: userBloc.getUserID, todayDate: '2021-07-23');
         if (state is UserDetailsLoading) {
           return Center(
             child: CircularProgressIndicator(
@@ -133,7 +133,7 @@ class _BillPaymentState extends State<BillPayment> {
         } else if (state is UserDetails) {
           print('hjjjjjjjjj');
 
-          user = state.user;
+          user = state.user; 
           return Scaffold(
               body: Flex(direction: Axis.vertical, children: [
             Expanded(
@@ -160,24 +160,25 @@ class _BillPaymentState extends State<BillPayment> {
                       child: Row(
                         children: [
                           Padding(
-                          padding:EdgeInsets.all(SizeConfig.heightMultiplier*2),
-                          child: Center(
-                            child: Container(
-                              width: SizeConfig.widthMultiplier * 60,
-                              height: SizeConfig.heightMultiplier * 10,
-                              child: FittedBox(
-                                child: Text(
-                                 'Hello ${state.user.firstName}!',
-                                  style: AppTheme.display1,
+                            padding:
+                                EdgeInsets.all(SizeConfig.heightMultiplier * 2),
+                            child: Center(
+                              child: Container(
+                                width: SizeConfig.widthMultiplier * 40,
+                                height: SizeConfig.heightMultiplier * 10,
+                                child: FittedBox(
+                                  child: Text(
+                                    'Hello ${state.user.firstName}!',
+                                    style: AppTheme.display1,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
                           Spacer(),
                           Padding(
                             padding: EdgeInsets.all(
-                                SizeConfig.widthMultiplier * 2.0),
+                                SizeConfig.heightMultiplier * 2.0),
                             child: Container(
                               // height: SizeConfig.heightMultiplier*12,
                               // width: SizeConfig.widthMultiplier*100,
@@ -223,6 +224,7 @@ class _BillPaymentState extends State<BillPayment> {
                                Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) => PaymentScreen(
+                                    uid: userBloc.getUserID,
                                     databaseRepository:
                                         widget.databaseRepository,
                                     userConfigRepository: widget.userRepository,
@@ -262,7 +264,7 @@ class _BillPaymentState extends State<BillPayment> {
                     //fav.length == 0 ? Text("Please mark some favorites !") :
 
                     SizedBox(height: SizeConfig.heightMultiplier * 2),
-                   subheading('MY Providers'),
+                   subheading('My Providers'),
 
                     BlocBuilder<FavoritesBloc, FavoritesState>(
                       builder: (context, state) {
@@ -393,9 +395,16 @@ class _BillPaymentState extends State<BillPayment> {
                               );
                         } else {
                           return Container(
-                            child: Text("No Favorites found !"
-                               ),
-                          );
+                                  margin: EdgeInsets.only(bottom: SizeConfig.heightMultiplier*4),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.offWhite,
+                                    borderRadius: BorderRadius.all(
+                            Radius.circular(SizeConfig.heightMultiplier * 2)),
+                                  ),
+                                  height: SizeConfig.heightMultiplier*7,
+                                    child: Center(
+                                    child: Text("No Favorites Found"),
+                                  ));
                         }
                       },
                     ),
@@ -520,7 +529,18 @@ class _BillPaymentState extends State<BillPayment> {
                         if (state is LoadGraphState) {
                           return Padding(
                             padding: EdgeInsets.all(10.0),
-                            child: LineChartGraph(
+                            child: (state.graphData.length == 0)
+                                ? Container(
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.offWhite,
+                                    borderRadius: BorderRadius.all(
+                            Radius.circular(SizeConfig.heightMultiplier * 2)),
+                                  ),
+                                  height: SizeConfig.heightMultiplier*7,
+                                    child: Center(
+                                    child: Text("No Progress Found"),
+                                  ))
+                                : LineChartGraph(
                               mp: state.graphData,
                               height: SizeConfig.heightMultiplier * 40,
                               width: SizeConfig.widthMultiplier * 90,
@@ -562,7 +582,19 @@ class _BillPaymentState extends State<BillPayment> {
                         if (state is LoadingRecentPaymentState)
                           return CircularProgressIndicator();
                         else if (state is LoadRecentPaymentState) {
-                          return InkWell(
+                          return (state.RecentPaymentData.length == 0)
+                                ? Container(
+                                  margin: EdgeInsets.only(bottom: SizeConfig.heightMultiplier*4),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.offWhite,
+                                    borderRadius: BorderRadius.all(
+                            Radius.circular(SizeConfig.heightMultiplier * 2)),
+                                  ),
+                                  height: SizeConfig.heightMultiplier*7,
+                                    child: Center(
+                                    child: Text("No Progress Found"),
+                                  ))
+                                : InkWell(
                             child: Container(
                               margin: EdgeInsets.symmetric(
                                 horizontal: SizeConfig.widthMultiplier * 3,

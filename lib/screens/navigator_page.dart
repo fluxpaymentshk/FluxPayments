@@ -20,11 +20,6 @@ import 'home_page.dart';
 class NavigatorPage extends StatefulWidget {
   static const routeName = '/nav';
   String? email;
-  String? fname;
-  String? lname;
-  String? hkID;
-  String? phnNumber;
-  bool? register;
   final UserConfigRepository? userRepository;
   final DatabaseRepository? databaseRepository;
   NavigatorPage({
@@ -32,11 +27,6 @@ class NavigatorPage extends StatefulWidget {
     @required this.userRepository,
     @required this.databaseRepository,
     this.email,
-    this.fname,
-    this.lname,
-    this.hkID,
-    this.phnNumber,
-    this.register,
   }) : super(key: key);
   @override
   _NavigatorPageState createState() => _NavigatorPageState();
@@ -53,29 +43,25 @@ class _NavigatorPageState extends State<NavigatorPage> {
   DatabaseRepository _databaseRepo = DatabaseRepository();
   final UserConfigRepository userConfigRepository = UserConfigRepository();
 
-  void addUser() async {
-    var userdetails = await userConfigRepository.fetchUserDetails();
-    print(userdetails.userSub);
-    log("##############################################################");
-    print("44444444444${widget.lname}44444444444444444444444444444444444444 ");
-    log(userdetails.userSub.toString());
-    SizeConfig.userID = userdetails.userSub!;
-    _databaseRepo.addUserdata(
-      email: widget.email,
-      lname: widget.lname,
-      fname: widget.fname,
-      phnNumber: widget.phnNumber,
-      hkID: widget.hkID,
-      userID: userdetails.userSub,
-    );
-  }
+  // void addUser() async {
+  //   var userdetails = await userConfigRepository.fetchUserDetails();
+  //   print(userdetails.userSub);
+  //   log("##############################################################");
+  //   print("44444444444${widget.lname}44444444444444444444444444444444444444 ");
+  //   log(userdetails.userSub.toString());
+  //   SizeConfig.userID = userdetails.userSub!;
+  //   _databaseRepo.addUserdata(
+  //     email: widget.email,
+  //     lname: widget.lname,
+  //     fname: widget.fname,
+  //     phnNumber: widget.phnNumber,
+  //     hkID: widget.hkID,
+  //     userID: userdetails.userSub,
+  //   );
+  // }
 
   @override
   void initState() {
-    log("#######^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ${widget.register}");
-    //if (widget.register!) {
-      addUser();
-    //}
     super.initState();
   //  headerHeight = MediaQuery.of(context).size.height * 0.1;
     _pages = [
