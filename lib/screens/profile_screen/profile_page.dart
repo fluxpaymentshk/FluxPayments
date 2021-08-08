@@ -16,6 +16,7 @@ import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/repository/database_repository.dart';
@@ -23,6 +24,7 @@ import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/change_password.dart';
 import 'package:flux_payments/screens/auth_Screens/login_page.dart';
+import 'package:flux_payments/screens/auth_Screens/login_screen.dart';
 import 'package:flux_payments/screens/profile_screen/settings_screen.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
@@ -45,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     var userBloc = BlocProvider.of<UserBloc>(context);
-    userBloc.add(GetUserDetails(userID: "Flux-Monik"));
+    userBloc.add(GetUserDetails(userID: userBloc.uid));
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: backButton(context, "profilePage"),
@@ -268,7 +270,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 create: (_) =>
                                     CouponsBloc(widget.databaseRepository!)),
                           ],
-                          child: LoginPage(
+                          child: LoginScreen(
+                            databaseRepository: widget.databaseRepository,
                               loginRepo: _loginRepository,
                               userConfigRepository: UserConfigRepository()),
                         ),

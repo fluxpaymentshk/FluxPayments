@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:aws_lambda/aws_lambda.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/models/Cards.dart';
 import 'package:flux_payments/models/ExternalAdvertisers.dart';
 import 'package:flux_payments/models/InternalAdvertisers.dart';
@@ -710,7 +711,7 @@ class DatabaseLambdaService {
     try {
       result = await lambda
           .callLambda('aurora-serverless-function-favorites', <String, dynamic>{
-        "userID": 'fluxsam1',
+        "userID": userID,
       });
       print(
           "----------------------------------------------------???????????????????????????????-----------------------------$result");

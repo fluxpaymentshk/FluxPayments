@@ -32,7 +32,7 @@ class BannerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     //  const height=SizeConfig.heightMultiplier;
     return Container(
-      height: SizeConfig.heightMultiplier * 25,
+      height: SizeConfig.heightMultiplier * 26.5,
       width: SizeConfig.widthMultiplier * 100,
       decoration: BoxDecoration(
         borderRadius:
@@ -76,7 +76,7 @@ class BannerTile extends StatelessWidget {
                 //  color: AppTheme.brownishPink,
 
                 // ),
-                padding: const EdgeInsets.only(left: 12.0, top: 8.0),
+                padding: EdgeInsets.only(left: SizeConfig.widthMultiplier*3, top: SizeConfig.heightMultiplier*1.2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -122,7 +122,7 @@ class BannerTile extends StatelessWidget {
                     ),
                     Container(
                       height: SizeConfig.heightMultiplier * 5,
-                      width: SizeConfig.widthMultiplier * 23.5,
+                      width: SizeConfig.widthMultiplier * 29.5,
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
 import 'package:flux_payments/bloc/flux_points_bloc/flux_point_event.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/Rewards.dart';
 import 'package:flux_payments/services/database_lambda.dart';
@@ -18,10 +19,11 @@ import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
 
 class CouponDetailScreen extends StatefulWidget {
+  final String? uid;
   final double? fluxPoints;
   final Rewards? rewardInfo;
   const CouponDetailScreen(
-      {Key? key, @required this.fluxPoints, @required this.rewardInfo})
+      {Key? key,@required this.uid, @required this.fluxPoints, @required this.rewardInfo})
       : super(key: key);
 
   @override
@@ -62,7 +64,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: FutureBuilder<bool>(
           future: DatabaseLambdaService()
-              .getCouponInfo(userID: 'Flux-Monik', rewardID: rewards.rewardID),
+              .getCouponInfo(userID: widget.uid, rewardID: rewards.rewardID),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -264,7 +266,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                           log("$code");
                                           fluxPointsBloc.add(
                                             UpdateFluxPoints(
-                                                userID: "Flux-Monik",
+                                                userID: widget.uid,
                                                 appEvent: FluxPointServiceType
                                                     .ServiceTransaction,
                                                 servicePoints: (widget

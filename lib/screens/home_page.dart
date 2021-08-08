@@ -92,18 +92,18 @@ class _HomePageState extends State<HomePage> {
     var bannerBloc = BlocProvider.of<BannerBloc>(context);
     var graphBloc = BlocProvider.of<GraphBloc>(context);
     var storyBloc = BlocProvider.of<StoryBloc>(context);
-
+    var uid = BlocProvider.of<UserBloc>(context).getUserID;
     var pendingServiceBloc = BlocProvider.of<PendingServiceBloc>(context);
     var recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
 
     final DatabaseRepository databaseRepo = DatabaseRepository();
     storyBloc.add(GetStory(page: 0, story: stories));
     bannerBloc.add(GetBannerEvent());
-    userBloc.add(GetUserDetails(userID: 'Flux-Monik'));
-    graphBloc.add(GetGraphEvent(UserID: 'Flux-Monik'));
-    recentPaymentBloc.add(GetRecentPaymentDetails(userID: 'Flux-Monik'));
+    userBloc.add(GetUserDetails(userID: uid));
+    graphBloc.add(GetGraphEvent(UserID: uid));
+    recentPaymentBloc.add(GetRecentPaymentDetails(userID: uid));
     pendingServiceBloc
-        .add(GetPendingService(userID: 'Flux-Monik', todayDate: '2021-07-23'));
+        .add(GetPendingService(userID: uid, todayDate: '2021-07-23'));
     //((userID: 'flux-vid1'));
 
     advertiserBloc.add(GetExternalAdvertiserEvent(
@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context, state) {
         // _databaseLambdaService.getRecentPayment(userID: 'Flux-Monik');
         _databaseLambdaService.getPendingServices(
-            userID: 'Flux-Monik', todayDate: '2021-07-23');
+            userID: uid, todayDate: '2021-07-23');
         if (state is UserDetailsLoading) {
           return Center(
             child: CircularProgressIndicator(
@@ -173,8 +173,7 @@ class _HomePageState extends State<HomePage> {
                       width: SizeConfig.widthMultiplier * 100,
                       child: Center(
                         //  child: Image.asset("assets/images/logo.png"),
-                        child: 
-                       fluxLogo(context),
+                        child: fluxLogo(context),
                       ),
                     ),
 
@@ -183,48 +182,48 @@ class _HomePageState extends State<HomePage> {
                       width: SizeConfig.widthMultiplier * 97,
                       //  decoration: BoxDecoration(color: AppTheme.main),
                       child: Row(
-                      //  mainAxisSize:
+                        //  mainAxisSize:
                         children: [
-                           Padding(
-                            padding:EdgeInsets.all(SizeConfig.heightMultiplier*2),
+                          Padding(
+                            padding:
+                                EdgeInsets.all(SizeConfig.heightMultiplier * 2),
                             child: Center(
                               child: Container(
                                 width: SizeConfig.widthMultiplier * 40,
                                 height: SizeConfig.heightMultiplier * 10,
                                 child: FittedBox(
                                   child: Text(
-                                   'Hello ${state.user.firstName}!',
+                                    'Hello ${state.user.firstName}!',
                                     style: AppTheme.display1,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                         
                           Spacer(),
-                         InkWell(
-                              onTap: () {
-                                log("Tap");
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => BlocProvider.value(
-                                      value: userBloc,
-                                      child: ProfilePage(
-                                          databaseRepository:
-                                              widget.databaseRepository!,
-                                          userConfigRepository:
-                                              widget.userRepository),
-                                    ),
+                          InkWell(
+                            onTap: () {
+                              log("Tap");
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => BlocProvider.value(
+                                    value: userBloc,
+                                    child: ProfilePage(
+                                        databaseRepository:
+                                            widget.databaseRepository!,
+                                        userConfigRepository:
+                                            widget.userRepository),
                                   ),
-                                );
-                              },
-                              child: Padding(
-                             padding: EdgeInsets.all(
-                                SizeConfig.heightMultiplier * 2.0),
-                            child:  Container(
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.all(
+                                  SizeConfig.heightMultiplier * 2.0),
+                              child: Container(
                                 // height: SizeConfig.heightMultiplier*12,
                                 // width: SizeConfig.widthMultiplier*100,
-                      
+
                                 child: Image.asset("assets/images/av.png"),
                                 //  child:NetworkImage(state.user.);
                               ),
@@ -266,6 +265,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) => PaymentScreen(
+                                    uid: uid,
                                     databaseRepository:
                                         widget.databaseRepository,
                                     userConfigRepository: widget.userRepository,
@@ -299,7 +299,8 @@ class _HomePageState extends State<HomePage> {
                     ),
 
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal:SizeConfig.widthMultiplier*3),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.widthMultiplier * 3),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -402,7 +403,8 @@ class _HomePageState extends State<HomePage> {
                     }),
 
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*3),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeConfig.widthMultiplier * 3),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -475,7 +477,7 @@ class _HomePageState extends State<HomePage> {
                     subheading('My Points'),
 
                     Container(
-                      height: SizeConfig.heightMultiplier * 32,
+                      height: SizeConfig.heightMultiplier * 26,
                       width: SizeConfig.widthMultiplier * 94,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(
@@ -486,7 +488,9 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Center(
                             child: Padding(
-                              padding: EdgeInsets.symmetric( horizontal:SizeConfig.widthMultiplier*2,vertical:SizeConfig.heightMultiplier*3),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: SizeConfig.widthMultiplier * 1.5,
+                                  vertical: SizeConfig.heightMultiplier * 2.5),
                               child: Container(
                                 height: SizeConfig.heightMultiplier * 15,
                                 width: SizeConfig.widthMultiplier * 65,
@@ -502,6 +506,7 @@ class _HomePageState extends State<HomePage> {
                                         child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         SizedBox(
                                           height:
@@ -530,7 +535,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(
-                                left:  SizeConfig.widthMultiplier*7, right:  SizeConfig.widthMultiplier*2.2, bottom:  SizeConfig.heightMultiplier*1.5),
+                                left: SizeConfig.widthMultiplier * 7,
+                                right: SizeConfig.widthMultiplier * 2.2,
+                                bottom: SizeConfig.heightMultiplier * 1.5),
                             child: Center(
                               child: Text(
                                 'Congratulations! You are among top 5 % of highest point users.!',
@@ -558,7 +565,6 @@ class _HomePageState extends State<HomePage> {
                     //       )),
                     // ),
                     subheading('What\'s New'),
-
 
                     BlocBuilder<AdvertiserBloc, AdvertiserState>(
                       builder: (context, state) {
@@ -621,22 +627,35 @@ class _HomePageState extends State<HomePage> {
 
                     //   Container(child: Flexible(fit: FlexFit.loose,child: LineChartSample1())),
 
-                   subheading('Paid With Flux'),
+                    subheading('Paid With Flux'),
 
                     BlocBuilder<GraphBloc, GraphState>(
                       builder: (context, state) {
                         if (state is LoadGraphState) {
+                          log("ASDFGHJKLOIUYTRWQSssssssssssssssssssssssss");
+                          log(state.graphData.toString());
                           return Padding(
                             padding:
                                 EdgeInsets.all(SizeConfig.heightMultiplier * 1),
-                            child: LineChartGraph(
-                              mp: state.graphData,
-                              height: SizeConfig.heightMultiplier * 40,
-                              width: SizeConfig.widthMultiplier * 85,
-                              user: user,
-                              popup: true,
-                              //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
-                            ),
+                            child: (state.graphData.length == 0)
+                                ? Container(
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.offWhite,
+                                    borderRadius: BorderRadius.all(
+                            Radius.circular(SizeConfig.heightMultiplier * 2)),
+                                  ),
+                                  height: SizeConfig.heightMultiplier*7,
+                                    child: Center(
+                                    child: Text("No Progress Found"),
+                                  ))
+                                : LineChartGraph(
+                                    mp: state.graphData,
+                                    height: SizeConfig.heightMultiplier * 40,
+                                    width: SizeConfig.widthMultiplier * 85,
+                                    user: user,
+                                    popup: true,
+                                    //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
+                                  ),
                           );
                         } else if (state is LoadingGraphState) {
                           return CircularProgressIndicator();

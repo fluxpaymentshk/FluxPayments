@@ -14,6 +14,7 @@ import 'package:flux_payments/bloc/flux_points_bloc/flux_point_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/models/myCoupons.dart';
@@ -151,10 +152,10 @@ class _CouponsState extends State<Coupons> {
     final DatabaseRepository databaseRepo = DatabaseRepository();
     final CouponsSearchRepository _couponSearchRepository =
         CouponsSearchRepository();
-    userBloc.add(GetUserDetails(userID: 'fluxsam1'));
+    userBloc.add(GetUserDetails(userID: userBloc.getUserID));
     favoritesBloc
-        .add(GetFavorites(page: 0, userID: 'fluxsam1', favorites: fav));
-    couponsBloc.add(GetCoupons(page: 0, userID: 'fluxsam1', coupons: coupons));
+        .add(GetFavorites(page: 0, userID: userBloc.getUserID, favorites: fav));
+    couponsBloc.add(GetCoupons(page: 0, userID: userBloc.getUserID, coupons: coupons));
     
     Size size = MediaQuery.of(context).size;
 
@@ -175,7 +176,7 @@ class _CouponsState extends State<Coupons> {
           );
         } else if (state is UserDetails) {
           print("State is UserDetails");
-          databaseRepo.getUserDetails(userID: "fluxsam1");
+          databaseRepo.getUserDetails(userID: userBloc.getUserID);
 
           return SafeArea(
             child: Scaffold(
@@ -254,6 +255,7 @@ class _CouponsState extends State<Coupons> {
                                       ),
                                     ],
                                     child: RewardsSearchScreen(
+                                      uid :userBloc.getUserID,
                                       categories: categories,
                                       favorites: fav,
                                     ),
@@ -547,8 +549,9 @@ class _CouponsState extends State<Coupons> {
                         );
                       } else {
                         return Container(
-                          color: Colors.black,
-                          height: 100,
+                          child: Text("No Coupons found !"
+                                    //(state as ErrorFavorites).message
+                                    ),
                         );
                       }
                     }),

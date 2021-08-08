@@ -14,8 +14,10 @@ import 'package:flux_payments/bloc/favorite_bloc/favorite_bloc.dart';
 import 'package:flux_payments/bloc/graph_bloc/graph_bloc.dart';
 import 'package:flux_payments/bloc/pending_service_bloc/pending_service_bloc.dart';
 import 'package:flux_payments/bloc/recent_payment_bloc/recent_payment_bloc.dart';
+import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
 import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
@@ -33,7 +35,10 @@ class LoginScreen extends StatefulWidget {
   final UserConfigRepository? userConfigRepository;
   final DatabaseRepository? databaseRepository;
   LoginScreen(
-      {Key? key, @required this.databaseRepository, @required this.loginRepo, @required this.userConfigRepository})
+      {Key? key,
+      @required this.databaseRepository,
+      @required this.loginRepo,
+      @required this.userConfigRepository})
       : super(key: key);
 
   @override
@@ -41,6 +46,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final UserConfigRepository userConfigRepository = UserConfigRepository();
   final Shader linearGradientText = LinearGradient(
     colors: <Color>[Color(0xFF7041EE), Color(0xffE9D9FB)],
   ).createShader(Rect.fromLTWH(100.0, 0.0, 200.0, 70.0));
@@ -49,7 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var recentPaymentBloc = BlocProvider.of<RecentPaymentBloc>(context);
     var favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
     var couponsBloc = BlocProvider.of<CouponsBloc>(context);
-
+    var serviceP = BlocProvider.of<ServiceProviderBloc>(context);
 
     return Scaffold(
       body: Container(
@@ -83,95 +88,100 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: width * 0.05),
           child: BlocListener<AuthBloc, AuthState>(
-            listener: (ctx, state) {
-            print("Submitted:            $isSubmitted");
-            if (state is AuthError) {
-              print("-------------------------AUTH ERROR===${state.message}");
-              if (state.message == "User not confirmed") {
-                log("hi");
-                Navigator.of(ctx).pop();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => BlocProvider.value(
-                      value: authBloc,
-                      child: Scaffold(
-                        body: SignUpOTPScreen(
-                          email: _emailController.value.text.trim(),
-                          password: _passwordController.value.text,
+            listener: (ctx, state) async {
+              print("Submitted:            $isSubmitted");
+              if (state is AuthError) {
+                print("-------------------------AUTH ERROR===${state.message}");
+                if (state.message == "User not confirmed") {
+                  log("hi");
+                  Navigator.of(ctx).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider.value(
+                        value: authBloc,
+                        child: Scaffold(
+                          body: SignUpOTPScreen(
+                            email: _emailController.value.text.trim(),
+                            password: _passwordController.value.text,
+                          ),
                         ),
+                      ),
+                    ),
+                  );
+                } else {
+                  Navigator.of(ctx).pop();
+                  ScaffoldMessenger.of(ctx)
+                      .showSnackBar(errorSnackBar(state.message));
+                }
+              }
+              if (state is AuthStateLoading) {
+                showDialog(
+                    context: ctx,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    });
+              }
+              if (state is AuthInitial) {
+                print("-++++AUTH INITIAL");
+              }
+              if (state is UserSignedInAuthState) {
+                var userdetails = await userConfigRepository.fetchUserDetails();
+                log(userdetails.userSub.toString());
+                SizeConfig.userID = userdetails.userSub!;
+                log(SizeConfig.userID);
+                log("777777777777777777777777777777777");
+                Navigator.of(ctx).pop();
+
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider.value(
+                          value: userBloc,
+                        ),
+                        BlocProvider.value(
+                          value: curatedListBloc,
+                        ),
+                        BlocProvider.value(
+                          value: bannerBloc,
+                        ),
+                        BlocProvider.value(
+                          value: advertiserBloc,
+                        ),
+                        BlocProvider.value(
+                          value: graphBloc,
+                        ),
+                        BlocProvider.value(
+                          value: recentPaymentBloc,
+                        ),
+                        BlocProvider.value(
+                          value: pendingServiceBloc,
+                        ),
+                        BlocProvider.value(
+                          value: storyBloc,
+                        ),
+                        BlocProvider.value(
+                          value: couponsBloc,
+                        ),
+                        BlocProvider.value(
+                          value: favoritesBloc,
+                        ),
+                        BlocProvider.value(
+                          value: serviceP,
+                        ),
+                      ],
+                      child: NavigatorPage(
+                        userRepository: widget.userConfigRepository,
+                        databaseRepository: DatabaseRepository(),
                       ),
                     ),
                   ),
                 );
-              } else {
-                Navigator.of(ctx).pop();
-                ScaffoldMessenger.of(ctx)
-                    .showSnackBar(errorSnackBar(state.message));
               }
-            }
-            if (state is AuthStateLoading) {
-              showDialog(
-                  context: ctx,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  });
-            }
-            if (state is AuthInitial) {
-              print("-++++AUTH INITIAL");
-            }
-            if (state is UserSignedInAuthState) {
-              Navigator.of(ctx).pop();
-              print("===++++++++++++++++++++++________________USer signed in");
-
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider.value(
-                        value: userBloc,
-                      ),
-                      BlocProvider.value(
-                        value: curatedListBloc,
-                      ),
-                      BlocProvider.value(
-                        value: bannerBloc,
-                      ),
-                      BlocProvider.value(
-                        value: advertiserBloc,
-                      ),
-                      BlocProvider.value(
-                        value: graphBloc,
-                      ),
-                      BlocProvider.value(
-                        value: recentPaymentBloc,
-                      ),
-                      BlocProvider.value(
-                        value: pendingServiceBloc,
-                      ),
-                      BlocProvider.value(
-                        value: storyBloc,
-                      ),
-                      BlocProvider.value(
-                        value: couponsBloc,
-                      ),
-                      BlocProvider.value(
-                        value: favoritesBloc,
-                      ),
-                    ],
-                    child: NavigatorPage(
-                      userRepository: widget.userConfigRepository,
-                      databaseRepository: DatabaseRepository(),
-                    ),
-                  ),
-                ),
-              );
-            }
-          },
-
-
+            },
             child: Form(
               key: _formKey,
               child: Column(
@@ -216,13 +226,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: TextFormField(
                       controller: _emailController,
-                      style:
-                          TextStyle(color: Colors.black, fontSize: height * 0.025),
+                      style: TextStyle(
+                          color: Colors.black, fontSize: height * 0.025),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                       ),
                       validator: (s) =>
-                            widget.loginRepo?.validateField(s ?? ""),
+                          widget.loginRepo?.validateField(s ?? ""),
                     ),
                   ),
                   SizedBox(
@@ -252,8 +262,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _passwordController,
                       cursorHeight: height * 0.04,
                       style: TextStyle(
-                          color: hidePassword ? Color(0xff7041EE) : Colors.black,
-                          fontSize: hidePassword ? height*0.05 : height * 0.025),
+                          color:
+                              hidePassword ? Color(0xff7041EE) : Colors.black,
+                          fontSize:
+                              hidePassword ? height * 0.05 : height * 0.025),
                       obscureText: hidePassword,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
@@ -270,9 +282,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       validator: (s) {
-                          return widget.loginRepo
-                              ?.validatePasswordFormField(s ?? "");
-                        },
+                        return widget.loginRepo
+                            ?.validatePasswordFormField(s ?? "");
+                      },
                     ),
                   ),
                   SizedBox(
@@ -296,37 +308,38 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       onPressed: isSubmitted
-                                ? null
-                                : () {
-                                    FocusScope.of(context).unfocus();
-                                    var r = _formKey.currentState?.validate();
-                                    print(r);
-                                    if (r == true) {
-                                      setState(() {
-                                        isSubmitted = true;
-                                      });
-                                      print(_emailController.value.text);
-                                      print(_passwordController.value.text);
-                                      authBloc.add(EmailLogInUser(
-                                          _emailController.value.text.trim(),
-                                          _passwordController.value.text));
-                                      setState(() {
-                                        isSubmitted = false;
-                                      });
-                                    }
-                                  },
+                          ? null
+                          : () {
+                              FocusScope.of(context).unfocus();
+                              var r = _formKey.currentState?.validate();
+                              print(r);
+                              if (r == true) {
+                                setState(() {
+                                  isSubmitted = true;
+                                });
+                                print(_emailController.value.text);
+                                print(_passwordController.value.text);
+                                authBloc.add(EmailLogInUser(
+                                    _emailController.value.text.trim(),
+                                    _passwordController.value.text));
+                                setState(() {
+                                  isSubmitted = false;
+                                });
+                              }
+                            },
                     ),
                   ),
-                  SizedBox(height: height*0.02,),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8)
-                    ),
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(8)),
                     height: height * 0.065,
                     width: width * 0.9,
                     child: TextButton(
-                       child: Text(
+                      child: Text(
                         "I don't have a Flux account",
                         style: TextStyle(
                           fontSize: height * 0.02,
@@ -373,17 +386,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                 BlocProvider.value(
                                   value: favoritesBloc,
                                 ),
+                                BlocProvider.value(
+                                  value: serviceP,
+                                ),
                               ],
                               child: RegisterScreen(
                                 userConfigRepository:
                                     widget.userConfigRepository,
-                                loginRepo : widget.loginRepo,
+                                loginRepo: widget.loginRepo,
                               ),
                             ),
                           ),
                         );
-                //         Navigator.pushReplacement(
-                // context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+                        //         Navigator.pushReplacement(
+                        // context, MaterialPageRoute(builder: (context) => RegisterScreen()));
                       },
                     ),
                   ),

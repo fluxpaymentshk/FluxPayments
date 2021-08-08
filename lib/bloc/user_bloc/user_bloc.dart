@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/auth_bloc/auth_state.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
@@ -14,8 +15,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final DatabaseRepository _databaseRepository;
   UserBloc(this._userConfigRepository, this._databaseRepository)
       : super(UserInitialState());
+    String uid = "bbbb";
+    String get getUserID {
+    
+    return uid;
+  }
+
   @override
   Stream<UserState> mapEventToState(UserEvent event) async* {
+    final UserConfigRepository userConfigRepository = UserConfigRepository();
     yield UserInitialState();
     if (event is UserChangePasswordEvent) {
       try {
@@ -66,12 +74,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     if (event is GetUserDetails) {
       try {
+        log("111111111111111111111111111 ${event.userID.toString()}");
         yield UserDetailsLoading();
+        var userdetails = await userConfigRepository.fetchUserDetails();
+        uid = userdetails.userSub!;
         User user =
-            await _databaseRepository.getUserDetails(userID: event.userID);
+            await _databaseRepository.getUserDetails(userID: uid);
         yield UserDetails(user: user);
       } catch (e) {
-        yield UserDetailsError("unable to fetch User Details!");
+        log(e.toString());
+        yield UserDetailsError("${uid}aaaaa");
       }
     }
 
