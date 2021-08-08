@@ -59,11 +59,14 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
             children: [
               fluxLogo(context),
-              Text(
-                "Personal Information",
-                style: GoogleFonts.montserrat(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+              Padding(
+                padding: const EdgeInsets.only(top:16.0),
+                child: Text(
+                  "Personal Information",
+                  style: GoogleFonts.montserrat(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               Container(

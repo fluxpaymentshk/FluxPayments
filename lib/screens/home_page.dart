@@ -265,6 +265,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) => PaymentScreen(
+                                    userName:user.firstName,
                                     uid: uid,
                                     databaseRepository:
                                         widget.databaseRepository,
