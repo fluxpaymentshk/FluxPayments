@@ -12,6 +12,7 @@ import 'package:flux_payments/bloc/cards_bloc.dart/cards_state.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/Cards.dart';
+import 'package:flux_payments/screens/payment_Screens/add_new_card_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/confirm_payment_screen.dart';
 import 'package:flux_payments/screens/payment_Screens/loading_screen.dart';
 import 'package:flux_payments/widgets/back_button.dart';
@@ -24,12 +25,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class SelectPaymentScreen extends StatefulWidget {
+  final String? userName;
   final String? uid;
   final double? amount;
   final double? fluxPoints;
   final List<Cards>? cards;
   const SelectPaymentScreen(
-      {Key? key,this.uid, this.amount, this.cards, this.fluxPoints})
+      {Key? key,
+      this.uid,
+      this.userName,
+      this.amount,
+      this.cards,
+      this.fluxPoints})
       : super(key: key);
 
   @override
@@ -45,6 +52,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
   bool cardTapped = false;
   bool cardSelect = false;
   int? radioValue = -1;
+
+  int? singleRadioValue = -1;
   int? mobileBankingRadioValue = -2;
   var _mobileBankFormKey = GlobalKey<FormState>();
   var _newCardFormKey = GlobalKey<FormState>();
@@ -76,29 +85,101 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
         padding: EdgeInsets.all(16),
         children: [
           fluxLogo(context),
-          helloWidget("shourya", context),
+          Container(
+            height: SizeConfig.heightMultiplier * 12,
+            width: SizeConfig.widthMultiplier * 97,
+            //  decoration: BoxDecoration(color: AppTheme.main),
+            child: Row(
+              //  mainAxisSize:
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(SizeConfig.heightMultiplier * 2),
+                  child: Center(
+                    child: Container(
+                      width: SizeConfig.widthMultiplier * 40,
+                      height: SizeConfig.heightMultiplier * 10,
+                      child: FittedBox(
+                        child: Text(
+                          'Hello ${widget.userName}!',
+                          style: AppTheme.display1,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Padding(
+                  padding: EdgeInsets.all(SizeConfig.heightMultiplier * 2.0),
+                  child: Container(
+                    // height: SizeConfig.heightMultiplier*12,
+                    // width: SizeConfig.widthMultiplier*100,
+
+                    child: Image.asset("assets/images/av.png"),
+                    //  child:NetworkImage(state.user.);
+                  ),
+                ),
+              ],
+            ),
+          ),
           Container(
             height: MediaQuery.of(context).size.aspectRatio * 370,
-            child: ScrollablePositionedList.builder(
-              itemCount: widget.cards!.length,
-              itemBuilder: (context, index) => Container(
-                child: CreditCardWidget(
-                  cardNumber: widget.cards![index].cardNumber!,
-                  expiryDate: widget.cards![index].expiryDate!,
-                  cardType: getCardType(widget.cards![index].cardBrand),
-                  cardHolderName: widget.cards![index].holderName!,
-                  cvvCode: widget.cards![index].cvv.toString(),
-                  showBackView: false,
-                  cardBgColor: cardBgColors[index % cardBgColors.length],
-                  obscureCardNumber: true,
-                  obscureCardCvv: true,
-                  width: MediaQuery.of(context).size.aspectRatio * 500,
-                  animationDuration: Duration(milliseconds: 1000),
-                ),
-              ),
-              itemScrollController: _scrollController,
-              reverse: false,
-              scrollDirection: Axis.horizontal,
+            child: Container(
+              height: MediaQuery.of(context).size.aspectRatio * 370,
+              child: widget.cards!.length == 0
+                  ? InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider<CardsBloc>.value(
+                              value: cardsBloc,
+                              child: AddCardNewScreen(uid: widget.uid),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        child: Stack(
+                          children: [
+                            CreditCardWidget(
+                              cardNumber: "",
+                              expiryDate: " ",
+                              cardHolderName: 'Click to add new card',
+                              cvvCode: '',
+                              showBackView: false,
+                              cardBgColor:
+                                  cardBgColors[cardBgColors.length - 1],
+                              obscureCardNumber: true,
+                              obscureCardCvv: true,
+                              width:
+                                  MediaQuery.of(context).size.aspectRatio * 500,
+                              animationDuration: Duration(milliseconds: 1000),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : ScrollablePositionedList.builder(
+                      itemCount: widget.cards!.length,
+                      itemBuilder: (context, index) => Container(
+                        child: CreditCardWidget(
+                          cardNumber: widget.cards![index].cardNumber!,
+                          expiryDate: widget.cards![index].expiryDate!,
+                          cardType: getCardType(widget.cards![index].cardBrand),
+                          cardHolderName: widget.cards![index].holderName!,
+                          cvvCode: widget.cards![index].cvv.toString(),
+                          showBackView: false,
+                          cardBgColor:
+                              cardBgColors[index % cardBgColors.length],
+                          obscureCardNumber: true,
+                          obscureCardCvv: true,
+                          width: MediaQuery.of(context).size.aspectRatio * 500,
+                          animationDuration: Duration(milliseconds: 1000),
+                        ),
+                      ),
+                      itemScrollController: _scrollController,
+                      reverse: false,
+                      scrollDirection: Axis.horizontal,
+                    ),
             ),
           ),
           Padding(
@@ -184,98 +265,133 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                         ),
                       ),
                       height: MediaQuery.of(context).size.height * 0.45,
-                      child: ListView.builder(
-                          controller: bankAccController,
-                          padding: EdgeInsets.only(bottom: 16),
-                          itemCount: widget.cards?.length,
-                          itemBuilder: (context, i) {
-                            if (i == widget.cards!.length - 1) {
-                              return Column(
-                                children: [
-                                  Card(
-                                    color: Color(0xffE9E9FF),
-                                    elevation: 4,
-                                    child: ListTile(
-                                      title: Text("Card Number: " +
-                                          widget.cards![i].cardNumber!),
-                                      trailing: Radio<int>(
-                                        activeColor: AppTheme.main,
-                                        value: i,
-                                        groupValue: radioValue,
-                                        // toggleable: true,
-                                        onChanged: (v) {
-                                          setState(() {
-                                            radioValue = v;
-                                            log("$radioValue");
-                                          });
-                                          _scrollController.scrollTo(
-                                            index: i,
-                                            duration: Duration(
-                                              milliseconds: 200,
-                                            ),
-                                          );
-                                        },
-                                      ),
+                      child: widget.cards!.length == 0
+                          ? ListView(
+                              children: [
+                                Card(
+                                  color: Color(0xffE9E9FF),
+                                  elevation: 4,
+                                  child: ListTile(
+                                    title: Text("Add New Card"),
+                                    trailing: Radio<int>(
+                                      activeColor: AppTheme.main,
+                                      value: 1,
+                                      groupValue: singleRadioValue,
+                                      // toggleable: true,
+                                      onChanged: (v) {
+                                        setState(() {
+                                          singleRadioValue = v;
+                                          log("$singleRadioValue");
+                                        });
+                                        // log("${bankAccController.offset}");
+                                        // bankAccController.jumpTo(
+                                        //     bankAccController.offset + 70);
+                                      },
                                     ),
                                   ),
-                                  Card(
-                                    color: Color(0xffE9E9FF),
-                                    elevation: 4,
-                                    child: ListTile(
-                                      title: Text("Add New Card"),
-                                      trailing: Radio<int>(
-                                        activeColor: AppTheme.main,
-                                        value: i + 1,
-                                        groupValue: radioValue,
-                                        // toggleable: true,
-                                        onChanged: (v) {
-                                          setState(() {
-                                            radioValue = v;
-                                            log("$radioValue");
-                                          });
-                                          log("${bankAccController.offset}");
-                                          bankAccController.jumpTo(
-                                              bankAccController.offset + 70);
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                  ExpandWidget(
-                                    expand: radioValue == widget.cards!.length
-                                        ? true
-                                        : false,
-                                    child: expandNewCardDetails(),
-                                  ),
-                                ],
-                              );
-                            }
-                            return Card(
-                              color: Color(0xffE9E9FF),
-                              elevation: 4,
-                              child: ListTile(
-                                title: Text("Card Number: " +
-                                    widget.cards![i].cardNumber!),
-                                trailing: Radio<int>(
-                                  activeColor: AppTheme.main,
-                                  value: i,
-                                  groupValue: radioValue,
-                                  // toggleable: true,
-                                  onChanged: (v) {
-                                    setState(() {
-                                      radioValue = v;
-                                      log("$radioValue");
-                                    });
-                                    _scrollController.scrollTo(
-                                      index: i,
-                                      duration: Duration(
-                                        milliseconds: 200,
-                                      ),
-                                    );
-                                  },
                                 ),
-                              ),
-                            );
-                          }),
+                                ExpandWidget(
+                                  expand: singleRadioValue == 1
+                                      ? true
+                                      : false,
+                                  child: expandNewCardDetails(),
+                                ),
+                              ],
+                            )
+                          : ListView.builder(
+                              controller: bankAccController,
+                              padding: EdgeInsets.only(bottom: 16),
+                              itemCount: widget.cards?.length,
+                              itemBuilder: (context, i) {
+                                if (i == widget.cards!.length - 1) {
+                                  return Column(
+                                    children: [
+                                      Card(
+                                        color: Color(0xffE9E9FF),
+                                        elevation: 4,
+                                        child: ListTile(
+                                          title: Text("Card Number: " +
+                                              widget.cards![i].cardNumber!),
+                                          trailing: Radio<int>(
+                                            activeColor: AppTheme.main,
+                                            value: i,
+                                            groupValue: radioValue,
+                                            // toggleable: true,
+                                            onChanged: (v) {
+                                              setState(() {
+                                                radioValue = v;
+                                                log("$radioValue");
+                                              });
+                                              _scrollController.scrollTo(
+                                                index: i,
+                                                duration: Duration(
+                                                  milliseconds: 200,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      Card(
+                                        color: Color(0xffE9E9FF),
+                                        elevation: 4,
+                                        child: ListTile(
+                                          title: Text("Add New Card"),
+                                          trailing: Radio<int>(
+                                            activeColor: AppTheme.main,
+                                            value: i + 1,
+                                            groupValue: radioValue,
+                                            // toggleable: true,
+                                            onChanged: (v) {
+                                              setState(() {
+                                                radioValue = v;
+                                                log("$radioValue");
+                                              });
+                                              log("${bankAccController.offset}");
+                                              bankAccController.jumpTo(
+                                                  bankAccController.offset +
+                                                      70);
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      ExpandWidget(
+                                        expand:
+                                            radioValue == widget.cards!.length
+                                                ? true
+                                                : false,
+                                        child: expandNewCardDetails(),
+                                      ),
+                                    ],
+                                  );
+                                }
+                                return Card(
+                                  color: Color(0xffE9E9FF),
+                                  elevation: 4,
+                                  child: ListTile(
+                                    title: Text("Card Number: " +
+                                        widget.cards![i].cardNumber!),
+                                    trailing: Radio<int>(
+                                      activeColor: AppTheme.main,
+                                      value: i,
+                                      groupValue: radioValue,
+                                      // toggleable: true,
+                                      onChanged: (v) {
+                                        setState(() {
+                                          radioValue = v;
+                                          log("$radioValue");
+                                        });
+                                        _scrollController.scrollTo(
+                                          index: i,
+                                          duration: Duration(
+                                            milliseconds: 200,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }),
                     ),
                   ),
                   InkWell(
@@ -445,8 +561,7 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
         ),
         height: MediaQuery.of(context).size.height * 0.6,
         padding: EdgeInsets.only(left: 8),
-        child:
-         Column(
+        child: Column(
           children: [
             CreditCardForm(
               cardNumber: cardNumber,
@@ -528,7 +643,6 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
             ),
           ],
         ),
-     
       ),
     );
   }

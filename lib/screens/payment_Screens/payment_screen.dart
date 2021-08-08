@@ -9,11 +9,12 @@ import 'package:flux_payments/screens/payment_Screens/pay_now_screen.dart';
 
 class PaymentScreen extends StatelessWidget {
   final String? uid;
+  final String? userName;
   final DatabaseRepository? databaseRepository;
   final UserConfigRepository? userConfigRepository;
   const PaymentScreen(
       {Key? key,
-      @required this.uid,
+      @required this.uid,@required this.userName,
       @required this.databaseRepository,
       @required this.userConfigRepository})
       : super(key: key);
@@ -35,7 +36,7 @@ class PaymentScreen extends StatelessWidget {
           create: (_) => CardsBloc(databaseRepository!),
         ),
       ],
-      child: PayNowScreen(uid:uid,databaseRepository: databaseRepository),
+      child: PayNowScreen(uid: uid, databaseRepository: databaseRepository,userName: userName,),
     );
   }
 }

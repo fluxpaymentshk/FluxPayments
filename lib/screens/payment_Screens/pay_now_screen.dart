@@ -31,7 +31,7 @@ class PayNowScreen extends StatefulWidget {
   final String? uid;
   final DatabaseRepository? databaseRepository;
   const PayNowScreen(
-      {Key? key,this.uid, this.userName, @required this.databaseRepository})
+      {Key? key, this.uid, this.userName, @required this.databaseRepository})
       : super(key: key);
 
   @override
@@ -90,7 +90,45 @@ class _PayNowScreenState extends State<PayNowScreen> {
             child: ListView(
               children: [
                 fluxLogo(context),
-                helloWidget("shourya", context),
+                // helloWidget(widget.userName!, context),
+                Container(
+                  height: SizeConfig.heightMultiplier * 12,
+                  width: SizeConfig.widthMultiplier * 97,
+                  //  decoration: BoxDecoration(color: AppTheme.main),
+                  child: Row(
+                    //  mainAxisSize:
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.all(SizeConfig.heightMultiplier * 2),
+                        child: Center(
+                          child: Container(
+                            width: SizeConfig.widthMultiplier * 40,
+                            height: SizeConfig.heightMultiplier * 10,
+                            child: FittedBox(
+                              child: Text(
+                                'Hello ${widget.userName}!',
+                                style: AppTheme.display1,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                      Padding(
+                        padding:
+                            EdgeInsets.all(SizeConfig.heightMultiplier * 2.0),
+                        child: Container(
+                          // height: SizeConfig.heightMultiplier*12,
+                          // width: SizeConfig.widthMultiplier*100,
+
+                          child: Image.asset("assets/images/av.png"),
+                          //  child:NetworkImage(state.user.);
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
@@ -134,8 +172,9 @@ class _PayNowScreenState extends State<PayNowScreen> {
                                   children: [
                                     CreditCardWidget(
                                       cardNumber: "",
+                                      
                                       expiryDate: " ",
-                                      cardHolderName: 'Add new Card',
+                                      cardHolderName: 'Click to add new card',
                                       cvvCode: '',
                                       showBackView: false,
                                       cardBgColor:
@@ -149,21 +188,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                                       animationDuration:
                                           Duration(milliseconds: 1000),
                                     ),
-                                    Positioned(
-                                      top: MediaQuery.of(context)
-                                              .size
-                                              .aspectRatio *
-                                          150,
-                                      left: MediaQuery.of(context)
-                                              .size
-                                              .aspectRatio *
-                                          150,
-                                      child: Icon(
-                                        Icons.add,
-                                        size: 60,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                   
                                   ],
                                 ),
                               ),
@@ -202,8 +227,10 @@ class _PayNowScreenState extends State<PayNowScreen> {
                   );
                 }),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: SizeConfig.heightMultiplier*2.5),
-                  padding:EdgeInsets.only(left: SizeConfig.widthMultiplier*2),
+                  margin: EdgeInsets.symmetric(
+                      vertical: SizeConfig.heightMultiplier * 2.5),
+                  padding:
+                      EdgeInsets.only(left: SizeConfig.widthMultiplier * 2),
                   child: Text(
                     "Detailed Bill",
                     style: GoogleFonts.montserrat(
@@ -213,7 +240,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                   ),
                 ),
                 Container(
-                    height: MediaQuery.of(context).size.height * 0.7,
+                    height:MediaQuery.of(context).size.height*0.25+ MediaQuery.of(context).size.height * 0.1*state.pendingPayments.length,
 
                     //  margin: EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -228,7 +255,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                       pendingPayments: state.pendingPayments,
                       totalSrvBill: totalSrvBill,
                       totalFluxPointsService: totalFluxSrvPoints,
-                    )),
+                    ),),
                 InkWell(
                   onTap: () {
                     selectedBills.isEmpty
@@ -236,9 +263,11 @@ class _PayNowScreenState extends State<PayNowScreen> {
                             SnackBar(
                               content:
                                   Text("Please Choose services to be paid."),
+                                  backgroundColor: Colors.red.shade400,
                             ),
                           )
-                        : Navigator.of(context).push(
+                        : 
+                        Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => MultiBlocProvider(
                                 providers: [
@@ -251,6 +280,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                                   ),
                                 ],
                                 child: SelectPaymentScreen(
+                                  userName:widget.userName,
                                   uid: widget.uid,
                                   cards: cardsList,
                                   amount: totalBill,

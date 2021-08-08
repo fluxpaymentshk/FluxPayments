@@ -224,6 +224,7 @@ class _BillPaymentState extends State<BillPayment> {
                                Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) => PaymentScreen(
+                                    userName: user.firstName,
                                     uid: userBloc.getUserID,
                                     databaseRepository:
                                         widget.databaseRepository,
