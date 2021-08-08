@@ -394,17 +394,35 @@ class _BillPaymentState extends State<BillPayment> {
                             },
                               );
                         } else {
-                          return Container(
-                                  margin: EdgeInsets.only(bottom: SizeConfig.heightMultiplier*4),
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.offWhite,
-                                    borderRadius: BorderRadius.all(
-                            Radius.circular(SizeConfig.heightMultiplier * 2)),
+                          return InkWell(
+                            child: Container(
+                            //  padding: EdgeInsets.symmetric(horizontal:SizeConfig.widthMultiplier*),
+                                    margin: EdgeInsets.only(bottom: SizeConfig.heightMultiplier*3,left:SizeConfig.widthMultiplier*3,right:SizeConfig.widthMultiplier*3),
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.offWhite,
+                                      borderRadius: BorderRadius.all(
+                              Radius.circular(SizeConfig.heightMultiplier * 2)),
+                                    ),
+                                    height: SizeConfig.heightMultiplier*7,
+                                      child: Center(
+                                      child: Text("No Favorites Found"),
+                                    )),
+                           onDoubleTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return BlocProvider.value(
+                                  value: serviceProviderBloc,
+                                  child: ServiceProviderCategory(
+                                    paymentData: {},
+                                    user: user,
+                                    databaseRepository:
+                                        widget.databaseRepository,
                                   ),
-                                  height: SizeConfig.heightMultiplier*7,
-                                    child: Center(
-                                    child: Text("No Favorites Found"),
-                                  ));
+                                );
+                                // return GraphScreen(graphData: widget.mp, user: widget.user);
+                              }));
+                            },
+                          );
                         }
                       },
                     ),
@@ -565,7 +583,8 @@ class _BillPaymentState extends State<BillPayment> {
 
                     //////////////////////////////###########################
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding:  EdgeInsets.all(10),
+                      
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -584,7 +603,7 @@ class _BillPaymentState extends State<BillPayment> {
                         else if (state is LoadRecentPaymentState) {
                           return (state.RecentPaymentData.length == 0)
                                 ? Container(
-                                  margin: EdgeInsets.only(bottom: SizeConfig.heightMultiplier*4),
+                                  margin: EdgeInsets.only(bottom: SizeConfig.heightMultiplier*4,left:SizeConfig.widthMultiplier*3,right:SizeConfig.widthMultiplier*3),
                                   decoration: BoxDecoration(
                                     color: AppTheme.offWhite,
                                     borderRadius: BorderRadius.all(
