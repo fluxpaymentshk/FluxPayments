@@ -262,10 +262,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _passwordController,
                       cursorHeight: height * 0.04,
                       style: TextStyle(
-                          color:
-                              hidePassword ? Color(0xff7041EE) : Colors.black,
-                          fontSize:
-                              hidePassword ? height * 0.05 : height * 0.025),
+                          color: Colors.black,
+                          fontSize: height * 0.025),
                       obscureText: hidePassword,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
@@ -346,7 +344,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) => MultiBlocProvider(

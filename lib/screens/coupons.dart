@@ -15,6 +15,7 @@ import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_event.dart';
 import 'package:flux_payments/bloc/user_bloc/user_state.dart';
 import 'package:flux_payments/config/size_config.dart';
+import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/ModelProvider.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/models/myCoupons.dart';
@@ -277,7 +278,7 @@ class _CouponsState extends State<Coupons> {
                                   color: color1,
                                   fontSize: height * 0.024,
                                 ),
-                                hintText: "Search for my favorite brand",
+                                hintText: "Search for brands",
                                 prefixIcon: Icon(
                                   Icons.search,
                                   size: height * 0.045,
@@ -296,11 +297,11 @@ class _CouponsState extends State<Coupons> {
                         ),
                         Container(
                           child: Text(
-                            "Category",
+                            "Categories",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: height * 0.03,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
@@ -376,13 +377,13 @@ class _CouponsState extends State<Coupons> {
                           children: [
                             Container(
                               child: Text(
-                                "Favorites",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: height * 0.03,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                            "Favorites",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                             ),
                             // IconButton(
                             //     onPressed: () {
@@ -450,10 +451,15 @@ class _CouponsState extends State<Coupons> {
                               );
                             } else {
                               return Container(
-                                child: Text("No Favorites found !"
-                                    //(state as ErrorFavorites).message
-                                    ),
-                              );
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.offWhite,
+                                    borderRadius: BorderRadius.all(
+                            Radius.circular(SizeConfig.heightMultiplier * 2)),
+                                  ),
+                                  height: SizeConfig.heightMultiplier*7,
+                                    child: Center(
+                                    child: Text("No Favorites Found"),
+                                  ));
                             }
                           },
                         ),
@@ -469,13 +475,13 @@ class _CouponsState extends State<Coupons> {
                     ),
                     Container(
                       child: Text(
-                        "My Coupon",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: height * 0.03,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                            "My Coupon",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                     ),
                     if (expand)
                       SizedBox(
@@ -494,7 +500,17 @@ class _CouponsState extends State<Coupons> {
                         print("State is LoadedCoupons");
                         print(state.coupons);
                         coupons = state.coupons;
-                        return Container(
+                        return coupons.length == 0 ?Container(
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.offWhite,
+                                    borderRadius: BorderRadius.all(
+                            Radius.circular(SizeConfig.heightMultiplier * 2)),
+                                  ),
+                                  height: SizeConfig.heightMultiplier*7,
+                                    child: Center(
+                                    child: Text("No Coupons Found"),
+                                  )):
+                        Container(
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           height: min(height * 0.25 * 0.55 * coupons.length,
                               height * 0.3),
@@ -665,7 +681,7 @@ class _CouponsState extends State<Coupons> {
           child: Center(
               child: Text(
             title,
-            style: TextStyle(fontSize: height * 0.023),
+            style: TextStyle(fontSize: height * 0.017),
             overflow: TextOverflow.ellipsis,
           )),
         )

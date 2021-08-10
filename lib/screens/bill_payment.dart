@@ -408,7 +408,7 @@ class _BillPaymentState extends State<BillPayment> {
                                       child: Center(
                                       child: Text("No Favorites Found"),
                                     )),
-                           onDoubleTap: () {
+                           onTap: () {
                               Navigator.push(context, MaterialPageRoute(
                                   builder: (BuildContext context) {
                                 return BlocProvider.value(
