@@ -262,10 +262,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _passwordController,
                       cursorHeight: height * 0.04,
                       style: TextStyle(
-                          color:
-                              hidePassword ? Color(0xff7041EE) : Colors.black,
-                          fontSize:
-                              hidePassword ? height * 0.05 : height * 0.025),
+                          color: Colors.black,
+                          fontSize: height * 0.025),
                       obscureText: hidePassword,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
@@ -307,24 +305,22 @@ class _LoginScreenState extends State<LoginScreen> {
                           foreground: Paint()..shader = linearGradientText,
                         ),
                       ),
-                      onPressed: isSubmitted
-                          ? null
-                          : () {
+                      onPressed:() {
                               FocusScope.of(context).unfocus();
                               var r = _formKey.currentState?.validate();
                               print(r);
                               if (r == true) {
-                                setState(() {
-                                  isSubmitted = true;
-                                });
+                                // setState(() {
+                                //   isSubmitted = true;
+                                // });
                                 print(_emailController.value.text);
                                 print(_passwordController.value.text);
                                 authBloc.add(EmailLogInUser(
                                     _emailController.value.text.trim(),
                                     _passwordController.value.text));
-                                setState(() {
-                                  isSubmitted = false;
-                                });
+                                // setState(() {
+                                //   isSubmitted = false;
+                                // });
                               }
                             },
                     ),

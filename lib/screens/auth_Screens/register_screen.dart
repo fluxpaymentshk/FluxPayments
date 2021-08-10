@@ -301,7 +301,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   "Next",
                   style: TextStyle(
                     fontSize: height * 0.03,
-                    fontWeight: FontWeight.bold,
                     color: _color,
                   ),
                 ),
@@ -337,14 +336,64 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => LoginScreen(
+                Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider<UserBloc>.value(
+                    value: userBloc,
+                  ),
+                  BlocProvider<CuratedListBloc>.value(
+                    value: curatedListBloc,
+                  ),
+                  BlocProvider<BannerBloc>.value(
+                    value: bannerBloc,
+                  ),
+                  BlocProvider<AdvertiserBloc>.value(
+                    value: advertiserBloc,
+                  ),
+                  BlocProvider<GraphBloc>.value(
+                    value: graphBloc,
+                  ),
+                  BlocProvider<RecentPaymentBloc>.value(
+                    value: recentPaymentBloc,
+                  ),
+                  BlocProvider<PendingServiceBloc>.value(
+                    value: pendingServiceBloc,
+                  ),
+                  BlocProvider<StoryBloc>.value(
+                    value: storyBloc,
+                  ),
+                  BlocProvider<CouponsBloc>.value(
+                    value: couponsBloc,
+                  ),
+                  BlocProvider<FavoritesBloc>.value(
+                    value: favoritesBloc,
+                  ),
+                  BlocProvider<ServiceProviderBloc>.value(
+                    value: serviceP,
+                  ),
+                  BlocProvider<AuthBloc>.value(
+                    value: authBloc,
+                  ),
+                ],
+                child: LoginScreen(
                           databaseRepository: _databaseRepository,
                               loginRepo: widget.loginRepo,
                               userConfigRepository: widget.userConfigRepository,
-                            )));
+                            ),
+                //  child:ProfilePage(),
+              ),
+            ),
+          );
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (_) => LoginScreen(
+                //           databaseRepository: _databaseRepository,
+                //               loginRepo: widget.loginRepo,
+                //               userConfigRepository: widget.userConfigRepository,
+                //             )));
               },
             ),
           ),
@@ -392,7 +441,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
           SizedBox(
-            height: height * 0.4,
+            height: height * (0.4-0.065 - 0.01),
           ),
           Container(
             height: height * 0.065,
@@ -407,7 +456,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 "Scan my identity card",
                 style: TextStyle(
                   fontSize: height * 0.03,
-                  fontWeight: FontWeight.bold,
                   color: _color,
                 ),
               ),
@@ -425,6 +473,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
               },
             ),
           ),
+          SizedBox(height: height*0.02,),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(8)),
+            height: height * 0.065,
+            width: width * 0.9,
+            child: TextButton(
+              child: Text(
+                "Back",
+                style: TextStyle(
+                  fontSize: height * 0.02,
+                  //fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: (){
+                if (activeStep > 0) {
+          setState(() {
+            activeStep--;
+          });
+        }
+              },
+            )
+          )
         ],
       ),
     );
@@ -496,8 +569,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: _passwordController,
               cursorHeight: height * 0.04,
               style: TextStyle(
-                  color: hidePassword ? Color(0xff7041EE) : Colors.black,
-                  fontSize: hidePassword ? height * 0.05 : height * 0.025),
+                  color: Colors.black,
+                  //fontSize: hidePassword ? height * 0.05 : height * 0.025),
+                  fontSize: height * 0.025),
               obscureText: hidePassword,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.zero,
@@ -543,8 +617,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: _confirmPasswordController,
               cursorHeight: height * 0.04,
               style: TextStyle(
-                  color: hideCPassword ? Color(0xff7041EE) : Colors.black,
-                  fontSize: hideCPassword ? height * 0.05 : height * 0.025),
+                  color: Colors.black,
+                  fontSize: height * 0.025),
               obscureText: hideCPassword,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.zero,
@@ -566,7 +640,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
           SizedBox(
-            height: height * 0.2,
+            height: height * (0.2-0.065-0.02),
           ),
           Container(
             height: height * 0.065,
@@ -578,6 +652,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             child: BlocListener<AuthBloc, AuthState>(
               listener: (ctx, state) {
+                log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz${state.toString()}");
                 if (state is AuthError) {
                   Navigator.of(ctx).pop();
                   print(
@@ -639,6 +714,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
+          SizedBox(height: height*0.02,),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(8)),
+            height: height * 0.065,
+            width: width * 0.9,
+            child: TextButton(
+              child: Text(
+                "Back",
+                style: TextStyle(
+                  fontSize: height * 0.02,
+                  //fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: (){
+                if (activeStep > 0) {
+          setState(() {
+            activeStep--;
+          });
+        }
+              },
+            )
+          )
         ],
       ),
     );
@@ -647,7 +747,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _ThreeScreen2(height, width) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (ctx, state) async {
-        print(state);
+        log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz${state.toString()}");
         log("___________________________________________________________$state");
         if (state is AuthError) {
           Navigator.of(ctx).pop();
@@ -765,6 +865,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SizedBox(
               height: height * 0.03,
             ),
+            RichText(text: TextSpan(
+              text: "OTP has been sent to ${_emailController.value.text}  ",
+              children: <TextSpan>[
+          TextSpan(
+              text: 'Change details',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, decoration: TextDecoration.underline,)),
+        ],
+            )),
+            SizedBox(height: height*0.02,),
             Text(
               "Enter OTP",
               style: TextStyle(
@@ -802,7 +911,63 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             SizedBox(
-              height: height * 0.33,
+              height: height * (0.2 - 0.02),
+            ),
+            Row(
+            children: [
+              Theme(
+                data: ThemeData(unselectedWidgetColor: Colors.white),
+                child: Checkbox(
+                  //selectedTileColor: Colors.white,
+                  activeColor: Colors.white,
+                  checkColor: Colors.black,
+                  //tileColor: Colors.white,
+                  //contentPadding: EdgeInsets.all(0),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  //title: Text("Subscribe me for Flux's newest promotions", style: TextStyle(color: Colors.white),),
+                  value: promotion,
+                  onChanged: (value) {
+                    setState(() {
+                      promotion = value!;
+                    });
+                  },
+                  //controlAffinity: ListTileControlAffinity.leading,
+                ),
+              ),
+              Text(
+                "Subscribe me for Flux's newest promotions",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+          //SizedBox(height: height*0.01,),
+          Row(
+            children: [
+              Theme(
+                data: ThemeData(unselectedWidgetColor: Colors.white),
+                child: Checkbox(
+                  activeColor: Colors.white,
+                  checkColor: Colors.black,
+                  //contentPadding: EdgeInsets.all(0),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  //title: Text("I accept Flux's Terms & Conditions" , style: TextStyle(color: Colors.white),),
+                  value: tnc,
+                  onChanged: (value) {
+                    setState(() {
+                      tnc = value!;
+                    });
+                  },
+                  //controlAffinity: ListTileControlAffinity.leading,
+                ),
+              ),
+              Text(
+                "I accept Flux's Terms & Conditions",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+          SizedBox(
+              height: height * 0.02,
             ),
             Container(
               height: height * 0.065,
@@ -814,15 +979,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               child: TextButton(
                   child: Text(
-                    "Next",
+                    "Register",
                     style: TextStyle(
                       fontSize: height * 0.03,
-                      fontWeight: FontWeight.bold,
                       color: _color,
                     ),
                   ),
                   onPressed: () {
                     _three2formkey.currentState!.validate();
+                    if(tnc == false){
+                      ScaffoldMessenger.of(context).showSnackBar(errorSnackBar("Please accept Terms and Conditions"));
+                    }else{
                     authBloc.add(
                       EmailSignUpUser(
                         email: _emailController.value.text,
@@ -833,6 +1000,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         hkid: _identitycontroller.value.text,
                       ),
                     );
+                  }
                   }),
             ),
             SizedBox(
@@ -851,7 +1019,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   "Resend",
                   style: TextStyle(
                     fontSize: height * 0.03,
-                    fontWeight: FontWeight.bold,
                     color: _color,
                   ),
                 ),
@@ -919,63 +1086,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
           SizedBox(
-            height: height * 0.28,
-          ),
-          Row(
-            children: [
-              Theme(
-                data: ThemeData(unselectedWidgetColor: Colors.white),
-                child: Checkbox(
-                  //selectedTileColor: Colors.white,
-                  activeColor: Colors.white,
-                  checkColor: Colors.black,
-                  //tileColor: Colors.white,
-                  //contentPadding: EdgeInsets.all(0),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  //title: Text("Subscribe me for Flux's newest promotions", style: TextStyle(color: Colors.white),),
-                  value: promotion,
-                  onChanged: (value) {
-                    setState(() {
-                      promotion = value!;
-                    });
-                  },
-                  //controlAffinity: ListTileControlAffinity.leading,
-                ),
-              ),
-              Text(
-                "Subscribe me for Flux's newest promotions",
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
-          //SizedBox(height: height*0.01,),
-          Row(
-            children: [
-              Theme(
-                data: ThemeData(unselectedWidgetColor: Colors.white),
-                child: Checkbox(
-                  activeColor: Colors.white,
-                  checkColor: Colors.black,
-                  //contentPadding: EdgeInsets.all(0),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  //title: Text("I accept Flux's Terms & Conditions" , style: TextStyle(color: Colors.white),),
-                  value: tnc,
-                  onChanged: (value) {
-                    setState(() {
-                      tnc = value!;
-                    });
-                  },
-                  //controlAffinity: ListTileControlAffinity.leading,
-                ),
-              ),
-              Text(
-                "I accept Flux's Terms & Conditions",
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: height * 0.03,
+            height: height * (0.4-0.065-0.02),
           ),
           Container(
             height: height * 0.065,
@@ -987,10 +1098,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             child: TextButton(
               child: Text(
-                "Register",
+                "Next",
                 style: TextStyle(
                   fontSize: height * 0.03,
-                  fontWeight: FontWeight.bold,
                   color: _color,
                 ),
               ),
@@ -1002,6 +1112,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
               },
             ),
           ),
+          SizedBox(height: height*0.02,),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(8)),
+            height: height * 0.065,
+            width: width * 0.9,
+            child: TextButton(
+              child: Text(
+                "Back",
+                style: TextStyle(
+                  fontSize: height * 0.02,
+                  //fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: (){
+                if (activeStep > 0) {
+          setState(() {
+            activeStep--;
+          });
+        }
+              },
+            )
+          )
         ],
       ),
     );
