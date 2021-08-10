@@ -40,7 +40,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       } on NotAuthorizedException catch (er) {
         yield UserServiceError(er.message);
       } catch (e) {
-        yield UserServiceError("Error updating password. Try ag ain later!");
+        yield UserServiceError("Error updating password. Try again later!");
       }
     }
     if (event is UserResetPasswordEvent) {
@@ -78,12 +78,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         yield UserDetailsLoading();
         var userdetails = await userConfigRepository.fetchUserDetails();
         uid = userdetails.userSub!;
+        log("111111111111111111111111111 222222222$uid");
         User user =
             await _databaseRepository.getUserDetails(userID: uid);
+        log("111111111111111111111111111 222222222$uid");
         yield UserDetails(user: user);
       } catch (e) {
         log(e.toString());
-        yield UserDetailsError("${uid}aaaaa");
+        yield UserDetailsError("$e ${uid}aaaaa");
       }
     }
 

@@ -110,12 +110,14 @@ class DatabaseLambdaService {
     result = {};
     List<User> userDetails = [];
     try {
+      log(
+          "======================================================$userID Before Result");
       result = await lambda.callLambda(
           'aurora-serverless-function-userDetails', <String, dynamic>{
         "userID": userID,
       });
-      print(
-          "---------------------------------------------------------------------------------$result");
+      log(
+          "======================================================$result");
 
       List<String> schemaName = [];
       result["columnMetadata"].forEach((e) {
