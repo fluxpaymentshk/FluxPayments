@@ -337,14 +337,64 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => LoginScreen(
+                Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider<UserBloc>.value(
+                    value: userBloc,
+                  ),
+                  BlocProvider<CuratedListBloc>.value(
+                    value: curatedListBloc,
+                  ),
+                  BlocProvider<BannerBloc>.value(
+                    value: bannerBloc,
+                  ),
+                  BlocProvider<AdvertiserBloc>.value(
+                    value: advertiserBloc,
+                  ),
+                  BlocProvider<GraphBloc>.value(
+                    value: graphBloc,
+                  ),
+                  BlocProvider<RecentPaymentBloc>.value(
+                    value: recentPaymentBloc,
+                  ),
+                  BlocProvider<PendingServiceBloc>.value(
+                    value: pendingServiceBloc,
+                  ),
+                  BlocProvider<StoryBloc>.value(
+                    value: storyBloc,
+                  ),
+                  BlocProvider<CouponsBloc>.value(
+                    value: couponsBloc,
+                  ),
+                  BlocProvider<FavoritesBloc>.value(
+                    value: favoritesBloc,
+                  ),
+                  BlocProvider<ServiceProviderBloc>.value(
+                    value: serviceP,
+                  ),
+                  BlocProvider<AuthBloc>.value(
+                    value: authBloc,
+                  ),
+                ],
+                child: LoginScreen(
                           databaseRepository: _databaseRepository,
                               loginRepo: widget.loginRepo,
                               userConfigRepository: widget.userConfigRepository,
-                            )));
+                            ),
+                //  child:ProfilePage(),
+              ),
+            ),
+          );
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (_) => LoginScreen(
+                //           databaseRepository: _databaseRepository,
+                //               loginRepo: widget.loginRepo,
+                //               userConfigRepository: widget.userConfigRepository,
+                //             )));
               },
             ),
           ),

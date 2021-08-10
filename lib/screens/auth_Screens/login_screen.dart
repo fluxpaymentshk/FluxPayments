@@ -307,24 +307,22 @@ class _LoginScreenState extends State<LoginScreen> {
                           foreground: Paint()..shader = linearGradientText,
                         ),
                       ),
-                      onPressed: isSubmitted
-                          ? null
-                          : () {
+                      onPressed:() {
                               FocusScope.of(context).unfocus();
                               var r = _formKey.currentState?.validate();
                               print(r);
                               if (r == true) {
-                                setState(() {
-                                  isSubmitted = true;
-                                });
+                                // setState(() {
+                                //   isSubmitted = true;
+                                // });
                                 print(_emailController.value.text);
                                 print(_passwordController.value.text);
                                 authBloc.add(EmailLogInUser(
                                     _emailController.value.text.trim(),
                                     _passwordController.value.text));
-                                setState(() {
-                                  isSubmitted = false;
-                                });
+                                // setState(() {
+                                //   isSubmitted = false;
+                                // });
                               }
                             },
                     ),
@@ -348,7 +346,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (_) => MultiBlocProvider(

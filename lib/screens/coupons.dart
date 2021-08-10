@@ -193,10 +193,17 @@ class _CouponsState extends State<Coupons> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: fluxLogo(context),
-                        ),
+                        SizedBox(
+                      height: SizeConfig.heightMultiplier * 2.4,
+                    ),
+                    Container(
+                      height: SizeConfig.heightMultiplier * 12,
+                      width: SizeConfig.widthMultiplier * 100,
+                      child: Center(
+                        //  child: Image.asset("assets/images/logo.png"),
+                        child: fluxLogo(context),
+                      ),
+                    ),
                         // Material(
                         //   elevation: 5,
                         //   child:
