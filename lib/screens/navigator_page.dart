@@ -35,7 +35,7 @@ class NavigatorPage extends StatefulWidget {
 class _NavigatorPageState extends State<NavigatorPage> {
   late List<Tuple2> _pages = [];
   bool isOpened = false;
-  double headerHeight=0;
+  double headerHeight = 0;
   double botScreenHeightRatio = 0.8;
   double activeIconElevation = 4;
   TextStyle navigationBarTextStyle =
@@ -56,14 +56,9 @@ class _NavigatorPageState extends State<NavigatorPage> {
   //     fname: widget.fname,
   //     phnNumber: widget.phnNumber,
   //     hkID: widget.hkID,
-  //     userID: userdetails.userSub,
-  //   );
-  // }
-
-  @override
   void initState() {
     super.initState();
-  //  headerHeight = MediaQuery.of(context).size.height * 0.1;
+    //  headerHeight = MediaQuery.of(context).size.height * 0.1;
     _pages = [
       // Tuple2('payment', PayBills()),
       //Tuple2('payment', BillPayment(userRepository: widget.userRepository,databaseRepository:widget.databaseRepository)),
@@ -86,7 +81,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
     ];
   }
 
-  int _selectedPage =1;
+  int _selectedPage = 1;
 
   PageController _pageController = PageController();
   final controller = SheetController();
@@ -95,9 +90,20 @@ class _NavigatorPageState extends State<NavigatorPage> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       SizeConfig().init(constraints);
-      headerHeight= SizeConfig.heightMultiplier*11;
+      headerHeight = SizeConfig.heightMultiplier * 11;
 
       return Scaffold(
+        floatingActionButton:isOpened?null: Container(
+          margin:EdgeInsets.only(top:MediaQuery.of(context).size.height*0.8,left:MediaQuery.of(context).size.width*0.385,),
+          child: TextButton(
+            child: ImageIcon(
+              AssetImage("assets/icons/up_icon.png"),
+              size: 20,
+            ),
+            onPressed: null,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         bottomNavigationBar: SafeArea(
           child: SlidingSheet(
               duration: const Duration(milliseconds: 900),
@@ -161,7 +167,8 @@ class _NavigatorPageState extends State<NavigatorPage> {
                       borderRadius: BorderRadius.circular(21),
                       color: Color(0xffF2F2FF),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*4.5),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.widthMultiplier * 4.5),
                     child: IconButton(
                       icon: ImageIcon(
                         AssetImage(
@@ -188,7 +195,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
         BottomNavigationBarItem(
           icon: ImageIcon(
             AssetImage("assets/icons/my_bills.png"),
-            size:26,
+            size: 26,
           ),
           activeIcon: Material(
             elevation: 3,
@@ -208,7 +215,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
         BottomNavigationBarItem(
           icon: ImageIcon(
             AssetImage("assets/icons/home.png"),
-            size:26,
+            size: 26,
           ),
           activeIcon: Material(
             elevation: 3,
@@ -228,7 +235,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
         BottomNavigationBarItem(
           icon: ImageIcon(
             AssetImage("assets/icons/favorites.png"),
-            size:26,
+            size: 26,
           ),
           activeIcon: Material(
             elevation: 3,

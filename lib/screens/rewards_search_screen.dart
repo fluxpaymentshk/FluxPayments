@@ -29,7 +29,7 @@ class RewardsSearchScreen extends StatefulWidget {
   final String? uid;
   final List<Reward>? favorites;
   const RewardsSearchScreen(
-      {Key? key,this.uid, this.categories, @required this.favorites})
+      {Key? key, this.uid, this.categories, @required this.favorites})
       : super(key: key);
 
   @override
@@ -106,12 +106,12 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
   Widget build(BuildContext context) {
     log("&**-!!---*&$favorites");
     var fluxPointsBloc = BlocProvider.of<FluxPointsBloc>(context);
-    var uid = BlocProvider.of<UserBloc>(context).getUserID;
+
     Size size = MediaQuery.of(context).size;
     // var couponsSearchBloc = BlocProvider.of<CouponsSearchBloc>(context);
     // couponsSearchBloc.add(LoadCouponsSearch());
     print("ji");
-    fluxPointsBloc.add(GetFluxPoints(userID: uid));
+    fluxPointsBloc.add(GetFluxPoints(userID: widget.uid));
     return Scaffold(
       floatingActionButton: backButton(context, "button1"),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
@@ -325,7 +325,10 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                             margin: EdgeInsets.only(left: 20),
                                             padding: EdgeInsets.all(8),
                                             height: 50,
-                                            width:MediaQuery.of(context).size.width*0.4,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.35,
                                             child: DropdownButton<String>(
                                               selectedItemBuilder: (context) {
                                                 print(_choosenVal);
@@ -370,7 +373,8 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                       ? filterAccordingToSearchFavorites(
                                                           selectedCategories.length ==
                                                                   0
-                                                              ? sortAccordingToDistance(selectedCategories.length ==
+                                                              ? sortAccordingToDistance(selectedCategories
+                                                                          .length ==
                                                                       0
                                                                   ? r.length !=
                                                                           original
@@ -407,7 +411,8 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                       ? filterAccordingToSearchFavorites(
                                                           selectedCategories.length ==
                                                                   0
-                                                              ? sortAccordingToFluxPoints(selectedCategories.length ==
+                                                              ? sortAccordingToFluxPoints(selectedCategories
+                                                                          .length ==
                                                                       0
                                                                   ? r.length !=
                                                                           original
@@ -472,10 +477,44 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                                 ));
                                                 }
                                                 return [
-                                                  Center(child: Container(width:100, child: Text("Sort",style:GoogleFonts.montserrat(fontSize: 24)))),
-                                                  Center(child: Container(width:100, child: FittedBox(child: Text("Nearest Store",style:GoogleFonts.montserrat(fontSize: 24))))),
-                                                  Center(child: Container(width: 100,child: FittedBox(child: Text("Least Flux Points",style:GoogleFonts.montserrat(fontSize: 24))))),
-                                                  Center(child: Container(width:100,child: FittedBox(child: Text("My favorite brand",style:GoogleFonts.montserrat(fontSize: 24))))),
+                                                  Center(
+                                                      child: Container(
+                                                          width: 100,
+                                                          child: Text("Sort",
+                                                              style: GoogleFonts
+                                                                  .montserrat(
+                                                                      fontSize:
+                                                                          24)))),
+                                                  Center(
+                                                      child: Container(
+                                                          width: 100,
+                                                          child: FittedBox(
+                                                              child: Text(
+                                                                  "Nearest Store",
+                                                                  style: GoogleFonts
+                                                                      .montserrat(
+                                                                          fontSize:
+                                                                              24))))),
+                                                  Center(
+                                                      child: Container(
+                                                          width: 100,
+                                                          child: FittedBox(
+                                                              child: Text(
+                                                                  "Least Flux Points",
+                                                                  style: GoogleFonts
+                                                                      .montserrat(
+                                                                          fontSize:
+                                                                              24))))),
+                                                  Center(
+                                                      child: Container(
+                                                          width: 100,
+                                                          child: FittedBox(
+                                                              child: Text(
+                                                                  "My favorite brand",
+                                                                  style: GoogleFonts
+                                                                      .montserrat(
+                                                                          fontSize:
+                                                                              24))))),
                                                 ];
                                               },
                                               value: _choosenVal,
@@ -486,8 +525,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 15,
                                               ),
-                                              dropdownColor:
-                                                  Color(0xffE9E9FF),
+                                              dropdownColor: Color(0xffE9E9FF),
                                               onChanged: (String? s) {
                                                 setState(() {
                                                   _choosenVal = s ?? "";
@@ -543,40 +581,58 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                             ), //DropDownButton(),
                                           ),
                                           Container(
-                                            width: MediaQuery.of(context).size.width*0.4,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.4,
                                             height: 80,
                                             child: FittedBox(
                                               child: Container(
-                                              width: MediaQuery .of(context).size.width*0.4,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.3,
                                                 child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
-                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
-                                                    ListTile(
-                                                      minLeadingWidth: 10,
-                                                      minVerticalPadding: 1,
-                                                      horizontalTitleGap: 1,
-                                                      // dense: true,
-                                                      leading: Image.asset(
-                                                        "assets/images/coin.png",
-                                                        height: 40,
-                                                      ),
-                                                      title: Text(
-                                                        "${fluxPointsBloc.getFluxPoints}",
-                                                        style:
-                                                            GoogleFonts.montserrat(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 25,
-                                                          color: AppTheme.main,
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: ListTile(
+                                                        minLeadingWidth: 10,
+                                                        minVerticalPadding: 1,
+                                                        horizontalTitleGap: 1,
+
+                                                        // dense: true,
+                                                        leading: Image.asset(
+                                                          "assets/images/coin.png",
+                                                          height: 40,
+                                                        ),
+                                                        title: Text(
+                                                          "${fluxPointsBloc.getFluxPoints}",
+                                                          // textAlign: TextAlign.center,
+                                                          style: GoogleFonts
+                                                              .montserrat(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 25,
+                                                            color:
+                                                                AppTheme.main,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                     Text(
                                                       "My Points",
-                                                      style: GoogleFonts.montserrat(
-                                                        fontWeight: FontWeight.w300,
+                                                      style: GoogleFonts
+                                                          .montserrat(
+                                                        fontWeight:
+                                                            FontWeight.w300,
                                                         fontSize: 20,
                                                         color: AppTheme.main,
                                                       ),
@@ -610,7 +666,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                                                         value: fluxPointsBloc,
                                                         child:
                                                             CouponDetailScreen(
-                                                              uid: widget.uid,
+                                                          uid: widget.uid,
                                                           fluxPoints:
                                                               fluxPointsBloc
                                                                   .getFluxPoints,

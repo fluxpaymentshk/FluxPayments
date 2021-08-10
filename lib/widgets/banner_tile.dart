@@ -47,6 +47,7 @@ class BannerTile extends StatelessWidget {
             right: 15.0,
             left: 5.0,
             child: Container(
+              margin: EdgeInsets.symmetric(horizontal:SizeConfig.widthMultiplier*3),
               padding: EdgeInsets.only(right: SizeConfig.widthMultiplier * 40),
               // height: SizeConfig.heightMultiplier * 22,
               // width: SizeConfig.widthMultiplier * 90,

@@ -143,7 +143,7 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                             elevation: 3,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(35),
+                                Radius.circular(15),
                               ),
                             ),
                             color: (r["author"]["id"].toString() == "123"

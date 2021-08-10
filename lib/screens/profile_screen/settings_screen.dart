@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 import 'package:flux_payments/models/User.dart';
 import 'package:flux_payments/screens/profile_screen/editing_profile_page.dart';
@@ -39,7 +40,42 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         children: [
           fluxLogo(context),
-          helloWidget("Shourya", context),
+        Container(
+            height: SizeConfig.heightMultiplier * 12,
+            width: SizeConfig.widthMultiplier * 97,
+            //  decoration: BoxDecoration(color: AppTheme.main),
+            child: Row(
+              //  mainAxisSize:
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(SizeConfig.heightMultiplier * 2),
+                  child: Center(
+                    child: Container(
+                      width: SizeConfig.widthMultiplier * 40,
+                      height: SizeConfig.heightMultiplier * 10,
+                      child: FittedBox(
+                        child: Text(
+                          'Hello ${widget.user!.firstName}!',
+                          style: AppTheme.display1,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Padding(
+                  padding: EdgeInsets.all(SizeConfig.heightMultiplier * 2.0),
+                  child: Container(
+                    // height: SizeConfig.heightMultiplier*12,
+                    // width: SizeConfig.widthMultiplier*100,
+
+                    child: Image.asset("assets/images/av.png"),
+                    //  child:NetworkImage(state.user.);
+                  ),
+                ),
+              ],
+            ),
+          ),
           // SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           Container(
             margin:

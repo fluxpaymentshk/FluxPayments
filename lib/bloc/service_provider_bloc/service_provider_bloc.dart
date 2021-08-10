@@ -49,18 +49,29 @@ class ServiceProviderBloc
 
     if (event is InsertBankDetails) {
       try {
-        if(event.acHolderName.length==0||event.accNumber.length==0||event.bankName.length==0||event.ifscCode.length==0||event.userID.length==0|| event.billProviderID.length==0)
-        yield InsertingDetails();
+        if (event.acHolderName.length == 0 ||
+            event.accNumber.length == 0 ||
+            event.bankName.length == 0 ||
+            event.ifscCode.length == 0 ||
+            event.userID.length == 0 ||
+            event.billProviderID.length == 0)
+          yield ErrorInsertDetails(
+              message: 'Error occured while inserting Bank Details');
+        else {
+          print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+          print(event.acHolderName);
+          print(event.userID);
 
-        String res = await _databaseRepository.insertBankDetails(
-            acHolderName: event.acHolderName,
-            accNumber: event.accNumber,
-            bankName: event.bankName,
-            ifscCode: event.ifscCode,
-            userID: event.userID,
-            billProviderID: event.billProviderID);
+          String res = await _databaseRepository.insertBankDetails(
+              acHolderName: event.acHolderName,
+              accNumber: event.accNumber,
+              bankName: event.bankName,
+              ifscCode: event.ifscCode,
+              userID: event.userID,
+              billProviderID: event.billProviderID);
 
-        if (res.contains('success')) yield InsertedDetailsSuccessfully();
+          if (res.contains('success')) yield InsertedDetailsSuccessfully();
+        }
       } catch (e) {
         yield ErrorInsertDetails(
             message: 'Error occured while inserting Bank Details');

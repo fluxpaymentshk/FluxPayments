@@ -265,6 +265,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) => PaymentScreen(
+                                    userName:user.firstName,
                                     uid: uid,
                                     databaseRepository:
                                         widget.databaseRepository,
@@ -273,12 +274,15 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               );
                             },
-                            child: PendingPaymentTile(
-                                amount: state.pendingService["dueAmount"]
-                                    .toDouble(),
-                                serviceProviders: state
-                                    .pendingService["dueProviders"]
-                                    .toInt()),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*3),
+                              child: PendingPaymentTile(
+                                  amount: state.pendingService["dueAmount"]
+                                      .toDouble(),
+                                  serviceProviders: state
+                                      .pendingService["dueProviders"]
+                                      .toInt()),
+                            ),
                           );
                         } else if (State is LoadingPendingService) {
                           return CircularProgressIndicator();
@@ -363,8 +367,9 @@ class _HomePageState extends State<HomePage> {
                         urls = urls.toSet().toList();
 
                         return Container(
+                          padding: EdgeInsets.symmetric(vertical:SizeConfig.heightMultiplier*1.5),
                             //padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier * 1),
-                            height: SizeConfig.heightMultiplier * 8,
+                            height: SizeConfig.heightMultiplier * 10,
                             width: SizeConfig.widthMultiplier * 90,
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
@@ -401,9 +406,9 @@ class _HomePageState extends State<HomePage> {
                         );
                       }
                     }),
-
                     Padding(
                       padding: EdgeInsets.symmetric(
+                        vertical: SizeConfig.widthMultiplier * 2.3,
                           horizontal: SizeConfig.widthMultiplier * 3),
                       child: Align(
                           alignment: Alignment.centerLeft,
@@ -435,6 +440,7 @@ class _HomePageState extends State<HomePage> {
                         else if (state is LoadedCuratedList) {
                           //currently done for only one page!!
                           return Container(
+                            margin: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*3),
                             height: SizeConfig.heightMultiplier * 22,
 
                             child: ListView.builder(
@@ -477,6 +483,7 @@ class _HomePageState extends State<HomePage> {
                     subheading('My Points'),
 
                     Container(
+                      margin:EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*3),
                       height: SizeConfig.heightMultiplier * 26,
                       width: SizeConfig.widthMultiplier * 94,
                       decoration: BoxDecoration(

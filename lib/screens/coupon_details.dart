@@ -57,7 +57,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
   Widget build(BuildContext context) {
     var fluxPointsBloc = BlocProvider.of<FluxPointsBloc>(context);
     Size size = MediaQuery.of(context).size;
-    double bottomUp = size.height * 0.005, holeRadius = size.width * 0.15;
+    double bottomUp = size.height * 0.005, holeRadius = size.width * 0.17;
     return Scaffold(
       floatingActionButton:
           backButton(context, "couponDetailsButton", Color(0xffFAD7A1)),
@@ -224,6 +224,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.06,
                                 child: Row(
+                                  crossAxisAlignment:CrossAxisAlignment.end,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
@@ -251,97 +252,100 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                                         ),
                                       ),
                                     ),
-                                    InkWell(
-                                      onTap: () async {
-                                        if (widget.fluxPoints! >=
-                                            (widget.rewardInfo?.amount
-                                                    ?.toInt() ??
-                                                0)) {
-                                          String code = uuid.v4(options: {
-                                                'rng': UuidUtil.cryptoRNG
-                                              }) +
-                                              DateTime.now()
-                                                  .millisecondsSinceEpoch
-                                                  .toString();
-                                          log("$code");
-                                          fluxPointsBloc.add(
-                                            UpdateFluxPoints(
-                                                userID: widget.uid,
-                                                appEvent: FluxPointServiceType
-                                                    .ServiceTransaction,
-                                                servicePoints: (widget
-                                                            .rewardInfo
-                                                            ?.amount ??
-                                                        0) *
-                                                    -1.0,
-                                                amount:
-                                                    widget.rewardInfo?.amount ??
-                                                        0,
-                                                rewardID: rewards.rewardID,
-                                                rewardPartnerID:
-                                                    rewards.rewardPartnerID,
-                                                shopID: rewards.shopID,
-                                                timestamp:
-                                                    DateTime.now().toString(),
-                                                rewardTransID: code),
-                                          );
-                                          setState(() {
-                                            isRedeemed = true;
-                                            log("11222 $isRedeemed");
-                                          });
-                                        } else {
-                                          log("NOT enough poits");
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(
-                                              "Not enough points",
-                                              style: TextStyle(
-                                                  color: Colors.white),
+                                    Padding(
+                                        padding:EdgeInsets.only(right:holeRadius/4,),
+                                      child: InkWell(
+                                        onTap: () async {
+                                          if (widget.fluxPoints! >=
+                                              (widget.rewardInfo?.amount
+                                                      ?.toInt() ??
+                                                  0)) {
+                                            String code = uuid.v4(options: {
+                                                  'rng': UuidUtil.cryptoRNG
+                                                }) +
+                                                DateTime.now()
+                                                    .millisecondsSinceEpoch
+                                                    .toString();
+                                            log("$code");
+                                            fluxPointsBloc.add(
+                                              UpdateFluxPoints(
+                                                  userID: widget.uid,
+                                                  appEvent: FluxPointServiceType
+                                                      .ServiceTransaction,
+                                                  servicePoints: (widget
+                                                              .rewardInfo
+                                                              ?.amount ??
+                                                          0) *
+                                                      -1.0,
+                                                  amount:
+                                                      widget.rewardInfo?.amount ??
+                                                          0,
+                                                  rewardID: rewards.rewardID,
+                                                  rewardPartnerID:
+                                                      rewards.rewardPartnerID,
+                                                  shopID: rewards.shopID,
+                                                  timestamp:
+                                                      DateTime.now().toString(),
+                                                  rewardTransID: code),
+                                            );
+                                            setState(() {
+                                              isRedeemed = true;
+                                              log("11222 $isRedeemed");
+                                            });
+                                          } else {
+                                            log("NOT enough poits");
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                "Not enough points",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              backgroundColor: Colors.red,
+                                              // behavior: SnackBarBehavior.floating,
+                                              duration: Duration(seconds: 5),
+                                            ));
+                                          }
+                                        },
+                                        child: Container(
+                                          height:
+                                              MediaQuery.of(context).size.height *
+                                                  0.05,
+                                          width:
+                                              MediaQuery.of(context).size.width *
+                                                  0.35,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                8,
+                                              ),
                                             ),
-                                            backgroundColor: Colors.red,
-                                            // behavior: SnackBarBehavior.floating,
-                                            duration: Duration(seconds: 5),
-                                          ));
-                                        }
-                                      },
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.05,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.35,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                              8,
-                                            ),
+                                            border:
+                                                Border.all(color: AppTheme.main),
+                                            gradient: isRedeemed
+                                                ? null
+                                                : RadialGradient(
+                                                    center: Alignment(0.6, 0.5),
+                                                    colors: [
+                                                      Color(0xffB772EE),
+                                                      Color(0xff7041EE),
+                                                    ],
+                                                    radius: 2.5,
+                                                  ),
                                           ),
-                                          border:
-                                              Border.all(color: AppTheme.main),
-                                          gradient: isRedeemed
-                                              ? null
-                                              : RadialGradient(
-                                                  center: Alignment(0.6, 0.5),
-                                                  colors: [
-                                                    Color(0xffB772EE),
-                                                    Color(0xff7041EE),
-                                                  ],
-                                                  radius: 2.5,
-                                                ),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            isRedeemed
-                                                ? "Redeemed"
-                                                : "Redeem Now",
-                                            style: GoogleFonts.montserrat(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 16,
-                                              // height: 20,
-                                              color: isRedeemed
-                                                  ? AppTheme.main
-                                                  : Colors.white,
+                                          child: Center(
+                                            child: Text(
+                                              isRedeemed
+                                                  ? "Redeemed"
+                                                  : "Redeem Now",
+                                              style: GoogleFonts.montserrat(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 16,
+                                                // height: 20,
+                                                color: isRedeemed
+                                                    ? AppTheme.main
+                                                    : Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),

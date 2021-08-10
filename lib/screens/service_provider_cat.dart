@@ -389,7 +389,10 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                 ],
               ),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(img),
+                child:Container(
+                  child:Image.network(img,height:height*.055),
+                ),
+              //  foregroundImage: NetworkImage(img,scale: 0.1),
                 // SvgPicture.asset(
                 //   img,
                 //   //alignment: Alignment.center,
@@ -397,6 +400,7 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                 //   color: AppTheme.main,
                 //   fit: BoxFit.scaleDown,
                 // ),
+              //  backgroundImage: NetworkImage(img,scale:1.4),
                 backgroundColor: AppTheme.offWhite,
                 radius: height * 0.04,
               ),
