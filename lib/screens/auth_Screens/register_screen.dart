@@ -32,6 +32,7 @@ import '../../bloc/auth_bloc/auth_state.dart';
 import '../home_page.dart';
 
 class RegisterScreen extends StatefulWidget {
+  static const routeName = "/register";
   final LoginRepository? loginRepo;
   final UserConfigRepository? userConfigRepository;
   RegisterScreen(
@@ -139,7 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   stepRadius: width * 0.08,
                   lineLength: width * 0.07,
                   enableNextPreviousButtons: false,
-                  enableStepTapping: true,
+                  enableStepTapping: false,
                   stepColor: Colors.grey,
                   activeStepColor: Colors.white,
                   lineColor: Colors.white,
@@ -336,56 +337,58 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider<UserBloc>.value(
-                          value: userBloc,
-                        ),
-                        BlocProvider<CuratedListBloc>.value(
-                          value: curatedListBloc,
-                        ),
-                        BlocProvider<BannerBloc>.value(
-                          value: bannerBloc,
-                        ),
-                        BlocProvider<AdvertiserBloc>.value(
-                          value: advertiserBloc,
-                        ),
-                        BlocProvider<GraphBloc>.value(
-                          value: graphBloc,
-                        ),
-                        BlocProvider<RecentPaymentBloc>.value(
-                          value: recentPaymentBloc,
-                        ),
-                        BlocProvider<PendingServiceBloc>.value(
-                          value: pendingServiceBloc,
-                        ),
-                        BlocProvider<StoryBloc>.value(
-                          value: storyBloc,
-                        ),
-                        BlocProvider<CouponsBloc>.value(
-                          value: couponsBloc,
-                        ),
-                        BlocProvider<FavoritesBloc>.value(
-                          value: favoritesBloc,
-                        ),
-                        BlocProvider<ServiceProviderBloc>.value(
-                          value: serviceP,
-                        ),
-                        BlocProvider<AuthBloc>.value(
-                          value: authBloc,
-                        ),
-                      ],
-                      child: LoginScreen(
-                        databaseRepository: _databaseRepository,
-                        loginRepo: widget.loginRepo,
-                        userConfigRepository: widget.userConfigRepository,
-                      ),
-                      //  child:ProfilePage(),
-                    ),
-                  ),
-                );
+                Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+                  //MaterialPageRoute(
+                    //builder: (context) => 
+                  // MultiBlocProvider(
+                  //     providers: [
+                  //       BlocProvider<UserBloc>.value(
+                  //         value: userBloc,
+                  //       ),
+                  //       BlocProvider<CuratedListBloc>.value(
+                  //         value: curatedListBloc,
+                  //       ),
+                  //       BlocProvider<BannerBloc>.value(
+                  //         value: bannerBloc,
+                  //       ),
+                  //       BlocProvider<AdvertiserBloc>.value(
+                  //         value: advertiserBloc,
+                  //       ),
+                  //       BlocProvider<GraphBloc>.value(
+                  //         value: graphBloc,
+                  //       ),
+                  //       BlocProvider<RecentPaymentBloc>.value(
+                  //         value: recentPaymentBloc,
+                  //       ),
+                  //       BlocProvider<PendingServiceBloc>.value(
+                  //         value: pendingServiceBloc,
+                  //       ),
+                  //       BlocProvider<StoryBloc>.value(
+                  //         value: storyBloc,
+                  //       ),
+                  //       BlocProvider<CouponsBloc>.value(
+                  //         value: couponsBloc,
+                  //       ),
+                  //       BlocProvider<FavoritesBloc>.value(
+                  //         value: favoritesBloc,
+                  //       ),
+                  //       BlocProvider<ServiceProviderBloc>.value(
+                  //         value: serviceP,
+                  //       ),
+                  //       BlocProvider<AuthBloc>.value(
+                  //         value: authBloc,
+                  //       ),
+                  //     ],
+                  //     child: 
+                  //  LoginScreen(
+                  //       databaseRepository: _databaseRepository,
+                  //       loginRepo: widget.loginRepo,
+                  //       userConfigRepository: widget.userConfigRepository,
+                  //     ),
+                  //      //child:ProfilePage(),
+                  //   ),
+                  // ),
+                //);
                 // Navigator.pushReplacement(
                 //     context,
                 //     MaterialPageRoute(
@@ -673,10 +676,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   print("-++++AUTH INITIAL");
                 }
                 if (state is UserSignedUpAuthState) {
-                  Navigator.of(ctx).pop();
-                  Navigator.of(ctx).pop();
+                  
                   enterOtp = true;
                   setState(() {});
+                  Navigator.of(ctx).pop();
                 }
               },
               child: TextButton(
@@ -684,7 +687,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   "Send verification code",
                   style: TextStyle(
                     fontSize: height * 0.03,
-                    fontWeight: FontWeight.bold,
                     color: _color,
                   ),
                 ),
@@ -766,43 +768,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
         if (state is OtpResentState) {
           Navigator.of(ctx).pop();
-          Navigator.of(ctx).pop();
+          //Navigator.of(ctx).pop();
           print("OTP Resent");
         }
         if (state is ConfirmUserState) {
           Navigator.of(ctx).pop();
-          Navigator.of(ctx).pop();
+          //Navigator.of(ctx).pop();
           //Navigator.of(ctx).pop();
           authBloc.add(EmailLogInUser(
               _emailController.value.text, _passwordController.value.text));
         }
-        // if (state is UserSignedUpAuthState) {
-        //   print("===++++________________User signed in");
-        //   var userdetails = await userConfigRepository.fetchUserDetails();
-        //   print(userdetails.userSub);
-        //   log("##############################################################");
-        //   print(
-        //       "44444444444${_lnameController.value.text}44444444444444444444444444444444444444 ");
-        //   log(userdetails.userSub.toString());
-        //   _databaseRepository.addUserdata(
-        //     email: _emailController.value.text,
-        //     fname: _fnameController.value.text,
-        //     hkID: _identitycontroller.value.text,
-        //     lname: _lnameController.value.text,
-        //     phnNumber: _phnController.value.text,
-        //     userID: userdetails.userSub,
-        //   );
-        //   log("44444444444444444444444444${_fnameController.value.text}22222");
-        //   enterOtp = true;
-        //   setState(() {});
-        //   Navigator.of(ctx).pop();
-        //   Navigator.of(ctx).pop();
-        //   Navigator.of(ctx).pop();
-          
-        // }
+        if (state is UserSignedUpAuthState) {
+                  // Navigator.of(ctx).pop();
+                  // Navigator.of(ctx).pop();
+                  enterOtp = true;
+                  setState(() {});
+                  Navigator.of(ctx).pop();
+                }
         if (state is UserSignedInAuthState) {
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
+          //Navigator.of(context).pop();
+          Navigator.of(ctx).pop();
           log("44444444444444444444444444${_fnameController.value.text}22222");
                   log("3333333333333$state 333333333${_fnameController.value.text}22222");
                   var userdetails =

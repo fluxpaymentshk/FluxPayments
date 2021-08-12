@@ -30,6 +30,7 @@ import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/login_screen.dart';
+import 'package:flux_payments/screens/auth_Screens/register_screen.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
 import 'package:flux_payments/services/database_lambda.dart';
@@ -192,6 +193,9 @@ class _MyAppState extends State<MyApp> {
                 BlocProvider(
                     create: (_) => CuratedListBloc(_databaseRepository)),
                 BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
+                BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
+                BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
+                BlocProvider(create: (_) => ServiceProviderBloc(_databaseRepository)),
                 BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
                 BlocProvider(
                     create: (_) => RecentPaymentBloc(_databaseRepository)),
@@ -204,6 +208,35 @@ class _MyAppState extends State<MyApp> {
                 loginRepo: _loginRepository,
                 userConfigRepository: _userConfigRepository,
                 databaseRepository: _databaseRepository,
+              ),
+            ),
+            RegisterScreen.routeName: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider<AuthBloc>(
+                  create: (_) => AuthBloc(_loginRepository),
+                ),
+                BlocProvider(
+                    create: (_) =>
+                        UserBloc(_userConfigRepository, _databaseRepository)),
+                BlocProvider(
+                    create: (_) => AdvertiserBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => CuratedListBloc(_databaseRepository)),
+                BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
+                BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
+                BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
+                BlocProvider(create: (_) => ServiceProviderBloc(_databaseRepository)),
+                BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => RecentPaymentBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => PendingServiceBloc(_databaseRepository)),
+                BlocProvider<StoryBloc>(
+                    create: (_) => StoryBloc(_databaseRepository)),
+              ],
+              child: RegisterScreen(
+                loginRepo: _loginRepository,
+                userConfigRepository: _userConfigRepository,
               ),
             ),
         HomePage.routeName: (_) => BlocProvider<UserBloc>(
