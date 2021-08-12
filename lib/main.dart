@@ -23,12 +23,14 @@ import 'package:flux_payments/bloc/pending_service_bloc/pending_service_bloc.dar
 import 'package:flux_payments/bloc/service_provider_bloc/service_provider_bloc.dart';
 import 'package:flux_payments/bloc/story_bloc/story_bloc.dart';
 import 'package:flux_payments/bloc/user_bloc/user_bloc.dart';
+import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/models/RewardCategory.dart';
 import 'package:flux_payments/notification_handler.dart';
 import 'package:flux_payments/repository/database_repository.dart';
 import 'package:flux_payments/repository/login_repository.dart';
 import 'package:flux_payments/repository/user_config_repository.dart';
 import 'package:flux_payments/screens/auth_Screens/login_screen.dart';
+import 'package:flux_payments/screens/auth_Screens/register_screen.dart';
 import 'package:flux_payments/screens/home_page.dart';
 import 'package:flux_payments/screens/navigator_page.dart';
 import 'package:flux_payments/services/database_lambda.dart';
@@ -191,6 +193,9 @@ class _MyAppState extends State<MyApp> {
                 BlocProvider(
                     create: (_) => CuratedListBloc(_databaseRepository)),
                 BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
+                BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
+                BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
+                BlocProvider(create: (_) => ServiceProviderBloc(_databaseRepository)),
                 BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
                 BlocProvider(
                     create: (_) => RecentPaymentBloc(_databaseRepository)),
@@ -203,6 +208,35 @@ class _MyAppState extends State<MyApp> {
                 loginRepo: _loginRepository,
                 userConfigRepository: _userConfigRepository,
                 databaseRepository: _databaseRepository,
+              ),
+            ),
+            RegisterScreen.routeName: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider<AuthBloc>(
+                  create: (_) => AuthBloc(_loginRepository),
+                ),
+                BlocProvider(
+                    create: (_) =>
+                        UserBloc(_userConfigRepository, _databaseRepository)),
+                BlocProvider(
+                    create: (_) => AdvertiserBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => CuratedListBloc(_databaseRepository)),
+                BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
+                BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
+                BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
+                BlocProvider(create: (_) => ServiceProviderBloc(_databaseRepository)),
+                BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => RecentPaymentBloc(_databaseRepository)),
+                BlocProvider(
+                    create: (_) => PendingServiceBloc(_databaseRepository)),
+                BlocProvider<StoryBloc>(
+                    create: (_) => StoryBloc(_databaseRepository)),
+              ],
+              child: RegisterScreen(
+                loginRepo: _loginRepository,
+                userConfigRepository: _userConfigRepository,
               ),
             ),
         HomePage.routeName: (_) => BlocProvider<UserBloc>(
@@ -309,15 +343,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
-    // double height = size.height;
-    // double width = size.width;
-    double height = 800;
-    double width = 500;
+    Size size = MediaQuery.of(context).size;
+    double height = size.height;
+    double width = size.width;
+    // double height = SizeConfig.heightMultiplier;
+    // double width = SizeConfig.widthMultiplier;
     return Scaffold(
         body: Container(
-          height: height,
-          width: width,
+          // height: height,
+          // width: width,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/images/Splash Screen.png"),

@@ -344,56 +344,57 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => MultiBlocProvider(
-                              providers: [
-                                BlocProvider.value(
-                                  value: authBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: userBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: curatedListBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: bannerBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: advertiserBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: graphBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: recentPaymentBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: pendingServiceBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: storyBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: couponsBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: favoritesBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: serviceP,
-                                ),
-                              ],
-                              child: RegisterScreen(
-                                userConfigRepository:
-                                    widget.userConfigRepository,
-                                loginRepo: widget.loginRepo,
-                              ),
-                            ),
-                          ),
-                        );
+                        Navigator.of(context).pushReplacementNamed(RegisterScreen.routeName);
+                        // Navigator.of(context).pushReplacement(
+                        //   MaterialPageRoute(
+                        //     builder: (_) => MultiBlocProvider(
+                        //       providers: [
+                        //         BlocProvider.value(
+                        //           value: authBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: userBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: curatedListBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: bannerBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: advertiserBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: graphBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: recentPaymentBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: pendingServiceBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: storyBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: couponsBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: favoritesBloc,
+                        //         ),
+                        //         BlocProvider.value(
+                        //           value: serviceP,
+                        //         ),
+                        //       ],
+                        //       child: 
+                        //       RegisterScreen(
+                        //         userConfigRepository:
+                        //             widget.userConfigRepository,
+                        //         loginRepo: widget.loginRepo,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // );
                         //         Navigator.pushReplacement(
                         // context, MaterialPageRoute(builder: (context) => RegisterScreen()));
                       },
