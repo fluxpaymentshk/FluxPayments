@@ -113,42 +113,42 @@ class _LoginPageState extends State<LoginPage> {
                 MaterialPageRoute(
                   builder: (context) => MultiBlocProvider(
                     providers: [
-                    BlocProvider.value(
-                                  value: authBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: userBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: curatedListBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: bannerBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: advertiserBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: graphBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: recentPaymentBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: serviceProviderBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: pendingServiceBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: storyBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: couponsBloc,
-                                ),
-                                BlocProvider.value(
-                                  value: favoritesBloc,
-                                ),
+                      BlocProvider.value(
+                        value: authBloc,
+                      ),
+                      BlocProvider.value(
+                        value: userBloc,
+                      ),
+                      BlocProvider.value(
+                        value: curatedListBloc,
+                      ),
+                      BlocProvider.value(
+                        value: bannerBloc,
+                      ),
+                      BlocProvider.value(
+                        value: advertiserBloc,
+                      ),
+                      BlocProvider.value(
+                        value: graphBloc,
+                      ),
+                      BlocProvider.value(
+                        value: recentPaymentBloc,
+                      ),
+                      BlocProvider.value(
+                        value: serviceProviderBloc,
+                      ),
+                      BlocProvider.value(
+                        value: pendingServiceBloc,
+                      ),
+                      BlocProvider.value(
+                        value: storyBloc,
+                      ),
+                      BlocProvider.value(
+                        value: couponsBloc,
+                      ),
+                      BlocProvider.value(
+                        value: favoritesBloc,
+                      ),
                     ],
                     child: NavigatorPage(
                       userRepository: widget.userConfigRepository,

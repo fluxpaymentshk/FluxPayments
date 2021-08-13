@@ -47,7 +47,8 @@ class BannerTile extends StatelessWidget {
             right: 15.0,
             left: 5.0,
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal:SizeConfig.widthMultiplier*3),
+              margin: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.widthMultiplier * 3),
               padding: EdgeInsets.only(right: SizeConfig.widthMultiplier * 40),
               // height: SizeConfig.heightMultiplier * 22,
               // width: SizeConfig.widthMultiplier * 90,
@@ -77,7 +78,9 @@ class BannerTile extends StatelessWidget {
                 //  color: AppTheme.brownishPink,
 
                 // ),
-                padding: EdgeInsets.only(left: SizeConfig.widthMultiplier*3, top: SizeConfig.heightMultiplier*1.2),
+                padding: EdgeInsets.only(
+                    left: SizeConfig.widthMultiplier * 3,
+                    top: SizeConfig.heightMultiplier * 1.2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

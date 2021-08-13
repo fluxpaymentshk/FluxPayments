@@ -56,7 +56,8 @@ class _EditingProfilePageState extends State<EditingProfilePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: BlocListener<UserBloc, UserState>(
         listener: (ctx, state) {
-          if (state is UserDetailsUpdating && widget.user!.email==_emailController.value.text) {
+          if (state is UserDetailsUpdating &&
+              widget.user!.email == _emailController.value.text) {
             showDialog(
                 context: ctx,
                 barrierDismissible: false,

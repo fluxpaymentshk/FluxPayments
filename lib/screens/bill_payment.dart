@@ -90,12 +90,11 @@ class _BillPaymentState extends State<BillPayment> {
     User user;
     var userBloc = BlocProvider.of<UserBloc>(context);
     var favoritesBloc = BlocProvider.of<FavoritesBloc>(context);
-    favoritesBloc
-        .add(GetFavorites(page: 1000, userID: userBloc.getUserID, favorites: fav));
+    favoritesBloc.add(
+        GetFavorites(page: 1000, userID: userBloc.getUserID, favorites: fav));
     List<curatedList> curatedListData = [];
     List<ExternalAdvertisers> ExadvertiseList = [];
     List<InternalAdvertisers> InadvertiseList = [];
-    
 
     //  var curatedListBloc = BlocProvider.of<CuratedListBloc>(context);
     var advertiserBloc = BlocProvider.of<AdvertiserBloc>(context);
@@ -110,8 +109,8 @@ class _BillPaymentState extends State<BillPayment> {
     userBloc.add(GetUserDetails(userID: userBloc.getUserID));
     graphBloc.add(GetGraphEvent(UserID: userBloc.getUserID));
     recentPaymentBloc.add(GetRecentPaymentDetails(userID: userBloc.getUserID));
-    pendingServiceBloc
-        .add(GetPendingService(userID: userBloc.getUserID, todayDate: '2021-07-23'));
+    pendingServiceBloc.add(
+        GetPendingService(userID: userBloc.getUserID, todayDate: '2021-07-23'));
     //((userID: 'flux-vid1'));
 
     advertiserBloc.add(GetExternalAdvertiserEvent(
@@ -138,26 +137,22 @@ class _BillPaymentState extends State<BillPayment> {
         } else if (state is UserDetails) {
           print('hjjjjjjjjj');
 
-          user = state.user; 
+          user = state.user;
           return Scaffold(
               body: Flex(direction: Axis.vertical, children: [
             Expanded(
               child: SmartRefresher(
-  // RefreshController _refreshController =
-  //     RefreshController(initialRefresh: false);
+                // RefreshController _refreshController =
+                //     RefreshController(initialRefresh: false);
                 enablePullDown: true,
                 enablePullUp: true,
-                
+
                 // header: WaterDropHeader(),
                 controller: _refreshController,
                 onRefresh: () {
-
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
-                onLoading: () {
-                },
+                onLoading: () {},
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -173,7 +168,7 @@ class _BillPaymentState extends State<BillPayment> {
                           child: fluxLogo(context),
                         ),
                       ),
-              
+
                       Container(
                         height: SizeConfig.heightMultiplier * 12,
                         width: SizeConfig.widthMultiplier * 97,
@@ -181,8 +176,8 @@ class _BillPaymentState extends State<BillPayment> {
                         child: Row(
                           children: [
                             Padding(
-                              padding:
-                                  EdgeInsets.all(SizeConfig.heightMultiplier * 2),
+                              padding: EdgeInsets.all(
+                                  SizeConfig.heightMultiplier * 2),
                               child: Center(
                                 child: Container(
                                   width: SizeConfig.widthMultiplier * 40,
@@ -203,7 +198,7 @@ class _BillPaymentState extends State<BillPayment> {
                               child: Container(
                                 // height: SizeConfig.heightMultiplier*12,
                                 // width: SizeConfig.widthMultiplier*100,
-                      
+
                                 child: Image.asset("assets/images/av.png"),
                                 //  child:NetworkImage(state.user.);
                               ),
@@ -211,7 +206,7 @@ class _BillPaymentState extends State<BillPayment> {
                           ],
                         ),
                       ),
-                   
+
                       SizedBox(
                         height: SizeConfig.heightMultiplier * 2,
                       ),
@@ -232,33 +227,35 @@ class _BillPaymentState extends State<BillPayment> {
                           return Container(child: Text('event Not generated'));
                         }
                       }),
-              
+
                       SizedBox(
                         height: SizeConfig.heightMultiplier * 2,
                       ),
-              
+
                       BlocBuilder<PendingServiceBloc, PendingServiceState>(
                         builder: (context, state) {
                           if (state is LoadPendingService) {
                             return InkWell(
-                              onTap:(){
-                                 Navigator.of(context).push(
+                              onTap: () {
+                                Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (_) => PaymentScreen(
                                       userName: user.firstName,
                                       uid: userBloc.getUserID,
                                       databaseRepository:
                                           widget.databaseRepository,
-                                      userConfigRepository: widget.userRepository,
+                                      userConfigRepository:
+                                          widget.userRepository,
                                     ),
                                   ),
                                 );
                               },
                               child: PendingPaymentTile(
-                                  amount:
-                                      state.pendingService["dueAmount"].toDouble(),
-                                  serviceProviders:
-                                      state.pendingService["dueProviders"].toInt()),
+                                  amount: state.pendingService["dueAmount"]
+                                      .toDouble(),
+                                  serviceProviders: state
+                                      .pendingService["dueProviders"]
+                                      .toInt()),
                             );
                           } else if (State is LoadingPendingService) {
                             return CircularProgressIndicator();
@@ -273,10 +270,10 @@ class _BillPaymentState extends State<BillPayment> {
                           }
                         },
                       ),
-              
-              //#### providers to be added!
+
+                      //#### providers to be added!
                       //fav = state.favorites;
-              
+
                       // if (fav.length < 10) {
                       //   fav = fav.sublist(0, fav.length);
                       // } else {
@@ -284,10 +281,10 @@ class _BillPaymentState extends State<BillPayment> {
                       // }
                       // return
                       //fav.length == 0 ? Text("Please mark some favorites !") :
-              
+
                       SizedBox(height: SizeConfig.heightMultiplier * 2),
-                     subheading('My Providers'),
-              
+                      subheading('My Providers'),
+
                       BlocBuilder<FavoritesBloc, FavoritesState>(
                         builder: (context, state) {
                           if (state is LoadingFavorites) {
@@ -300,9 +297,10 @@ class _BillPaymentState extends State<BillPayment> {
                           } else if (state is LoadedFavorites) {
                             print("State is LoadedFavorites");
                             fav = state.favorites;
-                            print("sttttttttttttttttttttttttttttttttttttttttttt");
+                            print(
+                                "sttttttttttttttttttttttttttttttttttttttttttt");
                             print(fav.length);
-              
+
                             ///################################
                             if (fav.length < 10) {
                               fav = fav.sublist(0, fav.length);
@@ -312,13 +310,19 @@ class _BillPaymentState extends State<BillPayment> {
                             return
                                 //fav.length == 0 ? Text("Please mark some favorites !") :
                                 InkWell(
-                                  child: StatefulBuilder(
-                                                            builder: (context, setState) => AnimatedContainer(
-                                  duration:Duration(milliseconds:300),
+                              child: StatefulBuilder(
+                                builder: (context, setState) =>
+                                    AnimatedContainer(
+                                  duration: Duration(milliseconds: 300),
                                   //height: fav.length > 5 && loadAllFav ?SizeConfig.heightMultiplier*100* 0.318 :SizeConfig.heightMultiplier*100* 0.21,
                                   height: fav.length > 5 && loadAllFav
-                                      ? SizeConfig.heightMultiplier * 100 * 0.45*((fav.length-5)~/5+1)
-                                      : SizeConfig.heightMultiplier * 100 * 0.23,
+                                      ? SizeConfig.heightMultiplier *
+                                          100 *
+                                          0.45 *
+                                          ((fav.length - 5) ~/ 5 + 1)
+                                      : SizeConfig.heightMultiplier *
+                                          100 *
+                                          0.23,
                                   padding: EdgeInsets.fromLTRB(
                                       SizeConfig.widthMultiplier * 100 * 0.01,
                                       SizeConfig.heightMultiplier * 100 * 0.016,
@@ -327,7 +331,9 @@ class _BillPaymentState extends State<BillPayment> {
                                   decoration: BoxDecoration(
                                     color: AppTheme.offWhite,
                                     borderRadius: BorderRadius.circular(
-                                        SizeConfig.widthMultiplier * 100 * 0.03),
+                                        SizeConfig.widthMultiplier *
+                                            100 *
+                                            0.03),
                                   ),
                                   child: Column(
                                     children: [
@@ -335,21 +341,25 @@ class _BillPaymentState extends State<BillPayment> {
                                       ExpandWidget(
                                         expand: loadAllFav,
                                         child: Container(
-                                            height:  SizeConfig.heightMultiplier * 100 * 0.2*((fav.length-5)~/5+1),
-                                            child: ListView.builder(
-                                                  //  itemCount:(fav.length-5)~/5,
-                                                  itemCount:(fav.length-5)~/5+1,
-                                                  //   itemExtent: 40,
-                                                  itemBuilder: (context, index) {
-                                                    dev.log("${(fav.length)~/5}");
-                                                    print(
-                                                        "${(index + 1) * 5}  __##__ ${min(fav.length, 5)}");
-                                        
-                                                    return favContainer(
-                                                        (index + 1) * 5,
-                                                        min(fav.length,
-                                                            (index + 2) * 5));
-                                                  }),
+                                          height: SizeConfig.heightMultiplier *
+                                              100 *
+                                              0.2 *
+                                              ((fav.length - 5) ~/ 5 + 1),
+                                          child: ListView.builder(
+                                              //  itemCount:(fav.length-5)~/5,
+                                              itemCount:
+                                                  (fav.length - 5) ~/ 5 + 1,
+                                              //   itemExtent: 40,
+                                              itemBuilder: (context, index) {
+                                                dev.log("${(fav.length) ~/ 5}");
+                                                print(
+                                                    "${(index + 1) * 5}  __##__ ${min(fav.length, 5)}");
+
+                                                return favContainer(
+                                                    (index + 1) * 5,
+                                                    min(fav.length,
+                                                        (index + 2) * 5));
+                                              }),
                                         ),
                                         //##################################################
                                         //   (fav.length >= 5 && loadAllFav)
@@ -397,9 +407,9 @@ class _BillPaymentState extends State<BillPayment> {
                                       // }, icon: Icon(Icons.file_upload))
                                     ],
                                   ),
-                                                            ),
-                                                          ),
-                               onDoubleTap: () {
+                                ),
+                              ),
+                              onDoubleTap: () {
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
                                   return BlocProvider.value(
@@ -414,22 +424,26 @@ class _BillPaymentState extends State<BillPayment> {
                                   // return GraphScreen(graphData: widget.mp, user: widget.user);
                                 }));
                               },
-                                );
+                            );
                           } else {
                             return InkWell(
                               child: Container(
-                              //  padding: EdgeInsets.symmetric(horizontal:SizeConfig.widthMultiplier*),
-                                      margin: EdgeInsets.only(bottom: SizeConfig.heightMultiplier*3,left:SizeConfig.widthMultiplier*3,right:SizeConfig.widthMultiplier*3),
-                                      decoration: BoxDecoration(
-                                        color: AppTheme.offWhite,
-                                        borderRadius: BorderRadius.all(
-                                Radius.circular(SizeConfig.heightMultiplier * 2)),
-                                      ),
-                                      height: SizeConfig.heightMultiplier*7,
-                                        child: Center(
-                                        child: Text("No Favorites Found"),
-                                      )),
-                             onDoubleTap: () {
+                                  //  padding: EdgeInsets.symmetric(horizontal:SizeConfig.widthMultiplier*),
+                                  margin: EdgeInsets.only(
+                                      bottom: SizeConfig.heightMultiplier * 3,
+                                      left: SizeConfig.widthMultiplier * 3,
+                                      right: SizeConfig.widthMultiplier * 3),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.offWhite,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            SizeConfig.heightMultiplier * 2)),
+                                  ),
+                                  height: SizeConfig.heightMultiplier * 7,
+                                  child: Center(
+                                    child: Text("No Favorites Found"),
+                                  )),
+                              onDoubleTap: () {
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
                                   return BlocProvider.value(
@@ -448,7 +462,7 @@ class _BillPaymentState extends State<BillPayment> {
                           }
                         },
                       ),
-              
+
                       SizedBox(height: SizeConfig.heightMultiplier * 2),
                       // Container(
                       //   //height: fav.length > 5 && loadAllFav ?SizeConfig.heightMultiplier*100* 0.318 :SizeConfig.heightMultiplier*100* 0.21,
@@ -487,7 +501,7 @@ class _BillPaymentState extends State<BillPayment> {
                       //     ],
                       //   ),
                       // ),
-              
+
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Align(
@@ -500,7 +514,7 @@ class _BillPaymentState extends State<BillPayment> {
                               ),
                             )),
                       ),
-              
+
                       BlocBuilder<AdvertiserBloc, AdvertiserState>(
                         builder: (context, state) {
                           if (state is ErrorExternalAdvertiser ||
@@ -509,7 +523,8 @@ class _BillPaymentState extends State<BillPayment> {
                               child: Container(
                                 child: Text((state as ErrorExternalAdvertiser)
                                         .message ??
-                                    (state as ErrorInternalAdvertiser).message ??
+                                    (state as ErrorInternalAdvertiser)
+                                        .message ??
                                     ''),
                               ),
                             );
@@ -529,7 +544,7 @@ class _BillPaymentState extends State<BillPayment> {
                             return Container(
                               margin: EdgeInsets.all(6.0),
                               height: SizeConfig.heightMultiplier * 18,
-              
+
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   physics: AlwaysScrollableScrollPhysics(),
@@ -544,7 +559,7 @@ class _BillPaymentState extends State<BillPayment> {
                                                 .shortDescription ??
                                             '');
                                   }),
-              
+
                               //   ),
                             );
                           } else {
@@ -557,13 +572,13 @@ class _BillPaymentState extends State<BillPayment> {
                           }
                         },
                       ),
-              
+
                       //   Spacer(),
-              
+
                       //   Container(child: Flexible(fit: FlexFit.loose,child: LineChartSample1())),
-              
-                     subheading('Paid With Flux'),
-              
+
+                      subheading('Paid With Flux'),
+
                       BlocBuilder<GraphBloc, GraphState>(
                         builder: (context, state) {
                           if (state is LoadGraphState) {
@@ -571,23 +586,25 @@ class _BillPaymentState extends State<BillPayment> {
                               padding: EdgeInsets.all(10.0),
                               child: (state.graphData.length == 0)
                                   ? Container(
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.offWhite,
-                                      borderRadius: BorderRadius.all(
-                              Radius.circular(SizeConfig.heightMultiplier * 2)),
-                                    ),
-                                    height: SizeConfig.heightMultiplier*7,
+                                      decoration: BoxDecoration(
+                                        color: AppTheme.offWhite,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                                SizeConfig.heightMultiplier *
+                                                    2)),
+                                      ),
+                                      height: SizeConfig.heightMultiplier * 7,
                                       child: Center(
-                                      child: Text("No Progress Found"),
-                                    ))
+                                        child: Text("No Progress Found"),
+                                      ))
                                   : LineChartGraph(
-                                mp: state.graphData,
-                                height: SizeConfig.heightMultiplier * 40,
-                                width: SizeConfig.widthMultiplier * 90,
-                                popup: true,
-                                user: user,
-                                //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
-                              ),
+                                      mp: state.graphData,
+                                      height: SizeConfig.heightMultiplier * 40,
+                                      width: SizeConfig.widthMultiplier * 90,
+                                      popup: true,
+                                      user: user,
+                                      //   mp:{'2021-09': {'ICICI': 20.0, 'HDFC': 10.0, 'PNB': 10.0, 'SBI': 10.0}, '2021-08': {'HDFC': 50.0,'ICICI': 100}},
+                                    ),
                             );
                           } else if (state is LoadingGraphState) {
                             return CircularProgressIndicator();
@@ -602,11 +619,10 @@ class _BillPaymentState extends State<BillPayment> {
                           }
                         },
                       ),
-              
+
                       //////////////////////////////###########################
                       Padding(
-                        padding:  EdgeInsets.all(10),
-                        
+                        padding: EdgeInsets.all(10),
                         child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -617,140 +633,187 @@ class _BillPaymentState extends State<BillPayment> {
                               ),
                             )),
                       ),
-              
+
                       BlocBuilder<RecentPaymentBloc, RecentPaymentState>(
                         builder: (context, state) {
                           if (state is LoadingRecentPaymentState)
                             return CircularProgressIndicator();
                           else if (state is LoadRecentPaymentState) {
                             return (state.RecentPaymentData.length == 0)
-                                  ? Container(
-                                    margin: EdgeInsets.only(bottom: SizeConfig.heightMultiplier*4,left:SizeConfig.widthMultiplier*3,right:SizeConfig.widthMultiplier*3),
+                                ? Container(
+                                    margin: EdgeInsets.only(
+                                        bottom: SizeConfig.heightMultiplier * 4,
+                                        left: SizeConfig.widthMultiplier * 3,
+                                        right: SizeConfig.widthMultiplier * 3),
                                     decoration: BoxDecoration(
                                       color: AppTheme.offWhite,
                                       borderRadius: BorderRadius.all(
-                              Radius.circular(SizeConfig.heightMultiplier * 2)),
+                                          Radius.circular(
+                                              SizeConfig.heightMultiplier * 2)),
                                     ),
-                                    height: SizeConfig.heightMultiplier*7,
-                                      child: Center(
+                                    height: SizeConfig.heightMultiplier * 7,
+                                    child: Center(
                                       child: Text("No Progress Found"),
                                     ))
-                                  : InkWell(
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: SizeConfig.widthMultiplier * 3,
-                                  vertical: SizeConfig.heightMultiplier * 5,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(
-                                      SizeConfig.heightMultiplier * 2)),
-                                  border: Border.all(
-                                      color: AppTheme.main, width: 1.0),
-                                ),
-                                height: SizeConfig.heightMultiplier * 47,
-                                child:
-                                    // ListView.builder(
-                                    // scrollDirection: Axis.vertical,
-                                    //physics: const ClampingScrollPhysics(),
-                                    //itemCount: state.RecentPaymentData.length,
-                                    //itemBuilder: (context, int index) {
-                                    //   return
-              
-                                    Column(
-                                  children: [
-                                    SizedBox(
-                                      height: SizeConfig.heightMultiplier * 0.7,
+                                : InkWell(
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal:
+                                            SizeConfig.widthMultiplier * 3,
+                                        vertical:
+                                            SizeConfig.heightMultiplier * 5,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                                SizeConfig.heightMultiplier *
+                                                    2)),
+                                        border: Border.all(
+                                            color: AppTheme.main, width: 1.0),
+                                      ),
+                                      height: SizeConfig.heightMultiplier * 47,
+                                      child:
+                                          // ListView.builder(
+                                          // scrollDirection: Axis.vertical,
+                                          //physics: const ClampingScrollPhysics(),
+                                          //itemCount: state.RecentPaymentData.length,
+                                          //itemBuilder: (context, int index) {
+                                          //   return
+
+                                          Column(
+                                        children: [
+                                          SizedBox(
+                                            height:
+                                                SizeConfig.heightMultiplier *
+                                                    0.7,
+                                          ),
+                                          if (state.RecentPaymentData.length >
+                                              0)
+                                            recentPaymentTile(
+                                                name: state.RecentPaymentData[0]
+                                                    ['name'],
+                                                paidOn:
+                                                    state.RecentPaymentData[0]
+                                                        ['paidOn'],
+                                                imageurl:
+                                                    state.RecentPaymentData[0]
+                                                        ['imageurl'],
+                                                amount:
+                                                    state.RecentPaymentData[0]
+                                                        ['amount']),
+                                          if (state.RecentPaymentData.length >
+                                              1)
+                                            Divider(
+                                              indent:
+                                                  SizeConfig.widthMultiplier *
+                                                      3.5,
+                                              endIndent:
+                                                  SizeConfig.widthMultiplier *
+                                                      3.5,
+                                              color: Color(0xff979797),
+                                              thickness: 0.8,
+                                            ),
+                                          if (state.RecentPaymentData.length >
+                                              1)
+                                            recentPaymentTile(
+                                                name: state.RecentPaymentData[1]
+                                                    ['name'],
+                                                paidOn:
+                                                    state.RecentPaymentData[1]
+                                                        ['paidOn'],
+                                                imageurl:
+                                                    state.RecentPaymentData[1]
+                                                        ['imageurl'],
+                                                amount:
+                                                    state.RecentPaymentData[1]
+                                                        ['amount']),
+                                          if (state.RecentPaymentData.length >
+                                              2)
+                                            Divider(
+                                              indent:
+                                                  SizeConfig.widthMultiplier *
+                                                      3.5,
+                                              endIndent:
+                                                  SizeConfig.widthMultiplier *
+                                                      3.5,
+                                              color: Color(0xff979797),
+                                              thickness: 0.8,
+                                            ),
+                                          if (state.RecentPaymentData.length >
+                                              2)
+                                            recentPaymentTile(
+                                                name: state.RecentPaymentData[2]
+                                                    ['name'],
+                                                paidOn:
+                                                    state.RecentPaymentData[2]
+                                                        ['paidOn'],
+                                                imageurl:
+                                                    state.RecentPaymentData[2]
+                                                        ['imageurl'],
+                                                amount:
+                                                    state.RecentPaymentData[2]
+                                                        ['amount']),
+                                          if (state.RecentPaymentData.length >
+                                              3)
+                                            Divider(
+                                              indent:
+                                                  SizeConfig.widthMultiplier *
+                                                      3.5,
+                                              endIndent:
+                                                  SizeConfig.widthMultiplier *
+                                                      3.5,
+                                              color: Color(0xff979797),
+                                              thickness: 0.8,
+                                            ),
+                                          if (state.RecentPaymentData.length >
+                                              3)
+                                            recentPaymentTile(
+                                                name: state.RecentPaymentData[3]
+                                                    ['name'],
+                                                paidOn:
+                                                    state.RecentPaymentData[3]
+                                                        ['paidOn'],
+                                                imageurl:
+                                                    state.RecentPaymentData[3]
+                                                        ['imageurl'],
+                                                amount:
+                                                    state.RecentPaymentData[3]
+                                                        ['amount']),
+                                          if (state.RecentPaymentData.length >
+                                              4)
+                                            Divider(
+                                              indent:
+                                                  SizeConfig.widthMultiplier *
+                                                      3.5,
+                                              endIndent:
+                                                  SizeConfig.widthMultiplier *
+                                                      3.5,
+                                              color: Color(0xff979797),
+                                              thickness: 0.8,
+                                            ),
+                                          if (state.RecentPaymentData.length >
+                                              4)
+                                            recentPaymentTile(
+                                                name: state.RecentPaymentData[4]
+                                                    ['name'],
+                                                paidOn:
+                                                    state.RecentPaymentData[4]
+                                                        ['paidOn'],
+                                                imageurl:
+                                                    state.RecentPaymentData[4]
+                                                        ['imageurl'],
+                                                amount:
+                                                    state.RecentPaymentData[4]
+                                                        ['amount']),
+                                          SizedBox(
+                                            height:
+                                                SizeConfig.heightMultiplier *
+                                                    0.7,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    if (state.RecentPaymentData.length > 0)
-                                      recentPaymentTile(
-                                          name: state.RecentPaymentData[0]
-                                              ['name'],
-                                          paidOn: state.RecentPaymentData[0]
-                                              ['paidOn'],
-                                          imageurl: state.RecentPaymentData[0]
-                                              ['imageurl'],
-                                          amount: state.RecentPaymentData[0]
-                                              ['amount']),
-                                    if (state.RecentPaymentData.length > 1)
-                                      Divider(
-                                        indent: SizeConfig.widthMultiplier * 3.5,
-                                        endIndent:
-                                            SizeConfig.widthMultiplier * 3.5,
-                                        color: Color(0xff979797),
-                                        thickness: 0.8,
-                                      ),
-                                    if (state.RecentPaymentData.length > 1)
-                                      recentPaymentTile(
-                                          name: state.RecentPaymentData[1]
-                                              ['name'],
-                                          paidOn: state.RecentPaymentData[1]
-                                              ['paidOn'],
-                                          imageurl: state.RecentPaymentData[1]
-                                              ['imageurl'],
-                                          amount: state.RecentPaymentData[1]
-                                              ['amount']),
-                                    if (state.RecentPaymentData.length > 2)
-                                      Divider(
-                                        indent: SizeConfig.widthMultiplier * 3.5,
-                                        endIndent:
-                                            SizeConfig.widthMultiplier * 3.5,
-                                        color: Color(0xff979797),
-                                        thickness: 0.8,
-                                      ),
-                                    if (state.RecentPaymentData.length > 2)
-                                      recentPaymentTile(
-                                          name: state.RecentPaymentData[2]
-                                              ['name'],
-                                          paidOn: state.RecentPaymentData[2]
-                                              ['paidOn'],
-                                          imageurl: state.RecentPaymentData[2]
-                                              ['imageurl'],
-                                          amount: state.RecentPaymentData[2]
-                                              ['amount']),
-                                    if (state.RecentPaymentData.length > 3)
-                                      Divider(
-                                        indent: SizeConfig.widthMultiplier * 3.5,
-                                        endIndent:
-                                            SizeConfig.widthMultiplier * 3.5,
-                                        color: Color(0xff979797),
-                                        thickness: 0.8,
-                                      ),
-                                    if (state.RecentPaymentData.length > 3)
-                                      recentPaymentTile(
-                                          name: state.RecentPaymentData[3]
-                                              ['name'],
-                                          paidOn: state.RecentPaymentData[3]
-                                              ['paidOn'],
-                                          imageurl: state.RecentPaymentData[3]
-                                              ['imageurl'],
-                                          amount: state.RecentPaymentData[3]
-                                              ['amount']),
-                                    if (state.RecentPaymentData.length > 4)
-                                      Divider(
-                                        indent: SizeConfig.widthMultiplier * 3.5,
-                                        endIndent:
-                                            SizeConfig.widthMultiplier * 3.5,
-                                        color: Color(0xff979797),
-                                        thickness: 0.8,
-                                      ),
-                                    if (state.RecentPaymentData.length > 4)
-                                      recentPaymentTile(
-                                          name: state.RecentPaymentData[4]
-                                              ['name'],
-                                          paidOn: state.RecentPaymentData[4]
-                                              ['paidOn'],
-                                          imageurl: state.RecentPaymentData[4]
-                                              ['imageurl'],
-                                          amount: state.RecentPaymentData[4]
-                                              ['amount']),
-                                    SizedBox(
-                                      height: SizeConfig.heightMultiplier * 0.7,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                             
-                            );
+                                  );
                           } else if (state is ErrorRecentPaymentState)
                             return Container(child: Text(state.message));
                           else
@@ -850,7 +913,58 @@ class _BillPaymentState extends State<BillPayment> {
 
               );
         } else if (state is UserDetailsError) {
-          return Container(child: Text((state).message));
+          return SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: true,
+            // header: WaterDropHeader(),
+            controller: _refreshController,
+            onRefresh: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider<UserBloc>.value(
+                          value: userBloc,
+                        ),
+                        BlocProvider.value(
+                          value: favoritesBloc,
+                        ),
+                        BlocProvider.value(
+                          value: advertiserBloc,
+                        ),
+                        BlocProvider.value(
+                          value: serviceProviderBloc,
+                        ),
+                        BlocProvider.value(
+                          value: bannerBloc,
+                        ),
+                        BlocProvider.value(
+                          value: graphBloc,
+                        ),
+                        BlocProvider.value(
+                          value: pendingServiceBloc,
+                        ),
+                        BlocProvider.value(
+                          value: recentPaymentBloc,
+                        ),
+                      ],
+                      child: super.widget,
+                    ),
+                  ));
+              // setState(() {
+
+              // });
+            },
+            onLoading: () {},
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(child: Text((state).message)),
+                ],
+              ),
+            ),
+          );
         } else {
           return Container();
         }

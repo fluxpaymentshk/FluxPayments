@@ -76,22 +76,22 @@ class _GraphScreenState extends State<GraphScreen> {
                     //  decoration: BoxDecoration(color: AppTheme.main),
                     child: Row(
                       children: [
-                          Padding(
-                            padding:EdgeInsets.all(SizeConfig.heightMultiplier*2),
-                            child: Center(
-                              child: Container(
-                                width: SizeConfig.widthMultiplier * 60,
-                                height: SizeConfig.heightMultiplier * 10,
-                                child: FittedBox(
-                                  child: Text(
-                                   'Hello ${widget.user.firstName}!',
-                                    style: AppTheme.display1,
-                                  ),
+                        Padding(
+                          padding:
+                              EdgeInsets.all(SizeConfig.heightMultiplier * 2),
+                          child: Center(
+                            child: Container(
+                              width: SizeConfig.widthMultiplier * 60,
+                              height: SizeConfig.heightMultiplier * 10,
+                              child: FittedBox(
+                                child: Text(
+                                  'Hello ${widget.user.firstName}!',
+                                  style: AppTheme.display1,
                                 ),
                               ),
                             ),
                           ),
-                       
+                        ),
                         Spacer(),
                         Padding(
                           padding:

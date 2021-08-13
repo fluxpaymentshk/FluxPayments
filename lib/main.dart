@@ -88,14 +88,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    Timer(
-         Duration(milliseconds: 3000),
-         (){
-           setState(() {
-             nav = true;
-           });
-         }
-         );
+    Timer(Duration(milliseconds: 3000), () {
+      setState(() {
+        nav = true;
+      });
+    });
     super.initState();
     _configureAmplify();
   }
@@ -152,7 +149,6 @@ class _MyAppState extends State<MyApp> {
   //       () => Navigator.pushReplacement(
   //           context, MaterialPageRoute(builder: (context) => BlocScreen())));
   // }
-  
 
   var authBloc;
   var userBloc;
@@ -161,17 +157,28 @@ class _MyAppState extends State<MyApp> {
     //nav(context);
     getCategories();
     return RefreshConfiguration(
-         headerBuilder: () => WaterDropHeader(),        // Configure the default header indicator. If you have the same header indicator for each page, you need to set this
-         footerBuilder:  () => ClassicFooter(),        // Configure default bottom indicator
-         headerTriggerDistance: 80.0,        // header trigger refresh trigger distance
-         springDescription:SpringDescription(stiffness: 170, damping: 16, mass: 1.9),         // custom spring back animate,the props meaning see the flutter api
-         maxOverScrollExtent :100, //The maximum dragging range of the head. Set this property if a rush out of the view area occurs
-         maxUnderScrollExtent:0, // Maximum dragging range at the bottom
-         enableScrollWhenRefreshCompleted: true, //This property is incompatible with PageView and TabBarView. If you need TabBarView to slide left and right, you need to set it to true.
-         enableLoadingWhenFailed : true, //In the case of load failure, users can still trigger more loads by gesture pull-up.
-         hideFooterWhenNotFull: false, // Disable pull-up to load more functionality when Viewport is less than one screen
-         enableBallisticLoad: true, // trxigger load more by BallisticScrollActivity
-      
+      headerBuilder: () =>
+          WaterDropHeader(), // Configure the default header indicator. If you have the same header indicator for each page, you need to set this
+      footerBuilder: () =>
+          ClassicFooter(), // Configure default bottom indicator
+      headerTriggerDistance: 80.0, // header trigger refresh trigger distance
+      springDescription: SpringDescription(
+          stiffness: 170,
+          damping: 16,
+          mass:
+              1.9), // custom spring back animate,the props meaning see the flutter api
+      maxOverScrollExtent:
+          100, //The maximum dragging range of the head. Set this property if a rush out of the view area occurs
+      maxUnderScrollExtent: 0, // Maximum dragging range at the bottom
+      enableScrollWhenRefreshCompleted:
+          true, //This property is incompatible with PageView and TabBarView. If you need TabBarView to slide left and right, you need to set it to true.
+      enableLoadingWhenFailed:
+          true, //In the case of load failure, users can still trigger more loads by gesture pull-up.
+      hideFooterWhenNotFull:
+          false, // Disable pull-up to load more functionality when Viewport is less than one screen
+      enableBallisticLoad:
+          true, // trxigger load more by BallisticScrollActivity
+
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flux Payments',
@@ -190,7 +197,6 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         home: nav ? BlocScreen() : SplashScreen(),
-        
         routes: {
           LoginScreen.routeName: (_) => MultiBlocProvider(
                 providers: [
@@ -246,71 +252,70 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget BlocScreen (){
+  Widget BlocScreen() {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => AuthBloc(_loginRepository),
-          ),
-          BlocProvider(
-            create: (_) => UserBloc(_userConfigRepository, _databaseRepository),
-          ),
-          BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
-          BlocProvider(create: (_) => CuratedListBloc(_databaseRepository)),
-          BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
-          BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
-          BlocProvider(create: (_) => RecentPaymentBloc(_databaseRepository)),
-          BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
-          BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
-          BlocProvider(create: (_) => StoryBloc(_databaseRepository)),
-          BlocProvider(create: (_) => PendingServiceBloc(_databaseRepository)),
-          BlocProvider(create: (_)=>ServiceProviderBloc(_databaseRepository)),
-        ],
-        child: BlocBuilder<AuthBloc, AuthState>(
-          buildWhen: (prevSt, newSt) {
-            return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
-          },
-          builder: (ctx, st) {
-            log(_amplifyConfigured.toString());
-            log("Sign?:$isSignedIn");
-            return (!_amplifyConfigured)
-                ? Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : FutureBuilder<bool>(
-                    future: currentUser(ctx),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Scaffold(
-                          body: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      if (snapshot.hasData &&
-                          snapshot.data != null &&
-                          snapshot.data == false)
-                        return LoginScreen(
-                          loginRepo: _loginRepository,
-                          userConfigRepository: _userConfigRepository,
-                          databaseRepository: _databaseRepository,
-                        );
-                      return NavigatorPage(
-                        userRepository: _userConfigRepository,
+      providers: [
+        BlocProvider(
+          create: (_) => AuthBloc(_loginRepository),
+        ),
+        BlocProvider(
+          create: (_) => UserBloc(_userConfigRepository, _databaseRepository),
+        ),
+        BlocProvider(create: (_) => AdvertiserBloc(_databaseRepository)),
+        BlocProvider(create: (_) => CuratedListBloc(_databaseRepository)),
+        BlocProvider(create: (_) => BannerBloc(_databaseRepository)),
+        BlocProvider(create: (_) => GraphBloc(_databaseRepository)),
+        BlocProvider(create: (_) => RecentPaymentBloc(_databaseRepository)),
+        BlocProvider(create: (_) => FavoritesBloc(_databaseRepository)),
+        BlocProvider(create: (_) => CouponsBloc(_databaseRepository)),
+        BlocProvider(create: (_) => StoryBloc(_databaseRepository)),
+        BlocProvider(create: (_) => PendingServiceBloc(_databaseRepository)),
+        BlocProvider(create: (_) => ServiceProviderBloc(_databaseRepository)),
+      ],
+      child: BlocBuilder<AuthBloc, AuthState>(
+        buildWhen: (prevSt, newSt) {
+          return !(prevSt is UserSignedInAuthState) && newSt is AuthInitial;
+        },
+        builder: (ctx, st) {
+          log(_amplifyConfigured.toString());
+          log("Sign?:$isSignedIn");
+          return (!_amplifyConfigured)
+              ? Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : FutureBuilder<bool>(
+                  future: currentUser(ctx),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Scaffold(
+                        body: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    if (snapshot.hasData &&
+                        snapshot.data != null &&
+                        snapshot.data == false)
+                      return LoginScreen(
+                        loginRepo: _loginRepository,
+                        userConfigRepository: _userConfigRepository,
                         databaseRepository: _databaseRepository,
                       );
-                    });
-          },
-        ),
-      );
+                    return NavigatorPage(
+                      userRepository: _userConfigRepository,
+                      databaseRepository: _databaseRepository,
+                    );
+                  });
+        },
+      ),
+    );
   }
 }
 
-
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({ Key? key }) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -320,8 +325,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    
   }
+
   @override
   Widget build(BuildContext context) {
     // Size size = MediaQuery.of(context).size;
@@ -330,55 +335,54 @@ class _SplashScreenState extends State<SplashScreen> {
     double height = 800;
     double width = 500;
     return Scaffold(
-        body: Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/Splash Screen.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Center(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: height * 0.4,
-                ),
-                DefaultTextStyle(
-                  style: const TextStyle(
-                    fontSize: 30.0,
-                    fontFamily: 'Agne',
-                  ),
-                  child: AnimatedTextKit(
-                    isRepeatingAnimation: false,
-                    animatedTexts: [
-                      TyperAnimatedText(
-                        'Flux.',
-                        speed: Duration(milliseconds: 250),
-                        textStyle: GoogleFonts.montserrat(
-                          fontSize: height * 0.07,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                    onTap: () {
-                      print("Tap Event");
-                    },
-                  ),
-                ),
-                Text(
-                  "Making repayments easy",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: height * 0.03,
-                  ),
-                )
-              ],
-            ),
+      body: Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/Splash Screen.png"),
+            fit: BoxFit.cover,
           ),
         ),
-      
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: height * 0.4,
+              ),
+              DefaultTextStyle(
+                style: const TextStyle(
+                  fontSize: 30.0,
+                  fontFamily: 'Agne',
+                ),
+                child: AnimatedTextKit(
+                  isRepeatingAnimation: false,
+                  animatedTexts: [
+                    TyperAnimatedText(
+                      'Flux.',
+                      speed: Duration(milliseconds: 250),
+                      textStyle: GoogleFonts.montserrat(
+                        fontSize: height * 0.07,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                ),
+              ),
+              Text(
+                "Making repayments easy",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: height * 0.03,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

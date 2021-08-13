@@ -20,7 +20,7 @@ class AddInsurance extends StatefulWidget {
   final String? uid;
   const AddInsurance(
       {required this.uid,
-        required this.name,
+      required this.name,
       required this.logo,
       required this.billCategoryID,
       required this.billProviderID,
@@ -39,7 +39,7 @@ class _AddInsuranceState extends State<AddInsurance> {
 
   final phNumberController = TextEditingController();
   final nameController = TextEditingController();
-  final acNumberController=TextEditingController();
+  final acNumberController = TextEditingController();
 
   @override
   void dispose() {
@@ -97,12 +97,11 @@ class _AddInsuranceState extends State<AddInsurance> {
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
                         mycontroller: nameController),
-                         appTextField(
+                    appTextField(
                         text: 'Account Number',
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
                         mycontroller: acNumberController),
-                   
                   ],
                 ),
               ),
@@ -131,13 +130,13 @@ class _AddInsuranceState extends State<AddInsurance> {
                         // });
                         // print(cardHolderNumberController.text);
 
-                       
-
                         serviceProviderBloc.add(InsertInsuranceDetails(
-                           
                             billCategoryID: widget.billCategoryID,
                             userID: widget.uid!,
-                            billProviderID: widget.billProviderID, phNumber: phNumberController.text, acHolderName: nameController.text, acNumber: acNumberController.text));
+                            billProviderID: widget.billProviderID,
+                            phNumber: phNumberController.text,
+                            acHolderName: nameController.text,
+                            acNumber: acNumberController.text));
 
                         //   e = 0;
                         //@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -151,8 +150,8 @@ class _AddInsuranceState extends State<AddInsurance> {
                 ),
               ),
 
-            BlocListener<ServiceProviderBloc, ServiceProviderState>(
-                child:Container(),
+              BlocListener<ServiceProviderBloc, ServiceProviderState>(
+                child: Container(),
                 listener: (context, state) {
                   print('ggbhaii');
                   print(state.runtimeType.toString());

@@ -59,36 +59,34 @@ class _ProfilePageState extends State<ProfilePage> {
         if (state is UserDetails) {
           User user = state.user;
           return SmartRefresher(
-              // RefreshController _refreshController =
-              //     RefreshController(initialRefresh: false);
-              enablePullDown: true,
-              enablePullUp: true,
+            // RefreshController _refreshController =
+            //     RefreshController(initialRefresh: false);
+            enablePullDown: true,
+            enablePullUp: true,
 
-              // header: WaterDropHeader(),
-              controller: _refreshController,
-              onRefresh: () {
-                setState(() {
-                  
-                });
-                // Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (_) => BlocProvider<UserBloc>.value(
-                //         value: userBloc,
-                //         child: super.widget,
-                //       ),
-                //     ));
-                // setState(() {
+            // header: WaterDropHeader(),
+            controller: _refreshController,
+            onRefresh: () {
+              setState(() {});
+              // Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (_) => BlocProvider<UserBloc>.value(
+              //         value: userBloc,
+              //         child: super.widget,
+              //       ),
+              //     ));
+              // setState(() {
 
-                // });
-              },
-              onLoading: () {},
+              // });
+            },
+            onLoading: () {},
             child: ListView(
               padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
               children: [
                 fluxLogo(context),
                 Padding(
-                  padding: const EdgeInsets.only(top:16.0),
+                  padding: const EdgeInsets.only(top: 16.0),
                   child: Text(
                     "Personal Information",
                     style: GoogleFonts.montserrat(
@@ -264,15 +262,17 @@ class _ProfilePageState extends State<ProfilePage> {
                               BlocProvider<AuthBloc>(
                                 create: (_) => AuthBloc(_loginRepository),
                               ),
-                               BlocProvider(
-                                  create: (_) => ServiceProviderBloc(widget.databaseRepository!),),
+                              BlocProvider(
+                                create: (_) => ServiceProviderBloc(
+                                    widget.databaseRepository!),
+                              ),
                               BlocProvider(
                                   create: (_) => UserBloc(
                                       widget.userConfigRepository!,
                                       widget.databaseRepository!)),
                               BlocProvider(
-                                  create: (_) =>
-                                      AdvertiserBloc(widget.databaseRepository!)),
+                                  create: (_) => AdvertiserBloc(
+                                      widget.databaseRepository!)),
                               BlocProvider(
                                   create: (_) => CuratedListBloc(
                                       widget.databaseRepository!)),
@@ -286,8 +286,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   create: (_) => RecentPaymentBloc(
                                       widget.databaseRepository!)),
                               BlocProvider(
-                                  create: (_) =>
-                                      FavoritesBloc(widget.databaseRepository!)),
+                                  create: (_) => FavoritesBloc(
+                                      widget.databaseRepository!)),
                               BlocProvider(
                                   create: (_) => PendingServiceBloc(
                                       widget.databaseRepository!)),
@@ -302,7 +302,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       CouponsBloc(widget.databaseRepository!)),
                             ],
                             child: LoginScreen(
-                              databaseRepository: widget.databaseRepository,
+                                databaseRepository: widget.databaseRepository,
                                 loginRepo: _loginRepository,
                                 userConfigRepository: UserConfigRepository()),
                           ),
@@ -317,9 +317,39 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         }
         if (state is UserDetailsError) {
-          return Center(
-            child: Container(
-              child: Text(state.message),
+          return SmartRefresher(
+            // RefreshController _refreshController =
+            //     RefreshController(initialRefresh: false);
+            enablePullDown: true,
+            enablePullUp: true,
+
+            // header: WaterDropHeader(),
+            controller: _refreshController,
+            onRefresh: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider.value(
+                          value: userBloc,
+                        ),
+                      ],
+                      child: super.widget,
+                    ),
+                  ));
+            },
+            onLoading: () {},
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Center(
+                    child: Container(
+                      child: Text(state.message),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }

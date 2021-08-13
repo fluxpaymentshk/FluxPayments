@@ -188,13 +188,16 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                 ),
 
                 BlocBuilder<ServiceProviderBloc, ServiceProviderState>(
-                  buildWhen: (previous,current){
-                    if(current is LoadServiceCategoryListState||current is LoadingServiceCategoryListState||current is ErrorServiceCategoryListState)
-                    return true;
-                    else return false;
-                  }
-                  ,builder: (context, state) {
-                //     serviceProviderBloc.add(InsertCreditCardDetails(creditCardNumber:'121111', expiryDate: '00/11', bankName: 'ddd', cvv: '112', holderName: 'unknonwn', userID: 'flux-vid1', billProviderID: 'BillProvid_X102'));
+                  buildWhen: (previous, current) {
+                    if (current is LoadServiceCategoryListState ||
+                        current is LoadingServiceCategoryListState ||
+                        current is ErrorServiceCategoryListState)
+                      return true;
+                    else
+                      return false;
+                  },
+                  builder: (context, state) {
+                    //     serviceProviderBloc.add(InsertCreditCardDetails(creditCardNumber:'121111', expiryDate: '00/11', bankName: 'ddd', cvv: '112', holderName: 'unknonwn', userID: 'flux-vid1', billProviderID: 'BillProvid_X102'));
 
                     if (state is LoadingServiceCategoryListState)
                       return Center(
@@ -245,7 +248,7 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                                     height: SizeConfig.heightMultiplier * 100,
                                     width: SizeConfig.widthMultiplier * 100,
                                     user: widget.user,
-                                     serviceProviderBloc: serviceProviderBloc),
+                                    serviceProviderBloc: serviceProviderBloc),
                                 SizedBox(
                                   width: SizeConfig.widthMultiplier * 3,
                                 ),
@@ -258,7 +261,7 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                                     height: SizeConfig.heightMultiplier * 100,
                                     width: SizeConfig.widthMultiplier * 100,
                                     user: widget.user,
-                                     serviceProviderBloc: serviceProviderBloc),
+                                    serviceProviderBloc: serviceProviderBloc),
                                 SizedBox(
                                   width: SizeConfig.widthMultiplier * 3,
                                 ),
@@ -271,7 +274,7 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                                     height: SizeConfig.heightMultiplier * 100,
                                     width: SizeConfig.widthMultiplier * 100,
                                     user: widget.user,
-                                     serviceProviderBloc: serviceProviderBloc),
+                                    serviceProviderBloc: serviceProviderBloc),
                                 //   Spacer(),
                               ],
                             ),
@@ -289,7 +292,7 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                                     height: SizeConfig.heightMultiplier * 100,
                                     width: SizeConfig.widthMultiplier * 100,
                                     user: widget.user,
-                                     serviceProviderBloc: serviceProviderBloc),
+                                    serviceProviderBloc: serviceProviderBloc),
                                 SizedBox(
                                   width: SizeConfig.widthMultiplier * 3,
                                 ),
@@ -302,7 +305,7 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                                     height: SizeConfig.heightMultiplier * 100,
                                     width: SizeConfig.widthMultiplier * 100,
                                     user: widget.user,
-                                     serviceProviderBloc: serviceProviderBloc),
+                                    serviceProviderBloc: serviceProviderBloc),
                                 SizedBox(
                                   width: SizeConfig.widthMultiplier * 3,
                                 ),
@@ -315,7 +318,7 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                                     height: SizeConfig.heightMultiplier * 100,
                                     width: SizeConfig.widthMultiplier * 100,
                                     user: widget.user,
-                                     serviceProviderBloc: serviceProviderBloc),
+                                    serviceProviderBloc: serviceProviderBloc),
                                 SizedBox(
                                   width: SizeConfig.widthMultiplier * 3,
                                 ),
@@ -389,10 +392,10 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                 ],
               ),
               child: CircleAvatar(
-                child:Container(
-                  child:Image.network(img,height:height*.055),
+                child: Container(
+                  child: Image.network(img, height: height * .055),
                 ),
-              //  foregroundImage: NetworkImage(img,scale: 0.1),
+                //  foregroundImage: NetworkImage(img,scale: 0.1),
                 // SvgPicture.asset(
                 //   img,
                 //   //alignment: Alignment.center,
@@ -400,7 +403,7 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
                 //   color: AppTheme.main,
                 //   fit: BoxFit.scaleDown,
                 // ),
-              //  backgroundImage: NetworkImage(img,scale:1.4),
+                //  backgroundImage: NetworkImage(img,scale:1.4),
                 backgroundColor: AppTheme.offWhite,
                 radius: height * 0.04,
               ),
@@ -424,7 +427,7 @@ class _ServiceProviderCategoryState extends State<ServiceProviderCategory> {
         Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) {
           return BlocProvider<ServiceProviderBloc>.value(
-           value:serviceProviderBloc,
+            value: serviceProviderBloc,
             child: ServiceProviderPage(
                 categoryName: title, categoryID: billCategoryID, user: user),
           );

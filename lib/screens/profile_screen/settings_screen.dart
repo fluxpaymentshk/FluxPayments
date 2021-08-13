@@ -40,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         children: [
           fluxLogo(context),
-        Container(
+          Container(
             height: SizeConfig.heightMultiplier * 12,
             width: SizeConfig.widthMultiplier * 97,
             //  decoration: BoxDecoration(color: AppTheme.main),

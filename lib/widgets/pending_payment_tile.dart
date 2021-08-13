@@ -12,12 +12,12 @@ class PendingPaymentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-     // margin: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*4),
+      // margin: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*4),
       height: SizeConfig.heightMultiplier * 7.5,
       width: SizeConfig.widthMultiplier * 92,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-            Radius.circular(SizeConfig.heightMultiplier * 1)),
+        borderRadius:
+            BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier * 1)),
         border: Border.all(color: AppTheme.red),
         color: Color(0xffFFECEC),
       ),
@@ -26,7 +26,7 @@ class PendingPaymentTile extends StatelessWidget {
           Container(
             width: SizeConfig.widthMultiplier * 80,
             child: Padding(
-              padding: EdgeInsets.only(left: SizeConfig.widthMultiplier*3),
+              padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 3),
               child: Text(
                 'Pending $amount payments from $serviceProviders providers',
                 style: TextStyle(
@@ -36,14 +36,14 @@ class PendingPaymentTile extends StatelessWidget {
             ),
           ),
           //Spacer(),
-         Container(
-           margin: EdgeInsets.only(right: SizeConfig.widthMultiplier*2),
-          //  padding: EdgeInsets.only(right: SizeConfig.widthMultiplier*2),
+          Container(
+            margin: EdgeInsets.only(right: SizeConfig.widthMultiplier * 2),
+            //  padding: EdgeInsets.only(right: SizeConfig.widthMultiplier*2),
             child: Image.asset(
               "assets/images/arrow.png",
               height: SizeConfig.heightMultiplier * 7,
               width: SizeConfig.widthMultiplier * 9,
-          //    fit: BoxFit.fitWidth,
+              //    fit: BoxFit.fitWidth,
             ),
           ),
         ],

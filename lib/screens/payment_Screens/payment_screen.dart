@@ -14,7 +14,8 @@ class PaymentScreen extends StatelessWidget {
   final UserConfigRepository? userConfigRepository;
   const PaymentScreen(
       {Key? key,
-      @required this.uid,@required this.userName,
+      @required this.uid,
+      @required this.userName,
       @required this.databaseRepository,
       @required this.userConfigRepository})
       : super(key: key);
@@ -36,7 +37,11 @@ class PaymentScreen extends StatelessWidget {
           create: (_) => CardsBloc(databaseRepository!),
         ),
       ],
-      child: PayNowScreen(uid: uid, databaseRepository: databaseRepository,userName: userName,),
+      child: PayNowScreen(
+        uid: uid,
+        databaseRepository: databaseRepository,
+        userName: userName,
+      ),
     );
   }
 }

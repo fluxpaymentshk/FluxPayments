@@ -20,7 +20,7 @@ class AddBank extends StatefulWidget {
   final String? uid;
   const AddBank(
       {@required this.uid,
-        required this.name,
+      required this.name,
       required this.logo,
       required this.billCategoryID,
       required this.billProviderID,
@@ -140,8 +140,8 @@ class _AddBankState extends State<AddBank> {
                             accNumber: acNumberController.text,
                             ifscCode: ifscController.text,
                             bankName: widget.name));
-                         
-                         print('gggg_Hhhh');
+
+                        print('gggg_Hhhh');
                         //   e = 0;
                         //@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -155,7 +155,7 @@ class _AddBankState extends State<AddBank> {
               ),
 
               BlocListener<ServiceProviderBloc, ServiceProviderState>(
-                child:Container(),
+                child: Container(),
                 listener: (context, state) {
                   print('ggbhaii');
                   print(state.runtimeType.toString());

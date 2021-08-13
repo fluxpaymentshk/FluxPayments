@@ -139,7 +139,7 @@ class _RewardsSearchScreenState extends State<RewardsSearchScreen> {
                     BlocProvider.value(
                       value: fluxPointsBloc,
                     ),
-                     BlocProvider<CouponsSearchBloc>.value(
+                    BlocProvider<CouponsSearchBloc>.value(
                       value: couponsSearchBloc,
                     ),
                     BlocProvider.value(

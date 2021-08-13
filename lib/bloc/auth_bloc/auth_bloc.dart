@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     DatabaseRepository _databaseRepository = DatabaseRepository();
-    
+
     var request;
     yield (AuthInitial());
     if (event is EmailSignUpUser) {
@@ -46,20 +46,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             yield AuthError(e.message);
           }
         } else {
-          try{
+          try {
             request = await _loginRepository.signUp(
-            event.email ?? "",
-            event.password ?? "",
-            event.phnNumber ?? "",
-            event.fname ?? "",
-          );
-          yield UserSignedUpAuthState();
-          print("Hello World2");
-          }catch(e){
+              event.email ?? "",
+              event.password ?? "",
+              event.phnNumber ?? "",
+              event.fname ?? "",
+            );
+            yield UserSignedUpAuthState();
+            print("Hello World2");
+          } catch (e) {
             print("Error $e");
             yield AuthError("Signup error");
           }
-          
         }
       } on LimitExceededException catch (e) {
         yield AuthError("limit exceeded");

@@ -9,7 +9,7 @@ class BillTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(SizeConfig.heightMultiplier*1.2),
+      padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1.2),
       child: Card(
         child: Column(
           children: [
@@ -19,7 +19,7 @@ class BillTile extends StatelessWidget {
             Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(SizeConfig.heightMultiplier*0.8),
+                  padding: EdgeInsets.all(SizeConfig.heightMultiplier * 0.8),
                   child: Text(
                     title,
                     style: TextStyle(
@@ -30,7 +30,7 @@ class BillTile extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(SizeConfig.heightMultiplier*0.9),
+                  padding: EdgeInsets.all(SizeConfig.heightMultiplier * 0.9),
                   child: Text(
                     amount,
                     style: TextStyle(
@@ -46,7 +46,7 @@ class BillTile extends StatelessWidget {
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.all(SizeConfig.heightMultiplier*0.9),
+              padding: EdgeInsets.all(SizeConfig.heightMultiplier * 0.9),
               child: Text(
                 desc,
                 style: TextStyle(

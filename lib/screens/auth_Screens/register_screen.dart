@@ -341,7 +341,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (_) => LoginScreen(
-                          databaseRepository: _databaseRepository,
+                              databaseRepository: _databaseRepository,
                               loginRepo: widget.loginRepo,
                               userConfigRepository: widget.userConfigRepository,
                             )));

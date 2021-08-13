@@ -28,7 +28,7 @@ class _AddCardNewScreenState extends State<AddCardNewScreen> {
   String cardHolderName = "";
   String cvvCode = "";
   bool isCvvFocused = false;
-   List<Color> cardBgColors = [
+  List<Color> cardBgColors = [
     Colors.blue.shade900,
     Colors.blue,
     Colors.redAccent,
@@ -42,7 +42,7 @@ class _AddCardNewScreenState extends State<AddCardNewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: backButton(context, "addNewCardScreen"),
-      floatingActionButtonLocation:FloatingActionButtonLocation.miniStartTop,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       body: BlocListener<CardsBloc, CardsState>(
         listener: (ctx, state) {
           if (state is ErrorCards) {
@@ -79,9 +79,8 @@ class _AddCardNewScreenState extends State<AddCardNewScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height:30),
+                SizedBox(height: 30),
                 fluxLogo(context),
-
                 CreditCardWidget(
                   cardNumber: cardNumber,
                   expiryDate: expiryDate,
@@ -97,7 +96,7 @@ class _AddCardNewScreenState extends State<AddCardNewScreen> {
                   expiryDate: expiryDate,
                   cardHolderName: cardHolderName,
                   cvvCode: cvvCode,
-          
+
                   onCreditCardModelChange: (creditCardModel) {
                     log("${creditCardModel.cardNumber}    ${creditCardModel.cardHolderName}  ${creditCardModel.cvvCode}   ${creditCardModel.expiryDate}");
                     setState(() {
@@ -138,7 +137,7 @@ class _AddCardNewScreenState extends State<AddCardNewScreen> {
                     filled: true,
                     labelText: 'Card Holder',
                   ),
-          
+
                   themeColor: AppTheme.main,
                   formKey: _newCardFormKey,
                   cursorColor: AppTheme.main,
@@ -149,7 +148,7 @@ class _AddCardNewScreenState extends State<AddCardNewScreen> {
                     if (_newCardFormKey.currentState!.validate()) {
                       cardNumber = cardNumber.replaceAll(" ", "");
                       log("___$cardNumber**");
-          
+
                       BlocProvider.of<CardsBloc>(context).add(
                         AddCard(
                           userID: widget.uid,

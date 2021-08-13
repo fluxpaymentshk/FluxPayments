@@ -20,7 +20,7 @@ class AddCreditCard extends StatefulWidget {
   final String? uid;
   const AddCreditCard(
       {required this.uid,
-        required this.name,
+      required this.name,
       required this.logo,
       required this.billProviderID,
       Key? key})
@@ -76,7 +76,8 @@ class _AddCreditCardState extends State<AddCreditCard> {
                     borderRadius: BorderRadius.circular(
                         SizeConfig.heightMultiplier * 1.1)),
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: SizeConfig.widthMultiplier*3),
+                  padding:
+                      EdgeInsets.only(bottom: SizeConfig.widthMultiplier * 3),
                   child: serviceProviderTile(
                     name: widget.name,
                     // paidOn: '',
@@ -153,7 +154,7 @@ class _AddCreditCardState extends State<AddCreditCard> {
                             userID: widget.uid!,
                             billProviderID: widget.billProviderID));
 
-                     //   e = 0;
+                        //   e = 0;
                         //@@@@@@@@@@@@@@@@@@@@@@@@@@
 
                         // setState(() {
@@ -166,7 +167,7 @@ class _AddCreditCardState extends State<AddCreditCard> {
               ),
 
               BlocListener<ServiceProviderBloc, ServiceProviderState>(
-                child:Container(),
+                child: Container(),
                 listener: (context, state) {
                   print('ggbhaii');
                   print(state.runtimeType.toString());

@@ -15,9 +15,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final DatabaseRepository _databaseRepository;
   UserBloc(this._userConfigRepository, this._databaseRepository)
       : super(UserInitialState());
-    String uid = "bbbb";
-    String get getUserID {
-    
+  String uid = "bbbb";
+  String get getUserID {
     return uid;
   }
 
@@ -78,8 +77,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         yield UserDetailsLoading();
         var userdetails = await userConfigRepository.fetchUserDetails();
         uid = userdetails.userSub!;
-        User user =
-            await _databaseRepository.getUserDetails(userID: uid);
+        User user = await _databaseRepository.getUserDetails(userID: uid);
         yield UserDetails(user: user);
       } catch (e) {
         log(e.toString());
@@ -90,15 +88,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (event is UpdateUserDetails) {
       try {
         yield UserDetailsUpdating();
-          await _databaseRepository.updateUserDetails(
-              userID: event.userID!,
-              firstName: event.firstName!,
-              lastName: event.lastName!,
-              hkID: event.hkID!,
-              email: event.email!,
-              phnNumber: event.phnNumber!);
-          yield UserServiceDone();
-       
+        await _databaseRepository.updateUserDetails(
+            userID: event.userID!,
+            firstName: event.firstName!,
+            lastName: event.lastName!,
+            hkID: event.hkID!,
+            email: event.email!,
+            phnNumber: event.phnNumber!);
+        yield UserServiceDone();
       } catch (e) {
         yield UserDetailsError("unable to update User Details!");
       }

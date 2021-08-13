@@ -144,7 +144,8 @@ class _DetailedBillState extends State<DetailedBill> {
                     ),
                   ),
                   title: Padding(
-                    padding: EdgeInsets.only(left: SizeConfig.widthMultiplier*2),
+                    padding:
+                        EdgeInsets.only(left: SizeConfig.widthMultiplier * 2),
                     child: Text(
                       "${widget.pendingPayments![index].billProviderName}",
                       style: GoogleFonts.montserrat(
@@ -154,7 +155,8 @@ class _DetailedBillState extends State<DetailedBill> {
                     ),
                   ),
                   subtitle: Padding(
-                    padding: EdgeInsets.only(left: SizeConfig.widthMultiplier*2),
+                    padding:
+                        EdgeInsets.only(left: SizeConfig.widthMultiplier * 2),
                     child: Text(
                       "${widget.pendingPayments![index].dueDate}",
                       style: GoogleFonts.montserrat(

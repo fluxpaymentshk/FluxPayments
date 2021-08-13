@@ -172,9 +172,7 @@ class _HomePageState extends State<HomePage> {
                 controller: _refreshController,
                 onRefresh: () {
                   log("huuuuu");
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
                 onLoading: () {
                   log("huiiiii");
@@ -846,7 +844,56 @@ class _HomePageState extends State<HomePage> {
 
               );
         } else if (state is UserDetailsError) {
-          return Container(child: Text((state).message));
+          return SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: true,
+              // header: WaterDropHeader(),
+              controller: _refreshController,
+              onRefresh: () {
+                log("huuuuu");
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => MultiBlocProvider(
+                        providers: [
+                          BlocProvider<UserBloc>.value(
+                            value: userBloc,
+                          ),
+                          BlocProvider.value(
+                            value: storyBloc,
+                          ),
+                          BlocProvider.value(
+                            value: curatedListBloc,
+                          ),
+                          BlocProvider.value(
+                            value: advertiserBloc,
+                          ),
+                          BlocProvider.value(
+                            value: bannerBloc,
+                          ),
+                          BlocProvider.value(
+                            value: graphBloc,
+                          ),
+                          BlocProvider.value(
+                            value: pendingServiceBloc,
+                          ),
+                          BlocProvider.value(
+                            value: recentPaymentBloc,
+                          ),
+                        ],
+                        child: super.widget,
+                      ),
+                    ));
+                // setState(() {
+
+                // });
+              },
+              onLoading: () {
+                log("huiiiii");
+              },
+              child: SingleChildScrollView(
+                  child: Column(
+                      children: [Container(child: Text((state).message))])));
         } else {
           return Container();
         }

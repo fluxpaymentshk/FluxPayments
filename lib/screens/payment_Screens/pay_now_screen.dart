@@ -57,8 +57,8 @@ class _PayNowScreenState extends State<PayNowScreen> {
     Colors.tealAccent,
   ];
   List<Cards> cardsList = [];
-              RefreshController _refreshController =
-                  RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
@@ -99,9 +99,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
               // header: WaterDropHeader(),
               controller: _refreshController,
               onRefresh: () {
-                setState(() {
-                  
-                });
+                setState(() {});
                 // Navigator.pushReplacement(
                 //     context,
                 //     MaterialPageRoute(
@@ -149,7 +147,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                           child: Container(
                             // height: SizeConfig.heightMultiplier*12,
                             // width: SizeConfig.widthMultiplier*100,
-            
+
                             child: Image.asset("assets/images/av.png"),
                             //  child:NetworkImage(state.user.);
                           ),
@@ -190,7 +188,8 @@ class _PayNowScreenState extends State<PayNowScreen> {
                                     MaterialPageRoute(
                                       builder: (_) => BlocProvider.value(
                                         value: cardsBloc,
-                                        child: AddCardNewScreen(uid: widget.uid),
+                                        child:
+                                            AddCardNewScreen(uid: widget.uid),
                                       ),
                                     ),
                                   );
@@ -200,13 +199,12 @@ class _PayNowScreenState extends State<PayNowScreen> {
                                     children: [
                                       CreditCardWidget(
                                         cardNumber: "",
-                                        
                                         expiryDate: " ",
                                         cardHolderName: 'Click to add new card',
                                         cvvCode: '',
                                         showBackView: false,
-                                        cardBgColor:
-                                            cardBgColors[cardBgColors.length - 1],
+                                        cardBgColor: cardBgColors[
+                                            cardBgColors.length - 1],
                                         obscureCardNumber: true,
                                         obscureCardCvv: true,
                                         width: MediaQuery.of(context)
@@ -216,7 +214,6 @@ class _PayNowScreenState extends State<PayNowScreen> {
                                         animationDuration:
                                             Duration(milliseconds: 1000),
                                       ),
-                                     
                                     ],
                                   ),
                                 ),
@@ -227,17 +224,19 @@ class _PayNowScreenState extends State<PayNowScreen> {
                                   child: CreditCardWidget(
                                     cardNumber: cards[index].cardNumber!,
                                     expiryDate: cards[index].expiryDate!,
-                                    cardType: getCardType(cards[index].cardBrand),
+                                    cardType:
+                                        getCardType(cards[index].cardBrand),
                                     cardHolderName: cards[index].holderName!,
                                     cvvCode: cards[index].cvv.toString(),
                                     showBackView: false,
-                                    cardBgColor:
-                                        cardBgColors[index % cardBgColors.length],
+                                    cardBgColor: cardBgColors[
+                                        index % cardBgColors.length],
                                     obscureCardNumber: true,
                                     obscureCardCvv: true,
-                                    width:
-                                        MediaQuery.of(context).size.aspectRatio *
-                                            500,
+                                    width: MediaQuery.of(context)
+                                            .size
+                                            .aspectRatio *
+                                        500,
                                     animationDuration:
                                         Duration(milliseconds: 1000),
                                   ),
@@ -268,34 +267,37 @@ class _PayNowScreenState extends State<PayNowScreen> {
                     ),
                   ),
                   Container(
-                      height:MediaQuery.of(context).size.height*0.25+ MediaQuery.of(context).size.height * 0.1*state.pendingPayments.length,
-            
-                      //  margin: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppTheme.main,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5),
-                        ),
+                    height: MediaQuery.of(context).size.height * 0.25 +
+                        MediaQuery.of(context).size.height *
+                            0.1 *
+                            state.pendingPayments.length,
+
+                    //  margin: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppTheme.main,
                       ),
-                      child: DetailedBill(
-                        pendingPayments: state.pendingPayments,
-                        totalSrvBill: totalSrvBill,
-                        totalFluxPointsService: totalFluxSrvPoints,
-                      ),),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    child: DetailedBill(
+                      pendingPayments: state.pendingPayments,
+                      totalSrvBill: totalSrvBill,
+                      totalFluxPointsService: totalFluxSrvPoints,
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
-                     ! selectedBills.isEmpty
+                      selectedBills.isEmpty
                           ? ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content:
                                     Text("Please Choose services to be paid."),
-                                    backgroundColor: Colors.red.shade400,
+                                backgroundColor: Colors.red.shade400,
                               ),
                             )
-                          : 
-                          Navigator.of(context).push(
+                          : Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => MultiBlocProvider(
                                   providers: [
@@ -308,7 +310,7 @@ class _PayNowScreenState extends State<PayNowScreen> {
                                     ),
                                   ],
                                   child: SelectPaymentScreen(
-                                    userName:widget.userName,
+                                    userName: widget.userName,
                                     uid: widget.uid,
                                     cards: cardsList,
                                     amount: totalBill,
@@ -326,9 +328,46 @@ class _PayNowScreenState extends State<PayNowScreen> {
           );
         }
         // if (state is ErrorPayment) {
-        return Center(
-          child: Container(
-            child: Text("error loading"),
+        return SmartRefresher(
+          // RefreshController _refreshController =
+          //     RefreshController(initialRefresh: false);
+          enablePullDown: true,
+          enablePullUp: true,
+
+          // header: WaterDropHeader(),
+          controller: _refreshController,
+          onRefresh: () {
+            // setState(() {
+
+            // });
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(
+                        value: cardsBloc,
+                      ),
+                      BlocProvider.value(value: paymentsBloc),
+                    ],
+                    child: super.widget,
+                  ),
+                ));
+            // setState(() {
+
+            // });
+          },
+          onLoading: () {},
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Center(
+                  child: Container(
+                    child: Text("error loading"),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
         // }

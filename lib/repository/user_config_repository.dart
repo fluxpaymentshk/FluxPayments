@@ -29,13 +29,11 @@ class UserConfigRepository extends UserConfigBaseRepository {
   UserDetailsServices _userDetailsServices = new UserDetailsServices();
 
   Future<CognitoAuthSession> fetchUserDetails() async {
-   
-      var r = await Amplify.Auth.fetchAuthSession(
-              options: CognitoSessionOptions(getAWSCredentials: true))
-          as CognitoAuthSession;
-      log("${r.credentials} ,  ${r.identityId}  , ${r.userPoolTokens}   ,  ${r.userSub}");
-      return r;
-    
+    var r = await Amplify.Auth.fetchAuthSession(
+            options: CognitoSessionOptions(getAWSCredentials: true))
+        as CognitoAuthSession;
+    log("${r.credentials} ,  ${r.identityId}  , ${r.userPoolTokens}   ,  ${r.userSub}");
+    return r;
   }
 
   @override
@@ -128,7 +126,6 @@ class UserConfigRepository extends UserConfigBaseRepository {
   Future<void> updateUser(String email) async {
     try {
       return await _userDetailsServices.updateUserDetails(email);
-      
     } catch (e) {
       rethrow;
     }

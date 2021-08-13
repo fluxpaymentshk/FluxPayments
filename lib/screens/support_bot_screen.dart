@@ -150,7 +150,8 @@ class _SupportBotScreenState extends State<SupportBotScreen> {
                                 ? Color(0xffFFFFFF)
                                 : Color(0xffD9D9FF)),
                             child: Container(
-                              padding:EdgeInsets.all(SizeConfig.heightMultiplier*2.7),
+                              padding: EdgeInsets.all(
+                                  SizeConfig.heightMultiplier * 2.7),
                               constraints: BoxConstraints(
                                 maxWidth:
                                     MediaQuery.of(context).size.width * 0.7,

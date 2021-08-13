@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 
-Widget appTextField({required String text,required  double height, required double width,
+Widget appTextField(
+    {required String text,
+    required double height,
+    required double width,
     required TextEditingController mycontroller}) {
   return Container(
     child: Column(
@@ -29,16 +32,17 @@ Widget appTextField({required String text,required  double height, required doub
             top: SizeConfig.heightMultiplier * 0.2,
             bottom: SizeConfig.heightMultiplier * 2.2,
             left: SizeConfig.widthMultiplier * 4.2,
-            right:SizeConfig.widthMultiplier * 4.2,
+            right: SizeConfig.widthMultiplier * 4.2,
           ),
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*2),
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.widthMultiplier * 2),
                 // width: SizeConfig.widthMultiplier * 60,
                 // height: SizeConfig.heightMultiplier * 6,
-                width:width,
-                height:height,
+                width: width,
+                height: height,
                 decoration: BoxDecoration(
                   // boxShadow:
                   //       //kElevationToShadow[4],
@@ -62,7 +66,8 @@ Widget appTextField({required String text,required  double height, required doub
                     fontSize: 15,
                   ),
                   decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(borderSide:BorderSide.none),
+                    focusedBorder:
+                        OutlineInputBorder(borderSide: BorderSide.none),
                     // focusColor: AppTheme.main,
                     // enabledBorder: OutlineInputBorder(
                     //   borderSide: BorderSide(color: AppTheme.main),

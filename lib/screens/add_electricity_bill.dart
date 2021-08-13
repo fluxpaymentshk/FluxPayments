@@ -20,7 +20,7 @@ class AddElectricityBill extends StatefulWidget {
   final String? uid;
   const AddElectricityBill(
       {required this.uid,
-        required this.name,
+      required this.name,
       required this.logo,
       required this.billCategoryID,
       required this.billProviderID,
@@ -39,7 +39,7 @@ class _AddElectricityBillState extends State<AddElectricityBill> {
 
   final phNumberController = TextEditingController();
   final nameController = TextEditingController();
-  final acNumberController=TextEditingController();
+  final acNumberController = TextEditingController();
 
   @override
   void dispose() {
@@ -97,12 +97,11 @@ class _AddElectricityBillState extends State<AddElectricityBill> {
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
                         mycontroller: nameController),
-                         appTextField(
+                    appTextField(
                         text: 'Account Number',
                         height: SizeConfig.heightMultiplier * 6,
                         width: SizeConfig.widthMultiplier * 90.3,
                         mycontroller: acNumberController),
-                   
                   ],
                 ),
               ),
@@ -131,13 +130,13 @@ class _AddElectricityBillState extends State<AddElectricityBill> {
                         // });
                         // print(cardHolderNumberController.text);
 
-                       
-
                         serviceProviderBloc.add(InsertElectricityBillDetails(
-                           
                             billCategoryID: widget.billCategoryID,
                             userID: widget.uid!,
-                            billProviderID: widget.billProviderID, phNumber: phNumberController.text, acHolderName: nameController.text, acNumber: acNumberController.text));
+                            billProviderID: widget.billProviderID,
+                            phNumber: phNumberController.text,
+                            acHolderName: nameController.text,
+                            acNumber: acNumberController.text));
 
                         //   e = 0;
                         //@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -152,7 +151,7 @@ class _AddElectricityBillState extends State<AddElectricityBill> {
               ),
 
               BlocListener<ServiceProviderBloc, ServiceProviderState>(
-                child:Container(),
+                child: Container(),
                 listener: (context, state) {
                   print('ggbhaii');
                   print(state.runtimeType.toString());

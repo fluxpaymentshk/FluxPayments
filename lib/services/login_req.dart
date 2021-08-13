@@ -20,9 +20,9 @@ class AmplifyLogin {
     }
   }
 
-CognitoAuthSession getUserDetails(){
-  return r;
-}
+  CognitoAuthSession getUserDetails() {
+    return r;
+  }
 
   Future<bool> socialSignInUser(AuthProvider authProvider) async {
     try {

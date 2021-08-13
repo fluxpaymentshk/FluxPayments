@@ -91,7 +91,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
               controller: _refreshController,
               onRefresh: () {
                 // setState(() {
-                  
+
                 // });
                 Navigator.pushReplacement(
                     context,
@@ -101,7 +101,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                         child: super.widget,
                       ),
                     ));
-                // setState(() {
+                // setSmartRefresherState(() {
 
                 // });
               },

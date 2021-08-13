@@ -20,7 +20,7 @@ class AddTelecom extends StatefulWidget {
   final String? uid;
   const AddTelecom(
       {required this.uid,
-        required this.name,
+      required this.name,
       required this.logo,
       required this.billCategoryID,
       required this.billProviderID,
@@ -139,8 +139,8 @@ class _AddTelecomState extends State<AddTelecom> {
                 ),
               ),
 
-            BlocListener<ServiceProviderBloc, ServiceProviderState>(
-                child:Container(),
+              BlocListener<ServiceProviderBloc, ServiceProviderState>(
+                child: Container(),
                 listener: (context, state) {
                   print('ggbhaii');
                   print(state.runtimeType.toString());

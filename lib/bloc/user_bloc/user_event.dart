@@ -32,15 +32,14 @@ class UpdateUserDetails extends UserEvent {
   final bool? isDBChange;
   final bool? resend;
   final String code;
-  const UpdateUserDetails({
-    @required this.userID,
-    @required this.lastName,
-    @required this.firstName,
-    @required this.email,
-    @required this.phnNumber,
-    @required this.hkID,
-    this.isDBChange,
-    this.resend = false,
-      this.code = ""
-  });
+  const UpdateUserDetails(
+      {@required this.userID,
+      @required this.lastName,
+      @required this.firstName,
+      @required this.email,
+      @required this.phnNumber,
+      @required this.hkID,
+      this.isDBChange,
+      this.resend = false,
+      this.code = ""});
 }

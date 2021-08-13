@@ -61,8 +61,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
   ItemScrollController _scrollController = ItemScrollController();
   var bankAccController = ScrollController();
   var mobileBankingController = ScrollController();
-              RefreshController _refreshController =
-                  RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   var cardsBloc;
   List<Color> cardBgColors = [
     Colors.blue.shade900,
@@ -85,30 +85,30 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
       floatingActionButton: backButton(context, "payNowBackButton"),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: SmartRefresher(
-              // RefreshController _refreshController =
-              //     RefreshController(initialRefresh: false);
-              enablePullDown: true,
-              enablePullUp: true,
+        // RefreshController _refreshController =
+        //     RefreshController(initialRefresh: false);
+        enablePullDown: true,
+        enablePullUp: true,
 
-              // header: WaterDropHeader(),
-              controller: _refreshController,
-              onRefresh: () {
-                // setState(() {
-                  
-                // });
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => BlocProvider<CardsBloc>.value(
-                        value: cardsBloc,
-                        child: super.widget,
-                      ),
-                    ));
-                // setState(() {
+        // header: WaterDropHeader(),
+        controller: _refreshController,
+        onRefresh: () {
+          // setState(() {
 
-                // });
-              },
-              onLoading: () {},
+          // });
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => BlocProvider<CardsBloc>.value(
+                  value: cardsBloc,
+                  child: super.widget,
+                ),
+              ));
+          // setState(() {
+
+          // });
+        },
+        onLoading: () {},
         child: ListView(
           padding: EdgeInsets.all(16),
           children: [
@@ -141,7 +141,7 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                     child: Container(
                       // height: SizeConfig.heightMultiplier*12,
                       // width: SizeConfig.widthMultiplier*100,
-      
+
                       child: Image.asset("assets/images/av.png"),
                       //  child:NetworkImage(state.user.);
                     ),
@@ -178,8 +178,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                                     cardBgColors[cardBgColors.length - 1],
                                 obscureCardNumber: true,
                                 obscureCardCvv: true,
-                                width:
-                                    MediaQuery.of(context).size.aspectRatio * 500,
+                                width: MediaQuery.of(context).size.aspectRatio *
+                                    500,
                                 animationDuration: Duration(milliseconds: 1000),
                               ),
                             ],
@@ -192,7 +192,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                           child: CreditCardWidget(
                             cardNumber: widget.cards![index].cardNumber!,
                             expiryDate: widget.cards![index].expiryDate!,
-                            cardType: getCardType(widget.cards![index].cardBrand),
+                            cardType:
+                                getCardType(widget.cards![index].cardBrand),
                             cardHolderName: widget.cards![index].holderName!,
                             cvvCode: widget.cards![index].cvv.toString(),
                             showBackView: false,
@@ -200,7 +201,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                                 cardBgColors[index % cardBgColors.length],
                             obscureCardNumber: true,
                             obscureCardCvv: true,
-                            width: MediaQuery.of(context).size.aspectRatio * 500,
+                            width:
+                                MediaQuery.of(context).size.aspectRatio * 500,
                             animationDuration: Duration(milliseconds: 1000),
                           ),
                         ),
@@ -244,7 +246,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                           height: MediaQuery.of(context).size.height * 0.13,
                           width: double.infinity,
                           child: Card(
-                            color: cardTapped ? Color(0xffE9E9FF) : Colors.white,
+                            color:
+                                cardTapped ? Color(0xffE9E9FF) : Colors.white,
                             elevation: 12,
                             margin: EdgeInsets.only(
                                 top: MediaQuery.of(context).size.height * 0.02),
@@ -256,7 +259,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                             ),
                             child: Padding(
                               padding: EdgeInsets.only(
-                                  left: MediaQuery.of(context).size.width * 0.07),
+                                  left:
+                                      MediaQuery.of(context).size.width * 0.07),
                               child: Row(
                                 // mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -319,9 +323,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                                     ),
                                   ),
                                   ExpandWidget(
-                                    expand: singleRadioValue == 1
-                                        ? true
-                                        : false,
+                                    expand:
+                                        singleRadioValue == 1 ? true : false,
                                     child: expandNewCardDetails(),
                                   ),
                                 ],
@@ -433,7 +436,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                         height: MediaQuery.of(context).size.height * 0.13,
                         width: double.infinity,
                         child: Card(
-                          color: mobiletapped ? Color(0xffE9E9FF) : Colors.white,
+                          color:
+                              mobiletapped ? Color(0xffE9E9FF) : Colors.white,
                           elevation: 12,
                           margin: EdgeInsets.only(
                               top: MediaQuery.of(context).size.height * 0.02),
@@ -471,7 +475,7 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                       expand: mobiletapped,
                       child: expandBankDetailsChild(),
                     ),
-      
+
                     InkWell(
                       onTap: () {},
                       child: paymentTile(

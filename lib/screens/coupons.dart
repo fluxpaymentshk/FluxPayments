@@ -138,12 +138,14 @@ class _CouponsState extends State<Coupons> {
   void getCategoryList() async {
     categories = await DatabaseLambdaService().getCategories();
   }
+
   final UserConfigRepository userConfigRepository = UserConfigRepository();
   void fetchUserDetails() async {
     userdetails = await userConfigRepository.fetchUserDetails();
-    print(userdetails.userSub); 
+    print(userdetails.userSub);
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   }
+
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -158,8 +160,9 @@ class _CouponsState extends State<Coupons> {
     userBloc.add(GetUserDetails(userID: userBloc.getUserID));
     favoritesBloc
         .add(GetFavorites(page: 0, userID: userBloc.getUserID, favorites: fav));
-    couponsBloc.add(GetCoupons(page: 0, userID: userBloc.getUserID, coupons: coupons));
-    
+    couponsBloc
+        .add(GetCoupons(page: 0, userID: userBloc.getUserID, coupons: coupons));
+
     Size size = MediaQuery.of(context).size;
 
     setState(() {
@@ -185,24 +188,20 @@ class _CouponsState extends State<Coupons> {
             child: Scaffold(
               backgroundColor: Colors.white,
               body: SmartRefresher(
-  // RefreshController _refreshController =
-  //     RefreshController(initialRefresh: false);
+                // RefreshController _refreshController =
+                //     RefreshController(initialRefresh: false);
                 enablePullDown: true,
                 enablePullUp: true,
-                
+
                 // header: WaterDropHeader(),
                 controller: _refreshController,
                 onRefresh: () {
-
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
-                onLoading: () {
-                },
+                onLoading: () {},
                 child: SingleChildScrollView(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 0, horizontal: width * 0.04),
+                  padding: EdgeInsets.symmetric(
+                      vertical: 0, horizontal: width * 0.04),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -274,7 +273,7 @@ class _CouponsState extends State<Coupons> {
                                         ),
                                       ],
                                       child: RewardsSearchScreen(
-                                        uid :userBloc.getUserID,
+                                        uid: userBloc.getUserID,
                                         categories: categories,
                                         favorites: fav,
                                       ),
@@ -469,7 +468,7 @@ class _CouponsState extends State<Coupons> {
                               }
                             },
                           ),
-              
+
                           SizedBox(
                             height: height * 0.018,
                           ),
@@ -544,10 +543,11 @@ class _CouponsState extends State<Coupons> {
                                                   onTap: () {
                                                     Navigator.of(context).push(
                                                         MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                CouponsList(
-                                                                  coupons,
-                                                                )));
+                                                            builder:
+                                                                (context) =>
+                                                                    CouponsList(
+                                                                      coupons,
+                                                                    )));
                                                   },
                                                   child: CouponCard(
                                                       coupons[index],
@@ -569,8 +569,8 @@ class _CouponsState extends State<Coupons> {
                         } else {
                           return Container(
                             child: Text("No Coupons found !"
-                                      //(state as ErrorFavorites).message
-                                      ),
+                                //(state as ErrorFavorites).message
+                                ),
                           );
                         }
                       }),
@@ -584,7 +584,46 @@ class _CouponsState extends State<Coupons> {
             ),
           );
         } else if (state is UserDetailsError) {
-          return Container(child: Text((state).message));
+          return SmartRefresher(
+            // RefreshController _refreshController =
+            //     RefreshController(initialRefresh: false);
+            enablePullDown: true,
+            enablePullUp: true,
+
+            // header: WaterDropHeader(),
+            controller: _refreshController,
+            onRefresh: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider<UserBloc>.value(
+                          value: userBloc,
+                        ),
+                        BlocProvider.value(
+                          value: couponsBloc,
+                        ),
+                        BlocProvider.value(
+                          value: favoritesBloc,
+                        ),
+                      ],
+                      child: super.widget,
+                    ),
+                  ));
+              // setState(() {
+
+              // });
+            },
+            onLoading: () {},
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(child: Text((state).message)),
+                ],
+              ),
+            ),
+          );
         } else {
           return Container();
         }

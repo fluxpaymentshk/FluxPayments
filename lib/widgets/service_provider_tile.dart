@@ -3,13 +3,13 @@ import 'package:flux_payments/config/size_config.dart';
 import 'package:flux_payments/config/theme.dart';
 
 class serviceProviderTile extends StatelessWidget {
-  final String name,  imageurl;
+  final String name, imageurl;
   //final double amount;
   serviceProviderTile(
       {required this.name,
-    //  required this.paidOn,
+      //  required this.paidOn,
       required this.imageurl,
-     // required this.amount,
+      // required this.amount,
       Key? key})
       : super(key: key);
 
@@ -38,55 +38,55 @@ class serviceProviderTile extends StatelessWidget {
     return Container(
       height: SizeConfig.heightMultiplier * 6,
       width: SizeConfig.widthMultiplier * 92,
-      padding: EdgeInsets.symmetric(vertical:SizeConfig.heightMultiplier * 1,horizontal:SizeConfig.widthMultiplier*3,),
-     // margin: EdgeInsets.all(SizeConfig.heightMultiplier * 0.6),
+      padding: EdgeInsets.symmetric(
+        vertical: SizeConfig.heightMultiplier * 1,
+        horizontal: SizeConfig.widthMultiplier * 3,
+      ),
+      // margin: EdgeInsets.all(SizeConfig.heightMultiplier * 0.6),
       decoration: BoxDecoration(
         borderRadius:
             BorderRadius.all(Radius.circular(SizeConfig.heightMultiplier * 2)),
         // border: Border.all(color: AppTheme.main, width: 1.0),
       ),
-      child: 
-      // ListTile(
-      // //  minLeadingWidth: SizeConfig.widthMultiplier*3,
-      //   leading: Padding(
-      //     padding: const EdgeInsets.only(bottom:8.0),
-      //     child: CircleAvatar(
-           
-      //     //  minRadius: 3,
-      //       backgroundImage:  NetworkImage(imageurl),
-      //       radius: SizeConfig.widthMultiplier*8,
-      //     ),
-      //   ),
-      //  // tileColor: AppTheme.black,
-      // // horizontalTitleGap: SizeConfig.widthMultiplier*20,
-      //   title:  Padding(
-      //     padding: EdgeInsets.only(bottom:20.0),
-      //     child: Text(
-      //           //'HSBC',
-      //             name,
-      //             style: TextStyle(
-      //               fontSize: 18,
-      //               fontWeight: FontWeight.w800,
-      //             )),
-      //   ),
-      // ),
-      
-      Row(
+      child:
+          // ListTile(
+          // //  minLeadingWidth: SizeConfig.widthMultiplier*3,
+          //   leading: Padding(
+          //     padding: const EdgeInsets.only(bottom:8.0),
+          //     child: CircleAvatar(
+
+          //     //  minRadius: 3,
+          //       backgroundImage:  NetworkImage(imageurl),
+          //       radius: SizeConfig.widthMultiplier*8,
+          //     ),
+          //   ),
+          //  // tileColor: AppTheme.black,
+          // // horizontalTitleGap: SizeConfig.widthMultiplier*20,
+          //   title:  Padding(
+          //     padding: EdgeInsets.only(bottom:20.0),
+          //     child: Text(
+          //           //'HSBC',
+          //             name,
+          //             style: TextStyle(
+          //               fontSize: 18,
+          //               fontWeight: FontWeight.w800,
+          //             )),
+          //   ),
+          // ),
+
+          Row(
         children: [
           Padding(
             padding: EdgeInsets.all(SizeConfig.heightMultiplier * 0.3),
-            child:
-            CircleAvatar(
-           
-          //  minRadius: 3,
-            backgroundImage:  NetworkImage(imageurl),
-            radius: SizeConfig.widthMultiplier*10,
-          ),
+            child: CircleAvatar(
+              //  minRadius: 3,
+              backgroundImage: NetworkImage(imageurl),
+              radius: SizeConfig.widthMultiplier * 10,
+            ),
             //  Container(
             //   height: SizeConfig.heightMultiplier*4,
             //   width: SizeConfig.widthMultiplier*10,
 
-            
             //   child : Image.network(imageurl,fit:BoxFit.cover),
             //   //  child:NetworkImage(state.user.);
             // ),
@@ -106,18 +106,20 @@ class serviceProviderTile extends StatelessWidget {
           // SizedBox(
           //   width: SizeConfig.widthMultiplier * 4,
           // ),
-           //Spacer(flex: 2,),
-           SizedBox(width: SizeConfig.widthMultiplier*2,),
+          //Spacer(flex: 2,),
+          SizedBox(
+            width: SizeConfig.widthMultiplier * 2,
+          ),
           Center(
             child: Text(
-              //'HSBC',
+                //'HSBC',
                 name,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w800,
                 )),
           ),
-       //  Spacer(flex:10,),
+          //  Spacer(flex:10,),
           // Text('-500',
           //     //amount
           //     style: TextStyle(
@@ -127,7 +129,6 @@ class serviceProviderTile extends StatelessWidget {
           //     )),
         ],
       ),
-   
     );
   }
 }

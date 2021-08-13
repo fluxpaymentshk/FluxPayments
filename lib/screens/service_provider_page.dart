@@ -59,7 +59,7 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                         // color: Colors.amber,
                         // height: SizeConfig.heightMultiplier*12,
                         // width: SizeConfig.widthMultiplier*100,
-          
+
                         child: Image.asset(
                           "assets/icons/backButton.png",
                           scale: 1.6,
@@ -108,7 +108,7 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                         ),
                       ),
                     ),
-          
+
                     // Spacer(),
                     // Padding(
                     //   padding:
@@ -116,7 +116,7 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                     //   child: Container(
                     //     // height: SizeConfig.heightMultiplier*12,
                     //     // width: SizeConfig.widthMultiplier*100,
-          
+
                     //     child: Image.asset("assets/images/av.png"),
                     //     //  child:NetworkImage(widget.user.);
                     //   ),
@@ -130,8 +130,8 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                 padding: EdgeInsets.symmetric(
                     horizontal: SizeConfig.widthMultiplier * 1,
                     vertical: SizeConfig.heightMultiplier * 0.2),
-                margin:
-                    EdgeInsets.fromLTRB(0, SizeConfig.heightMultiplier * 1, 0, 0),
+                margin: EdgeInsets.fromLTRB(
+                    0, SizeConfig.heightMultiplier * 1, 0, 0),
                 decoration: BoxDecoration(
                   boxShadow:
                       //kElevationToShadow[4],
@@ -171,7 +171,7 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
               SizedBox(
                 height: SizeConfig.heightMultiplier * 2,
               ),
-          
+
               Row(
                 children: [
                   Padding(
@@ -197,7 +197,7 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                 if (state is LoadingServiceProviderListState)
                   return Center(
                       child: CircularProgressIndicator(color: AppTheme.main));
-          
+
                 if (state is LoadServiceProviderListState) {
                   List<Map<String, String>> ServiceProviderList =
                       state.ServiceProviderList;
@@ -208,9 +208,10 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                             vertical: SizeConfig.heightMultiplier * 2.3,
                           ),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(SizeConfig.heightMultiplier * 2)),
-                            border: Border.all(color: AppTheme.main, width: 1.0),
+                            borderRadius: BorderRadius.all(Radius.circular(
+                                SizeConfig.heightMultiplier * 2)),
+                            border:
+                                Border.all(color: AppTheme.main, width: 1.0),
                           ),
                           height: min(
                               SizeConfig.heightMultiplier *
@@ -218,120 +219,156 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                                   ServiceProviderList.length,
                               SizeConfig.heightMultiplier * 6 * 10),
                           child: ListView.separated(
-                            padding: EdgeInsets.only(top: SizeConfig.heightMultiplier*1.1),
+                              padding: EdgeInsets.only(
+                                  top: SizeConfig.heightMultiplier * 1.1),
                               itemBuilder: (context, index) {
                                 return
                                     //to expp
                                     InkWell(
                                   child: serviceProviderTile(
-                                    name:
-                                        ServiceProviderList[index]['name'] ?? '',
+                                    name: ServiceProviderList[index]['name'] ??
+                                        '',
                                     // paidOn: '',
-                                    imageurl:
-                                        ServiceProviderList[index]['logo'] ?? '',
+                                    imageurl: ServiceProviderList[index]
+                                            ['logo'] ??
+                                        '',
                                     //  id:ServiceProviderList[index]['billProviderID']??'',
                                     //  amount: 100,
                                   ),
                                   onTap: () {
                                     Navigator.push(context, MaterialPageRoute(
                                         builder: (BuildContext context) {
-                                  //    return ProviderAdded();
+                                      //    return ProviderAdded();
                                       return BlocProvider<
                                           ServiceProviderBloc>.value(
                                         value: serviceProvierBloc,
                                         child:
-          
-                                        //     ServiceProviderPage(categoryName: title, categoryID: billCategoryID, user: user),
-                                             (ServiceProviderList[index]
-                                                   ['name']!.contains('credit card')==true)
-                                             ?
-                                        AddCreditCard(
-                                          uid: widget.user.id,
-                                          name: ServiceProviderList[index]
-                                                  ['name'] ??
-                                              '',
-                                          logo: ServiceProviderList[index]
-                                                  ['logo'] ??
-                                              '',
-                                          billProviderID:
-                                              ServiceProviderList[index]
-                                                      ['billProviderID'] ??
-                                                  '',
-                                        )
-                                        :
-          
-                                         (ServiceProviderList[index]
-                                                   ['name']!.contains('tax'))
-                                       ?
-                                         AddTax(
-                                           uid: widget.user.id,
-                                          name: ServiceProviderList[index]
-                                                  ['name'] ??
-                                              '',
-                                          logo: ServiceProviderList[index]
-                                                  ['logo'] ??
-                                              '',
-                                          billProviderID:
-                                              ServiceProviderList[index]
-                                                      ['billProviderID'] ??
-                                                  '',
-                                          billCategoryID:widget.categoryID,
-                                        )
-          
-                                           :(ServiceProviderList[index]
-                                                   ['name']!.contains('telecom'))
-                                               ?
-          
-                                             AddTelecom(
-                                               uid: widget.user.id,
-                                          name: ServiceProviderList[index]
-                                                  ['name'] ??
-                                              '',
-                                          logo: ServiceProviderList[index]
-                                                  ['logo'] ??
-                                              '',
-                                          billProviderID:
-                                              ServiceProviderList[index]
-                                                      ['billProviderID'] ??
-                                                  '',
-                                                  billCategoryID:widget.categoryID,
-                                        )
-                                              :(ServiceProviderList[index]
-                                                  ['name']!.contains('electricitybill'))
-                                               ?
-                                              AddElectricityBill(
-                                                uid: widget.user.id,
-                                          name: ServiceProviderList[index]
-                                                  ['name'] ??
-                                              '',
-                                          logo: ServiceProviderList[index]
-                                                  ['logo'] ??
-                                              '',
-                                          billProviderID:
-                                              ServiceProviderList[index]
-                                                      ['billProviderID'] ??
-                                                  '',
-                                                  billCategoryID:widget.categoryID,
-                                        )
-                                        
-                                         :
 
-                                      (ServiceProviderList[index]
-                                      ['name']!.contains('insurance'))
-                                      ?
-                                      AddInsurance(uid: widget.user.id, name: ServiceProviderList[index]
-                                                  ['name'] ??'', logo: ServiceProviderList[index] ['logo'] ??'', billCategoryID: widget.categoryID, billProviderID: ServiceProviderList[index]['billProviderID'] ??'')
-                                      :
-                                              AddBank(
-                                                uid: widget.user.id,
-                                          name: ServiceProviderList[index]
-                                                  ['name'] ??'',logo: ServiceProviderList[index] ['logo'] ??'',billProviderID: ServiceProviderList[index]['billProviderID'] ??'',
-                                                  billCategoryID:widget.categoryID,
-                                        )
-                                        ,
-          
+                                            //     ServiceProviderPage(categoryName: title, categoryID: billCategoryID, user: user),
+                                            (ServiceProviderList[index]['name']!
+                                                        .contains(
+                                                            'credit card') ==
+                                                    true)
+                                                ? AddCreditCard(
+                                                    uid: widget.user.id,
+                                                    name: ServiceProviderList[
+                                                            index]['name'] ??
+                                                        '',
+                                                    logo: ServiceProviderList[
+                                                            index]['logo'] ??
+                                                        '',
+                                                    billProviderID:
+                                                        ServiceProviderList[
+                                                                    index][
+                                                                'billProviderID'] ??
+                                                            '',
+                                                  )
+                                                : (ServiceProviderList[index]
+                                                            ['name']!
+                                                        .contains('tax'))
+                                                    ? AddTax(
+                                                        uid: widget.user.id,
+                                                        name:
+                                                            ServiceProviderList[
+                                                                        index]
+                                                                    ['name'] ??
+                                                                '',
+                                                        logo:
+                                                            ServiceProviderList[
+                                                                        index]
+                                                                    ['logo'] ??
+                                                                '',
+                                                        billProviderID:
+                                                            ServiceProviderList[
+                                                                        index][
+                                                                    'billProviderID'] ??
+                                                                '',
+                                                        billCategoryID:
+                                                            widget.categoryID,
+                                                      )
+                                                    : (ServiceProviderList[index]
+                                                                ['name']!
+                                                            .contains(
+                                                                'telecom'))
+                                                        ? AddTelecom(
+                                                            uid: widget.user.id,
+                                                            name: ServiceProviderList[
+                                                                        index]
+                                                                    ['name'] ??
+                                                                '',
+                                                            logo: ServiceProviderList[
+                                                                        index]
+                                                                    ['logo'] ??
+                                                                '',
+                                                            billProviderID:
+                                                                ServiceProviderList[
+                                                                            index]
+                                                                        [
+                                                                        'billProviderID'] ??
+                                                                    '',
+                                                            billCategoryID:
+                                                                widget
+                                                                    .categoryID,
+                                                          )
+                                                        : (ServiceProviderList[index]
+                                                                    ['name']!
+                                                                .contains(
+                                                                    'electricitybill'))
+                                                            ? AddElectricityBill(
+                                                                uid: widget
+                                                                    .user.id,
+                                                                name: ServiceProviderList[
+                                                                            index]
+                                                                        [
+                                                                        'name'] ??
+                                                                    '',
+                                                                logo: ServiceProviderList[
+                                                                            index]
+                                                                        [
+                                                                        'logo'] ??
+                                                                    '',
+                                                                billProviderID:
+                                                                    ServiceProviderList[index]
+                                                                            [
+                                                                            'billProviderID'] ??
+                                                                        '',
+                                                                billCategoryID:
+                                                                    widget
+                                                                        .categoryID,
+                                                              )
+                                                            : (ServiceProviderList[index]['name']!
+                                                                    .contains(
+                                                                        'insurance'))
+                                                                ? AddInsurance(
+                                                                    uid: widget
+                                                                        .user
+                                                                        .id,
+                                                                    name:
+                                                                        ServiceProviderList[index]['name'] ?? '',
+                                                                    logo: ServiceProviderList[index]['logo'] ?? '',
+                                                                    billCategoryID: widget.categoryID,
+                                                                    billProviderID: ServiceProviderList[index]['billProviderID'] ?? '')
+                                                                : AddBank(
+                                                                    uid: widget
+                                                                        .user
+                                                                        .id,
+                                                                    name: ServiceProviderList[index]
+                                                                            [
+                                                                            'name'] ??
+                                                                        '',
+                                                                    logo: ServiceProviderList[index]
+                                                                            [
+                                                                            'logo'] ??
+                                                                        '',
+                                                                    billProviderID:
+                                                                        ServiceProviderList[index]['billProviderID'] ??
+                                                                            '',
+                                                                    billCategoryID:
+                                                                        widget
+                                                                            .categoryID,
+                                                                  ),
                                       );
-          
+
                                       // return GraphScreen(graphData: widget.mp, user: widget.user);
                                     }));
                                   },
@@ -353,9 +390,10 @@ class _ServiceProviderPageState extends State<ServiceProviderPage> {
                             //  vertical: SizeConfig.heightMultiplier * 2.2,
                           ),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(SizeConfig.heightMultiplier * 2)),
-                            border: Border.all(color: AppTheme.main, width: 1.0),
+                            borderRadius: BorderRadius.all(Radius.circular(
+                                SizeConfig.heightMultiplier * 2)),
+                            border:
+                                Border.all(color: AppTheme.main, width: 1.0),
                           ),
                           height: SizeConfig.heightMultiplier * 15,
                           child: Center(

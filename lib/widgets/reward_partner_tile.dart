@@ -55,10 +55,10 @@ class rewardPartnerTile extends StatelessWidget {
               ? Stack(
                   children: [
                     //  SizedBox(height:SizeConfig.heightMultiplier * 2,),
-      
+
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8.7, left: 4.2, right: 4.2),
+                      padding: const EdgeInsets.only(
+                          top: 8.7, left: 4.2, right: 4.2),
                       child: Container(
                         child: Text(
                           //'Hot juicy chicken with KFC',
@@ -72,7 +72,7 @@ class rewardPartnerTile extends StatelessWidget {
                     ),
                     Positioned.fill(
                         top: SizeConfig.heightMultiplier * 9.1,
-      
+
                         // bottom:0,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 3.6),
@@ -103,8 +103,9 @@ class rewardPartnerTile extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 3.6),
                               child: Container(
                                 decoration: new BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(
-                                      SizeConfig.heightMultiplier * 2)),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          SizeConfig.heightMultiplier * 2)),
                                   image: new DecorationImage(
                                       fit: BoxFit.cover,
                                       alignment: FractionalOffset.topCenter,
@@ -115,7 +116,7 @@ class rewardPartnerTile extends StatelessWidget {
                                 ),
                               ),
                             )),
-      
+
                         Padding(
                           padding: const EdgeInsets.only(
                               top: 8.7, left: 4.2, right: 4.2),

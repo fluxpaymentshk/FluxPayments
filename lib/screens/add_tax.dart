@@ -20,7 +20,7 @@ class AddTax extends StatefulWidget {
   final String? uid;
   const AddTax(
       {required this.uid,
-        required this.name,
+      required this.name,
       required this.logo,
       required this.billCategoryID,
       required this.billProviderID,
@@ -177,7 +177,7 @@ class _AddTaxState extends State<AddTax> {
               ),
 
               BlocListener<ServiceProviderBloc, ServiceProviderState>(
-                child:Container(),
+                child: Container(),
                 listener: (context, state) {
                   print('ggbhaii');
                   print(state.runtimeType.toString());
