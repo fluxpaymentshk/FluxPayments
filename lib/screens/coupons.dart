@@ -28,6 +28,7 @@ import 'package:flux_payments/services/database_lambda.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_drawing/path_drawing.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import './animation.dart';
@@ -143,6 +144,8 @@ class _CouponsState extends State<Coupons> {
     print(userdetails.userSub); 
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   }
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
@@ -181,384 +184,401 @@ class _CouponsState extends State<Coupons> {
           return SafeArea(
             child: Scaffold(
               backgroundColor: Colors.white,
-              body: SingleChildScrollView(
-                padding:
-                    EdgeInsets.symmetric(vertical: 0, horizontal: width * 0.04),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // ExpandedSection(
-                    //   expand: expand,
-                    //   child:
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: fluxLogo(context),
-                        ),
-                        // Material(
-                        //   elevation: 5,
-                        //   child:
-                        Container(
-                          height: height * 0.06,
-                          width: width * 0.91,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: width * 0.01,
-                              vertical: height * 0.002),
-                          margin: EdgeInsets.fromLTRB(0, height * 0.01, 0, 0),
-                          decoration: BoxDecoration(
-                            boxShadow:
-                                //kElevationToShadow[4],
-                                [
-                              BoxShadow(
-                                color: Colors.grey.shade500,
-                                blurRadius: width * 0.005,
-                                spreadRadius: width * 0.0005,
-                                offset: Offset(width * 0.007, height * 0.005),
-                              ),
-                            ],
-                            border: Border.all(
-                              color: color1,
-                            ),
-                            borderRadius: BorderRadius.circular(width * 0.03),
-                            color: color,
+              body: SmartRefresher(
+  // RefreshController _refreshController =
+  //     RefreshController(initialRefresh: false);
+                enablePullDown: true,
+                enablePullUp: true,
+                
+                // header: WaterDropHeader(),
+                controller: _refreshController,
+                onRefresh: () {
+
+                  setState(() {
+                    
+                  });
+                },
+                onLoading: () {
+                },
+                child: SingleChildScrollView(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 0, horizontal: width * 0.04),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ExpandedSection(
+                      //   expand: expand,
+                      //   child:
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: fluxLogo(context),
                           ),
-                          // child: TextField(
-                          //   decoration: InputDecoration(
-                          //     hintStyle: TextStyle(
-                          //       color: color1,
-                          //       fontSize: height * 0.024,
-                          //     ),
-                          //     borderRadius: BorderRadius.circular(width * 0.03),
-                          //     color: color,
-                          //   ),
-                          child: GestureDetector(
-                            onTap: () {
-                              print(
-                                  "_+++__________++++++++++++++_________${widget.databaseRepo}");
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => MultiBlocProvider(
-                                    providers: [
-                                      BlocProvider<CouponsSearchBloc>(
-                                        create: (_) => CouponsSearchBloc(
-                                            _couponSearchRepository),
-                                      ),
-                                      BlocProvider(
-                                        create: (_) => FluxPointsBloc(
-                                          widget.databaseRepo!,
+                          // Material(
+                          //   elevation: 5,
+                          //   child:
+                          Container(
+                            height: height * 0.06,
+                            width: width * 0.91,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.01,
+                                vertical: height * 0.002),
+                            margin: EdgeInsets.fromLTRB(0, height * 0.01, 0, 0),
+                            decoration: BoxDecoration(
+                              boxShadow:
+                                  //kElevationToShadow[4],
+                                  [
+                                BoxShadow(
+                                  color: Colors.grey.shade500,
+                                  blurRadius: width * 0.005,
+                                  spreadRadius: width * 0.0005,
+                                  offset: Offset(width * 0.007, height * 0.005),
+                                ),
+                              ],
+                              border: Border.all(
+                                color: color1,
+                              ),
+                              borderRadius: BorderRadius.circular(width * 0.03),
+                              color: color,
+                            ),
+                            // child: TextField(
+                            //   decoration: InputDecoration(
+                            //     hintStyle: TextStyle(
+                            //       color: color1,
+                            //       fontSize: height * 0.024,
+                            //     ),
+                            //     borderRadius: BorderRadius.circular(width * 0.03),
+                            //     color: color,
+                            //   ),
+                            child: GestureDetector(
+                              onTap: () {
+                                print(
+                                    "_+++__________++++++++++++++_________${widget.databaseRepo}");
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => MultiBlocProvider(
+                                      providers: [
+                                        BlocProvider<CouponsSearchBloc>(
+                                          create: (_) => CouponsSearchBloc(
+                                              _couponSearchRepository),
                                         ),
+                                        BlocProvider(
+                                          create: (_) => FluxPointsBloc(
+                                            widget.databaseRepo!,
+                                          ),
+                                        ),
+                                        BlocProvider.value(
+                                          value: favoritesBloc,
+                                        ),
+                                      ],
+                                      child: RewardsSearchScreen(
+                                        uid :userBloc.getUserID,
+                                        categories: categories,
+                                        favorites: fav,
                                       ),
-                                      BlocProvider.value(
-                                        value: favoritesBloc,
-                                      ),
-                                    ],
-                                    child: RewardsSearchScreen(
-                                      uid :userBloc.getUserID,
-                                      categories: categories,
-                                      favorites: fav,
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                            child: TextField(
-                              enabled: false,
-                              decoration: InputDecoration(
-                                hintStyle: TextStyle(
-                                  color: color1,
-                                  fontSize: height * 0.024,
-                                ),
-                                hintText: "Search for my favorite brand",
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  size: height * 0.045,
-                                  color: color1,
-                                ),
-                                border: InputBorder.none,
-                              ),
-                            ),
-                            //border: InputBorder.none,
-                          ),
-                        ),
-                        //),
-                        //),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        Container(
-                          child: Text(
-                            "Category",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: height * 0.03,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.015,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            catagories(
-                              "Food",
-                              "assets/images/food.svg",
-                              height,
-                              width,
-                            ),
-                            catagories(
-                              "Fashion",
-                              "assets/images/fashion.svg",
-                              height,
-                              width,
-                            ),
-                            catagories(
-                              "Fitness",
-                              "assets/images/fitness.svg",
-                              height,
-                              width,
-                            ),
-                            catagories(
-                              "Entertainment",
-                              "assets/images/entertainment.svg",
-                              height,
-                              width,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: height * 0.015,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            catagories(
-                              "Museum",
-                              "assets/images/museum.svg",
-                              height,
-                              width,
-                            ),
-                            catagories(
-                              "Logistics",
-                              "assets/images/logistics.svg",
-                              height,
-                              width,
-                            ),
-                            catagories(
-                              "Travel",
-                              "assets/images/travel.svg",
-                              height,
-                              width,
-                            ),
-                            catagories(
-                              "Grocery",
-                              "assets/images/grocery.svg",
-                              height,
-                              width,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: Text(
-                                "Favorites",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: height * 0.03,
-                                  fontWeight: FontWeight.bold,
+                                );
+                              },
+                              child: TextField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  hintStyle: TextStyle(
+                                    color: color1,
+                                    fontSize: height * 0.024,
+                                  ),
+                                  hintText: "Search for my favorite brand",
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    size: height * 0.045,
+                                    color: color1,
+                                  ),
+                                  border: InputBorder.none,
                                 ),
                               ),
+                              //border: InputBorder.none,
                             ),
-                            // IconButton(
-                            //     onPressed: () {
-                            //       setState(() {
-                            //         loadAllFav = !loadAllFav;
-                            //       });
-                            //     },
-                            //     icon: Icon(loadAllFav
-                            //         ? Icons.upload
-                            //         : Icons.download))
-                          ],
-                        ),
-                        SizedBox(
-                          height: height * 0.018,
-                        ),
-                        BlocBuilder<FavoritesBloc, FavoritesState>(
-                          builder: (context, state) {
-                            if (state is LoadingFavorites) {
-                              print("State is LoadindFavorites");
-                              return CircularProgressIndicator(
-                                strokeWidth: 5.0,
+                          ),
+                          //),
+                          //),
+                          SizedBox(
+                            height: height * 0.02,
+                          ),
+                          Container(
+                            child: Text(
+                              "Category",
+                              style: TextStyle(
                                 color: Colors.black,
-                                //color: AppTheme.main,
-                              );
-                            } else if (state is LoadedFavorites) {
-                              print("State is LoadedFavorites");
-                              fav = state.favorites;
-                              if (fav.length < 10) {
-                                fav = fav.sublist(0, fav.length);
-                              } else {
-                                fav = fav.sublist(0, 10);
-                              }
-                              return
-                                  //fav.length == 0 ? Text("Please mark some favorites !") :
-                                  Container(
-                                //height: fav.length > 5 && loadAllFav ? height * 0.318 : height * 0.21,
-                                height: fav.length > 5 && loadAllFav
-                                    ? height * 0.259
-                                    : height * 0.148,
-                                padding: EdgeInsets.fromLTRB(
-                                    width * 0.01,
-                                    height * 0.016,
-                                    width * 0.01,
-                                    height * 0.01),
-                                decoration: BoxDecoration(
-                                  color: color,
-                                  borderRadius:
-                                      BorderRadius.circular(width * 0.03),
-                                ),
-                                child: Column(
-                                  children: [
-                                    favContainer(0, min(fav.length, 5)),
-                                    SizedBox(
-                                      height: height * 0.01,
-                                    ),
-                                    if (fav.length >= 5 && loadAllFav)
-                                      favContainer(5, min(fav.length, 10)),
-                                    // IconButton(onPressed: (){
-                                    //   setState(() {
-                                    //     loadAllFav =! loadAllFav;
-                                    //   });
-                                    // }, icon: Icon(Icons.file_upload))
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return Container(
-                                child: Text("No Favorites found !"
-                                    //(state as ErrorFavorites).message
-                                    ),
-                              );
-                            }
-                          },
-                        ),
-
-                        SizedBox(
-                          height: height * 0.018,
-                        ),
-                      ],
-                    ),
-                    //),
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                    Container(
-                      child: Text(
-                        "My Coupon",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: height * 0.03,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    if (expand)
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                    BlocBuilder<CouponsBloc, CouponsState>(
-                        builder: (context, state) {
-                      if (state is LoadingCoupons) {
-                        print("State is LoadingCoupons");
-                        return CircularProgressIndicator(
-                          strokeWidth: 5.0,
-                          color: Colors.black,
-                          //color: AppTheme.main,
-                        );
-                      } else if (state is LoadedCoupons) {
-                        print("State is LoadedCoupons");
-                        print(state.coupons);
-                        coupons = state.coupons;
-                        return Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          height: min(height * 0.25 * 0.55 * coupons.length,
-                              height * 0.3),
-                          //! Change height
-                          //height: !expand ? height * 0.2 : height * 0.18 * 14 * 0.7 + height * 0.18,
-                          //height: expand ? height * 0.3 : height,
-                          child: Flex(
-                            direction: Axis.vertical,
+                                fontSize: height * 0.03,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.015,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(
-                                  child: ListView.builder(
-                                      controller: controller,
-                                      itemCount: 5,
-                                      physics: BouncingScrollPhysics(),
-                                      itemBuilder: (context, index) {
-                                        double scale = 1.0;
-                                        if (topContainer > 0.5) {
-                                          scale = index + 0.5 - topContainer;
-                                          if (scale < 0) {
-                                            scale = 0;
-                                          } else if (scale > 1) {
-                                            scale = 1;
-                                          }
-                                        }
-                                        return Opacity(
-                                          opacity: scale,
-                                          child: Transform(
-                                            transform: Matrix4.identity()
-                                              ..scale(scale, scale),
-                                            alignment: Alignment.bottomCenter,
-                                            child: Align(
-                                              heightFactor: 0.55,
-                                              alignment: Alignment.topCenter,
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              CouponsList(
-                                                                coupons,
-                                                              )));
-                                                },
-                                                child: CouponCard(
-                                                    coupons[index],
-                                                    colors[index % 5]),
-                                              ),
-                                              // child: card(
-                                              //   coupons[index],
-                                              //   colors[index%5],
-                                              //   height,
-                                              //   width,
-                                              // ),
-                                            ),
-                                          ),
-                                        );
-                                      })),
+                              catagories(
+                                "Food",
+                                "assets/images/food.svg",
+                                height,
+                                width,
+                              ),
+                              catagories(
+                                "Fashion",
+                                "assets/images/fashion.svg",
+                                height,
+                                width,
+                              ),
+                              catagories(
+                                "Fitness",
+                                "assets/images/fitness.svg",
+                                height,
+                                width,
+                              ),
+                              catagories(
+                                "Entertainment",
+                                "assets/images/entertainment.svg",
+                                height,
+                                width,
+                              ),
                             ],
                           ),
-                        );
-                      } else {
-                        return Container(
-                          child: Text("No Coupons found !"
-                                    //(state as ErrorFavorites).message
-                                    ),
-                        );
-                      }
-                    }),
-                    SizedBox(
-                      height: height * 0.01,
-                    )
-                  ],
+                          SizedBox(
+                            height: height * 0.015,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              catagories(
+                                "Museum",
+                                "assets/images/museum.svg",
+                                height,
+                                width,
+                              ),
+                              catagories(
+                                "Logistics",
+                                "assets/images/logistics.svg",
+                                height,
+                                width,
+                              ),
+                              catagories(
+                                "Travel",
+                                "assets/images/travel.svg",
+                                height,
+                                width,
+                              ),
+                              catagories(
+                                "Grocery",
+                                "assets/images/grocery.svg",
+                                height,
+                                width,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.02,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                child: Text(
+                                  "Favorites",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: height * 0.03,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              // IconButton(
+                              //     onPressed: () {
+                              //       setState(() {
+                              //         loadAllFav = !loadAllFav;
+                              //       });
+                              //     },
+                              //     icon: Icon(loadAllFav
+                              //         ? Icons.upload
+                              //         : Icons.download))
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.018,
+                          ),
+                          BlocBuilder<FavoritesBloc, FavoritesState>(
+                            builder: (context, state) {
+                              if (state is LoadingFavorites) {
+                                print("State is LoadindFavorites");
+                                return CircularProgressIndicator(
+                                  strokeWidth: 5.0,
+                                  color: Colors.black,
+                                  //color: AppTheme.main,
+                                );
+                              } else if (state is LoadedFavorites) {
+                                print("State is LoadedFavorites");
+                                fav = state.favorites;
+                                if (fav.length < 10) {
+                                  fav = fav.sublist(0, fav.length);
+                                } else {
+                                  fav = fav.sublist(0, 10);
+                                }
+                                return
+                                    //fav.length == 0 ? Text("Please mark some favorites !") :
+                                    Container(
+                                  //height: fav.length > 5 && loadAllFav ? height * 0.318 : height * 0.21,
+                                  height: fav.length > 5 && loadAllFav
+                                      ? height * 0.259
+                                      : height * 0.148,
+                                  padding: EdgeInsets.fromLTRB(
+                                      width * 0.01,
+                                      height * 0.016,
+                                      width * 0.01,
+                                      height * 0.01),
+                                  decoration: BoxDecoration(
+                                    color: color,
+                                    borderRadius:
+                                        BorderRadius.circular(width * 0.03),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      favContainer(0, min(fav.length, 5)),
+                                      SizedBox(
+                                        height: height * 0.01,
+                                      ),
+                                      if (fav.length >= 5 && loadAllFav)
+                                        favContainer(5, min(fav.length, 10)),
+                                      // IconButton(onPressed: (){
+                                      //   setState(() {
+                                      //     loadAllFav =! loadAllFav;
+                                      //   });
+                                      // }, icon: Icon(Icons.file_upload))
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return Container(
+                                  child: Text("No Favorites found !"
+                                      //(state as ErrorFavorites).message
+                                      ),
+                                );
+                              }
+                            },
+                          ),
+              
+                          SizedBox(
+                            height: height * 0.018,
+                          ),
+                        ],
+                      ),
+                      //),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      Container(
+                        child: Text(
+                          "My Coupon",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: height * 0.03,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      if (expand)
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                      BlocBuilder<CouponsBloc, CouponsState>(
+                          builder: (context, state) {
+                        if (state is LoadingCoupons) {
+                          print("State is LoadingCoupons");
+                          return CircularProgressIndicator(
+                            strokeWidth: 5.0,
+                            color: Colors.black,
+                            //color: AppTheme.main,
+                          );
+                        } else if (state is LoadedCoupons) {
+                          print("State is LoadedCoupons");
+                          print(state.coupons);
+                          coupons = state.coupons;
+                          return Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            height: min(height * 0.25 * 0.55 * coupons.length,
+                                height * 0.3),
+                            //! Change height
+                            //height: !expand ? height * 0.2 : height * 0.18 * 14 * 0.7 + height * 0.18,
+                            //height: expand ? height * 0.3 : height,
+                            child: Flex(
+                              direction: Axis.vertical,
+                              children: [
+                                Expanded(
+                                    child: ListView.builder(
+                                        controller: controller,
+                                        itemCount: 5,
+                                        physics: BouncingScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          double scale = 1.0;
+                                          if (topContainer > 0.5) {
+                                            scale = index + 0.5 - topContainer;
+                                            if (scale < 0) {
+                                              scale = 0;
+                                            } else if (scale > 1) {
+                                              scale = 1;
+                                            }
+                                          }
+                                          return Opacity(
+                                            opacity: scale,
+                                            child: Transform(
+                                              transform: Matrix4.identity()
+                                                ..scale(scale, scale),
+                                              alignment: Alignment.bottomCenter,
+                                              child: Align(
+                                                heightFactor: 0.55,
+                                                alignment: Alignment.topCenter,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                CouponsList(
+                                                                  coupons,
+                                                                )));
+                                                  },
+                                                  child: CouponCard(
+                                                      coupons[index],
+                                                      colors[index % 5]),
+                                                ),
+                                                // child: card(
+                                                //   coupons[index],
+                                                //   colors[index%5],
+                                                //   height,
+                                                //   width,
+                                                // ),
+                                              ),
+                                            ),
+                                          );
+                                        })),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return Container(
+                            child: Text("No Coupons found !"
+                                      //(state as ErrorFavorites).message
+                                      ),
+                          );
+                        }
+                      }),
+                      SizedBox(
+                        height: height * 0.01,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

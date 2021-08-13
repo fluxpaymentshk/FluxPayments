@@ -83,7 +83,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   int _selectedPage = 1;
 
-  PageController _pageController = PageController();
+  PageController _pageController = PageController(initialPage: 1);
   final controller = SheetController();
 
   @override
@@ -93,16 +93,21 @@ class _NavigatorPageState extends State<NavigatorPage> {
       headerHeight = SizeConfig.heightMultiplier * 11;
 
       return Scaffold(
-        floatingActionButton:isOpened?null: Container(
-          margin:EdgeInsets.only(top:MediaQuery.of(context).size.height*0.8,left:MediaQuery.of(context).size.width*0.385,),
-          child: TextButton(
-            child: ImageIcon(
-              AssetImage("assets/icons/up_icon.png"),
-              size: 20,
-            ),
-            onPressed: null,
-          ),
-        ),
+        floatingActionButton: isOpened
+            ? null
+            : Container(
+                margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.8,
+                  left: MediaQuery.of(context).size.width * 0.385,
+                ),
+                child: TextButton(
+                  child: ImageIcon(
+                    AssetImage("assets/icons/up_icon.png"),
+                    size: 20,
+                  ),
+                  onPressed: null,
+                ),
+              ),
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         bottomNavigationBar: SafeArea(
           child: SlidingSheet(
@@ -144,6 +149,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
                 children:
                     _pages.map<Widget>((Tuple2 page) => page.item2).toList(),
                 onPageChanged: (index) {
+                  log("qqqqp$index");
                   setState(() {
                     _selectedPage = index;
                   });
@@ -189,6 +195,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   }
 
   Widget _bottomNavigationBarWidget(BuildContext context) {
+    log("qqqqw$_selectedPage");
     return BottomNavigationBar(
       backgroundColor: Color(0xffF6F6FF),
       items: const [
@@ -255,6 +262,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
       ],
       currentIndex: _selectedPage,
       onTap: (index) {
+        log("qqqq$index");
         setState(
           () {
             _selectedPage = index;

@@ -21,6 +21,7 @@ import 'package:flux_payments/widgets/flux_logo.dart';
 import 'package:flux_payments/widgets/getCardType.dart';
 import 'package:flux_payments/widgets/gradient_button.dart';
 import 'package:flux_payments/widgets/hello_widget.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -60,6 +61,8 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
   ItemScrollController _scrollController = ItemScrollController();
   var bankAccController = ScrollController();
   var mobileBankingController = ScrollController();
+              RefreshController _refreshController =
+                  RefreshController(initialRefresh: false);
   var cardsBloc;
   List<Color> cardBgColors = [
     Colors.blue.shade900,
@@ -81,142 +84,356 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
       backgroundColor: Colors.white,
       floatingActionButton: backButton(context, "payNowBackButton"),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      body: ListView(
-        padding: EdgeInsets.all(16),
-        children: [
-          fluxLogo(context),
-          Container(
-            height: SizeConfig.heightMultiplier * 12,
-            width: SizeConfig.widthMultiplier * 97,
-            //  decoration: BoxDecoration(color: AppTheme.main),
-            child: Row(
-              //  mainAxisSize:
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(SizeConfig.heightMultiplier * 2),
-                  child: Center(
-                    child: Container(
-                      width: SizeConfig.widthMultiplier * 40,
-                      height: SizeConfig.heightMultiplier * 10,
-                      child: FittedBox(
-                        child: Text(
-                          'Hello ${widget.userName}!',
-                          style: AppTheme.display1,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Padding(
-                  padding: EdgeInsets.all(SizeConfig.heightMultiplier * 2.0),
-                  child: Container(
-                    // height: SizeConfig.heightMultiplier*12,
-                    // width: SizeConfig.widthMultiplier*100,
+      body: SmartRefresher(
+              // RefreshController _refreshController =
+              //     RefreshController(initialRefresh: false);
+              enablePullDown: true,
+              enablePullUp: true,
 
-                    child: Image.asset("assets/images/av.png"),
-                    //  child:NetworkImage(state.user.);
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.aspectRatio * 370,
-            child: Container(
-              height: MediaQuery.of(context).size.aspectRatio * 370,
-              child: widget.cards!.length == 0
-                  ? InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => BlocProvider<CardsBloc>.value(
-                              value: cardsBloc,
-                              child: AddCardNewScreen(uid: widget.uid),
-                            ),
-                          ),
-                        );
-                      },
+              // header: WaterDropHeader(),
+              controller: _refreshController,
+              onRefresh: () {
+                // setState(() {
+                  
+                // });
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider<CardsBloc>.value(
+                        value: cardsBloc,
+                        child: super.widget,
+                      ),
+                    ));
+                // setState(() {
+
+                // });
+              },
+              onLoading: () {},
+        child: ListView(
+          padding: EdgeInsets.all(16),
+          children: [
+            fluxLogo(context),
+            Container(
+              height: SizeConfig.heightMultiplier * 12,
+              width: SizeConfig.widthMultiplier * 97,
+              //  decoration: BoxDecoration(color: AppTheme.main),
+              child: Row(
+                //  mainAxisSize:
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(SizeConfig.heightMultiplier * 2),
+                    child: Center(
                       child: Container(
-                        child: Stack(
-                          children: [
-                            CreditCardWidget(
-                              cardNumber: "",
-                              expiryDate: " ",
-                              cardHolderName: 'Click to add new card',
-                              cvvCode: '',
-                              showBackView: false,
-                              cardBgColor:
-                                  cardBgColors[cardBgColors.length - 1],
-                              obscureCardNumber: true,
-                              obscureCardCvv: true,
-                              width:
-                                  MediaQuery.of(context).size.aspectRatio * 500,
-                              animationDuration: Duration(milliseconds: 1000),
-                            ),
-                          ],
+                        width: SizeConfig.widthMultiplier * 40,
+                        height: SizeConfig.heightMultiplier * 10,
+                        child: FittedBox(
+                          child: Text(
+                            'Hello ${widget.userName}!',
+                            style: AppTheme.display1,
+                          ),
                         ),
                       ),
-                    )
-                  : ScrollablePositionedList.builder(
-                      itemCount: widget.cards!.length,
-                      itemBuilder: (context, index) => Container(
-                        child: CreditCardWidget(
-                          cardNumber: widget.cards![index].cardNumber!,
-                          expiryDate: widget.cards![index].expiryDate!,
-                          cardType: getCardType(widget.cards![index].cardBrand),
-                          cardHolderName: widget.cards![index].holderName!,
-                          cvvCode: widget.cards![index].cvv.toString(),
-                          showBackView: false,
-                          cardBgColor:
-                              cardBgColors[index % cardBgColors.length],
-                          obscureCardNumber: true,
-                          obscureCardCvv: true,
-                          width: MediaQuery.of(context).size.aspectRatio * 500,
-                          animationDuration: Duration(milliseconds: 1000),
-                        ),
-                      ),
-                      itemScrollController: _scrollController,
-                      reverse: false,
-                      scrollDirection: Axis.horizontal,
                     ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(
-              "Select Payment Method",
-              style: GoogleFonts.montserrat(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+                  ),
+                  Spacer(),
+                  Padding(
+                    padding: EdgeInsets.all(SizeConfig.heightMultiplier * 2.0),
+                    child: Container(
+                      // height: SizeConfig.heightMultiplier*12,
+                      // width: SizeConfig.widthMultiplier*100,
+      
+                      child: Image.asset("assets/images/av.png"),
+                      //  child:NetworkImage(state.user.);
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          SingleChildScrollView(
-            child: Container(
-              height: mobiletapped
-                  ? MediaQuery.of(context).size.height * 1.2
-                  : cardTapped
-                      ? MediaQuery.of(context).size.height * 2
-                      : MediaQuery.of(context).size.height * 1.1,
-              width: double.infinity,
-              child: Column(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.13,
-                    width: double.infinity,
-                    child: InkWell(
+            Container(
+              height: MediaQuery.of(context).size.aspectRatio * 370,
+              child: Container(
+                height: MediaQuery.of(context).size.aspectRatio * 370,
+                child: widget.cards!.length == 0
+                    ? InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => BlocProvider<CardsBloc>.value(
+                                value: cardsBloc,
+                                child: AddCardNewScreen(uid: widget.uid),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          child: Stack(
+                            children: [
+                              CreditCardWidget(
+                                cardNumber: "",
+                                expiryDate: " ",
+                                cardHolderName: 'Click to add new card',
+                                cvvCode: '',
+                                showBackView: false,
+                                cardBgColor:
+                                    cardBgColors[cardBgColors.length - 1],
+                                obscureCardNumber: true,
+                                obscureCardCvv: true,
+                                width:
+                                    MediaQuery.of(context).size.aspectRatio * 500,
+                                animationDuration: Duration(milliseconds: 1000),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : ScrollablePositionedList.builder(
+                        itemCount: widget.cards!.length,
+                        itemBuilder: (context, index) => Container(
+                          child: CreditCardWidget(
+                            cardNumber: widget.cards![index].cardNumber!,
+                            expiryDate: widget.cards![index].expiryDate!,
+                            cardType: getCardType(widget.cards![index].cardBrand),
+                            cardHolderName: widget.cards![index].holderName!,
+                            cvvCode: widget.cards![index].cvv.toString(),
+                            showBackView: false,
+                            cardBgColor:
+                                cardBgColors[index % cardBgColors.length],
+                            obscureCardNumber: true,
+                            obscureCardCvv: true,
+                            width: MediaQuery.of(context).size.aspectRatio * 500,
+                            animationDuration: Duration(milliseconds: 1000),
+                          ),
+                        ),
+                        itemScrollController: _scrollController,
+                        reverse: false,
+                        scrollDirection: Axis.horizontal,
+                      ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                "Select Payment Method",
+                style: GoogleFonts.montserrat(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              child: Container(
+                height: mobiletapped
+                    ? MediaQuery.of(context).size.height * 1.2
+                    : cardTapped
+                        ? MediaQuery.of(context).size.height * 2
+                        : MediaQuery.of(context).size.height * 1.1,
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.13,
+                      width: double.infinity,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            cardTapped = !cardTapped;
+                            mobiletapped = false;
+                          });
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.13,
+                          width: double.infinity,
+                          child: Card(
+                            color: cardTapped ? Color(0xffE9E9FF) : Colors.white,
+                            elevation: 12,
+                            margin: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height * 0.02),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(color: AppTheme.main),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: MediaQuery.of(context).size.width * 0.07),
+                              child: Row(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset("assets/icons/card.png"),
+                                  Text(
+                                    "  Credit card/Debit Card",
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 15,
+                                      color: mobiletapped
+                                          ? Colors.grey.shade600
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    ExpandWidget(
+                      expand: cardTapped,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.07,
+                          right: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color(0xffE9E9FF),
+                          border: Border(
+                            left: BorderSide(color: AppTheme.main),
+                            right: BorderSide(color: AppTheme.main),
+                            bottom: BorderSide(color: AppTheme.main),
+                          ),
+                        ),
+                        height: MediaQuery.of(context).size.height * 0.45,
+                        child: widget.cards!.length == 0
+                            ? ListView(
+                                children: [
+                                  Card(
+                                    color: Color(0xffE9E9FF),
+                                    elevation: 4,
+                                    child: ListTile(
+                                      title: Text("Add New Card"),
+                                      trailing: Radio<int>(
+                                        activeColor: AppTheme.main,
+                                        value: 1,
+                                        groupValue: singleRadioValue,
+                                        // toggleable: true,
+                                        onChanged: (v) {
+                                          setState(() {
+                                            singleRadioValue = v;
+                                            log("$singleRadioValue");
+                                          });
+                                          // log("${bankAccController.offset}");
+                                          // bankAccController.jumpTo(
+                                          //     bankAccController.offset + 70);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  ExpandWidget(
+                                    expand: singleRadioValue == 1
+                                        ? true
+                                        : false,
+                                    child: expandNewCardDetails(),
+                                  ),
+                                ],
+                              )
+                            : ListView.builder(
+                                controller: bankAccController,
+                                padding: EdgeInsets.only(bottom: 16),
+                                itemCount: widget.cards?.length,
+                                itemBuilder: (context, i) {
+                                  if (i == widget.cards!.length - 1) {
+                                    return Column(
+                                      children: [
+                                        Card(
+                                          color: Color(0xffE9E9FF),
+                                          elevation: 4,
+                                          child: ListTile(
+                                            title: Text("Card Number: " +
+                                                widget.cards![i].cardNumber!),
+                                            trailing: Radio<int>(
+                                              activeColor: AppTheme.main,
+                                              value: i,
+                                              groupValue: radioValue,
+                                              // toggleable: true,
+                                              onChanged: (v) {
+                                                setState(() {
+                                                  radioValue = v;
+                                                  log("$radioValue");
+                                                });
+                                                _scrollController.scrollTo(
+                                                  index: i,
+                                                  duration: Duration(
+                                                    milliseconds: 200,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        Card(
+                                          color: Color(0xffE9E9FF),
+                                          elevation: 4,
+                                          child: ListTile(
+                                            title: Text("Add New Card"),
+                                            trailing: Radio<int>(
+                                              activeColor: AppTheme.main,
+                                              value: i + 1,
+                                              groupValue: radioValue,
+                                              // toggleable: true,
+                                              onChanged: (v) {
+                                                setState(() {
+                                                  radioValue = v;
+                                                  log("$radioValue");
+                                                });
+                                                log("${bankAccController.offset}");
+                                                bankAccController.jumpTo(
+                                                    bankAccController.offset +
+                                                        70);
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        ExpandWidget(
+                                          expand:
+                                              radioValue == widget.cards!.length
+                                                  ? true
+                                                  : false,
+                                          child: expandNewCardDetails(),
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                  return Card(
+                                    color: Color(0xffE9E9FF),
+                                    elevation: 4,
+                                    child: ListTile(
+                                      title: Text("Card Number: " +
+                                          widget.cards![i].cardNumber!),
+                                      trailing: Radio<int>(
+                                        activeColor: AppTheme.main,
+                                        value: i,
+                                        groupValue: radioValue,
+                                        // toggleable: true,
+                                        onChanged: (v) {
+                                          setState(() {
+                                            radioValue = v;
+                                            log("$radioValue");
+                                          });
+                                          _scrollController.scrollTo(
+                                            index: i,
+                                            duration: Duration(
+                                              milliseconds: 200,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                }),
+                      ),
+                    ),
+                    InkWell(
                       onTap: () {
                         setState(() {
-                          cardTapped = !cardTapped;
-                          mobiletapped = false;
+                          mobiletapped = !mobiletapped;
+                          cardTapped = false;
                         });
                       },
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.13,
                         width: double.infinity,
                         child: Card(
-                          color: cardTapped ? Color(0xffE9E9FF) : Colors.white,
+                          color: mobiletapped ? Color(0xffE9E9FF) : Colors.white,
                           elevation: 12,
                           margin: EdgeInsets.only(
                               top: MediaQuery.of(context).size.height * 0.02),
@@ -232,12 +449,14 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                             child: Row(
                               // mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset("assets/icons/card.png"),
+                                Image.asset(
+                                  "assets/icons/mobile.png",
+                                ),
                                 Text(
-                                  "  Credit card/Debit Card",
+                                  "  Mobile banking transfer",
                                   style: GoogleFonts.montserrat(
                                     fontSize: 15,
-                                    color: mobiletapped
+                                    color: cardTapped
                                         ? Colors.grey.shade600
                                         : Colors.black,
                                   ),
@@ -248,228 +467,38 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                         ),
                       ),
                     ),
-                  ),
-                  ExpandWidget(
-                    expand: cardTapped,
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.07,
-                        right: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color(0xffE9E9FF),
-                        border: Border(
-                          left: BorderSide(color: AppTheme.main),
-                          right: BorderSide(color: AppTheme.main),
-                          bottom: BorderSide(color: AppTheme.main),
-                        ),
-                      ),
-                      height: MediaQuery.of(context).size.height * 0.45,
-                      child: widget.cards!.length == 0
-                          ? ListView(
-                              children: [
-                                Card(
-                                  color: Color(0xffE9E9FF),
-                                  elevation: 4,
-                                  child: ListTile(
-                                    title: Text("Add New Card"),
-                                    trailing: Radio<int>(
-                                      activeColor: AppTheme.main,
-                                      value: 1,
-                                      groupValue: singleRadioValue,
-                                      // toggleable: true,
-                                      onChanged: (v) {
-                                        setState(() {
-                                          singleRadioValue = v;
-                                          log("$singleRadioValue");
-                                        });
-                                        // log("${bankAccController.offset}");
-                                        // bankAccController.jumpTo(
-                                        //     bankAccController.offset + 70);
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                ExpandWidget(
-                                  expand: singleRadioValue == 1
-                                      ? true
-                                      : false,
-                                  child: expandNewCardDetails(),
-                                ),
-                              ],
-                            )
-                          : ListView.builder(
-                              controller: bankAccController,
-                              padding: EdgeInsets.only(bottom: 16),
-                              itemCount: widget.cards?.length,
-                              itemBuilder: (context, i) {
-                                if (i == widget.cards!.length - 1) {
-                                  return Column(
-                                    children: [
-                                      Card(
-                                        color: Color(0xffE9E9FF),
-                                        elevation: 4,
-                                        child: ListTile(
-                                          title: Text("Card Number: " +
-                                              widget.cards![i].cardNumber!),
-                                          trailing: Radio<int>(
-                                            activeColor: AppTheme.main,
-                                            value: i,
-                                            groupValue: radioValue,
-                                            // toggleable: true,
-                                            onChanged: (v) {
-                                              setState(() {
-                                                radioValue = v;
-                                                log("$radioValue");
-                                              });
-                                              _scrollController.scrollTo(
-                                                index: i,
-                                                duration: Duration(
-                                                  milliseconds: 200,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                      Card(
-                                        color: Color(0xffE9E9FF),
-                                        elevation: 4,
-                                        child: ListTile(
-                                          title: Text("Add New Card"),
-                                          trailing: Radio<int>(
-                                            activeColor: AppTheme.main,
-                                            value: i + 1,
-                                            groupValue: radioValue,
-                                            // toggleable: true,
-                                            onChanged: (v) {
-                                              setState(() {
-                                                radioValue = v;
-                                                log("$radioValue");
-                                              });
-                                              log("${bankAccController.offset}");
-                                              bankAccController.jumpTo(
-                                                  bankAccController.offset +
-                                                      70);
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                      ExpandWidget(
-                                        expand:
-                                            radioValue == widget.cards!.length
-                                                ? true
-                                                : false,
-                                        child: expandNewCardDetails(),
-                                      ),
-                                    ],
-                                  );
-                                }
-                                return Card(
-                                  color: Color(0xffE9E9FF),
-                                  elevation: 4,
-                                  child: ListTile(
-                                    title: Text("Card Number: " +
-                                        widget.cards![i].cardNumber!),
-                                    trailing: Radio<int>(
-                                      activeColor: AppTheme.main,
-                                      value: i,
-                                      groupValue: radioValue,
-                                      // toggleable: true,
-                                      onChanged: (v) {
-                                        setState(() {
-                                          radioValue = v;
-                                          log("$radioValue");
-                                        });
-                                        _scrollController.scrollTo(
-                                          index: i,
-                                          duration: Duration(
-                                            milliseconds: 200,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                );
-                              }),
+                    ExpandWidget(
+                      expand: mobiletapped,
+                      child: expandBankDetailsChild(),
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        mobiletapped = !mobiletapped;
-                        cardTapped = false;
-                      });
-                    },
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.13,
-                      width: double.infinity,
-                      child: Card(
-                        color: mobiletapped ? Color(0xffE9E9FF) : Colors.white,
-                        elevation: 12,
-                        margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.02),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(color: AppTheme.main),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.07),
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                "assets/icons/mobile.png",
-                              ),
-                              Text(
-                                "  Mobile banking transfer",
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 15,
-                                  color: cardTapped
-                                      ? Colors.grey.shade600
-                                      : Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+      
+                    InkWell(
+                      onTap: () {},
+                      child: paymentTile(
+                        "assets/icons/alipay.png",
+                        "Alipay",
                       ),
                     ),
-                  ),
-                  ExpandWidget(
-                    expand: mobiletapped,
-                    child: expandBankDetailsChild(),
-                  ),
-
-                  InkWell(
-                    onTap: () {},
-                    child: paymentTile(
-                      "assets/icons/alipay.png",
-                      "Alipay",
+                    InkWell(
+                      onTap: () {},
+                      child: paymentTile("assets/icons/weChat.png", "WeChat"),
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: paymentTile("assets/icons/weChat.png", "WeChat"),
-                  ),
-                  // InkWell(
-                  //   onTap: () async {},
-                  //   child: gradientButton(
-                  //     context,
-                  //     "Proceed",
-                  //   ),
-                  // ),
-                ],
+                    // InkWell(
+                    //   onTap: () async {},
+                    //   child: gradientButton(
+                    //     context,
+                    //     "Proceed",
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 16,
-          ),
-        ],
+            SizedBox(
+              height: 16,
+            ),
+          ],
+        ),
       ),
       // ),
     );

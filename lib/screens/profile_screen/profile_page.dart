@@ -29,6 +29,7 @@ import 'package:flux_payments/screens/profile_screen/settings_screen.dart';
 import 'package:flux_payments/widgets/back_button.dart';
 import 'package:flux_payments/widgets/flux_logo.dart';
 import 'package:flux_payments/widgets/gradient_button.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flux_payments/widgets/hello_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -43,6 +44,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   final LoginRepository _loginRepository = LoginRepository();
   @override
   Widget build(BuildContext context) {
@@ -55,236 +58,262 @@ class _ProfilePageState extends State<ProfilePage> {
       body: BlocBuilder<UserBloc, UserState>(builder: (context, state) {
         if (state is UserDetails) {
           User user = state.user;
-          return ListView(
-            padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-            children: [
-              fluxLogo(context),
-              Padding(
-                padding: const EdgeInsets.only(top:16.0),
-                child: Text(
-                  "Personal Information",
-                  style: GoogleFonts.montserrat(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+          return SmartRefresher(
+              // RefreshController _refreshController =
+              //     RefreshController(initialRefresh: false);
+              enablePullDown: true,
+              enablePullUp: true,
+
+              // header: WaterDropHeader(),
+              controller: _refreshController,
+              onRefresh: () {
+                setState(() {
+                  
+                });
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (_) => BlocProvider<UserBloc>.value(
+                //         value: userBloc,
+                //         child: super.widget,
+                //       ),
+                //     ));
+                // setState(() {
+
+                // });
+              },
+              onLoading: () {},
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+              children: [
+                fluxLogo(context),
+                Padding(
+                  padding: const EdgeInsets.only(top:16.0),
+                  child: Text(
+                    "Personal Information",
+                    style: GoogleFonts.montserrat(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.1,
-                margin: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height * 0.02,
-                ),
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      minRadius: MediaQuery.of(context).size.height * 0.07,
-                      backgroundImage: AssetImage(
-                        "assets/icons/user_avatar.png",
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  margin: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        minRadius: MediaQuery.of(context).size.height * 0.07,
+                        backgroundImage: AssetImage(
+                          "assets/icons/user_avatar.png",
+                        ),
                       ),
-                    ),
-                    TextButton(
-                        child: Text(
-                          "Change Profile Picture",
-                          style: GoogleFonts.montserrat(
+                      TextButton(
+                          child: Text(
+                            "Change Profile Picture",
+                            style: GoogleFonts.montserrat(
+                              color: AppTheme.main,
+                            ),
+                          ),
+                          onPressed: () {}),
+                      Spacer(),
+                      Container(
+                        margin: EdgeInsets.only(right: 16),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => BlocProvider.value(
+                                    value: userBloc,
+                                    child: SettingsPage(user: user)),
+                              ),
+                            );
+                          },
+                          child: Icon(
+                            Icons.settings,
                             color: AppTheme.main,
                           ),
                         ),
-                        onPressed: () {}),
-                    Spacer(),
-                    Container(
-                      margin: EdgeInsets.only(right: 16),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => BlocProvider.value(
-                                  value: userBloc,
-                                  child: SettingsPage(user: user)),
-                            ),
-                          );
-                        },
-                        child: Icon(
-                          Icons.settings,
-                          color: AppTheme.main,
-                        ),
                       ),
+                    ],
+                  ),
+                ),
+                Text("Email"),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  margin: EdgeInsets.fromLTRB(0, 8, 8, 16),
+                  padding: EdgeInsets.only(left: 16, top: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppTheme.main),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
                     ),
-                  ],
-                ),
-              ),
-              Text("Email"),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.06,
-                margin: EdgeInsets.fromLTRB(0, 8, 8, 16),
-                padding: EdgeInsets.only(left: 16, top: 8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppTheme.main),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
                   ),
-                ),
-                child: Text(
-                  user.email!,
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              Text("First Name"),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.06,
-                margin: EdgeInsets.fromLTRB(0, 8, 8, 16),
-                padding: EdgeInsets.only(left: 16, top: 8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppTheme.main),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                child: Text(
-                  user.firstName,
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              Text("Last Name"),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.06,
-                margin: EdgeInsets.fromLTRB(0, 8, 8, 16),
-                padding: EdgeInsets.only(left: 16, top: 8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppTheme.main),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                child: Text(
-                  user.lastName!,
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              Text("HKID"),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.06,
-                margin: EdgeInsets.fromLTRB(0, 8, 8, 16),
-                padding: EdgeInsets.only(left: 16, top: 8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppTheme.main),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                child: Text(
-                  user.hkID ?? "",
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              Text("PHN Number"),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.06,
-                margin: EdgeInsets.fromLTRB(0, 8, 8, 16),
-                padding: EdgeInsets.only(left: 16, top: 8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppTheme.main),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                child: Text(
-                  user.mobileNumber!,
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
                   child: Text(
-                    "Change Password",
+                    user.email!,
                     style: GoogleFonts.montserrat(
-                      color: AppTheme.main,
+                      fontSize: 16,
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                          value: BlocProvider.of<UserBloc>(context),
-                          child: ChangePassword(),
-                        ),
-                      ),
-                    );
-                  },
                 ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: InkWell(
-                  onTap: () async {
-                    await LoginRepository().signOut();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => MultiBlocProvider(
-                          providers: [
-                            BlocProvider<AuthBloc>(
-                              create: (_) => AuthBloc(_loginRepository),
-                            ),
-                             BlocProvider(
-                                create: (_) => ServiceProviderBloc(widget.databaseRepository!),),
-                            BlocProvider(
-                                create: (_) => UserBloc(
-                                    widget.userConfigRepository!,
-                                    widget.databaseRepository!)),
-                            BlocProvider(
-                                create: (_) =>
-                                    AdvertiserBloc(widget.databaseRepository!)),
-                            BlocProvider(
-                                create: (_) => CuratedListBloc(
-                                    widget.databaseRepository!)),
-                            BlocProvider(
-                                create: (_) =>
-                                    BannerBloc(widget.databaseRepository!)),
-                            BlocProvider(
-                                create: (_) =>
-                                    GraphBloc(widget.databaseRepository!)),
-                            BlocProvider(
-                                create: (_) => RecentPaymentBloc(
-                                    widget.databaseRepository!)),
-                            BlocProvider(
-                                create: (_) =>
-                                    FavoritesBloc(widget.databaseRepository!)),
-                            BlocProvider(
-                                create: (_) => PendingServiceBloc(
-                                    widget.databaseRepository!)),
-                            BlocProvider(
-                                create: (_) =>
-                                    StoryBloc(widget.databaseRepository!)),
-                            BlocProvider(
-                                create: (_) => ServiceProviderBloc(
-                                    widget.databaseRepository!)),
-                            BlocProvider(
-                                create: (_) =>
-                                    CouponsBloc(widget.databaseRepository!)),
-                          ],
-                          child: LoginScreen(
-                            databaseRepository: widget.databaseRepository,
-                              loginRepo: _loginRepository,
-                              userConfigRepository: UserConfigRepository()),
-                        ),
-                      ),
-                    );
-                  },
-                  child: gradientButton(context, "Log out"),
+                Text("First Name"),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  margin: EdgeInsets.fromLTRB(0, 8, 8, 16),
+                  padding: EdgeInsets.only(left: 16, top: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppTheme.main),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Text(
+                    user.firstName,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                Text("Last Name"),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  margin: EdgeInsets.fromLTRB(0, 8, 8, 16),
+                  padding: EdgeInsets.only(left: 16, top: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppTheme.main),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Text(
+                    user.lastName!,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Text("HKID"),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  margin: EdgeInsets.fromLTRB(0, 8, 8, 16),
+                  padding: EdgeInsets.only(left: 16, top: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppTheme.main),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Text(
+                    user.hkID ?? "",
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Text("PHN Number"),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  margin: EdgeInsets.fromLTRB(0, 8, 8, 16),
+                  padding: EdgeInsets.only(left: 16, top: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppTheme.main),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Text(
+                    user.mobileNumber!,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    child: Text(
+                      "Change Password",
+                      style: GoogleFonts.montserrat(
+                        color: AppTheme.main,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<UserBloc>(context),
+                            child: ChangePassword(),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: InkWell(
+                    onTap: () async {
+                      await LoginRepository().signOut();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => MultiBlocProvider(
+                            providers: [
+                              BlocProvider<AuthBloc>(
+                                create: (_) => AuthBloc(_loginRepository),
+                              ),
+                               BlocProvider(
+                                  create: (_) => ServiceProviderBloc(widget.databaseRepository!),),
+                              BlocProvider(
+                                  create: (_) => UserBloc(
+                                      widget.userConfigRepository!,
+                                      widget.databaseRepository!)),
+                              BlocProvider(
+                                  create: (_) =>
+                                      AdvertiserBloc(widget.databaseRepository!)),
+                              BlocProvider(
+                                  create: (_) => CuratedListBloc(
+                                      widget.databaseRepository!)),
+                              BlocProvider(
+                                  create: (_) =>
+                                      BannerBloc(widget.databaseRepository!)),
+                              BlocProvider(
+                                  create: (_) =>
+                                      GraphBloc(widget.databaseRepository!)),
+                              BlocProvider(
+                                  create: (_) => RecentPaymentBloc(
+                                      widget.databaseRepository!)),
+                              BlocProvider(
+                                  create: (_) =>
+                                      FavoritesBloc(widget.databaseRepository!)),
+                              BlocProvider(
+                                  create: (_) => PendingServiceBloc(
+                                      widget.databaseRepository!)),
+                              BlocProvider(
+                                  create: (_) =>
+                                      StoryBloc(widget.databaseRepository!)),
+                              BlocProvider(
+                                  create: (_) => ServiceProviderBloc(
+                                      widget.databaseRepository!)),
+                              BlocProvider(
+                                  create: (_) =>
+                                      CouponsBloc(widget.databaseRepository!)),
+                            ],
+                            child: LoginScreen(
+                              databaseRepository: widget.databaseRepository,
+                                loginRepo: _loginRepository,
+                                userConfigRepository: UserConfigRepository()),
+                          ),
+                        ),
+                      );
+                    },
+                    child: gradientButton(context, "Log out"),
+                  ),
+                ),
+              ],
+            ),
           );
         }
         if (state is UserDetailsError) {
